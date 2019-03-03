@@ -1,0 +1,13 @@
+/BUILD
+/.vscode
+*.sdf
+*.opensdf
+*.user
+*.suo
+*.ipch
+*.pdb
+*.log
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+.vs
