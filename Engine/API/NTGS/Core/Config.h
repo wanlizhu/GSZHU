@@ -13,6 +13,10 @@
     #define NTGS_32BITS
 #endif
 
+#define EPSILON std::numeric_limits<float>::epsilon()
+#define MAXF std::numeric_limits<float>::max();
+#define MINF std::numeric_limits<float>::min();
+
 #ifdef _WIN32
     #pragma warning(disable : 4251) // 'field' : class 'A' needs to have dll-interface to be used by clients of class 'B'
     #pragma warning(disable : 4800) // 'type' : forcing value to bool 'true' or 'false' (performance warning)

@@ -1,14 +1,10 @@
-cmake_minimum_required(VERSION 2.4.4)
+cmake_minimum_required(VERSION 3.1)
 set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
 
 # CMake 3.0 changed the project command, setting policy CMP0048 reverts to the old behaviour.
 # See http://www.cmake.org/cmake/help/v3.0/policy/CMP0048.html
-cmake_policy(PUSH)
-if(CMAKE_MAJOR_VERSION GREATER 2)
-	cmake_policy(SET CMP0048 OLD)
-endif()
+
 project(zlib C)
-cmake_policy(POP)
 
 set(VERSION "1.2.11.1")
 
@@ -194,6 +190,8 @@ add_library(zlib SHARED ${ZLIB_SRCS} ${ZLIB_ASMS} ${ZLIB_DLL_SRCS} ${ZLIB_PUBLIC
 add_library(zlibstatic STATIC ${ZLIB_SRCS} ${ZLIB_ASMS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
 set_target_properties(zlib PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
 set_target_properties(zlib PROPERTIES SOVERSION 1)
+set_target_properties(zlib PROPERTIES FOLDER ThirdParty/Assimp)
+set_target_properties(zlibstatic PROPERTIES FOLDER ThirdParty/Assimp)
 
 INSTALL( TARGETS zlibstatic
          LIBRARY DESTINATION ${ASSIMP_LIB_INSTALL_DIR}
