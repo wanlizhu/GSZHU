@@ -15,10 +15,6 @@ SET(BUILD_STATIC_LIBS ON)
 ADD_SUBDIRECTORY(Engine)
 #ADD_SUBDIRECTORY(Samples/HelloWorld)
 
-IF(ENABLE_TESTS)
-#    ADD_SUBDIRECTORY(Tests)
-ENDIF()
-
 MESSAGE(STATUS "NTGS Configuration Summary")
 MESSAGE(STATUS "--------------------------------")
 MESSAGE(STATUS "")
