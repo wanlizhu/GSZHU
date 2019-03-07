@@ -26,15 +26,15 @@ namespace NTGS {
         return std::abs(A - B) <= std::numeric_limits<double>::epsilon();
     }
 
-    template<typename ArrayType>
+    template<template<typename T, int LEN> class _ArrayType, typename Scalar, int LEN>
     class ComparisonOperator {
     public:
+        typedef _ArrayType<Scalar, LEN> ArrayType;
+
         friend inline bool operator==(const ArrayType& Arr1, const ArrayType& Arr2) noexcept {
-            ArrayType::IndexType Index;
-            while (Index) {
-                if (!IsEquivalent(Arr1[Index], Arr2[Index]))
+            for (int i = 0; i < ArrayType::LENGTH; i++) {
+                if (!IsEquivalent(Arr1[i], Arr2[i]))
                     return false;
-                Index++;
             }
             return true;
         }
@@ -44,11 +44,9 @@ namespace NTGS {
         }
 
         friend inline bool operator<(const ArrayType& Arr1, const ArrayType& Arr2) noexcept {
-            ArrayType::IndexType Index;
-            while (Index) {
-                if (!(Arr1[Index] < Arr2[Index]))
+            for (int i = 0; i < ArrayType::LENGTH; i++) {
+                if (!(Arr1[i] < Arr2[i]))
                     return false;
-                Index++;
             }
             return true;
         }
@@ -58,28 +56,15 @@ namespace NTGS {
         }
 
         friend inline bool operator>(const ArrayType& Arr1, const ArrayType& Arr2) noexcept {
-            ArrayType::IndexType Index;
-            while (Index) {
-                if (!(Arr1[Index] > Arr2[Index]))
+            for (int i = 0; i < ArrayType::LENGTH; i++) {
+                if (!(Arr1[i] > Arr2[i]))
                     return false;
-                Index++;
             }
             return true;
         }
 
         friend inline bool operator<=(const ArrayType& Arr1, const ArrayType& Arr2) noexcept {
             return !(Arr1 > Arr2);
-        }
-
-        inline bool HasNaN() const noexcept {
-            ArrayType::IndexType Index;
-            const ArrayType& Me = static_cast<const ArrayType&>(*this);
-            while (Index) {
-                if (std::isnan(Me[Index]))
-                    return true;
-                Index++;
-            }
-            return false;
         }
     };
 }
