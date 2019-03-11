@@ -22,7 +22,7 @@ namespace NTGS {
     }
 
     template<typename T, int DIM>
-    inline Vector<T, DIM> Length2(const Vector<T, DIM>& V) noexcept {
+    inline typename Vector<T, DIM>::Scalar Length2(const Vector<T, DIM>& V) noexcept {
         typename Vector<T, DIM>::Scalar Sum(0);
         for (int i = 0; i < DIM; i++) {
             Sum += V[i] * V[i];
@@ -31,8 +31,13 @@ namespace NTGS {
     }
 
     template<typename T, int DIM>
-    inline Vector<T, DIM> Length(const Vector<T, DIM>& V) noexcept {
+    inline typename Vector<T, DIM>::Scalar Length(const Vector<T, DIM>& V) noexcept {
         return std::sqrt(Length2(V));
+    }
+
+    template<typename T, int DIM>
+    inline typename Vector<T, DIM>::Scalar Distance(const Vector<T, DIM>& V1, const Vector<T, DIM>& V2) noexcept {
+        return Length(V2 - V1);
     }
 
     template<typename T, int DIM>
@@ -40,6 +45,9 @@ namespace NTGS {
         return Vector<T, DIM>(V) /= Length(V);
     }
 
+
+
+     /*
     template<typename T, int _MAJOR1, int _MINOR1, typename U, int _MAJOR2, int _MINOR2>
     inline void Mul(const Matrix<T, _MAJOR1, _MINOR1>& Mat1,
                     const Matrix<U, _MAJOR2, _MINOR2>& Mat2,
@@ -78,4 +86,5 @@ namespace NTGS {
     inline Vector<T, _MINOR> Mul(const Matrix<T, _MAJOR, _MINOR>& Mat, const Vector<U, _MINOR>& Vec) noexcept {
         return static_cast<Vector<T, _MINOR>>(Mul(Mat, static_cast<const Matrix<U, 1, _MINOR>&>(Vec)));
     }
+    */
 }
