@@ -130,9 +130,9 @@ class GitWidget(ttk.Frame):
 
         undoFrame = ttk.LabelFrame(self, text='Undo')
         undoFrame.grid(pady=5, sticky='ew')
-        ttk.Button(undoFrame, text='Undo', command=None).grid(row=0, column=0, sticky='w', pady=5)
+        ttk.Button(undoFrame, text='Undo', command=lambda: subproc.call('git reset --soft')).grid(row=0, column=0, sticky='w', pady=5)
         ttk.Button(undoFrame, text='Redo', command=None).grid(row=0, column=1, sticky='w')
-        ttk.Button(undoFrame, text='Clean', command=None).grid(row=0, column=2, sticky='w')
+        ttk.Button(undoFrame, text='Clean', command=lambda: subproc.call('git clean -x -f -d')).grid(row=0, column=2, sticky='w')
 
     def _openSettings(self):
         settingsWindow = GitSettingsWindow(self)
@@ -141,14 +141,14 @@ class GitWidget(ttk.Frame):
         self._statusLabel.configure(text=QueryGit().status())
         
     def _addStash(self):
-        cmd = 'git stash'
+        cmd = 'git stash push'
         if self._stashIgnoredFiles.get():
             cmd += ' --all'
         else:
             cmd += ' --include-untracked'
         cmd += ' -m ' + clock.strftime(clock.now(), "%a, %Y-%m-%d %X")
         subproc.call(cmd, stdout=sys.stdout, stderr=sys.stderr)
-        
+
 
 
 class BuildWidget(ttk.Frame):
@@ -170,7 +170,7 @@ class BuildWidget(ttk.Frame):
 
         ttk.Separator(self, orien='horizontal').grid(pady=10, sticky='ew')
 
-
+        ttk.Button(self, text='Get Externals', command=None).grid(sticky='w')
 
 
 class Application:
@@ -215,8 +215,8 @@ class Application:
         self._notebook.grid(sticky='ewns')
         self._frameGit = GitWidget(self._notebook)
         self._frameBuild = BuildWidget(self._notebook)
-        self._notebook.add(self._frameBuild, text='  [ BUILD ]  ')
         self._notebook.add(self._frameGit, text='   [ GIT ]   ')
+        self._notebook.add(self._frameBuild, text='  [ BUILD ]  ')
         
     def mainLoop(self):
         self._root.mainloop()
