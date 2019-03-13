@@ -9,11 +9,6 @@ from datetime import datetime as clock
 
 globalFont = ('Neue Haas Grotesk Text Pro', '12', 'bold')
 
-def run(cmd, print=False):
-    if print:
-        subproc.call(cmd, stdout=sys.stdout, stderr=sys.stderr, shell=False)
-    else:
-        subproc.call(cmd, shell=False)
 
 class QueryGit:
 
@@ -26,7 +21,7 @@ class QueryGit:
         desc += 'HEAD: ' + subproc.check_output('git rev-parse --short HEAD').decode('utf-8') 
         desc += 'UPSTREAM: ' + subproc.check_output('git rev-parse --short @{u}').decode('utf-8')
         branch = 'Local Branch: '
-        remoteName = 'xx'
+        remoteName = 'origin'
         proc = subproc.Popen('git branch -vv', shell=False, stdout=subproc.PIPE)
         for lineBytes in proc.stdout.readlines():
             line = lineBytes.decode("utf-8") 
@@ -112,27 +107,26 @@ class GitWidget(ttk.Frame):
         buttonFrame.grid(pady=5, sticky='w')
 
         ttk.Button(buttonFrame, text='Scan', command=self._loadStatus).grid(row=0, column=0, sticky='w')
-        ttk.Button(buttonFrame, text='Pull', command=lambda: run('git pull', True)).grid(row=0, column=1, sticky='w')
-        ttk.Button(buttonFrame, text='Push', command=lambda: run('git push', True)).grid(row=0, column=2, sticky='w')
-        ttk.Button(buttonFrame, text='Fetch', command=lambda: run('git fetch --all', True)).grid(row=0, column=3, sticky='w')
+        ttk.Button(buttonFrame, text='Pull', command=lambda: subproc.call('git pull')).grid(row=0, column=1, sticky='w')
+        ttk.Button(buttonFrame, text='Push', command=lambda: subproc.call('git push')).grid(row=0, column=2, sticky='w')
+        ttk.Button(buttonFrame, text='Fetch', command=lambda: subproc.call('git fetch --all')).grid(row=0, column=3, sticky='w')
         
         self._commitMessage = ttk.Entry(self, font=globalFont, width=20)
         self._commitMessage.grid(ipady=3, sticky='ew')
         self._commitMessage.insert(0, 'Auto Commit (' +  clock.strftime(clock.now(), "%a, %b %d | %Y-%m-%d %X") + ')')
         commitFrame = ttk.Frame(self)
         commitFrame.grid(sticky='e')
-        ttk.Button(commitFrame, text='Add *', command=lambda: run('git add .', True)).grid(row=0, column=0, sticky='e')
-        ttk.Button(commitFrame, text='Commit', command=lambda: run('git commit -m \"%s\"' % self._commitMessage.get(), True)).grid(row=0, column=1, sticky='e')
+        ttk.Button(commitFrame, text='Add all', command=lambda: subproc.call('git add .')).grid(row=0, column=0, sticky='e')
+        ttk.Button(commitFrame, text='Commit', command=lambda: subproc.call('git commit -m \"%s\"' % self._commitMessage.get())).grid(row=0, column=1, sticky='e')
 
         stashFrame = ttk.LabelFrame(self, text='Stash')
         stashFrame.grid(pady=5, sticky='ew')
-        self._stashUntrackedFiles = False
-        self._stashIgnoredFiles = False
+        self._stashIgnoredFiles = tk.BooleanVar()
+        self._stashIgnoredFiles.set(False)
         
-        ttk.Radiobutton(stashFrame, text='Include untracked files', variable=self._stashUntrackedFiles, value=False).grid(row=0, column=0, sticky='w', columnspan=2)
-        ttk.Radiobutton(stashFrame, text='Include ignored files', variable=self._stashIgnoredFiles, value=False).grid(row=1, column=0, sticky='w', columnspan=2)
+        ttk.Checkbutton(stashFrame, text='Include ignored files', variable=self._stashIgnoredFiles).grid(row=0, column=0, sticky='w', columnspan=2)
         ttk.Button(stashFrame, text='Add Stash', command=self._addStash).grid(row=2, column=0, sticky='w')
-        ttk.Button(stashFrame, text='Restore Stash', command=lambda: run('git stash pop', True)).grid(row=2, column=1, sticky='w', pady=5)
+        ttk.Button(stashFrame, text='Restore Stash', command=lambda: subproc.call('git stash pop', stdout=sys.stdout, stderr=sys.stderr)).grid(row=2, column=1, sticky='w', pady=5)
 
         undoFrame = ttk.LabelFrame(self, text='Undo')
         undoFrame.grid(pady=5, sticky='ew')
@@ -148,11 +142,11 @@ class GitWidget(ttk.Frame):
         
     def _addStash(self):
         cmd = 'git stash'
-        if self._stashUntrackedFiles and self._stashIgnoredFiles:
+        if self._stashIgnoredFiles.get():
             cmd += ' --all'
-        elif self._stashUntrackedFiles:
+        else:
             cmd += ' --include-untracked'
-        run(cmd, True)
+        subproc.call(cmd, stdout=sys.stdout, stderr=sys.stderr)
 
 
 
@@ -164,7 +158,18 @@ class BuildWidget(ttk.Frame):
         self._createWidgets()
 
     def _createWidgets(self):
-        pass
+        topFrame = ttk.Frame(self)
+        topFrame.grid(sticky='ew')
+        topFrame.grid(sticky='ew')
+
+        ttk.Button(topFrame, text='Generate', command=None).grid(row=0, column=0, sticky='w')
+        ttk.Button(topFrame, text='Build', command=None).grid(row=0, column=1, sticky='w')
+        ttk.Button(topFrame, text='Run', command=None).grid(row=0, column=2, sticky='w')
+        ttk.Button(topFrame, text='Open IDE', command=None).grid(row=0, column=3, sticky='e')
+
+        ttk.Separator(self, orien='horizontal').grid(pady=10, sticky='ew')
+
+
 
 
 class Application:

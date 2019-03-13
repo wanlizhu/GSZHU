@@ -51,15 +51,4 @@ extern "C++" {\
     template<typename T>
     std::unique_ptr<T> Singleton<T>::GlobalInstance;
 
-    template<typename T>
-    class IDGenerator {
-    public:
-        static inline SIZE GetID() const { return GlobalCounter++; }
-
-    private:
-        static std::atomic<SIZE> GlobalCounter;
-    };
-
-    template<typename T>
-    std::atomic<SIZE> IDGenerator<T>::GlobalCounter = 0;
 }
