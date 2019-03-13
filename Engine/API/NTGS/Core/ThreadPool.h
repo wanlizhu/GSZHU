@@ -24,8 +24,8 @@ namespace NTGS {
             return &smGlobalInstance;
         }
 
-        inline size_t WorkerCount() const noexcept { return mWorkers.size(); }
-        inline size_t TaskCount() const noexcept { return mTasks.size(); }
+        inline size_t CountWorker() const noexcept { return mWorkers.size(); }
+        inline size_t CountTask() const noexcept { return mTasks.size(); }
         inline void Stop() {
             {
                 std::unique_lock<std::mutex> Lock(mQueueMutex);

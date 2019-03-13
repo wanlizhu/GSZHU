@@ -86,16 +86,3 @@ typedef size_t SIZE;
 typedef ssize_t SSIZE;
 typedef float FLOAT;
 typedef double DOUBLE;
-
-namespace NTGS {
-    static constexpr UINT MaxBufferSlots = 32;
-    static constexpr UINT MaxRenderTargets = 8;
-    static constexpr UINT MaxViewports = 16;
-    static constexpr UINT MaxShadersInPipeline = 5;
-
-    template<typename T>
-    using Pointer = std::shared_ptr<T>;
-
-    template<typename T>
-    using Weak = std::weak_ptr<T>;
-}

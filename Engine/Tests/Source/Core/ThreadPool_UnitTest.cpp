@@ -16,8 +16,8 @@ TEST(Core_ThreadPool, Post_Task) {
 
 
     EXPECT_TRUE(Result.get() == 24);
-    EXPECT_TRUE(Pool->TaskCount() == 0);
-    EXPECT_TRUE(Pool->WorkerCount() == std::thread::hardware_concurrency());
+    EXPECT_TRUE(Pool->CountTask() == 0);
+    EXPECT_TRUE(Pool->CountWorker() == std::thread::hardware_concurrency());
 
     Result3.get();
     EXPECT_EQ(X, 999);

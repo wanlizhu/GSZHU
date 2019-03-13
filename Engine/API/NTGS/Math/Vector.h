@@ -1,13 +1,14 @@
 #pragma once
 
-#include <NTGS/Math/ArrayOperators.h>
+#include <NTGS/Math/VectorOperators.h>
 
 namespace NTGS {
     template<typename T, int _DIMENSIONS>
-    class ALIGN16 Vector : public ArrayOperators<Vector<T, _DIMENSIONS>> {
+    class ALIGN16 Vector : public VectorOperators<Vector, T, _DIMENSIONS> {
     public:
         using Scalar = T;
         static constexpr int DIMENSIONS = _DIMENSIONS;
+        static constexpr int LENGTH = _DIMENSIONS;
         static constexpr Vector ZERO;
         static constexpr Vector ONE;
         static constexpr Vector UP;
