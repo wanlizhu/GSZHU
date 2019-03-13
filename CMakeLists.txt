@@ -13,7 +13,7 @@ SET(BUILD_SHARED_LIBS OFF)
 SET(BUILD_STATIC_LIBS ON)
 
 ADD_SUBDIRECTORY(Engine)
-#ADD_SUBDIRECTORY(Samples/HelloWorld)
+#ADD_SUBDIRECTORY(Samples/HelloWorld) 
 
 MESSAGE(STATUS "NTGS Configuration Summary")
 MESSAGE(STATUS "--------------------------------")

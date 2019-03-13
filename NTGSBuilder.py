@@ -2,50 +2,62 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkfont
 import os
-import subprocess 
+import sys
+import subprocess as subproc
 from datetime import datetime as clock
 
 
 globalFont = ('Neue Haas Grotesk Text Pro', '12', 'bold')
 
+def run(cmd, print=False):
+    if print:
+        subproc.call(cmd, stdout=sys.stdout, stderr=sys.stderr, shell=False)
+    else:
+        subproc.call(cmd, shell=False)
 
 class QueryGit:
 
-    def __init__(self, repo):
-        self.repo = repo
-        os.system('cd ' + self.repo)
+    def __init__(self):
+        pass
     
     def status(self):
+        subproc.call('git status', stdout=sys.stdout, stderr=sys.stderr)
         desc = ''
-        commitId = 'Commit ID: ' + subprocess.check_output('git rev-parse --short HEAD').decode('utf8')
-        desc += commitId
-        branch = 'Branch: '
-        proc = subprocess.Popen('git branch -vv', shell=False, stdout=subprocess.PIPE)
+        desc += 'HEAD: ' + subproc.check_output('git rev-parse --short HEAD').decode('utf-8') 
+        desc += 'UPSTREAM: ' + subproc.check_output('git rev-parse --short @{u}').decode('utf-8')
+        branch = 'Local Branch: '
+        remoteName = 'xx'
+        proc = subproc.Popen('git branch -vv', shell=False, stdout=subproc.PIPE)
         for lineBytes in proc.stdout.readlines():
             line = lineBytes.decode("utf-8") 
             if (line.startswith('*')):
                 branch += line[2:line.find(']') + 1]
+                trackedInfo = line[line.rfind('['):]
+                remoteName = trackedInfo[1:trackedInfo.find('/')]
         proc.wait()
-        desc += branch + '\n'
-       
-        needPull, autoMerge = self._checkAutoMerge()
-        tips = 'Needs to pull? [%s]\tAuto-Merge? [%s]' % (needPull, autoMerge)
-        desc += tips + '\n\n'
+        branch += '\nRemote(%s): '%(remoteName) + subproc.check_output('git config --get remote.%s.url'%(remoteName)).decode('utf-8') + '\n'
+        desc += branch
+
+        numWSChanges = 0
+        numStagedChanges = 0
+        numUntracked = 0
+        proc = subproc.Popen('git status --porcelain', shell=False, stdout=subproc.PIPE)
+        for lineBytes in proc.stdout.readlines():
+            line = lineBytes.decode('utf-8')
+            if line[1] != ' ':
+                numWSChanges += 1
+            if line[0] != ' ':
+                numStagedChanges += 1
+            if line[0] == '?' and line[1] == '?':
+                numUntracked += 1
+        proc.wait()
         
-        numChanges, numStaged, numUntracked = self._changedFiles()
-        desc += 'File Changes: \n'\
-                '\tWorkspace: [%d] Files\n'\
-                '\tStaged: [%s] Files\n'\
-                '\tUntracked: [%s] Files'\
-                % (numChanges, numStaged, numUntracked)
+        desc += 'Workspace Changes: [%d] Files\n'\
+                'Staged Changes: [%s] Files\n'\
+                'Untracked Changes: [%s] Files'\
+                % (numWSChanges, numStagedChanges, numUntracked)
         
         return desc
-
-    def _checkAutoMerge(self):
-        return False, False
-        
-    def _changedFiles(self):
-        return 123, 2, 34
 
 
 class GitSettingsWindow():
@@ -100,17 +112,17 @@ class GitWidget(ttk.Frame):
         buttonFrame.grid(pady=5, sticky='w')
 
         ttk.Button(buttonFrame, text='Scan', command=self._loadStatus).grid(row=0, column=0, sticky='w')
-        ttk.Button(buttonFrame, text='Pull', command=self._loadStatus).grid(row=0, column=1, sticky='w')
-        ttk.Button(buttonFrame, text='Push', command=lambda: subprocess.call('git push')).grid(row=0, column=2, sticky='w')
-        ttk.Button(buttonFrame, text='Fetch', command=self._loadStatus).grid(row=0, column=3, sticky='w')
+        ttk.Button(buttonFrame, text='Pull', command=lambda: run('git pull', True)).grid(row=0, column=1, sticky='w')
+        ttk.Button(buttonFrame, text='Push', command=lambda: run('git push', True)).grid(row=0, column=2, sticky='w')
+        ttk.Button(buttonFrame, text='Fetch', command=lambda: run('git fetch --all', True)).grid(row=0, column=3, sticky='w')
         
         self._commitMessage = ttk.Entry(self, font=globalFont, width=20)
         self._commitMessage.grid(ipady=3, sticky='ew')
         self._commitMessage.insert(0, 'Auto Commit (' +  clock.strftime(clock.now(), "%a, %b %d | %Y-%m-%d %X") + ')')
         commitFrame = ttk.Frame(self)
         commitFrame.grid(sticky='e')
-        ttk.Button(commitFrame, text='Add *', command=lambda: subprocess.call('git add .')).grid(row=0, column=0, sticky='e')
-        ttk.Button(commitFrame, text='Commit', command=lambda: subprocess.call('git commit -m \"%s\"' % self._commitMessage.get())).grid(row=0, column=1, sticky='e')
+        ttk.Button(commitFrame, text='Add *', command=lambda: run('git add .', True)).grid(row=0, column=0, sticky='e')
+        ttk.Button(commitFrame, text='Commit', command=lambda: run('git commit -m \"%s\"' % self._commitMessage.get(), True)).grid(row=0, column=1, sticky='e')
 
         stashFrame = ttk.LabelFrame(self, text='Stash')
         stashFrame.grid(pady=5, sticky='ew')
@@ -119,8 +131,8 @@ class GitWidget(ttk.Frame):
         
         ttk.Radiobutton(stashFrame, text='Include untracked files', variable=self._stashUntrackedFiles, value=False).grid(row=0, column=0, sticky='w', columnspan=2)
         ttk.Radiobutton(stashFrame, text='Include ignored files', variable=self._stashIgnoredFiles, value=False).grid(row=1, column=0, sticky='w', columnspan=2)
-        ttk.Button(stashFrame, text='Add Stash', command=None).grid(row=2, column=0, sticky='w')
-        ttk.Button(stashFrame, text='Restore Stash', command=None).grid(row=2, column=1, sticky='w', pady=5)
+        ttk.Button(stashFrame, text='Add Stash', command=self._addStash).grid(row=2, column=0, sticky='w')
+        ttk.Button(stashFrame, text='Restore Stash', command=lambda: run('git stash pop', True)).grid(row=2, column=1, sticky='w', pady=5)
 
         undoFrame = ttk.LabelFrame(self, text='Undo')
         undoFrame.grid(pady=5, sticky='ew')
@@ -132,19 +144,15 @@ class GitWidget(ttk.Frame):
         settingsWindow = GitSettingsWindow(self)
 
     def _loadStatus(self):
-        self._statusLabel.configure(text=QueryGit(os.getcwd()).status())
-    
-    def _loadStashList(self):
-        return ['This is a test message', 'something else', 'this is a very long message which can be *']
-
-    def _runPull(self):
-        pass
-
-    def _runPush(self):
-        pass
+        self._statusLabel.configure(text=QueryGit().status())
         
-    def _runStash(self):
-        pass
+    def _addStash(self):
+        cmd = 'git stash '
+        if self._stashUntrackedFiles and self._stashIgnoredFiles:
+            cmd += '--all'
+        elif self._stashUntrackedFiles:
+            cmd += '--include-untracked'
+        run(cmd, True)
 
 
 
