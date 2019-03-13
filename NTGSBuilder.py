@@ -147,11 +147,11 @@ class GitWidget(ttk.Frame):
         self._statusLabel.configure(text=QueryGit().status())
         
     def _addStash(self):
-        cmd = 'git stash '
+        cmd = 'git stash'
         if self._stashUntrackedFiles and self._stashIgnoredFiles:
-            cmd += '--all'
+            cmd += ' --all'
         elif self._stashUntrackedFiles:
-            cmd += '--include-untracked'
+            cmd += ' --include-untracked'
         run(cmd, True)
 
 
@@ -209,8 +209,8 @@ class Application:
         self._notebook.grid(sticky='ewns')
         self._frameGit = GitWidget(self._notebook)
         self._frameBuild = BuildWidget(self._notebook)
-        self._notebook.add(self._frameGit, text='   [ GIT ]   ')
         self._notebook.add(self._frameBuild, text='  [ BUILD ]  ')
+        self._notebook.add(self._frameGit, text='   [ GIT ]   ')
         
     def mainLoop(self):
         self._root.mainloop()
