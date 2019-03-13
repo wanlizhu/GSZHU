@@ -113,7 +113,7 @@ class GitWidget(ttk.Frame):
         
         self._commitMessage = ttk.Entry(self, font=globalFont, width=20)
         self._commitMessage.grid(ipady=3, sticky='ew')
-        self._commitMessage.insert(0, 'Auto Commit (' +  clock.strftime(clock.now(), "%a, %b %d | %Y-%m-%d %X") + ')')
+        self._commitMessage.insert(0, 'Auto Commit (' +  clock.strftime(clock.now(), "%a, %Y-%m-%d %X") + ')')
         commitFrame = ttk.Frame(self)
         commitFrame.grid(sticky='e')
         ttk.Button(commitFrame, text='Add all', command=lambda: subproc.call('git add .')).grid(row=0, column=0, sticky='e')
@@ -146,8 +146,9 @@ class GitWidget(ttk.Frame):
             cmd += ' --all'
         else:
             cmd += ' --include-untracked'
+        cmd += ' -m ' + clock.strftime(clock.now(), "%a, %Y-%m-%d %X")
         subproc.call(cmd, stdout=sys.stdout, stderr=sys.stderr)
-
+        
 
 
 class BuildWidget(ttk.Frame):
