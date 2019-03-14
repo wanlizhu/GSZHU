@@ -9,6 +9,7 @@
 #include <type_traits>
 
 namespace NTGS {
+    
     template<typename MatrixType, typename T, int MAJOR, int MINOR>
     class MatrixTraits : public ArrayArithmetic<MatrixType, Vector<T, MINOR>, MAJOR * MINOR> {
     protected:
