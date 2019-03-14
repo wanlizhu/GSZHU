@@ -28,7 +28,7 @@ namespace NTGS {
         inline size_t CountTask() const noexcept { return mTasks.size(); }
         inline void Stop() {
             {
-                std::unique_lock<std::mutex> Lock(mQueueMutex);
+                std::unique_lock<std::mutex> cLock(mQueueMutex);
                 if (mStop)
                     return;
                 else
@@ -36,9 +36,9 @@ namespace NTGS {
             }
 
             mCV.notify_all();
-            for (std::thread& Worker : mWorkers) {
-                if (Worker.joinable())
-                    Worker.join();
+            for (std::thread& cWorker : mWorkers) {
+                if (cWorker.joinable())
+                    cWorker.join();
             }
 
             mWorkers.clear();
@@ -46,23 +46,24 @@ namespace NTGS {
                 mTasks.pop();
         }
 
+        // Call with std::ref(x), if you want to enqueue a function which takes argument x as a reference
         template<typename FuncType, typename... ArgsType>
         inline auto Enqueue(FuncType&& Func, ArgsType&&... Args)
             ->std::future<typename std::result_of<FuncType(ArgsType...)>::type> {
 
             using ReturnType = typename std::result_of<FuncType(ArgsType...)>::type;
-            auto TaskPointer = std::make_shared<std::packaged_task<ReturnType()>>(
+            auto pTaskPointer = std::make_shared<std::packaged_task<ReturnType()>>(
                 std::bind(std::forward<FuncType>(Func), std::forward<ArgsType>(Args)...));
-            std::future<ReturnType> FutureResult = TaskPointer->get_future();
+            std::future<ReturnType> cFutureResult = pTaskPointer->get_future();
             
-            std::unique_lock<std::mutex> Lock(mQueueMutex);
+            std::unique_lock<std::mutex> cLock(mQueueMutex);
             if (mStop)
                 throw std::runtime_error("Enqueue on stopped ThreadPool");
-            mTasks.emplace([TaskPointer]() { (*TaskPointer)(); });
-            Lock.unlock();
+            mTasks.emplace([pTaskPointer]() { (*pTaskPointer)(); });
+            cLock.unlock();
 
             mCV.notify_one();
-            return FutureResult;
+            return cFutureResult;
         }
 
         inline virtual ~ThreadPool() {
@@ -80,20 +81,20 @@ namespace NTGS {
             for (size_t i = 0; i < Count; i++) {
                 mWorkers.emplace_back([this]() {
                     while (true) {
-                        std::function<void()> Task;
-                        std::unique_lock<std::mutex> Lock(this->mQueueMutex);
+                        std::function<void()> cTask;
+                        std::unique_lock<std::mutex> cLock(this->mQueueMutex);
 
-                        this->mCV.wait(Lock, [this]() {
+                        this->mCV.wait(cLock, [this]() {
                             return this->mStop || !this->mTasks.empty();
                         });
                         if (this->mStop && this->mTasks.empty())
                             return;
-                        Task = std::move(this->mTasks.front());
+                        cTask = std::move(this->mTasks.front());
                         this->mTasks.pop();
 
-                        Lock.unlock();
+                        cLock.unlock();
 
-                        Task();
+                        cTask();
                     }
                 });
             }

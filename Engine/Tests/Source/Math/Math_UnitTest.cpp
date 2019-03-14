@@ -4,46 +4,6 @@
 
 using namespace NTGS;
 
-TEST(Math, Alignment_Test) {
-    int Align = 0;
-
-    Align = std::alignment_of<Vector<double, 2>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Vector<float, 3>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Vector<double, 3>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Vector<float, 6>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Vector<short, 9>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Vector<double, 11>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Vector<double, 13>>::value;
-    EXPECT_EQ(Align, 16);
-
-    Align = std::alignment_of<Matrix<float, 3, 17>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Matrix<double, 3, 2>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Matrix<bool, 1, 3>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Matrix<short, 3, 4>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Matrix<short, 13, 4>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Matrix<short, 1, 7>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Matrix<short, 7, 1>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Matrix<short, 3, 9>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Matrix<short, 13, 3>>::value;
-    EXPECT_EQ(Align, 16);
-    Align = std::alignment_of<Matrix<short, 11, 3>>::value;
-    EXPECT_EQ(Align, 16);
-}
-
 TEST(Math, Vector_Constructors) {
     {
         Vector<double, 3> Vec;
@@ -82,8 +42,9 @@ TEST(Math, Vector_Constructors) {
 
     {
         Vector<float, 3> Vec = { 123.456f, 234.567f, 345.678f };
-        int Bytes = sizeof(Vector<float, 3>);
-        EXPECT_EQ(Bytes, 3 * sizeof(float));
+
+        EXPECT_EQ(sizeof(Vector<float, 3>), 3 * sizeof(float));
+        EXPECT_EQ(sizeof(Vec), 3 * sizeof(float));
     }
 
     {
@@ -216,4 +177,37 @@ TEST(Math, Matrix_Constructors) {
     EXPECT_FLOAT_EQ(m[3][1], M[3][1]);
     EXPECT_FLOAT_EQ(m[3][2], M[3][2]);
     EXPECT_FLOAT_EQ(m[3][3], M[3][3]);  
+}
+
+TEST(Matrix, General_Multiply) {
+    glm::mat4 m1(1.234f, 2.3423f, -13.123f, 4.0072f,
+        52.242f, 6.23423f, 72.234235f, 8.23423f,
+        -0.23429f, -0.22f, 36.234f, 0.000001f,
+        0, 0.23423f, 4.123f, -985.3423f);
+    glm::mat4 m2(1.234f, 2.3423f, -13.123f, -4.0072f,
+        -52.242f, 0, -9.2f, 8.23423f,
+        -0.23429f, 0.22f, 36.234f, 121.f,
+        0, 0.23423f,-213, 985.3423f);
+    Matrix4 M1((const Vector4*)&m1[0]);
+    Matrix4 M2((const Vector4*)&m2[0]);
+
+    glm::mat4 m3 = m1 * m2;
+    Matrix4 M3 = M2 * M1;
+
+    EXPECT_FLOAT_EQ(m3[0][0], M3[0][0]);
+    EXPECT_FLOAT_EQ(m3[0][1], M3[0][1]);
+    EXPECT_FLOAT_EQ(m3[0][2], M3[0][2]);
+    EXPECT_FLOAT_EQ(m3[0][3], M3[0][3]);
+    EXPECT_FLOAT_EQ(m3[1][0], M3[1][0]);
+    EXPECT_FLOAT_EQ(m3[1][1], M3[1][1]);
+    EXPECT_FLOAT_EQ(m3[1][2], M3[1][2]);
+    EXPECT_FLOAT_EQ(m3[1][3], M3[1][3]);
+    EXPECT_FLOAT_EQ(m3[2][0], M3[2][0]);
+    EXPECT_FLOAT_EQ(m3[2][1], M3[2][1]);
+    EXPECT_FLOAT_EQ(m3[2][2], M3[2][2]);
+    EXPECT_FLOAT_EQ(m3[2][3], M3[2][3]);
+    EXPECT_FLOAT_EQ(m3[3][0], M3[3][0]);
+    EXPECT_FLOAT_EQ(m3[3][1], M3[3][1]);
+    EXPECT_FLOAT_EQ(m3[3][2], M3[3][2]);
+    EXPECT_FLOAT_EQ(m3[3][3], M3[3][3]);
 }

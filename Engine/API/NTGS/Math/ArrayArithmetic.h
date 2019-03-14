@@ -4,93 +4,94 @@
 #include <math.h>
 #include <numeric>
 #include <functional>
+#include <NTGS/Math/ArrayComparison.h>
 
 namespace NTGS {
-    template<typename ArrayType>
-    class ArrayArithmetic {
+    template<typename ArrayType, typename T, int DIMENSION>
+    class ArrayArithmetic : public ArrayComparison<ArrayType, T, DIMENSION> {
     public:
         // -
         inline ArrayType operator-() const noexcept {
-            const ArrayType& Me = static_cast<const ArrayType&>(*this);
-            ArrayType New;
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
-                New[i] = -Me[i];
+            const ArrayType& cMe = static_cast<const ArrayType&>(*this);
+            ArrayType cNew;
+            for (int i = 0; i < DIMENSION; i++) {
+                cNew[i] = -cMe[i];
             }
-            return New;
+            return cNew;
         }
 
         // + and -
-        inline ArrayType& operator+=(const ArrayType& Arr) noexcept {
-            ArrayType& Me = static_cast<ArrayType&>(*this);
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
-                Me[i] += Arr[i];
+        inline ArrayType& operator+=(const ArrayType& cArr) noexcept {
+            ArrayType& cMe = static_cast<ArrayType&>(*this);
+            for (int i = 0; i < DIMENSION; i++) {
+                cMe[i] += cArr[i];
             }
-            return Me;
+            return cMe;
         }
 
-        inline ArrayType& operator-=(const ArrayType& Arr) noexcept {
-            ArrayType& Me = static_cast<ArrayType&>(*this);
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
-                Me[i] -= Arr[i];
+        inline ArrayType& operator-=(const ArrayType& cArr) noexcept {
+            ArrayType& cMe = static_cast<ArrayType&>(*this);
+            for (int i = 0; i < DIMENSION; i++) {
+                cMe[i] -= cArr[i];
             }
-            return Me;
+            return cMe;
         }
 
-        friend inline ArrayType operator+(const ArrayType& Arr1, const ArrayType& Arr2) noexcept {
-            return ArrayType(Arr1) += Arr2;
+        friend inline ArrayType operator+(const ArrayType& cArr1, const ArrayType& cArr2) noexcept {
+            return ArrayType(cArr1) += cArr2;
         }
 
-        friend inline ArrayType operator-(const ArrayType& Arr1, const ArrayType& Arr2) noexcept {
-            return ArrayType(Arr1) -= Arr2;
+        friend inline ArrayType operator-(const ArrayType& cArr1, const ArrayType& cArr2) noexcept {
+            return ArrayType(cArr1) -= cArr2;
         }
 
         // * and /
-        inline ArrayType& operator*=(const typename ArrayType::Scalar& Factor) noexcept {
-            ArrayType& Me = static_cast<ArrayType&>(*this);
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
-                Me[i] *= Factor;
+        inline ArrayType& operator*=(const T& Factor) noexcept {
+            ArrayType& cMe = static_cast<ArrayType&>(*this);
+            for (int i = 0; i < DIMENSION; i++) {
+                cMe[i] *= Factor;
             }
-            return Me;
+            return cMe;
         }
 
-        inline ArrayType& operator/=(const typename ArrayType::ScalarType& Factor) noexcept {
-            ArrayType& Me = static_cast<ArrayType&>(*this);
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
-                Me[i] /= Factor;
+        inline ArrayType& operator/=(const T& Factor) noexcept {
+            ArrayType& cMe = static_cast<ArrayType&>(*this);
+            for (int i = 0; i < DIMENSION; i++) {
+                cMe[i] /= Factor;
             }
-            return Me;
+            return cMe;
         }
 
-        friend inline ArrayType operator*(const ArrayType& Arr, const typename ArrayType::ScalarType& Factor) noexcept {
-            ArrayType New(Arr);
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
-                New[i] *= Factor;
+        friend inline ArrayType operator*(const ArrayType& cArr, const T& Factor) noexcept {
+            ArrayType cNew(cArr);
+            for (int i = 0; i < DIMENSION; i++) {
+                cNew[i] *= Factor;
             }
-            return New;
+            return cNew;
         }
 
-        friend inline ArrayType operator/(const ArrayType& Arr, const typename ArrayType::ScalarType& Factor) noexcept {
-            ArrayType New(Arr);
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
-                New[i] /= Factor;
+        friend inline ArrayType operator/(const ArrayType& cArr, const T& Factor) noexcept {
+            ArrayType cNew(cArr);
+            for (int i = 0; i < DIMENSION; i++) {
+                cNew[i] /= Factor;
             }
-            return New;
+            return cNew;
         }
 
-        friend inline ArrayType operator*(const typename ArrayType::ScalarType& Factor, const ArrayType& Arr) noexcept {
-            ArrayType New(Arr);
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
-                New[i] = Factor * New[i];
+        friend inline ArrayType operator*(const T& Factor, const ArrayType& cArr) noexcept {
+            ArrayType cNew(cArr);
+            for (int i = 0; i < DIMENSION; i++) {
+                cNew[i] = Factor * cNew[i];
             }
-            return New;
+            return cNew;
         }
 
-        friend inline ArrayType operator/(const typename ArrayType::ScalarType& Factor, const ArrayType& Arr) noexcept {
-            ArrayType New(Arr);
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
-                New[i] = Factor / New[i];
+        friend inline ArrayType operator/(const T& Factor, const ArrayType& cArr) noexcept {
+            ArrayType cNew(cArr);
+            for (int i = 0; i < DIMENSION; i++) {
+                cNew[i] = Factor / cNew[i];
             }
-            return New;
+            return cNew;
         }
     };
 }

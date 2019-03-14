@@ -15,11 +15,11 @@ namespace NTGS {
             return A == B;
     }
 
-    template<typename ArrayType>
+    template<typename ArrayType, typename T, int DIMENSION>
     class ArrayComparison {
     public:
         friend inline bool operator==(const ArrayType& Arr1, const ArrayType& Arr2) noexcept {
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
+            for (int i = 0; i < DIMENSION; i++) {
                 if (!IsEquivalent(Arr1[i], Arr2[i]))
                     return false;
             }
@@ -31,7 +31,7 @@ namespace NTGS {
         }
 
         friend inline bool operator<(const ArrayType& Arr1, const ArrayType& Arr2) noexcept {
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
+            for (int i = 0; i < DIMENSION; i++) {
                 if (!(Arr1[i] < Arr2[i]))
                     return false;
             }
@@ -43,7 +43,7 @@ namespace NTGS {
         }
 
         friend inline bool operator>(const ArrayType& Arr1, const ArrayType& Arr2) noexcept {
-            for (int i = 0; i < ArrayType::LENGTH; i++) {
+            for (int i = 0; i < DIMENSION; i++) {
                 if (!(Arr1[i] > Arr2[i]))
                     return false;
             }

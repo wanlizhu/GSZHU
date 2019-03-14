@@ -5,8 +5,8 @@
 
 namespace NTGS {
     template<typename T, int DIM>
-    inline typename Vector<T, DIM>::Scalar Dot(const Vector<T, DIM>& cV1, const Vector<T, DIM>& cV2) noexcept {
-        typename Vector<T, DIM>::Scalar cSum(0);
+    inline typename Vector<T, DIM>::ScalarType Dot(const Vector<T, DIM>& cV1, const Vector<T, DIM>& cV2) noexcept {
+        typename Vector<T, DIM>::ScalarType cSum(0);
         for (int i = 0; i < DIM; i++) {
             cSum += cV1[i] * cV2[i];
         }
@@ -16,14 +16,24 @@ namespace NTGS {
     template<typename T>
     inline Vector<T, 3> Cross(const Vector<T, 3>& cV1, const Vector<T, 3>& cV2) noexcept {
         return Vector<T, 3>(
-            cV1.Y * cV2.Z - cV2.Y * cV1.Z,
-            cV1.Z * cV2.X - cV2.Z * cV1.X,
-            cV1.X * cV2.Y - cV2.X * cV1.Y);
+            cV1.GetY() * cV2.GetZ() - cV2.GetY() * cV1.GetZ(),
+            cV1.GetZ() * cV2.GetX() - cV2.GetZ() * cV1.GetX(),
+            cV1.GetX() * cV2.GetY() - cV2.GetX() * cV1.GetY());
     }
 
     template<typename T, int DIM>
-    inline typename Vector<T, DIM>::Scalar Length2(const Vector<T, DIM>& cV) noexcept {
-        typename Vector<T, DIM>::Scalar cSum(0);
+    inline typename Vector<T, DIM>::ScalarType operator*(const Vector<T, DIM>& cV1, const Vector<T, DIM>& cV2) noexcept {
+        return Dot(cV1, cV2);
+    }
+
+    template<typename T>
+    inline Vector<T, 3> operator^(const Vector<T, 3>& cV1, const Vector<T, 3>& cV2) noexcept {
+        return Cross(cV1, cV2);
+    }
+
+    template<typename T, int DIM>
+    inline typename Vector<T, DIM>::ScalarType Length2(const Vector<T, DIM>& cV) noexcept {
+        typename Vector<T, DIM>::ScalarType cSum(0);
         for (int i = 0; i < DIM; i++) {
             cSum += cV[i] * cV[i];
         }
@@ -31,12 +41,12 @@ namespace NTGS {
     }
 
     template<typename T, int DIM>
-    inline typename Vector<T, DIM>::Scalar Length(const Vector<T, DIM>& cV) noexcept {
+    inline typename Vector<T, DIM>::ScalarType Length(const Vector<T, DIM>& cV) noexcept {
         return std::sqrt(Length2(cV));
     }
 
     template<typename T, int DIM>
-    inline typename Vector<T, DIM>::Scalar Distance(const Vector<T, DIM>& cV1, const Vector<T, DIM>& cV2) noexcept {
+    inline typename Vector<T, DIM>::ScalarType Distance(const Vector<T, DIM>& cV1, const Vector<T, DIM>& cV2) noexcept {
         return Length(cV2 - cV1);
     }
 
@@ -50,7 +60,7 @@ namespace NTGS {
     inline void Mul(const Matrix<T, _MAJOR1, _MINOR1>& cMat1,
                     const Matrix<U, _MAJOR2, _MINOR2>& cMat2,
                     Matrix<T, _MAJOR2, _MINOR1>* pProduct) noexcept {
-        static_assert(_MAJOR1 == _MINOR2);
+        static_assert(_MAJOR1 == _MINOR2, "");
         static const int _INNER = _MAJOR1;
 
         std::memset(pProduct, 0, sizeof(Matrix<T, _MAJOR2, _MINOR1>));

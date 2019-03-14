@@ -7,12 +7,12 @@ void FreeFunc(int& V) {
     V = 999;
 }
 
-TEST(Core_ThreadPool, Post_Task) {
+TEST(Core_ThreadPool, Post_TaskWithReference) {
     ThreadPool* Pool = ThreadPool::GetInstance();
     std::string Str;
     int X = 0;
     auto Result = Pool->Enqueue([](int Value) { return Value * 2; }, 12);
-    auto Result3 = Pool->Enqueue(FreeFunc, X);
+    auto Result3 = Pool->Enqueue(FreeFunc, std::ref(X));
 
 
     EXPECT_TRUE(Result.get() == 24);

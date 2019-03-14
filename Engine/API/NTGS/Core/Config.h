@@ -46,6 +46,7 @@
     #define ALIGN16 __declspec(align(16))
     #define ALIGN32 __declspec(align(32))
     #define ALIGN64 __declspec(align(64))
+    #define EMPTY_BASES __declspec(empty_bases) 
 
     #include <stdint.h>
     #include <float.h>
@@ -66,6 +67,7 @@
     #define ALIGN16 __attribute__((aligned(16)))
     #define ALIGN32 __attribute__((aligned(32)))
     #define ALIGN64 __attribute__((aligned(64)))
+    #define EMPTY_BASES
 #endif
 
 #ifdef NTGS_BUILD_SHARED
