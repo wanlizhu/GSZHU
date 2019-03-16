@@ -39,16 +39,16 @@ extern "C++" {\
     class Singleton : NonCopyable {
     public:
         static T* GetInstance() {
-            std::call_once(Once, [&](){ GlobalInstance.reset(new T()); });
+            std::call_once(smOnce, [&](){ smGlobalInstance.reset(new T()); });
             return GlobalInstance.get();
         }
 
     private:
-        static std::unique_ptr<T> GlobalInstance;
-        static std::once_flag Once;
+        static std::unique_ptr<T> smGlobalInstance;
+        static std::once_flag smOnce;
     };
 
     template<typename T>
-    std::unique_ptr<T> Singleton<T>::GlobalInstance;
+    std::unique_ptr<T> Singleton<T>::smGlobalInstance;
 
 }
