@@ -363,10 +363,10 @@ static bool GTestIsInitialized() { return GetArgvs().size() > 0; }
 // results of calling a given int-returning method on each.
 // Returns the sum.
 static int SumOverTestSuiteList(const std::vector<TestSuite*>& case_list,
-                                int (TestSuite::*method)() const) {
+                                int (TestSuite::*AddMethod)() const) {
   int sum = 0;
   for (size_t i = 0; i < case_list.size(); i++) {
-    sum += (case_list[i]->*method)();
+    sum += (case_list[i]->*AddMethod)();
   }
   return sum;
 }
@@ -2403,10 +2403,10 @@ GoogleTestFailureException::GoogleTestFailureException(
 // wrapper function for handling SEH exceptions.)
 template <class T, typename Result>
 Result HandleSehExceptionsInMethodIfSupported(
-    T* object, Result (T::*method)(), const char* location) {
+    T* object, Result (T::*AddMethod)(), const char* location) {
 #if GTEST_HAS_SEH
   __try {
-    return (object->*method)();
+    return (object->*AddMethod)();
   } __except (internal::UnitTestOptions::GTestShouldProcessSEH(  // NOLINT
       GetExceptionCode())) {
     // We create the exception message on the heap because VC++ prohibits
@@ -2421,7 +2421,7 @@ Result HandleSehExceptionsInMethodIfSupported(
   }
 #else
   (void)location;
-  return (object->*method)();
+  return (object->*AddMethod)();
 #endif  // GTEST_HAS_SEH
 }
 
@@ -2430,7 +2430,7 @@ Result HandleSehExceptionsInMethodIfSupported(
 // Result in case of an SEH exception.
 template <class T, typename Result>
 Result HandleExceptionsInMethodIfSupported(
-    T* object, Result (T::*method)(), const char* location) {
+    T* object, Result (T::*AddMethod)(), const char* location) {
   // NOTE: The user code can affect the way in which Google Test handles
   // exceptions by setting GTEST_FLAG(catch_exceptions), but only before
   // RUN_ALL_TESTS() starts. It is technically possible to check the flag
@@ -2457,7 +2457,7 @@ Result HandleExceptionsInMethodIfSupported(
   if (internal::GetUnitTestImpl()->catch_exceptions()) {
 #if GTEST_HAS_EXCEPTIONS
     try {
-      return HandleSehExceptionsInMethodIfSupported(object, method, location);
+      return HandleSehExceptionsInMethodIfSupported(object, AddMethod, location);
     } catch (const AssertionException&) {  // NOLINT
       // This failure was reported already.
     } catch (const internal::GoogleTestFailureException&) {  // NOLINT
@@ -2476,10 +2476,10 @@ Result HandleExceptionsInMethodIfSupported(
     }
     return static_cast<Result>(0);
 #else
-    return HandleSehExceptionsInMethodIfSupported(object, method, location);
+    return HandleSehExceptionsInMethodIfSupported(object, AddMethod, location);
 #endif  // GTEST_HAS_EXCEPTIONS
   } else {
-    return (object->*method)();
+    return (object->*AddMethod)();
   }
 }
 
