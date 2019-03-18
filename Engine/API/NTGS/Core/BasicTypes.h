@@ -29,6 +29,8 @@ namespace NTGS {
     };
 
 
+
+
     template<typename T>
     struct NTGS_API Vector2 : public ArrayTraits<Vector2<T>, T, 2> {
         union {
@@ -74,6 +76,8 @@ namespace NTGS {
             return reinterpret_cast<const Vector<U, 2>>(*this);
         }
     };
+
+
 
 
     template<typename T>
@@ -139,6 +143,8 @@ namespace NTGS {
             return reinterpret_cast<const Vector<U, 3>>(*this);
         }
     };
+
+
 
 
     template<typename T>
@@ -213,10 +219,13 @@ namespace NTGS {
     };
 
 
+
+
     template<typename T, int Rows, int Cols>
-    struct Matrix : public Vector<Vector<T, Rows>, Cols> {
+    struct NTGS_API Matrix : public Vector<Vector<T, Rows>, Cols> {
         using BaseType = Vector<Vector<T, Rows>, Cols>;
         using ColumnType = Vector<T, Rows>;
+        using ScalarType = T;
         using TransposeType = Vector<Vector<T, Cols>, Rows>;
         static constexpr int COLUMNS = Cols;
         static constexpr int ROWS = Rows;
@@ -257,6 +266,79 @@ namespace NTGS {
     };
 
 
+
+
+    template<typename T>
+    struct NTGS_API Quaternion : public ArrayComparisonOperators<Quaternion<T>, T, 4> {
+        using ElementType = T;
+
+        union {
+            T mData[4] = { 0, 0, 0, 1 };
+            struct { T x, y, z, w; };
+            struct { Vector3<T> v; T w; };
+        };
+
+        Quaternion() = default;
+        template<typename U>
+        Quaternion(const U& x, const U& y, const U& z, const U& w)
+            : x(static_cast<T>(x))
+            , y(static_cast<T>(y))
+            , z(static_cast<T>(z))
+            , w(static_cast<T>(w))
+        {}
+        template<typename U1, typename U2>
+        Quaternion(const Vector3<U1>& v, const U2& w) 
+            : v(Vector3<T>(v))
+            , w(static_cast<U2>(w))
+        {}
+        template<typename U>
+        Quaternion(const Quaternion<U>& other) 
+            : v(Vector3<T>(other.v))
+            , w(static_cast<T>(other.w))
+        {}
+    };
+
+
+
+
+    template<typename VEC>
+    struct Line {
+        VEC a(0), b(0);
+
+        Line() = default;
+        Line(const VEC& a, const VEC& b) : a(a), b(b) {}
+    };
+
+
+
+
+    template<typename VEC>
+    struct Ray {
+        VEC pos(0), dir(0);
+
+        Ray() = default;
+        Ray(const VEC& pos, const VEC& dir)
+            : pos(pos), dir(dir) 
+        {}
+    };
+
+
+
+
+    template<typename VEC>
+    struct Triangle {
+        VEC a(0), b(0), c(0);
+
+        Triangle() = default;
+        Triangle(const VEC& a, const VEC& b, const VEC& c)
+            : a(a), b(b), c(c)
+        {}
+    };
+
+
+
+
+
     typedef Vector2<int> Vec2i;
     typedef Vector2<float> Vec2f;
     typedef Vector2<double> Vec2d;
@@ -276,4 +358,7 @@ namespace NTGS {
     typedef Matrix<int, 4, 4> Mat4i;
     typedef Matrix<float, 4, 4> Mat4f;
     typedef Matrix<double, 4, 4> Mat4d;
+
+    typedef Quaternion<float> Quatf;
+    typedef Quaternion<double> Quatd;
 }
