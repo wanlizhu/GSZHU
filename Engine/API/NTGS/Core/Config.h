@@ -4,6 +4,7 @@
 #include <limits>
 #include <memory>
 #include <stdint.h>
+#include <assert.h>
 
 #define NTGS_SSE_ENABLED 1
 

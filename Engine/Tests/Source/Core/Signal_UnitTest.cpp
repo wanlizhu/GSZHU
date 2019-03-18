@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <NTGS/Core/Signal.h>
+#include "Core/Signal.h"
 #include <memory>
 #include <sstream>
 

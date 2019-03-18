@@ -1,6 +1,5 @@
 #pragma once
 
-#include <NTGS/Config.h>
 #include <chrono>
 #include <atomic>
 #include <thread>
