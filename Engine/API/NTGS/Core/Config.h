@@ -18,6 +18,9 @@
 #define MAXF std::numeric_limits<float>::max();
 #define MINF std::numeric_limits<float>::min();
 
+#define SIZEOF_EQ(a, b) assert(sizeof(a) == sizeof(b));
+#define STATIC_SIZEOF_EQ(A, B) static_assert(sizeof(a) == sizeof(b), "STATIC_SIZEOF_EQ() assertion failed");
+
 #ifdef _WIN32
     #pragma warning(disable : 4251) // 'field' : class 'A' needs to have dll-interface to be used by clients of class 'B'
     #pragma warning(disable : 4800) // 'type' : forcing value to bool 'true' or 'false' (performance warning)
