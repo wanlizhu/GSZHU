@@ -4,7 +4,7 @@
 
 namespace NTGS {
     template<typename Derived, typename T, int Dim>
-    struct NTGS_API ArrayAddOperators : public ArrayAccess<Derived, T, Dim> {
+    struct ArrayAddOperators : public ArrayAccess<Derived, T, Dim> {
     public:
         inline InstanceType operator-() const {
             InstanceType inst(GetInstance());

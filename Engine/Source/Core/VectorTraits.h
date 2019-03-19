@@ -1,13 +1,13 @@
 #pragma once
 
-#include <NTGS/Core/Config.h>
+#include "Core/Config.h"
 #include <type_traits>
 #include <numeric>
 #include "VectorOperators.h"
 
 namespace NTGS {
     template<typename Derived, typename T, int Dim>
-    struct NTGS_API ArrayTraits : public ArrayComparisonOperators<Derived, T, Dim> {
+    struct ArrayTraits : public ArrayComparisonOperators<Derived, T, Dim> {
         template<typename U>
         inline void Set(const U& value) {
             InstanceType& me = GetInstance();

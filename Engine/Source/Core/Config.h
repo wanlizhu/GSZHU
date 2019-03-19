@@ -6,7 +6,13 @@
 #include <stdint.h>
 #include <assert.h>
 
-#define NTGS_SSE_ENABLED 1
+#define NTGS_USE_DOUBLE_AS_FLOAT 0
+
+#if NTGS_USE_DOUBLE_AS_FLOAT
+    #define FLOAT double
+#else
+    #define FLOAT float
+#endif
 
 #if defined(__x86_64__) || defined(_M_X64) || defined(__LP64__) || defined(_LP64) || defined(WIN64) 
     #define NTGS_64BITS
@@ -79,16 +85,3 @@
 #else
     #define NTGS_API 
 #endif
-
-typedef int8_t INT8;
-typedef uint8_t UINT8;
-typedef int16_t INT16;
-typedef uint16_t UINT16;
-typedef int32_t INT;
-typedef uint32_t UINT;
-typedef int64_t INT64;
-typedef uint64_t UINT64;
-typedef size_t SIZE;
-typedef ssize_t SSIZE;
-typedef float FLOAT;
-typedef double DOUBLE;

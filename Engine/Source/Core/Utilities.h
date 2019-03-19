@@ -1,6 +1,6 @@
 #pragma once
 
-#include <NTGS/Core/Config.h>
+#include "Core/Config.h"
 #include <sstream>
 #include <iomanip>
 #include <string>

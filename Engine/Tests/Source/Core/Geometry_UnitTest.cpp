@@ -1,6 +1,6 @@
 #pragma once
 #include <gtest/gtest.h>
-#include <NTGS/Core/Geometry.h>
+#include "Core/Geometry.h"
 #include <glm/glm.hpp>
 
 using namespace NTGS;

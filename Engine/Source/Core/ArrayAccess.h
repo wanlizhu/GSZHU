@@ -1,9 +1,9 @@
 #pragma once
-#include <NTGS/Core/Config.h>
+#include "Core/Config.h"
 
 namespace NTGS {
     template<typename Derived, typename T, int Dim>
-    struct NTGS_API ArrayAccess {
+    struct ArrayAccess {
         static constexpr int DIMENSION = Dim;
         using ElementType = T;
         using InstanceType = Derived;

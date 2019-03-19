@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Details/VectorTraits.h"
+#include "VectorTraits.h"
 
 namespace NTGS {
 
     template<typename T, int Dim>
-    struct NTGS_API Vector : public ArrayTraits<Vector<T, Dim>, T, Dim> {
+    struct Vector : public ArrayTraits<Vector<T, Dim>, T, Dim> {
         T mData[Dim] = { T(0) };
 
         Vector() {};
@@ -41,7 +41,7 @@ namespace NTGS {
 
 
     template<typename T>
-    struct NTGS_API Vector<T, 2> : public ArrayTraits<Vector<T, 2>, T, 2> {
+    struct Vector<T, 2> : public ArrayTraits<Vector<T, 2>, T, 2> {
         union {
             T mData[2] = { T(0) };
             struct { T x, y; };
@@ -78,7 +78,7 @@ namespace NTGS {
 
 
     template<typename T>
-    struct NTGS_API Vector<T, 3> : public ArrayTraits<Vector<T, 3>, T, 3> {
+    struct Vector<T, 3> : public ArrayTraits<Vector<T, 3>, T, 3> {
         union {
             T mData[3] = { T(0) };
             struct { T x, y, z; };
@@ -131,7 +131,7 @@ namespace NTGS {
 
 
     template<typename T>
-    struct NTGS_API Vector<T, 4> : public ArrayTraits<Vector<T, 4>, T, 4> {
+    struct Vector<T, 4> : public ArrayTraits<Vector<T, 4>, T, 4> {
         union {
             T mData[4] = { T(0) };
             struct { T x, y, z, w; };
@@ -190,7 +190,7 @@ namespace NTGS {
 
 
     template<typename T, int Rows, int Cols>
-    struct NTGS_API Matrix : public Vector<Vector<T, Rows>, Cols> {
+    struct Matrix : public Vector<Vector<T, Rows>, Cols> {
         using BaseType = Vector<Vector<T, Rows>, Cols>;
         using ColumnType = Vector<T, Rows>;
         using RowType = Vector<T, Cols>;
@@ -222,7 +222,7 @@ namespace NTGS {
 
 
     template<typename T>
-    struct NTGS_API Quaternion : public ArrayComparisonOperators<Quaternion<T>, T, 4> {
+    struct Quaternion : public ArrayComparisonOperators<Quaternion<T>, T, 4> {
         using ElementType = T;
 
         union {
@@ -293,4 +293,12 @@ namespace NTGS {
 
     typedef Quaternion<float> Quatf;
     typedef Quaternion<double> Quatd;
+
+    typedef Vector<FLOAT, 2> Vec2;
+    typedef Vector<FLOAT, 3> Vec3;
+    typedef Vector<FLOAT, 4> Vec4;
+    typedef Matrix<FLOAT, 2, 2> Mat2;
+    typedef Matrix<FLOAT, 3, 3> Mat3;
+    typedef Matrix<FLOAT, 4, 4> Mat4;
+    typedef Quaternion<FLOAT> Quat;
 }
