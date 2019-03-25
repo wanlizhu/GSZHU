@@ -57,7 +57,7 @@ namespace NTGS {
 
         // Operator *
         template<typename U,
-                 typename = std::enable_if<std::is_arithmetic<U>::value>::type>
+                 typename = typename std::enable_if<std::is_arithmetic<U>::value>::type>
         inline MAT& operator*=(const U& num) {
             auto& cThis = static_cast<MAT&>(*this);
             for (int i = 0; i < Cols; i++)
@@ -67,20 +67,20 @@ namespace NTGS {
         }
 
         template<typename U,
-                 typename = std::enable_if<std::is_arithmetic<U>::value>::type>
+                 typename = typename std::enable_if<std::is_arithmetic<U>::value>::type>
         inline MAT operator*(const U& num) {
             return MAT(static_cast<const MAT&>(*this)) *= num;
         }
 
         template<typename U,
-                 typename = std::enable_if<std::is_arithmetic<U>::value>::type>
+                 typename = typename std::enable_if<std::is_arithmetic<U>::value>::type>
         friend inline MAT operator*(const U& num, const MAT& mat) {
             return MAT(mat) *= num;
         }
 
         // Operator /
         template<typename U,
-                 typename = std::enable_if<std::is_arithmetic<U>::value>::type>
+                 typename = typename std::enable_if<std::is_arithmetic<U>::value>::type>
         inline MAT& operator/=(const U& num) {
             auto& cThis = static_cast<MAT&>(*this);
             for (int i = 0; i < Cols; i++)
@@ -90,13 +90,13 @@ namespace NTGS {
         }
 
         template<typename U,
-                 typename = std::enable_if<std::is_arithmetic<U>::value>::type>
+                 typename = typename std::enable_if<std::is_arithmetic<U>::value>::type>
         inline MAT operator/(const U& num) {
             return MAT(static_cast<const MAT&>(*this)) /= num;
         }
 
         template<typename U,
-                 typename = std::enable_if<std::is_arithmetic<U>::value>::type>
+                 typename = typename std::enable_if<std::is_arithmetic<U>::value>::type>
         friend inline MAT operator/(const U& num, const MAT& mat) {
             MAT ret(mat);
             for (int i = 0; i < Cols; i++)

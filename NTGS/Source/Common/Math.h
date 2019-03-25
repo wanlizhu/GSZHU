@@ -29,7 +29,7 @@ namespace NTGS {
     }
 
     template<typename T, int MN,
-             typename = std::enable_if<(1 < MN)>::type>
+             typename = typename std::enable_if<(1 < MN)>::type>
     inline bool SetIdentity(Matrix<T, MN, MN>& m) {
         using Index = typename Matrix<T, MN, MN>::Index;
         for (int i = 0; i < MN; i++)
@@ -40,7 +40,7 @@ namespace NTGS {
     }
 
     template<typename T, int MN,
-             typename = std::enable_if<(1 < MN)>::type>
+             typename = typename std::enable_if<(1 < MN)>::type>
     inline bool IsIdentity(const Matrix<T, MN, MN>& m) {
         for (int i = 0; i < MN; i++)
             for (int j = 0; j < MN; j++) {
@@ -91,7 +91,7 @@ namespace NTGS {
 
     template<typename T, int LCols, int LRows,
              typename U, int RCols, int RRows,
-             typename = std::enable_if<LCols == RRows>::type>
+             typename = typename std::enable_if<LCols == RRows>::type>
     inline Matrix<T, RCols, LRows> operator*(const Matrix<T, LCols, LRows>& m1, 
                                              const Matrix<U, RCols, RRows>& m2) {
         using Index = typename Matrix<T, RCols, LRows>::Index;
@@ -104,7 +104,7 @@ namespace NTGS {
 
     template<typename T, int MN>
     inline Matrix<T, MN, MN> Inverse(const Matrix<T, MN, MN>& m) {
-        static_assert(false, "only Mat4 is enabled");
+        
     }
 
     template<typename T>
@@ -166,7 +166,7 @@ namespace NTGS {
 
     template<typename T, int MN>
     inline T Determinant(const Matrix<T, MN, MN>& m) {
-        static_assert(false, "only Mat4 is enabled");
+        
     }
 
     template<typename T>
@@ -200,8 +200,8 @@ namespace NTGS {
     }
 
     template<typename BlockType, typename T, int Cols, int Rows,
-             typename = std::enable_if<BlockType::Rows <= Rows 
-                                    && BlockType::Cols <= Cols>::type>
+             typename = typename std::enable_if<BlockType::Rows <= Rows
+                                             && BlockType::Cols <= Cols>::type>
     inline BlockType CopyBlock(const Matrix<T, Cols, Rows>& mat, int fromCol = 0, int fromRow = 0) {
         assert((fromCol + BlockType::Cols <= Cols)
             && (fromRow + BlockType::Rows <= Rows));

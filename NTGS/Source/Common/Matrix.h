@@ -36,7 +36,7 @@ namespace NTGS {
                     mArray[Index(i, j)] = static_cast<T>((*iter)[j]);
         }
         template<typename U, int U_Cols, int U_Rows,
-                 typename = std::enable_if<(U_Rows >= Rows && U_Cols >= Cols)>::type>
+                 typename = typename std::enable_if<(U_Rows >= Rows && U_Cols >= Cols)>::type>
         Matrix(const Matrix<U, U_Cols, U_Rows>& mat) {
             for (int i = 0; i < Cols; i++)
                 for (int j = 0; j < Rows; j++)
@@ -81,7 +81,7 @@ namespace NTGS {
                     mArray[Index(i, j)] = static_cast<T>((*iter)[j]);
         }
         template<typename U, int U_Cols, int U_Rows,
-                 typename = std::enable_if<(U_Rows >= 4 && U_Cols >= 4)>::type>
+                 typename = typename std::enable_if<(U_Rows >= 4 && U_Cols >= 4)>::type>
         Matrix(const Matrix<U, U_Cols, U_Rows>& mat) {
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)

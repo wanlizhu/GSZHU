@@ -26,7 +26,7 @@ namespace NTGS {
             for (int j = 0; j < N; j++, iter++)
                 mArray[j] = *iter;
         }
-        template<typename U, int M, typename = std::enable_if<(M >= N)>::type>
+        template<typename U, int M, typename = typename std::enable_if<(M >= N)>::type>
         Matrix(const Vector<U, M>& vec) {
             for (int i = 0; i < N; i++)
                 mArray[i] = static_cast<T>(vec[i]);
@@ -68,7 +68,7 @@ namespace NTGS {
             for (int j = 0; j < 2; j++, iter++)
                 mArray[j] = *iter;
         }
-        template<typename U, int M, typename = std::enable_if<(M >= 2)>::type>
+        template<typename U, int M, typename = typename std::enable_if<(M >= 2)>::type>
         Matrix(const Vector<U, M>& vec) {
             for (int i = 0; i < 2; i++)
                 mArray[i] = static_cast<T>(vec[i]);
@@ -113,7 +113,7 @@ namespace NTGS {
             for (int j = 0; j < 3; j++, iter++)
                 mArray[j] = *iter;
         }
-        template<typename U, int M, typename = std::enable_if<(M >= 3)>::type>
+        template<typename U, int M, typename = typename std::enable_if<(M >= 3)>::type>
         Matrix(const Vector<U, M>& vec) {
             for (int i = 0; i < 3; i++)
                 mArray[i] = static_cast<T>(vec[i]);
@@ -164,7 +164,7 @@ namespace NTGS {
             for (int j = 0; j < 4; j++, iter++)
                 mArray[j] = *iter;
         }
-        template<typename U, int M, typename = std::enable_if<(M >= 4)>::type>
+        template<typename U, int M, typename = typename std::enable_if<(M >= 4)>::type>
         Matrix(const Vector<U, M>& vec) {
             for (int i = 0; i < 4; i++)
                 mArray[i] = static_cast<T>(vec[i]);
