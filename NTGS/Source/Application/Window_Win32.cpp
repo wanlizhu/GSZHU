@@ -21,16 +21,14 @@ namespace NTGS {
         mName = name;
         if (nativeWindow != nullptr) {
             mWindowHandle = static_cast<HWND>(nativeWindow);
-            mDefaultProc = reinterpret_cast<WNDPROC>(::GetWindowLongPtrW(mWindowHandle, GWLP_WNDPROC));
-            ::SetWindowLongPtrW(mWindowHandle, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(WindowProc));
+            mDefaultProc = reinterpret_cast<WNDPROC>(::GetWindowLongPtrA(mWindowHandle, GWLP_WNDPROC));
+            ::SetWindowLongPtrA(mWindowHandle, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(WindowProc));
             mExternalHandle = true;
         }
         else {
             HINSTANCE instance = GetModuleHandle(nullptr);
 
-            std::wstring cNameW = CodeConvert(mName);
-
-            WNDCLASSEXW wc;
+            WNDCLASSEXA wc;
             wc.cbSize = sizeof(wc);
             wc.style = CS_HREDRAW | CS_VREDRAW;
             wc.lpfnWndProc = WindowProc;
@@ -41,21 +39,16 @@ namespace NTGS {
             wc.hCursor = ::LoadCursor(nullptr, IDC_ARROW);
             wc.hbrBackground = static_cast<HBRUSH>(::GetStockObject(BLACK_BRUSH));
             wc.lpszMenuName = nullptr;
-            wc.lpszClassName = cNameW.c_str();
+            wc.lpszClassName = mName.c_str();
             wc.hIconSm = nullptr;
-            ::RegisterClassExW(&wc);
+            ::RegisterClassExA(&wc);
 
-            if (config.mFullScreen) {
-                mWindowStyle = WS_POPUP;
-            }
-            else {
-                mWindowStyle = WS_OVERLAPPEDWINDOW;
-            }
+            mWindowStyle = config.mFullScreen ? WS_POPUP : WS_OVERLAPPEDWINDOW;
 
             RECT rc = { 0, 0, config.mSize.x, config.mSize.y };
             ::AdjustWindowRect(&rc, mWindowStyle, false);
 
-            mWindowHandle = ::CreateWindowW(cNameW.c_str(), cNameW.c_str(), mWindowStyle,
+            mWindowHandle = ::CreateWindowA(mName.c_str(), mName.c_str(), mWindowStyle,
                                             config.mPosition.x, config.mPosition.y, config.mSize.x, config.mSize.y,
                                             0, 0, instance, nullptr);
             mDefaultProc = ::DefWindowProc;
@@ -74,7 +67,7 @@ namespace NTGS {
         mSize.x = rc.right - rc.left;
         mSize.y = rc.bottom - rc.top;
 
-        ::SetWindowLongPtrW(mWindowHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+        ::SetWindowLongPtrA(mWindowHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
         
         mKeepScreenOn = config.mKeepScreenOn;
         KeepScreenOn();
@@ -95,7 +88,7 @@ namespace NTGS {
 
     void Window_Win32::Destroy() {
         if (mWindowHandle != nullptr) {
-            ::SetWindowLongPtrW(mWindowHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(nullptr));
+            ::SetWindowLongPtrA(mWindowHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(nullptr));
             if (!mExternalHandle) 
                 ::DestroyWindow(mWindowHandle);
             mWindowHandle = nullptr;
