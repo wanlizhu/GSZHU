@@ -15,14 +15,6 @@
 #include <stdint.h>
 #include <assert.h>
 
-#define NTGS_USE_DOUBLE_AS_FLOAT 0
-
-#if NTGS_USE_DOUBLE_AS_FLOAT
-#define FLOAT double
-#else
-#define FLOAT float
-#endif
-
 #if defined(__x86_64__) || defined(_M_X64) || defined(__LP64__) || defined(_LP64) || defined(WIN64) 
 #define NTGS_64BITS
 #else

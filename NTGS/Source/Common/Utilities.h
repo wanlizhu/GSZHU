@@ -9,6 +9,7 @@
 #include <iostream>
 #include <atomic>
 #include <typeinfo>
+#include <codecvt>
 
 
 namespace NTGS {
@@ -37,4 +38,6 @@ namespace NTGS {
     template<typename T>
     std::unique_ptr<T> Singleton<T>::smGlobalInstance;
 
+
+    std::wstring CodeConvert(const std::string& str);
 }
