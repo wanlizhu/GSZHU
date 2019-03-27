@@ -14,6 +14,11 @@
 
 namespace NTGS {
 
+    template<typename T, size_t SizeOfArray>
+    constexpr size_t CountOf(T(&array)[SizeOfArray]) {
+        return SizeOfArray;
+    }
+
     class NonCopyable {
     protected:
         constexpr NonCopyable() = default;
