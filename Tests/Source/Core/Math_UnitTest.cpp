@@ -1,6 +1,6 @@
 #pragma once
 #include <gtest/gtest.h>
-#include "Common/Math.h"
+#include "Math/Math.h"
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <glm/geometric.hpp>
@@ -39,6 +39,32 @@ TEST(NTGS_Common_Math, Vector_Test) {
 
     EXPECT_DOUBLE_EQ(Length(v1), glm::length(v22));
     EXPECT_TRUE(Normalize(v1) == Vec3d(v2n.x, v2n.y, v2n.z));
+    EXPECT_EQ(sizeof(Vec2f), sizeof(float) * 2);
+    EXPECT_EQ(sizeof(Vec2d), sizeof(double) * 2);
+    EXPECT_EQ(sizeof(Vec3f), sizeof(float) * 3);
+    EXPECT_EQ(sizeof(Vec3d), sizeof(double) * 3);
+    EXPECT_EQ(sizeof(Vec4f), sizeof(float) * 4);
+    EXPECT_EQ(sizeof(Vec4d), sizeof(double) * 4);
+    EXPECT_EQ(sizeof(Mat4f), sizeof(float) * 16);
+    EXPECT_EQ(sizeof(Mat4d), sizeof(double) * 16);
+}
+
+TEST(NTGS_Common_Math, Swizzle_Test) {
+    {
+        Vec2d v{ 1, 2 };
+        Vec2d vv = v.yx;
+
+        EXPECT_DOUBLE_EQ(v[0], vv[1]);
+        EXPECT_DOUBLE_EQ(v[1], vv[0]);
+    }
+
+    {
+        Vec3d v{ 1,2,3 };
+        Vec3d vv = v.zyx;
+        EXPECT_DOUBLE_EQ(v[0], vv[2]);
+        EXPECT_DOUBLE_EQ(v[1], vv[1]);
+        EXPECT_DOUBLE_EQ(v[2], vv[0]);
+    }
 }
 
 TEST(NTGS_Common_Math, Vector_Operator_Test) {

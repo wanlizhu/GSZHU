@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Common/Vector.h"
-#include "Common/QuaternionOperators.h"
+#include "Math/Vector.h"
+#include "Math/Matrix4.h"
+#include "Math/QuaternionOperators.h"
 
 namespace NTGS {
     template<typename T>
-    struct Quaternion : public QuaternionOperators<Quaternion, t> {
+    struct Quaternion : public QuaternionOperators<Quaternion, T> {
         using Element = T;
 
         union {
@@ -53,14 +54,4 @@ namespace NTGS {
         
         }
     };
-
-    template<typename MAT, typename T>
-    inline MAT Convert(const Quaternion<T>& quat) {
-        
-    }
-
-    template<typename QUAT, typename T>
-    inline QUAT Convert(const Matrix<T, 4, 4>& mat) {
-
-    }
 }

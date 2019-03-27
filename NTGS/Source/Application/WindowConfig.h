@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include "Common/Vector.h"
-#include "Common/ResourceFormat.h"
+#include "Math/Math.h"
+#include "RHI/ResourceFormat.h"
 
 namespace NTGS {
     class WindowConfig {

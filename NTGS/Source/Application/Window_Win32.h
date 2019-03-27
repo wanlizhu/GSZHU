@@ -23,7 +23,7 @@ namespace NTGS {
         static Window_Win32Ptr Create(const std::string& name, const WindowConfig& config, void* nativeWindow);
         bool CreateInternal(const std::string& name, const WindowConfig& config, void* nativeWindow);
         static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
+                       
     private:
         HWND mWindowHandle;
         DWORD mWindowStyle = 0;

@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <type_traits>
 #include "Common/Config.h"
-#include "Common/Array.h"
+#include "Math/Array.h"
 
 namespace NTGS {
     template<template<typename T, int Cols, int Rows> class _MAT, typename T, int Cols, int Rows>
