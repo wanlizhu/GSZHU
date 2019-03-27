@@ -14,10 +14,32 @@
 
 namespace NTGS {
 
+    template<typename...> struct Hash;
+
+    template<typename T>
+    struct Hash<T> : public std::hash<T> {
+        using std::hash<T>::hash;
+    };
+
+    template<typename T, typename... REST>
+    struct Hash<T, REST...> {
+        inline std::size_t operator()(const T& v, const REST&... rest) {
+            std::size_t seed = Hash<REST...>()(rest...);
+            seed ^= Hash<T>()(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            return seed;
+        }
+    };
+
     template<typename T, size_t SizeOfArray>
     constexpr size_t CountOf(T(&array)[SizeOfArray]) {
         return SizeOfArray;
     }
+
+    template<typename DST, typename SRC>
+    DST Convert(const SRC& src) {}
+
+    template<>
+    std::wstring Convert<std::wstring, std::string>(const std::string& src);
 
     class NonCopyable {
     protected:
@@ -43,6 +65,4 @@ namespace NTGS {
     template<typename T>
     std::unique_ptr<T> Singleton<T>::smGlobalInstance;
 
-
-    std::wstring CodeConvert(const std::string& str);
 }
