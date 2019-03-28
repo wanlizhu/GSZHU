@@ -59,10 +59,17 @@ TEST(NTGS_Common_Math, Swizzle_Test) {
 
     {
         Vec3d v{ 1,2,3 };
-        Vec3d vv = v.zyx;
-        EXPECT_DOUBLE_EQ(v[0], vv[2]);
+        Vec2d vv = v.yz;
+        EXPECT_DOUBLE_EQ(v[1], vv[0]);
+        EXPECT_DOUBLE_EQ(v[2], vv[1]);
+    }
+
+    {
+        Vec4d v{ 1,2,3,4 };
+        Vec3d vv = v.xyz;
+        EXPECT_DOUBLE_EQ(v[0], vv[0]);
         EXPECT_DOUBLE_EQ(v[1], vv[1]);
-        EXPECT_DOUBLE_EQ(v[2], vv[0]);
+        EXPECT_DOUBLE_EQ(v[2], vv[2]);
     }
 }
 

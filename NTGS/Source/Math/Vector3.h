@@ -17,11 +17,9 @@ namespace NTGS {
             struct { T x, y, z; };
             struct { T r, g, b; };
             Swizzle<Vector, T, 0, 1, 2> xyz;
-            Swizzle<Vector, T, 0, 2, 1> xzy;
             Swizzle<Vector, T, 2, 1, 0> zyx;
-            Swizzle<Vector, T, 2, 0, 1> zxy;
-            Swizzle<Vector, T, 1, 0, 2> yxz;
-            Swizzle<Vector, T, 1, 2, 0> yzx;
+            struct { Vector<T, 2> xy; T z; };
+            struct { T x; Vector<T, 2> yz; };
         };
 
         Matrix() {
