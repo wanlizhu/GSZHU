@@ -44,9 +44,9 @@ namespace NTGS {
     template<typename T>
     class Singleton : NonCopyable {
     public:
-        static T* GetInstance() {
+        static T& GetInstance() {
             std::call_once(smOnce, [&](){ smGlobalInstance.reset(new T()); });
-            return GlobalInstance.get();
+            return *GlobalInstance.get();
         }
 
     private:
