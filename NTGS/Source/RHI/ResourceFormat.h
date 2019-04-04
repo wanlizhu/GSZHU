@@ -4,21 +4,34 @@
 
 namespace NTGS {
     enum ColorFormat {
-        DEPTH32F,
-        STENCIL8,
-        DEPTH24F_STENCIL8,
+        UNDEFINED,
+        // depth formats
+        DEPTH24_STENCIL8,
+        DEPTH_FLOAT,
+        
+        // compressed formats
+        X1_UNORM,
+        X1_UNORM_SRGB,
+        X5_UNORM,
+        X5_SNORM,
 
-        R8,
-        R32F,
+        // general formats
+        RED_UINT8,
+        RED_FLOAT,
+        
+        RG_UINT8,
+        RG_FLOAT,
+        
+        RGB_UINT8,
+        RGB_FLOAT,
 
-        RGB8,
-        RGB32F,
-        RGBA8,
-        RGBA32F,
+        RGBA_UINT8,
+        RGBA_FLOAT,
 
-        RGB8_SRGB, // Standard RGB (gamma = 2.2)
-        RGB32F_SRGB, // Standard RGB (gamma = 2.2)
-        RGBA8_SRGB, // Standard RGB (gamma = 2.2)
-        RGBA32F_SRGB, // Standard RGB (gamma = 2.2)
+        // SRGB
+        RGB_UINT8_SRGB, // Standard RGB (gamma = 2.2)
+        RGB_FLOAT_SRGB, // Standard RGB (gamma = 2.2)
+        RGBA_UINT8_SRGB, // Standard RGB (gamma = 2.2)
+        RGBA_FLOAT_SRGB, // Standard RGB (gamma = 2.2)
     };
 }

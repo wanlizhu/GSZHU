@@ -11,8 +11,8 @@ namespace NTGS {
         bool mFullScreen = false;
         Vec2i mPosition = Vec2i(0, 0);
         Vec2i mSize = Vec2i(1024, 635);
-        ColorFormat mColorFormat = RGB32F;
-        ColorFormat mDepthStencilFormat = DEPTH32F;
+        ColorFormat mColorFormat = RGB_FLOAT;
+        ColorFormat mDepthStencilFormat = DEPTH_FLOAT;
         int mSampleCount = 1;
         int mSampleQuality = 0;
         int mSyncInterval = 0;

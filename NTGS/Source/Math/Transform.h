@@ -5,11 +5,14 @@
 namespace NTGS {
     class Transform {
     public:
+        Transform();
+        Transform(const Mat4d& mat);
 
+        Vec3d operator()(const Vec3d& vec) const;
 
     private:
-        Mat4f mMatrix;
-        Mat4f mInvMatrix;
+        Mat4d mMatrix;
+        Mat4d mInvMatrix;
         
         bool mUpdateLater = false;
         Quaternion<double> mRotation;
