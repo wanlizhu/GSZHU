@@ -26,6 +26,14 @@ namespace NTGS {
     }
 
     template<typename T, int N>
+    inline T LengthSquared(const Vector<T, N>& vec) {
+        T sum = 0;
+        for (int i = 0; i < N; i++)
+            sum += vec[i] * vec[i];
+        return sum;
+    }
+
+    template<typename T, int N>
     inline Vector<T, N> Normalize(const Vector<T, N>& vec) {
         return Vector<T, N>(vec) /= Length(vec);
     }
@@ -70,5 +78,31 @@ namespace NTGS {
             v1.y * v2.z - v2.y * v1.z,
             v1.z * v2.x - v2.z * v1.x,
             v1.x * v2.y - v2.x * v1.y);
+    }
+
+    // If dot(Nref, I) < 0.0 return N, otherwise return –N
+    template<typename T, int N>
+    inline Vector<T, N> FaceForward(const Vector<T, N>& vecN,
+                                    const Vector<T, N>& I, const Vector<T, N>& Nref) {
+        if (I * Nref < T(0))
+            return vecN;
+        else
+            return -vecN;
+    }
+
+    // For the incident vector I and surface orientation N,
+    // compute normalized N(NN), 
+    // and return the reflection direction : I – 2 * dot(NN, I) * NN.
+    template<typename T, int N>
+    inline Vector<T, N> Reflect(const Vector<T, N>& I, const Vector<T, N>& vecN) {
+        Vector<T, N> NN = Normalize(vecN);
+        return I - 2 * (NN * I) * NN;
+    }
+
+    // For the incident vector I and surface normal N, and the ratio of indices of refraction eta, 
+    // return the refraction vector.
+    template<typename T, int N>
+    inline Vector<T, N> Refract(const Vector<T, N>& I, const Vector<T, N>& vecN, T eta) {
+
     }
 }

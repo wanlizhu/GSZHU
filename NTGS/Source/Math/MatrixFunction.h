@@ -134,8 +134,7 @@ namespace NTGS {
     }
 
     template<typename BlockType, typename T, int Cols, int Rows,
-        typename = typename std::enable_if<BlockType::Rows <= Rows
-        && BlockType::Cols <= Cols>::type>
+        typename = typename std::enable_if<BlockType::Rows <= Rows && BlockType::Cols <= Cols>::type>
         inline BlockType CopyBlock(const Matrix<T, Cols, Rows>& mat, int fromCol = 0, int fromRow = 0) {
         assert((fromCol + BlockType::Cols <= Cols)
             && (fromRow + BlockType::Rows <= Rows));
