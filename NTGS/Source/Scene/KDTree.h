@@ -22,7 +22,7 @@ namespace NTGS {
         void DeletePoint(size_t id);
         POINT& GetPoint(size_t id);
         const POINT& GetPoint(size_t id) const;
-        int SelectPoints(const BOUNDARY& boundary, std::vector<size_t>* points);
+        template<typename BOUND> int SelectPoints(const BOUND& boundary, std::vector<size_t>* points);
         template<typename FUNC> void Traversal(FUNC func);
         
     private:
