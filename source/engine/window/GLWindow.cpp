@@ -87,4 +87,24 @@ namespace NTGS {
             SDL_GL_SwapWindow(mpWindow);
         }
     }
+
+    Vec2i GLWindow::GetPosition() const {
+        Vec2i pos;
+        SDL_GetWindowPosition(mpWindow, &pos[0], &pos[1]);
+        return pos;
+    }
+
+    Vec2i GLWindow::GetSize() const {
+        Vec2i size;
+        SDL_GetWindowSize(mpWindow, &size[0], &size[1]);
+        return size;
+    }
+
+    void GLWindow::SetPosition(const Vec2i& pos) {
+        SDL_SetWindowPosition(mpWindow, pos[0], pos[1]);
+    }
+
+    void GLWindow::SetSize(const Vec2i& size) {
+        SDL_SetWindowSize(mpWindow, size[0], size[1]);
+    }
 }

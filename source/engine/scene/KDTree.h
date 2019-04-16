@@ -1,27 +1,25 @@
 #pragma once
 
 namespace NTGS {
-    template<typename POINT>
+    template<typename DATA>
     class KDTree {
         struct KDNode {
-            size_t mPointIndex = 0;
+            size_t mDataIndex = 0;
             int mSplitDimension = 0;
             std::unique_ptr<KDNode> mChildren[2];
 
-            KDNode(size_t ind) : mPointIndex(ind) {}
+            KDNode(size_t ind) : mDataIndex(ind) {}
         };
-        using IndexArray = std::vector<size_t>;
-        using IndexArrayIterator = typename std::vector<size_t>::iterator;
     public:
         KDTree();
-        KDTree(const std::vector<POINT>& points);
+        KDTree(const std::vector<DATA>& points);
 
-        void Create(const std::vector<POINT>& points);
-        size_t FindMidPoint(int dim);
-        void InsertPoint(const POINT& point);
-        void DeletePoint(size_t id);
-        POINT& GetPoint(size_t id);
-        const POINT& GetPoint(size_t id) const;
+        void Create(const std::vector<DATA>& points);
+        size_t FindMid(int dim);
+        void InsertData(const DATA& point);
+        void DeleteData(size_t id);
+        DATA& GetPoint(size_t id);
+        const DATA& GetPoint(size_t id) const;
         template<typename BOUND> int SelectPoints(const BOUND& boundary, std::vector<size_t>* points);
         template<typename FUNC> void Traversal(FUNC func);
         
@@ -30,6 +28,6 @@ namespace NTGS {
         
     private:
         std::shared_ptr<KDNode> mpRootNode;
-        std::vector<POINT> mPointsArray;
+        std::vector<DATA> mDataArray;
     };
 }
