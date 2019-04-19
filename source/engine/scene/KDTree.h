@@ -1,33 +1,72 @@
 #pragma once
 
+#include <vector>
+#include <numeric>
+#include <algorithm>
+#include <memory>
+#include <functional>
+
 namespace NTGS {
-    template<typename DATA>
-    class KDTree {
-        struct KDNode {
-            size_t mDataIndex = 0;
-            int mSplitDimension = 0;
-            std::unique_ptr<KDNode> mChildren[2];
-
-            KDNode(size_t ind) : mDataIndex(ind) {}
-        };
+    template<typename T, typename COMPARE = std::less<T>>
+    class BoundedPriorityQueue {
     public:
-        KDTree();
-        KDTree(const std::vector<DATA>& points);
+        BoundedPriorityQueue() = delete;
+        BoundedPriorityQueue(size_t bound) : mBound(bound) { mElements.reserve(bound + 1); }
 
-        void Create(const std::vector<DATA>& points);
-        size_t FindMid(int dim);
-        void InsertData(const DATA& point);
-        void DeleteData(size_t id);
-        DATA& GetPoint(size_t id);
-        const DATA& GetPoint(size_t id) const;
-        template<typename BOUND> int SelectPoints(const BOUND& boundary, std::vector<size_t>* points);
-        template<typename FUNC> void Traversal(FUNC func);
+        const T& Back() const { return mElements.back(); }
+        const T& operator[](size_t index) const { return mElements[index]; }
+        size_t Size() const { return mElements.size(); }
+        void Push(const T& val) { 
+            auto it = std::find_if(std::begin(mElements), std::end(mElements), [&](const T& element) {
+                return COMPARE()(val, element);
+            });
+            if (mElements.size() > mBound)
+                mElements.resize(mBound);
+        }
         
     private:
-        std::shared_ptr<KDNode> CreateSubTree(IndexArray& indices, const IndexArrayIterator& begin, const IndexArrayIterator& end);
-        
+        size_t mBound = -1;
+        std::vector<T> mElements;
+    };
+
+
+    template<typename _POINT>
+    class KDTree {
+        struct Node {
+            size_t index = -1;
+            std::shared_ptr<Node> children[2] = { nullptr };
+            int axis = -1;
+        };
+        using NodePtr = std::shared_ptr<Node>;
+        using ConstNodePtr = std::shared_ptr<const Node>;
+        using KNNQueue = BoundedPriorityQueue<std::pair<double, int>>;
+
+    public:
+        typedef size_t INDEX;
+        typedef _POINT POINT;
+
+        KDTree();
+        KDTree(const std::vector<POINT>& points);
+        virtual ~KDTree();
+
+        void Build(const std::vector<POINT>& points);
+        void Clear();
+        bool IsValid() const;
+
+        INDEX FindNearest(const POINT& ref, double* distMin = nullptr) const;
+        std::vector<INDEX> FindKNearest(const POINT& ref, int K) const;
+        std::vector<INDEX> FindInside(const POINT& ref, double radius) const;
+
     private:
-        std::shared_ptr<KDNode> mpRootNode;
-        std::vector<DATA> mDataArray;
+        static double GetDistance(const POINT& p, const POINT& q);
+        NodePtr BuildSubtree(INDEX* indices, size_t count, int depth);
+        bool IsValidSubtree(ConstNodePtr node, int depth);
+        void FindNearestSubtree(const POINT& ref, ConstNodePtr node, INDEX* index, double* dist) const;
+        void FindKNearestSubtree(const POINT& ref, ConstNodePtr node, KNNQueue& queue, int K) const;
+        void FindInsideSubtree(const POINT& ref, ConstNodePtr node, std::vector<INDEX>& indices, double radius) const;
+
+    private:
+        NodePtr mRoot;
+        std::vector<POINT> mPoints;
     };
 }
