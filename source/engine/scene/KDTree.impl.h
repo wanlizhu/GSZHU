@@ -43,7 +43,7 @@ namespace NTGS {
 
     template<typename POINT>
     typename KDTree<POINT>::INDEX KDTree<POINT>::FindNearest(const POINT& ref, double* distMin) const {
-        INDEX index = -1;
+        INDEX index = INDEX(-1);
         double myDistMin = std::numeric_limits<double>::max();
 
         FindNearestSubtree(ref, mRoot, &index, &myDistMin);
@@ -54,7 +54,7 @@ namespace NTGS {
     }
 
     template<typename POINT>
-    std::vector<typename KDTree<POINT>::INDEX> KDTree<POINT>::FindKNearest(const POINT& ref, int K) const {
+    std::vector<typename KDTree<POINT>::INDEX> KDTree<POINT>::FindKNearest(const POINT& ref, size_t K) const {
         KNNQueue queue(K);
         FindKNearestSubtree(ref, mRoot, queue, K);
 
@@ -93,7 +93,7 @@ namespace NTGS {
     }
 
     template<typename POINT>
-    bool KDTree<POINT>::IsValidSubtree(ConstNodePtr node, int depth) {
+    bool KDTree<POINT>::IsValidSubtree(ConstNodePtr node, int depth) const {
         if (node == nullptr)
             return true;
 
@@ -119,7 +119,7 @@ namespace NTGS {
     template<typename POINT>
     double KDTree<POINT>::GetDistance(const POINT& p, const POINT& q) {
         double dist = 0;
-        for (size_t i = 0; i < POINT:DIMENSION; i++)
+        for (size_t i = 0; i < POINT::DIMENSION; i++)
             dist += (p[i] - q[i]) * (p[i] - q[i]);
         return sqrt(dist);
     }
@@ -147,7 +147,7 @@ namespace NTGS {
     }
 
     template<typename POINT>
-    void KDTree<POINT>::FindKNearestSubtree(const POINT& ref, ConstNodePtr node, KNNQueue& queue, int K) const {
+    void KDTree<POINT>::FindKNearestSubtree(const POINT& ref, ConstNodePtr node, KNNQueue& queue, size_t K) const {
         if (node == nullptr)
             return;
 

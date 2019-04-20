@@ -9,23 +9,26 @@ namespace NTGS {
     class SceneNode;
     typedef std::shared_ptr<SceneNode> SceneNodePtr;
 
-    class SceneNode {
+    class SceneNode : public IKDTreePoint<double, 3>
+                    , public std::enable_shared_from_this<SceneNode> {
     public:
-        SceneNode() = default;
-        SceneNode(const ISceneObjectPtr& obj);
-        virtual ~SceneNode() = default;
+        static SceneNodePtr Create(ISceneObjectPtr object);
 
+        virtual double operator[](int index) const override;
         bool IsVisible() const;
-
-        const std::string& GetName() const { return mName; }
-        void SetName(const std::string& name) { mName = name; }
-        Transform& GetTransform() { return mTransform; }
-        const Transform& GetTransform() const { return mTransform; }
-        template<typename T> std::shared_ptr<T>& GetObject() { return std::dynamic_pointer_cast<T>(mObject); }
+        const std::string& GetName() const;
+        void SetName(const std::string& name);
+        Transform& GetWorldTransform();
+        const Transform& GetWorldTransform() const;
+        Transform& GetParentTransform();
+        const Transform& GetParentTransform() const;
+        template<typename T> std::shared_ptr<T>& GetObject();
+        template<typename T> const std::shared_ptr<T>& GetObject() const;
 
     private:
         std::string mName;
-        Transform mTransform;
+        Transform mWorldTransform;
+        Transform mParentTransform;
         ISceneObjectPtr mpObject;
     };
 }

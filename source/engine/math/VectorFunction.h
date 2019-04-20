@@ -80,7 +80,7 @@ namespace NTGS {
             v1.x * v2.y - v2.x * v1.y);
     }
 
-    // If dot(Nref, I) < 0.0 return N, otherwise return –N
+    // If dot(Nref, I) < 0.0 return N, otherwise return -N
     template<typename T, int N>
     inline Vector<T, N> FaceForward(const Vector<T, N>& vecN,
                                     const Vector<T, N>& I, const Vector<T, N>& Nref) {
@@ -92,7 +92,7 @@ namespace NTGS {
 
     // For the incident vector I and surface orientation N,
     // compute normalized N(NN), 
-    // and return the reflection direction : I – 2 * dot(NN, I) * NN.
+    // and return the reflection direction : I - 2 * dot(NN, I) * NN.
     template<typename T, int N>
     inline Vector<T, N> Reflect(const Vector<T, N>& I, const Vector<T, N>& vecN) {
         Vector<T, N> NN = Normalize(vecN);

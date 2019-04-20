@@ -24,13 +24,13 @@ TEST(NTGS_Scene, KDTree_TEST) {
     const int npoints = 100;
 
     std::vector<MyPoint> points(npoints);
-    for (int i = 0; i < npoints; i++) {
-        const int x = rand() % width;
-        const int y = rand() % height;
+    for (size_t i = 0; i < npoints; i++) {
+        const double x = rand() % width;
+        const double y = rand() % height;
         points[i] = MyPoint(x, y);
     }
 
     KDTree<MyPoint> kdtree(points);
 
-
+    EXPECT_TRUE(kdtree.IsValid());
 }

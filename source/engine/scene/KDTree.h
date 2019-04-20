@@ -25,21 +25,29 @@ namespace NTGS {
         }
         
     private:
-        size_t mBound = -1;
+        size_t mBound = size_t(-1);
         std::vector<T> mElements;
+    };
+
+
+    template<typename T, int DIM>
+    class IKDTreePoint {
+    public:
+        constexpr static int DIMENSION = DIM;
+        virtual T operator [](int index) const = 0;
     };
 
 
     template<typename _POINT>
     class KDTree {
         struct Node {
-            size_t index = -1;
+            size_t index = size_t(-1);
             std::shared_ptr<Node> children[2] = { nullptr };
             int axis = -1;
         };
         using NodePtr = std::shared_ptr<Node>;
         using ConstNodePtr = std::shared_ptr<const Node>;
-        using KNNQueue = BoundedPriorityQueue<std::pair<double, int>>;
+        using KNNQueue = BoundedPriorityQueue<std::pair<double, size_t>>;
 
     public:
         typedef size_t INDEX;
@@ -54,15 +62,15 @@ namespace NTGS {
         bool IsValid() const;
 
         INDEX FindNearest(const POINT& ref, double* distMin = nullptr) const;
-        std::vector<INDEX> FindKNearest(const POINT& ref, int K) const;
+        std::vector<INDEX> FindKNearest(const POINT& ref, size_t K) const;
         std::vector<INDEX> FindInside(const POINT& ref, double radius) const;
 
     private:
         static double GetDistance(const POINT& p, const POINT& q);
         NodePtr BuildSubtree(INDEX* indices, size_t count, int depth);
-        bool IsValidSubtree(ConstNodePtr node, int depth);
+        bool IsValidSubtree(ConstNodePtr node, int depth) const;
         void FindNearestSubtree(const POINT& ref, ConstNodePtr node, INDEX* index, double* dist) const;
-        void FindKNearestSubtree(const POINT& ref, ConstNodePtr node, KNNQueue& queue, int K) const;
+        void FindKNearestSubtree(const POINT& ref, ConstNodePtr node, KNNQueue& queue, size_t K) const;
         void FindInsideSubtree(const POINT& ref, ConstNodePtr node, std::vector<INDEX>& indices, double radius) const;
 
     private:

@@ -11,23 +11,16 @@ namespace NTGS {
     class Scene;
     typedef std::shared_ptr<Scene> ScenePtr;
 
-    class Scene : public NonCopyable {
+    class Scene : public NonCopyable
+                , std::enable_shared_from_this<Scene> {
     public:
         static ScenePtr Create(const std::string& sceneFile);
 
-        Scene();
-        virtual ~Scene();
-
+        bool LoadScene(const std::string& path);
+        bool SaveScene(const std::string& path) const;
         void SetDisplayWindow(const std::shared_ptr<IWindow>& win);
 
     private:
-        bool LoadSceneFile(const std::string& sceneFile);
-        bool SaveSceneFile();
-        void ConnectWindowEvents();
-
-    private:
-        KDTree<SceneNodePtr> mSceneTree;
-        std::shared_ptr<IWindow> mpWindow;
-        std::string mSceneFile;
+        KDTree<SceneNode> mSceneTree;
     };
 }
