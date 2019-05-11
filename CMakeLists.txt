@@ -1,55 +1,96 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 2.8.0 FATAL_ERROR)
+set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS TRUE)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-project(KingsLynn)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${${CMAKE_CURRENT_SOURCE_DIR}/cmake}")
+
+# version information
+set(GSZHU_MAJOR_VERSION 1)
+set(GSZHU_MINOR_VERSION 2)
+set(GSZHU_PATCH_VERSION 3)
+set(GSZHU_SOVERSION 100)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
+
+
+# define project 
+project(GSZHU)
+set(GSZHU_VERSION ${GSZHU_MAJOR_VERSION}.${GSZHU_MINOR_VERSION}.${GSZHU_PATCH_VERSION})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-set(KL_GEN_TEST ON)
 
-# scan source files
-file(GLOB_RECURSE ENGINE_HDRS source/engine/*.h)
-file(GLOB_RECURSE ENGINE_SRCS source/engine/*.cpp)
-file(GLOB_RECURSE EDITOR_HDRS source/editor/*.h)
-file(GLOB_RECURSE EDITOR_SRCS source/editor/*.cpp)
+# customized variables
+set(GSZHU_ENGINE_DEFINES "")
+set(GSZHU_ENGINE_LINK_LIBS "")
+set(GSZHU_ENGINE_INCLUDES "source/GSZHU" "thirdparty/include")
+set(GSZHU_WARNINGS_TO_DISABLE 4244 4251 4267 4275)
+option(GSZHU_DISABLE_WARNINGS "Turn off various warnings." ON)
+option(GSZHU_ENABLE_SIMD_VECTOR "Build SIMD vector" ON)
+option(GSZHU_BUILD_SAMPLE "Build sample application." ON)
+option(GSZHU_BUILD_TEST "Build unit test" ON)
 
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/engine PREFIX "Header Files/engine" FILES ${ENGINE_HDRS})
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/engine PREFIX "Source Files/engine" FILES ${ENGINE_SRCS})
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/editor PREFIX "Header Files/editor" FILES ${EDITOR_HDRS})
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/editor PREFIX "Source Files/editor" FILES ${EDITOR_SRCS})
 
-if (WIN32)
+# find dependent libraries
+## find Vulkan
+find_package(Vulkan REQUIRED)
+set(SDL2_BUILDING_LIBRARY ON)
 
+
+# scan GSZHU source files
+file(GLOB_RECURSE GSZHU_ENGINE_SRCS source/*.cpp)
+file(GLOB_RECURSE GSZHU_ENGINE_HDRS source/*.h)
+file(GLOB_RECURSE GSZHU_ENGINE_INTERFACES include/GSZHU/*.h)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include/GSZHU PREFIX "Interface Files" FILES ${GSZHU_ENGINE_INTERFACES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/GSZHU PREFIX "Source Files/GSZHU" FILES ${GSZHU_ENGINE_SRCS})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/GSZHU PREFIX "Header Files/GSZHU" FILES ${GSZHU_ENGINE_HDRS})
+
+
+# define GSZHU targets
+set(GSZHU_ENGINE "GSZHU")
+add_library(${GSZHU_ENGINE} STATIC ${GSZHU_ENGINE_SRCS} ${GSZHU_ENGINE_HDRS} ${GSZHU_ENGINE_INTERFACES})
+target_compile_definitions(${GSZHU_ENGINE} PRIVATE ${GSZHU_ENGINE_DEFINES})
+target_include_directories(${GSZHU_ENGINE} PRIVATE ${GSZHU_ENGINE_INCLUDES} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_link_directories(${GSZHU_ENGINE} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/lib")
+target_link_libraries(${GSZHU_ENGINE} PRIVATE ${GSZHU_ENGINE_LINK_LIBS})
+
+if (GSZHU_ENABLE_SIMD_VECTOR)
+    add_definitions(-DGSZHU_ENABLE_SIMD_VECTOR)
 endif()
 
-# engine target definition
-add_subdirectory(thirdparty/glad)
-add_library(engine STATIC ${ENGINE_HDRS} ${ENGINE_SRCS})
-target_compile_definitions(engine PRIVATE "ARCH=x64" 
-                                  PUBLIC "SDL_MAIN_HANDLED")
-target_include_directories(engine PRIVATE "source/engine" "thirdparty"
-                                  PUBLIC "thirdparty/SDL2")
-target_link_directories(engine PUBLIC "libs")
-target_link_libraries(engine PUBLIC "SDL2" glad)
+if (WIN32 AND MSVC) 
+    add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+    add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
+    add_definitions(-DNOMINMAX)
+    
+    if (GSZHU_DISABLE_WARNINGS)
+        foreach(warning ${GSZHU_WARNINGS_TO_DISABLE})
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd${warning}")
+        endforeach()
+    endif()
+endif()
+
 
 # copy .dll to bin
-file(GLOB_RECURSE DLL_FILES libs/*.dll)
-add_custom_command(TARGET engine POST_BUILD
+file(GLOB_RECURSE DLL_FILES "thirdparty/bin/*.dll")
+add_custom_command(TARGET ${GSZHU_ENGINE} 
+                   POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy "${DLL_FILES}" "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>"
                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-# editor target definition
-add_executable(editor ${EDITOR_HDRS} ${EDITOR_SRCS})
-target_include_directories(editor PRIVATE source/engine)
-target_link_libraries(editor PRIVATE engine)
 
-# engine-test target definition
-if (KL_GEN_TEST)
-    add_subdirectory(thirdparty/gtest)
-    file(GLOB_RECURSE TEST_SRCS tests/src/*.cpp tests/src/*.h)
-    add_executable(engine-test ${TEST_SRCS})
-    target_include_directories(engine-test PRIVATE tests tests/src source/engine)
-    target_link_libraries(engine-test PRIVATE gtest engine)
+# install target GSZHU
+install(TARGETS ${GSZHU_ENGINE} DESTINATION "GSZHU/bin")
+install(FILES ${DLL_FILES} DESTINATION "GSZHU/bin")
+install(FILES ${GSZHU_ENGINE_INTERFACES} DESTINATION "GSZHU/include")
+
+
+if (GSZHU_BUILD_SAMPLE)
+    # add samples
+    add_subdirectory(sample)
 endif()
+
+if (GSZHU_BUILD_TEST)
+    # add tests
+    add_subdirectory(test)
+endif()
+ 
