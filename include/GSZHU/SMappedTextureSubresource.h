@@ -5,7 +5,7 @@
 namespace GSZHU {
     struct SMappedTextureSubresource {
         void* Data = nullptr;
-        UINT Stride = 0;
-        UINT DepthStride = 0;
+        uint32_t Stride = 0;
+        uint32_t DepthStride = 0;
     };
 }

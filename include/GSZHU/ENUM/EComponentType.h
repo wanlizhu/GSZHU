@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum ECOMPONENT_TYPE : UINT8 {
+    enum ECOMPONENT_TYPE : uint8_t {
         COMPONENT_TYPE_UNDEFINED,
         COMPONENT_TYPE_FLOAT,
         COMPONENT_TYPE_SNORM,

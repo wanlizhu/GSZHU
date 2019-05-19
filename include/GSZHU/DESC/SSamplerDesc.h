@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GSZHU/BasicTypes.h>
+#include <GSZHU/BasicTools.h>
 #include <GSZHU/ENUM/EComparisonFunction.h>
 #include <GSZHU/SDeviceObjectAttribs.h>
 #include <GSZHU/ENUM/EFilterType.h>
@@ -17,36 +17,35 @@ namespace GSZHU {
         ETEXTURE_ADDRESS_MODE AddressW = TEXTURE_ADDRESS_CLAMP;
 
         float MipLODBias = 0;
-        UINT MaxAnisotropy = 0;
+        uint32_t MaxAnisotropy = 0;
         ECOMPARISON_FUNCTION ComparisonFunc = COMPARISON_FUNC_NEVER;
         float BorderColor[4] = { 0, 0, 0, 0 };
         float MinLOD = 0;
         float MaxLOD = +3.402823466e+38F;
 
-        SSamplerDesc() noexcept {}
-        SSamplerDesc(FILTER_TYPE _MinFilter, FILTER_TYPE _MagFilter, FILTER_TYPE _MipFilter)
-            : MinFilter(_MinFilter)
-            , MagFilter(_MagFilter)
-            , MipFilter(_MipFilter) {
-            BorderColor[0] = BorderColor[1] = BorderColor[2] = BorderColor[3] = 0;
-        }
+        SSamplerDesc() noexcept;
+        SSamplerDesc(FILTER_TYPE _MinFilter, FILTER_TYPE _MagFilter, FILTER_TYPE _MipFilter) noexcept;
         
-        bool operator == (const SSamplerDesc& rhs) const {
-            return MinFilter == rhs.MinFilter     
-                && MagFilter == rhs.MagFilter     
-                && MipFilter == rhs.MipFilter    
-                && AddressU == rhs.AddressU    
-                && AddressV == rhs.AddressV    
-                && AddressW == rhs.AddressW    
-                && MipLODBias == rhs.MipLODBias   
-                && MaxAnisotropy == rhs.MaxAnisotropy 
-                && ComparisonFunc == rhs.ComparisonFunc 
-                && BorderColor[0] == rhs.BorderColor[0] 
-                && BorderColor[1] == rhs.BorderColor[1] 
-                && BorderColor[2] == rhs.BorderColor[2] 
-                && BorderColor[3] == rhs.BorderColor[3] 
-                && MinLOD == rhs.MinLOD     
-                && MaxLOD == rhs.MaxLOD;
+        bool operator==(const SSamplerDesc& rhs) const;
+    };
+}
+
+namespace std {
+    template<>
+    struct hash<GSZHU::SSamplerDesc> {
+        size_t operator()(const GSZHU::SSamplerDesc& Desc) const {
+            return GSZHU::ComputeHash(static_cast<int>(Desc.MinFilter),
+                                      static_cast<int>(Desc.MagFilter),
+                                      static_cast<int>(Desc.MipFilter),
+                                      static_cast<int>(Desc.AddressU),
+                                      static_cast<int>(Desc.AddressV),
+                                      static_cast<int>(Desc.AddressW),
+                                      Desc.MipLODBias,
+                                      Desc.MaxAnisotropy,
+                                      static_cast<int>(Desc.ComparisonFunc),
+                                      GSZHU::ComputeArrayHash<float>(Desc.BorderColor, 4),
+                                      Desc.MinLOD,
+                                      Desc.MaxLOD);
         }
     };
 }

@@ -28,8 +28,8 @@ namespace GSZHU {
         };
 
         EDeviceType DeviceType = EDeviceType::UNDEFINED;
-        INT MajorVersion = 0;
-        INT MinorVersion = 0;
+        int MajorVersion = 0;
+        int MinorVersion = 0;
         bool SeparableProgramSupported = true;
         bool IndirectRenderingSupported = true;
         bool WireframeFillSupported = true;

@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum ELOGIC_OP : INT8 {
+    enum ELOGIC_OP : int8_t {
         LOGIC_OP_CLEAR = 0,
         LOGIC_OP_SET,
         LOGIC_OP_COPY,

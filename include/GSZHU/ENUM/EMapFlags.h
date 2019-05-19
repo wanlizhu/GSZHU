@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum EMAP_FLAGS : UINT8 {
+    enum EMAP_FLAGS : uint8_t {
         MAP_FLAG_NONE = 0x000,
         MAP_FLAG_DO_NOT_WAIT = 0x001,
         MAP_FLAG_DISCARD = 0x002,

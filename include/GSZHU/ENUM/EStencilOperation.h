@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum ESTENCIL_OP : INT8 {
+    enum ESTENCIL_OP : int8_t {
         STENCIL_OP_UNDEFINED = 0,
         STENCIL_OP_KEEP = 1,
         STENCIL_OP_ZERO = 2,

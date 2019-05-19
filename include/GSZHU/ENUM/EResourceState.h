@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum ERESOURCE_STATE : UINT {
+    enum ERESOURCE_STATE : uint32_t {
         RESOURCE_STATE_UNKNOWN = 0x0000,
         RESOURCE_STATE_UNDEFINED = 0x0001,
         RESOURCE_STATE_VERTEX_BUFFER = 0x0002,

@@ -61,6 +61,7 @@ if (WIN32 AND MSVC)
     add_definitions(-D_SCL_SECURE_NO_WARNINGS)
     add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
     add_definitions(-DNOMINMAX)
+    add_definitions(-DGSZHU_OS_WINDOWS)
     
     if (GSZHU_DISABLE_WARNINGS)
         foreach(warning ${GSZHU_WARNINGS_TO_DISABLE})

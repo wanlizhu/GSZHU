@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum ECULL_MODE : INT8 {
+    enum ECULL_MODE : int8_t {
         CULL_MODE_UNDEFINED = 0,
         CULL_MODE_NONE, // OpenGL counterpart: glDisable( GL_CULL_FACE )
         CULL_MODE_FRONT, // OpenGL counterpart: GL_FRONT.

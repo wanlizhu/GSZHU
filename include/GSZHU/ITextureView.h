@@ -10,6 +10,8 @@ namespace GSZHU {
     // The texture view will also keep a strong reference to the texture sampler, if any is set.
     class ITextureView : public IDeviceObject {
     public:
+        using DESC = STextureDesc;
+
         virtual const STextureViewDesc& GetDesc()const = 0;
         virtual void SetSampler(class ISampler *pSampler) = 0;
         virtual ISampler* GetSampler() = 0;

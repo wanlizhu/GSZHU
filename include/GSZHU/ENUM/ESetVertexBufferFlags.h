@@ -4,7 +4,7 @@
 
 namespace GSZHU {
     // Defines allowed flags for IDeviceContext::SetVertexBuffers() function.
-    enum ESET_VERTEX_BUFFERS_FLAGS : UINT8 {
+    enum ESET_VERTEX_BUFFERS_FLAGS : uint8_t {
         SET_VERTEX_BUFFERS_FLAG_NONE = 0x00,
         SET_VERTEX_BUFFERS_FLAG_RESET = 0x01
     };

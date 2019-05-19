@@ -4,7 +4,7 @@
 
 namespace GSZHU {
     // It is used by BufferDesc and DrawAttribs
-    enum EVALUE_TYPE : UINT8 {
+    enum EVALUE_TYPE : uint8_t {
         VT_UNDEFINED = 0, 
         VT_INT8,          
         VT_INT16,         

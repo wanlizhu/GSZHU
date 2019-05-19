@@ -4,7 +4,7 @@
 
 namespace GSZHU {
     /// Describes allowed unordered access view mode
-    enum UAV_ACCESS_FLAG : INT {
+    enum UAV_ACCESS_FLAG : int {
         UAV_ACCESS_UNSPECIFIED = 0x00,
         UAV_ACCESS_FLAG_READ = 0x01,
         UAV_ACCESS_FLAG_WRITE = 0x02,

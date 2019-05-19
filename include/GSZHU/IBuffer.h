@@ -10,6 +10,8 @@ namespace GSZHU {
 
     class IBuffer : public IDeviceObject {
     public:
+        using DESC = SBufferDesc;
+
         virtual const SBufferDesc& GetDesc() const = 0;
         virtual IBufferView* CreateView(const SBufferViewDesc& ViewDesc) = 0;
         virtual IBufferView* GetDefaultView(EBUFFER_VIEW_TYPE ViewType) = 0;

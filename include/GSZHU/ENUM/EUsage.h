@@ -4,7 +4,7 @@
 
 namespace GSZHU {
     // The enumeration is used by BufferDesc and TextureDesc
-    enum EUSAGE : UINT8 {
+    enum EUSAGE : uint8_t {
         USAGE_STATIC = 0,
         USAGE_DEFAULT,
         USAGE_DYNAMIC,

@@ -9,6 +9,8 @@
 namespace GSZHU {
     class ITexture : public IDeviceObject {
     public:
+        using DESC = STextureDesc;
+
         virtual const STextureDesc& GetDesc()const = 0;
         virtual ITextureView* CreateView(const STextureViewDesc& ViewDesc) = 0;
         virtual ITextureView* GetDefaultView(ETEXTURE_VIEW_TYPE ViewType) = 0;

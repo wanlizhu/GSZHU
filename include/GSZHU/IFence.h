@@ -6,8 +6,10 @@
 namespace GSZHU {
     class IFence : public IDeviceObject {
     public:
+        using DESC = SFenceDesc;
+
         virtual const SFenceDesc& GetDesc() const = 0;
-        virtual UINT64 GetCompletedValue() = 0;
-        virtual void Reset(UINT64 Value) = 0;
+        virtual uint64_t GetCompletedValue() = 0;
+        virtual void Reset(uint64_t Value) = 0;
     };
 }

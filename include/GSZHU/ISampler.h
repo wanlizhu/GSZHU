@@ -6,6 +6,8 @@
 namespace GSZHU {
     class ISampler : public IDeviceObject {
     public:
+        using DESC = SSamplerDesc;
+
         virtual const SSamplerDesc& GetDesc() const = 0;
     };
 }

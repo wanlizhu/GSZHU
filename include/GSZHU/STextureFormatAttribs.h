@@ -7,12 +7,12 @@ namespace GSZHU {
     struct STextureFormatAttribs {
         const char* Name;
         ETEXTURE_FORMAT Format;
-        UINT8 ComponentSize;
-        UINT8 NumComponents;
+        uint8_t ComponentSize;
+        uint8_t NumComponents;
         ECOMPONENT_TYPE ComponentType;
         bool IsTypeless;
-        UINT8 BlockWidth;
-        UINT8 BlockHeight;
+        uint8_t BlockWidth;
+        uint8_t BlockHeight;
 
         STextureFormatAttribs() noexcept
             : Name("TEX_FORMAT_UNKNOWN")
@@ -25,8 +25,8 @@ namespace GSZHU {
             , BlockHeight(0)
         {}
         STextureFormatAttribs(const char* _Name, ETEXTURE_FORMAT _Format,
-                              UINT8 _ComponentSize, UINT8 _NumComponents, ECOMPONENT_TYPE _ComponentType,
-                              bool _IsTypeless, UINT8 _BlockWidth, UINT8 _BlockHeight) noexcept
+                              uint8_t _ComponentSize, uint8_t _NumComponents, ECOMPONENT_TYPE _ComponentType,
+                              bool _IsTypeless, uint8_t _BlockWidth, uint8_t _BlockHeight) noexcept
             : Name(_Name)
             , Format(_Format)
             , ComponentSize(_ComponentSize)

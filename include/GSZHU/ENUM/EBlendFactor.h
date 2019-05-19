@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum EBLEND_FACTOR : INT8 {
+    enum EBLEND_FACTOR : int8_t {
         BLEND_FACTOR_UNDEFINED = 0,
         BLEND_FACTOR_ZERO,
         BLEND_FACTOR_ONE,

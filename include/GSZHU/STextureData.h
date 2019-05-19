@@ -6,6 +6,6 @@ namespace GSZHU {
     // Describes the initial data to store in the texture
     struct STextureData {
         STextureSubresourceData* pSubResources = nullptr;
-        UINT NumSubresources = 0;
+        uint32_t NumSubresources = 0;
     };
 }

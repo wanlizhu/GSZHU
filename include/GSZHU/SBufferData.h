@@ -5,7 +5,7 @@
 namespace GSZHU {
     struct SBufferData {
         const void* Data = nullptr;
-        UINT Size = 0;
+        uint32_t Size = 0;
 
         SBufferData() noexcept {}
     };

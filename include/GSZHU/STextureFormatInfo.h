@@ -16,7 +16,7 @@ namespace GSZHU {
         bool Tex2DFmt = false;
         bool Tex3DFmt = false;
         bool TexCubeFmt = false;
-        UINT SampleCounts = 0;
+        uint32_t SampleCounts = 0;
     };
 
 }

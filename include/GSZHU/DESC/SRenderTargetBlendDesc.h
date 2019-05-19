@@ -4,6 +4,7 @@
 #include <GSZHU/ENUM/EBlendOperation.h>
 #include <GSZHU/ENUM/EColorMask.h>
 #include <GSZHU/ENUM/ELogicOperation.h>
+#include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
     // This structure is used by BlendStateDesc to describe blend states for render targets
@@ -20,24 +21,29 @@ namespace GSZHU {
         EBLEND_OP BlendOpAlpha = BLEND_OP_ADD;
 
         ELOGIC_OP LogicOp = LOGIC_OP_NOOP;
-        UINT8 RenderTargetWriteMask = COLOR_MASK_ALL;
+        uint8_t RenderTargetWriteMask = COLOR_MASK_ALL;
 
-        SRenderTargetBlendDesc() noexcept {}
-        explicit SRenderTargetBlendDesc(bool _BlendEnable) noexcept
-            : BlendEnable(_BlendEnable)
-        {}
+        SRenderTargetBlendDesc() noexcept;
+        explicit SRenderTargetBlendDesc(bool _BlendEnable) noexcept;
 
-        bool operator==(const SRenderTargetBlendDesc& rhs) const {
-            return BlendEnable == rhs.BlendEnable
-                && LogicOperationEnable == rhs.LogicOperationEnable
-                && SrcBlend == rhs.SrcBlend
-                && DestBlend == rhs.DestBlend
-                && BlendOp == rhs.BlendOp
-                && SrcBlendAlpha == rhs.SrcBlendAlpha
-                && DestBlendAlpha == rhs.DestBlendAlpha
-                && BlendOpAlpha == rhs.BlendOpAlpha
-                && LogicOp == rhs.LogicOp
-                && RenderTargetWriteMask == rhs.RenderTargetWriteMask;
+        bool operator==(const SRenderTargetBlendDesc& rhs) const;
+    };
+}
+
+namespace std {
+    template<>
+    struct hash<GSZHU::SRenderTargetBlendDesc> {
+        size_t operator()(const GSZHU::SRenderTargetBlendDesc& Desc) const {
+            return GSZHU::ComputeHash(static_cast<int>(Desc.BlendEnable),
+                                      static_cast<int>(Desc.LogicOperationEnable),
+                                      static_cast<int>(Desc.SrcBlend),
+                                      static_cast<int>(Desc.DestBlend),
+                                      static_cast<int>(Desc.BlendOp),
+                                      static_cast<int>(Desc.SrcBlendAlpha),
+                                      static_cast<int>(Desc.DestBlendAlpha),
+                                      static_cast<int>(Desc.BlendOpAlpha),
+                                      static_cast<int>(Desc.LogicOp),
+                                      static_cast<int>(Desc.RenderTargetWriteMask));
         }
     };
 }

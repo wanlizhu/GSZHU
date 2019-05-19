@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum ESHADER_PROFILE : UINT8 {
+    enum ESHADER_PROFILE : uint8_t {
         SHADER_PROFILE_DEFAULT = 0,
         SHADER_PROFILE_DX_4_0,
         SHADER_PROFILE_DX_5_0,

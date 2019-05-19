@@ -10,8 +10,8 @@ namespace GSZHU {
     // This structure is used by IRenderDevice::Draw().
     struct SDrawAttribs {
         union {
-            UINT NumVertices = 0; // For a non-indexed draw call
-            UINT NumIndices; // For an indexed draw call
+            uint32_t NumVertices = 0; // For a non-indexed draw call
+            uint32_t NumIndices; // For an indexed draw call
         };
         bool IsIndexed = false;
         EVALUE_TYPE IndexType = VT_UNDEFINED;
@@ -19,23 +19,23 @@ namespace GSZHU {
         EDRAW_FLAGS DrawFlags = DRAW_FLAG_NONE;
         ERESOURCE_STATE_TRANSITION_MODE IndirectAttribsBufferStateTransitionMode = RESOURCE_STATE_TRANSITION_MODE_NONE;
 
-        UINT NumInstances = 1;
-        UINT BaseVertex = 0;
-        UINT IndirectDrawArgsOffset = 0;
+        uint32_t NumInstances = 1;
+        uint32_t BaseVertex = 0;
+        uint32_t IndirectDrawArgsOffset = 0;
 
         union {
-            UINT StartVertexLocation = 0;
-            UINT FirstIndexLocation;
+            uint32_t StartVertexLocation = 0;
+            uint32_t FirstIndexLocation;
         };
-        UINT FirstInstanceLocation = 0;
+        uint32_t FirstInstanceLocation = 0;
         IBuffer* IndirectDrawAttribs = nullptr;
 
         SDrawAttribs() noexcept {}
-        SDrawAttribs(UINT _NumVertices, EDRAW_FLAGS _Flags) noexcept
+        SDrawAttribs(uint32_t _NumVertices, EDRAW_FLAGS _Flags) noexcept
             : NumVertices(_NumVertices)
             , DrawFlags(_Flags)
         {}
-        SDrawAttribs(UINT _NumIndices, EVALUE_TYPE  _IndexType, EDRAW_FLAGS  _Flags) noexcept 
+        SDrawAttribs(uint32_t _NumIndices, EVALUE_TYPE  _IndexType, EDRAW_FLAGS  _Flags) noexcept 
             : NumIndices(_NumIndices)
             , IsIndexed(true)
             , IndexType(_IndexType)

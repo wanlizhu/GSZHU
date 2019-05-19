@@ -4,7 +4,7 @@
 
 namespace GSZHU {
     // This enumeartion is used by SamplerDesc, StencilOpDesc and DepthStencilStateDesc 
-    enum ECOMPARISON_FUNCTION : UINT8 {
+    enum ECOMPARISON_FUNCTION : uint8_t {
         COMPARISON_FUNC_UNKNOWN = 0,
         COMPARISON_FUNC_NEVER,
         COMPARISON_FUNC_LESS,

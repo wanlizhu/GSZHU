@@ -4,7 +4,7 @@
 
 namespace GSZHU {
     // This enumeration describes allowed view types for a texture view. It is used by TextureViewDesc structure.
-    enum ETEXTURE_VIEW_TYPE : UINT8 {
+    enum ETEXTURE_VIEW_TYPE : uint8_t {
         TEXTURE_VIEW_UNDEFINED = 0,
         TEXTURE_VIEW_SHADER_RESOURCE,
         TEXTURE_VIEW_RENDER_TARGET,

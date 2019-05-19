@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum ECOLOR_MASK : INT8 {
+    enum ECOLOR_MASK : int8_t {
         COLOR_MASK_RED = 1,
         COLOR_MASK_GREEN = 2,
         COLOR_MASK_BLUE = 4,

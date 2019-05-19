@@ -4,7 +4,7 @@
 
 namespace GSZHU {
     // This enumeration defines filter type. It is used by SamplerDesc structure to define min, mag and mip filters.
-    enum FILTER_TYPE : UINT8 {
+    enum FILTER_TYPE : uint8_t {
         FILTER_TYPE_UNKNOWN = 0,           
         FILTER_TYPE_POINT,                 
         FILTER_TYPE_LINEAR,                

@@ -8,17 +8,17 @@ namespace GSZHU {
     // This structure is used by IDeviceContext::CopyTexture().
     struct SCopyTextureAttribs {
         ITexture* SrcTexture = nullptr;
-        UINT SrcMipLevel = 0;
-        UINT SrcSlice = 0;
+        uint32_t SrcMipLevel = 0;
+        uint32_t SrcSlice = 0;
         const Box3D* SrcBox = nullptr;
         ERESOURCE_STATE_TRANSITION_MODE SrcTextureTransitionMode = RESOURCE_STATE_TRANSITION_MODE_NONE;
 
         ITexture* DstTexture = nullptr;
-        UINT DstMipLevel = 0;
-        UINT DstSlice = 0;      
-        UINT DstX = 0;
-        UINT DstY = 0;
-        UINT DstZ = 0;
+        uint32_t DstMipLevel = 0;
+        uint32_t DstSlice = 0;      
+        uint32_t DstX = 0;
+        uint32_t DstY = 0;
+        uint32_t DstZ = 0;
         ERESOURCE_STATE_TRANSITION_MODE DstTextureTransitionMode = RESOURCE_STATE_TRANSITION_MODE_NONE;
 
         SCopyTextureAttribs() noexcept {}

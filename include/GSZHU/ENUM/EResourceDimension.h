@@ -4,7 +4,7 @@
 
 namespace GSZHU {
     // This enumeration is used by TextureDesc and TextureViewDesc 
-    enum ERESOURCE_DIMENSION : UINT8 {
+    enum ERESOURCE_DIMENSION : uint8_t {
         RESOURCE_DIM_UNDEFINED = 0, 
         RESOURCE_DIM_BUFFER,        
         RESOURCE_DIM_TEX_1D,        

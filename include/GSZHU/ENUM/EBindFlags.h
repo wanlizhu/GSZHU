@@ -5,7 +5,7 @@
 namespace GSZHU {
     // This enumeration describes which parts of the pipeline a resource can be bound to.
     // It is used by BufferDesc and TextureDesc
-    enum EBIND_FLAGS : UINT {
+    enum EBIND_FLAGS : uint32_t {
         BIND_NONE = 0x0L, 
         BIND_VERTEX_BUFFER = 0x1L, // A buffer can be bound as a vertex buffer
         BIND_INDEX_BUFFER = 0x2L, // A buffer can be bound as an index buffer

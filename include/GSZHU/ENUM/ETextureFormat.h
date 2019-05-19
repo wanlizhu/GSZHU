@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum ETEXTURE_FORMAT : UINT16 {
+    enum ETEXTURE_FORMAT : uint16_t {
         TEX_FORMAT_UNKNOWN = 0,
         TEX_FORMAT_RGBA32_TYPELESS,
         TEX_FORMAT_RGBA32_FLOAT,

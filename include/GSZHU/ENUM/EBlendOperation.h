@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    enum EBLEND_OP : INT8 {
+    enum EBLEND_OP : int8_t {
         BLEND_OP_UNDEFINED = 0,
         BLEND_OP_ADD,
         BLEND_OP_SUBTRACT,

@@ -17,11 +17,11 @@ namespace GSZHU {
             SCANLINE_ORDER_LOWER_FIELD_FIRST = 3
         };
 
-        UINT Width = 0;
-        UINT Height = 0;
+        uint32_t Width = 0;
+        uint32_t Height = 0;
         ETEXTURE_FORMAT Format = TEX_FORMAT_UNKNOWN;
-        UINT RefreshRateNumerator = 0;
-        UINT RefreshRateDenominator = 0;
+        uint32_t RefreshRateNumerator = 0;
+        uint32_t RefreshRateDenominator = 0;
         SCALING Scaling = SCALING_UNSPECIFIED;
         SCANLINE_ORDER ScanlineOrder = SCANLINE_ORDER_UNSPECIFIED;
     };

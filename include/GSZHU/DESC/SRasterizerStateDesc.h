@@ -2,6 +2,7 @@
 
 #include <GSZHU/ENUM/EFillMode.h>
 #include <GSZHU/ENUM/ECullMode.h>
+#include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
     // This structure describes the rasterizer state and is part of the GraphicsPipelineDesc.
@@ -12,27 +13,30 @@ namespace GSZHU {
         bool DepthClipEnable = true;
         bool ScissorEnable = false;
         bool AntialiasedLineEnable = false;
-        INT DepthBias = 0;
+        int DepthBias = 0;
         float DepthBiasClamp = 0.f;
         float SlopeScaledDepthBias = 0.f;
 
-        SRasterizerStateDesc() noexcept {}
-        SRasterizerStateDesc(EFILL_MODE _FillMode,
-            ECULL_MODE _CullMode) noexcept 
-            : FillMode(_FillMode)
-            , CullMode(_CullMode)
-        {}
+        SRasterizerStateDesc() noexcept;
+        SRasterizerStateDesc(EFILL_MODE _FillMode, ECULL_MODE _CullMode) noexcept;
 
-        bool operator == (const SRasterizerStateDesc& rhs) const {
-            return FillMode == rhs.FillMode             
-                && CullMode == rhs.CullMode            
-                && FrontCounterClockwise == rhs.FrontCounterClockwise
-                && DepthBias == rhs.DepthBias        
-                && DepthBiasClamp == rhs.DepthBiasClamp    
-                && SlopeScaledDepthBias == rhs.SlopeScaledDepthBias
-                && DepthClipEnable == rhs.DepthClipEnable 
-                && ScissorEnable == rhs.ScissorEnable     
-                && AntialiasedLineEnable == rhs.AntialiasedLineEnable;
+        bool operator==(const SRasterizerStateDesc& rhs) const;
+    };
+}
+
+namespace std {
+    template<>
+    struct hash<GSZHU::SRasterizerStateDesc> {
+        size_t operator()(const GSZHU::SRasterizerStateDesc& Desc) const {
+            return GSZHU::ComputeHash(static_cast<int>(Desc.FillMode),
+                                      static_cast<int>(Desc.CullMode),
+                                      static_cast<int>(Desc.FrontCounterClockwise),
+                                      static_cast<int>(Desc.DepthClipEnable),
+                                      static_cast<int>(Desc.ScissorEnable),
+                                      static_cast<int>(Desc.AntialiasedLineEnable),
+                                      Desc.DepthBias,
+                                      Desc.DepthBiasClamp,
+                                      Desc.SlopeScaledDepthBias);
         }
     };
 }

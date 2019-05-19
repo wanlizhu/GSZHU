@@ -2,31 +2,31 @@
 
 #include <GSZHU/DESC/SRenderTargetBlendDesc.h>
 #include <GSZHU/Constants.h>
+#include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
     // This structure describes the blend state and is part of the GraphicsPipelineDesc.
     struct SBlendStateDesc {
         bool AlphaToCoverageEnable = false; // Specifies whether to use alpha-to-coverage as a multisampling technique 
         bool IndependentBlendEnable = false; // Specifies whether to enable independent blending in simultaneous render targets. 
-        SRenderTargetBlendDesc RenderTargets[MAX_RENDER_TARGETS];
+        SRenderTargetBlendDesc RenderTargetArray[MAX_RENDER_TARGETS];
 
-        SBlendStateDesc() noexcept {}
-        SBlendStateDesc(bool _AlphaToCoverageEnable, bool _IndependentBlendEnable) noexcept
-            : AlphaToCoverageEnable(_AlphaToCoverageEnable)
-            , IndependentBlendEnable(_IndependentBlendEnable)
-        {}
+        SBlendStateDesc() noexcept;
+        SBlendStateDesc(bool _AlphaToCoverageEnable,
+                        bool _IndependentBlendEnable,
+                        const SRenderTargetBlendDesc& RT0 = SRenderTargetBlendDesc()) noexcept;
 
-        bool operator==(const SBlendStateDesc& rhs) const {
-            bool isEqual = true;
-            for (int i = 0; i < MAX_RENDER_TARGETS; ++i)
-                if (!(RenderTargets[i] == rhs.RenderTargets[i])) {
-                    isEqual = false;
-                    break;
-                }
+        bool operator==(const SBlendStateDesc& rhs) const;
+    };
+}
 
-            return  isEqual &&
-                AlphaToCoverageEnable == rhs.AlphaToCoverageEnable
-                && IndependentBlendEnable == rhs.IndependentBlendEnable;
+namespace std {
+    template<>
+    struct hash<GSZHU::SBlendStateDesc> {
+        size_t operator()(const GSZHU::SBlendStateDesc& Desc) const {
+            return GSZHU::ComputeHash(static_cast<int>(Desc.AlphaToCoverageEnable),
+                                      static_cast<int>(Desc.IndependentBlendEnable),
+                                      GSZHU::ComputeArrayHash<GSZHU::SRenderTargetBlendDesc>(Desc.RenderTargetArray, GSZHU::MAX_RENDER_TARGETS));
         }
     };
 }

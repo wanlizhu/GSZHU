@@ -5,40 +5,41 @@
 #include <GSZHU/ENUM/EResourceState.h>
 #include <GSZHU/ITexture.h>
 #include <GSZHU/ENUM/EStateTransitionType.h>
+#include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
     // Resource state transition barrier description
     struct SStateTransitionDesc {
         ITexture* Texture = nullptr;
         IBuffer* Buffer = nullptr;
-        UINT FirstMipLevel = 0;
-        UINT MipLevelsCount = (UINT)-1;
-        UINT FirstArraySlice = 0;
-        UINT ArraySliceCount = (UINT)-1;
+        uint32_t FirstMipLevel = 0;
+        uint32_t MipLevelsCount = (uint32_t)-1;
+        uint32_t FirstArraySlice = 0;
+        uint32_t ArraySliceCount = (uint32_t)-1;
         ERESOURCE_STATE OldState = RESOURCE_STATE_UNKNOWN;
         ERESOURCE_STATE NewState = RESOURCE_STATE_UNKNOWN;
         ESTATE_TRANSITION_TYPE TransitionType = STATE_TRANSITION_TYPE_IMMEDIATE;
         bool UpdateResourceState = false;
 
-        SStateTransitionDesc() noexcept {}
-        SStateTransitionDesc(ITexture* _Texture, ERESOURCE_STATE _OldState, ERESOURCE_STATE _NewState) noexcept 
-            : Texture(_Texture)
-            , OldState(_OldState)
-            , NewState(_NewState)
-        {}
+        SStateTransitionDesc() noexcept;
+        bool operator==(const SStateTransitionDesc& rhs) const;
+    };
+}
 
-        SStateTransitionDesc(ITexture* _Texture, ERESOURCE_STATE _OldState, ERESOURCE_STATE _NewState, bool _UpdateState) noexcept 
-            : Texture(_Texture)
-            , OldState(_OldState)
-            , NewState(_NewState)
-            , UpdateResourceState(_UpdateState)
-        {}
-
-        SStateTransitionDesc(IBuffer* _Buffer, ERESOURCE_STATE _OldState, ERESOURCE_STATE _NewState, bool _UpdateState) noexcept 
-            : Buffer(_Buffer)
-            , OldState(_OldState)
-            , NewState(_NewState)
-            , UpdateResourceState(_UpdateState)
-        {}
+namespace std {
+    template<>
+    struct hash<GSZHU::SStateTransitionDesc> {
+        size_t operator()(const GSZHU::SStateTransitionDesc& Desc) const {
+            return GSZHU::ComputeHash(Desc.Texture,
+                                      Desc.Buffer,
+                                      Desc.FirstMipLevel,
+                                      Desc.MipLevelsCount,
+                                      Desc.FirstArraySlice,
+                                      Desc.ArraySliceCount,
+                                      static_cast<int>(Desc.OldState),
+                                      static_cast<int>(Desc.NewState),
+                                      static_cast<int>(Desc.TransitionType),
+                                      static_cast<int>(Desc.UpdateResourceState));
+        }
     };
 }
