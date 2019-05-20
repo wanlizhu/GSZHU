@@ -9,7 +9,9 @@ namespace GSZHU {
                       , public std::enable_shared_from_this<CObjectBase<INTERFACE>> {
     public:
         CObjectBase(const CObjectBase&) = delete;
-        CObjectBase& operator==(const CObjectBase&) = delete;
+        CObjectBase(CObjectBase&&) = delete;
+        CObjectBase& operator=(const CObjectBase&) = delete;
+        CObjectBase& operator=(CObjectBase&&) = delete;
         ~CObjectBase() = default;
 
     private:
