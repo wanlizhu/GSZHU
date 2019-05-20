@@ -4,7 +4,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SCommandListDesc : public SDeviceObjectAttribs {
+    struct GSZHU_API SCommandListDesc : public SDeviceObjectAttribs {
 
     };
 }

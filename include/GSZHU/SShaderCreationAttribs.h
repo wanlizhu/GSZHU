@@ -5,7 +5,7 @@
 #include <GSZHU/ENUM/EShaderSourceLanguage.h>
 
 namespace GSZHU {
-    struct SShaderCreationAttribs {
+    struct GSZHU_API SShaderCreationAttribs {
         union {
             const char* FilePath;
             const char* SourceCode;

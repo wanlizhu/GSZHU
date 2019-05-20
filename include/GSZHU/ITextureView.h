@@ -8,7 +8,7 @@ namespace GSZHU {
     // To create a texture view, call ITexture::CreateView().
     // Texture view holds strong references to the texture.
     // The texture view will also keep a strong reference to the texture sampler, if any is set.
-    class ITextureView : public IDeviceObject {
+    class GSZHU_API ITextureView : public IDeviceObject {
     public:
         using DESC = STextureDesc;
 

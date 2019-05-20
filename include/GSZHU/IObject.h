@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    class IObject {
+    class GSZHU_API IObject {
     public:
 
     };

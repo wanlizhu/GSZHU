@@ -12,7 +12,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct STextureDesc : public SDeviceObjectAttribs {
+    struct GSZHU_API STextureDesc : public SDeviceObjectAttribs {
         ERESOURCE_DIMENSION Type = RESOURCE_DIM_UNDEFINED;
         uint32_t Width = 0;
         uint32_t Height = 0;

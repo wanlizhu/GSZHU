@@ -5,15 +5,12 @@
 
 namespace GSZHU {
     // This structure is used by IRenderDevice::CreatePipelineState().
-    struct SInputLayoutDesc {
+    struct GSZHU_API SInputLayoutDesc {
         const SLayoutElement* ElementArray = nullptr;
         uint32_t NumElements = 0;
 
-        SInputLayoutDesc() noexcept {}
-        SInputLayoutDesc(const SLayoutElement* _Elements,  uint32_t _NumElements) noexcept
-            : ElementArray(_Elements)
-            , NumElements(_NumElements)
-        {}
+        SInputLayoutDesc() noexcept;
+        SInputLayoutDesc(const SLayoutElement* _Elements, uint32_t _NumElements) noexcept;
 
         bool operator==(const SInputLayoutDesc& rhs) const;
     };

@@ -39,6 +39,6 @@ namespace GSZHU {
         return Hash;
     }
 
-    std::string ToString(const std::wstring& WStr);
-    std::wstring ToWString(const std::string& Str);
+    GSZHU_API std::string ToString(const std::wstring& WStr);
+    GSZHU_API std::wstring ToWString(const std::string& Str);
 }

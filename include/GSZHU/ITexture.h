@@ -7,7 +7,7 @@
 #include <GSZHU/ENUM/EResourceState.h>
 
 namespace GSZHU {
-    class ITexture : public IDeviceObject {
+    class GSZHU_API ITexture : public IDeviceObject {
     public:
         using DESC = STextureDesc;
 

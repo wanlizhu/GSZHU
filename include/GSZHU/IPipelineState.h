@@ -5,7 +5,7 @@
 #include <GSZHU/IShaderResourceBinding.h>
 
 namespace GSZHU {
-    class IPipelineState : public IDeviceObject {
+    class GSZHU_API IPipelineState : public IDeviceObject {
     public:
         using DESC = SPipelineStateDesc;
 

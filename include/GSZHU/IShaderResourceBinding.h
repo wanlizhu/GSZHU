@@ -6,7 +6,7 @@
 #include <GSZHU/ENUM/EShaderType.h>
 
 namespace GSZHU {
-    class IShaderResourceBinding : public IObject
+    class GSZHU_API IShaderResourceBinding : public IObject
     {
     public:
         virtual IPipelineState* GetPipelineState() = 0;

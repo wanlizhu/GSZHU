@@ -3,13 +3,13 @@
 #include <GSZHU/ENUM/EDeviceType.h>
 
 namespace GSZHU {
-    struct SSamplerCaps {
+    struct GSZHU_API SSamplerCaps {
         bool BorderSamplingModeSupported = true;
         bool AnisotropicFilteringSupported = true;
         bool LODBiasSupported = true;
     };
 
-    struct STextureCaps {
+    struct GSZHU_API STextureCaps {
         bool Texture1DSupported = true;
         bool Texture1DArraySupported = true;
         bool Texture2DMSSupported = true;
@@ -18,7 +18,7 @@ namespace GSZHU {
         bool CubemapArraysSupported = true;
     };
 
-    struct SDeviceCaps {
+    struct GSZHU_API SDeviceCaps {
         struct NDCAttribs {
             const float MinZ;          // Minimum z value of normalized device coordinate space
             const float ZtoDepthScale; // NDC z to depth scale

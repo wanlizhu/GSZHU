@@ -1,6 +1,9 @@
 #include <GSZHU/SBufferFormat.h>
 
 namespace GSZHU {
+    SBufferFormat::SBufferFormat() noexcept
+    {}
+
     SBufferFormat::SBufferFormat(EVALUE_TYPE _ValueType, uint8_t _NumComponents) noexcept 
         : ValueType(_ValueType)
         , NumComponents(_NumComponents)

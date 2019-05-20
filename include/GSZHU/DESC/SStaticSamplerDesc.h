@@ -4,7 +4,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SStaticSamplerDesc{
+    struct GSZHU_API SStaticSamplerDesc {
         const char* SamplerName = nullptr;
         SSamplerDesc SamplerDesc;
 

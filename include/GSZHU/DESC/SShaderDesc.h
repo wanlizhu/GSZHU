@@ -8,7 +8,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SShaderDesc : SDeviceObjectAttribs {
+    struct GSZHU_API SShaderDesc : public SDeviceObjectAttribs {
         ESHADER_TYPE ShaderType = SHADER_TYPE_VERTEX;
         bool CacheCompiledShader = false;
         ESHADER_PROFILE ShaderProfile = SHADER_PROFILE_DEFAULT;

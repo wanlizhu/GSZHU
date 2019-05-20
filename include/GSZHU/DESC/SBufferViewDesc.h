@@ -6,7 +6,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SBufferViewDesc : public SDeviceObjectAttribs {
+    struct GSZHU_API SBufferViewDesc : public SDeviceObjectAttribs {
         EBUFFER_VIEW_TYPE ViewType = BUFFER_VIEW_UNDEFINED;
         SBufferFormat Format;
         uint32_t ByteOffset = 0;

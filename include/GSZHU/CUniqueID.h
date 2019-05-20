@@ -6,7 +6,7 @@
 namespace GSZHU {
     // Template switch is used to have distinct counters for unrelated groups of objects
      template<typename GROUP>
-     class CUNIQUE_ID {
+     class GSZHU_API CUNIQUE_ID {
      public:
          CUNIQUE_ID()
              : mID(0)
@@ -37,7 +37,7 @@ namespace GSZHU {
          }
 
      private:
-         mutable ATOMIC_LONG mID = 0;
+         mutable std::atomic<long> mID = 0;
          mutable bool mInited = false;
      };
 }

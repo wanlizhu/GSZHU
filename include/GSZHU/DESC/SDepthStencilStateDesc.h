@@ -5,7 +5,7 @@
 
 namespace GSZHU {
     // This structure describes the depth stencil state and is part of the GraphicsPipelineDesc.
-    struct SDepthStencilStateDesc {
+    struct GSZHU_API SDepthStencilStateDesc {
         bool DepthEnable = true;
         bool DepthWriteEnable = true;
         ECOMPARISON_FUNCTION DepthFunc = COMPARISON_FUNC_LESS;

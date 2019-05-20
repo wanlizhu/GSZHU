@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
     enum class LOG_SEVERITY : int {
@@ -14,5 +15,5 @@ namespace GSZHU {
     };
 
     using LOG_MESSAGE_CALLBACK = void(*)(LOG_SEVERITY Severity, const char* Message, const char* Func, const char* File, int Line);
-    void SetLogCallback(LOG_MESSAGE_CALLBACK Callback);
+    GSZHU_API void SetLogCallback(LOG_MESSAGE_CALLBACK Callback);
 }

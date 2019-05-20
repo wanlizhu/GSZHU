@@ -8,7 +8,7 @@
 
 namespace GSZHU {
     // This structure describes the sampler state which is used in a call to IRenderDevice::CreateSampler() to create a sampler object.
-    struct SSamplerDesc : public SDeviceObjectAttribs {
+    struct GSZHU_API SSamplerDesc : public SDeviceObjectAttribs {
         FILTER_TYPE MinFilter = FILTER_TYPE_LINEAR;
         FILTER_TYPE MagFilter = FILTER_TYPE_LINEAR;
         FILTER_TYPE MipFilter = FILTER_TYPE_LINEAR;

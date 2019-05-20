@@ -4,7 +4,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SComputePipelineDesc {
+    struct GSZHU_API SComputePipelineDesc {
         IShader* ShaderCS = nullptr;
 
         SComputePipelineDesc() noexcept;

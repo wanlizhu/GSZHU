@@ -8,7 +8,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SBufferDesc : public SDeviceObjectAttribs {
+    struct GSZHU_API SBufferDesc : public SDeviceObjectAttribs {
         uint32_t SizeInBytes = 0; // For a uniform buffer, this must be multiple of 16.
         EBIND_FLAGS BindFlags = BIND_NONE;
         EUSAGE Usage = USAGE_DEFAULT;

@@ -4,7 +4,7 @@
 #include <GSZHU/IDeviceObject.h>
 
 namespace GSZHU {
-    class ISampler : public IDeviceObject {
+    class GSZHU_API ISampler : public IDeviceObject {
     public:
         using DESC = SSamplerDesc;
 

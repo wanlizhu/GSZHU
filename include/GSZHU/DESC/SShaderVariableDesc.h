@@ -4,7 +4,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SShaderVariableDesc {
+    struct GSZHU_API SShaderVariableDesc {
         const char* Name = nullptr;
         ESHADER_VARIABLE_TYPE Type = SHADER_VARIABLE_TYPE_STATIC;
 

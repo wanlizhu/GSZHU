@@ -8,7 +8,7 @@
 
 namespace GSZHU {
     // This structure is used by IRenderDevice::Draw().
-    struct SDrawAttribs {
+    struct GSZHU_API SDrawAttribs {
         union {
             uint32_t NumVertices = 0; // For a non-indexed draw call
             uint32_t NumIndices; // For an indexed draw call
@@ -30,28 +30,11 @@ namespace GSZHU {
         uint32_t FirstInstanceLocation = 0;
         IBuffer* IndirectDrawAttribs = nullptr;
 
-        SDrawAttribs() noexcept {}
-        SDrawAttribs(uint32_t _NumVertices, EDRAW_FLAGS _Flags) noexcept
-            : NumVertices(_NumVertices)
-            , DrawFlags(_Flags)
-        {}
-        SDrawAttribs(uint32_t _NumIndices, EVALUE_TYPE  _IndexType, EDRAW_FLAGS  _Flags) noexcept 
-            : NumIndices(_NumIndices)
-            , IsIndexed(true)
-            , IndexType(_IndexType)
-            , DrawFlags(_Flags)
-        {}
-        SDrawAttribs(IBuffer* _IndirectDrawAttribs, EDRAW_FLAGS _Flags, ERESOURCE_STATE_TRANSITION_MODE _IndirectAttribsBufferStateTransitionMode) noexcept 
-            : DrawFlags(_Flags)
-            , IndirectAttribsBufferStateTransitionMode(_IndirectAttribsBufferStateTransitionMode)
-            , IndirectDrawAttribs(_IndirectDrawAttribs)
-        {}
-        SDrawAttribs(IBuffer* _pIndirectDrawAttribs, EVALUE_TYPE _IndexType, EDRAW_FLAGS _Flags, ERESOURCE_STATE_TRANSITION_MODE _IndirectAttribsBufferStateTransitionMode) noexcept 
-            : IsIndexed(true)
-            , IndexType(_IndexType)
-            , DrawFlags(_Flags)
-            , IndirectAttribsBufferStateTransitionMode(_IndirectAttribsBufferStateTransitionMode)
-        {}
+        SDrawAttribs() noexcept;
+        SDrawAttribs(uint32_t _NumVertices, EDRAW_FLAGS _Flags) noexcept;
+        SDrawAttribs(uint32_t _NumIndices, EVALUE_TYPE  _IndexType, EDRAW_FLAGS  _Flags) noexcept;
+        SDrawAttribs(IBuffer* _IndirectDrawAttribs, EDRAW_FLAGS _Flags, ERESOURCE_STATE_TRANSITION_MODE _IndirectAttribsBufferStateTransitionMode) noexcept;
+        SDrawAttribs(IBuffer* _pIndirectDrawAttribs, EVALUE_TYPE _IndexType, EDRAW_FLAGS _Flags, ERESOURCE_STATE_TRANSITION_MODE _IndirectAttribsBufferStateTransitionMode) noexcept;
     };
 
 }

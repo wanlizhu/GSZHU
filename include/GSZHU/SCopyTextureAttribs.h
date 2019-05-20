@@ -6,7 +6,7 @@
 
 namespace GSZHU {
     // This structure is used by IDeviceContext::CopyTexture().
-    struct SCopyTextureAttribs {
+    struct GSZHU_API SCopyTextureAttribs {
         ITexture* SrcTexture = nullptr;
         uint32_t SrcMipLevel = 0;
         uint32_t SrcSlice = 0;
@@ -21,13 +21,8 @@ namespace GSZHU {
         uint32_t DstZ = 0;
         ERESOURCE_STATE_TRANSITION_MODE DstTextureTransitionMode = RESOURCE_STATE_TRANSITION_MODE_NONE;
 
-        SCopyTextureAttribs() noexcept {}
+        SCopyTextureAttribs() noexcept;
         SCopyTextureAttribs(ITexture* _SrcTexture, ERESOURCE_STATE_TRANSITION_MODE _SrcTextureTransitionMode, 
-                            ITexture* _DstTexture, ERESOURCE_STATE_TRANSITION_MODE _DstTextureTransitionMode) noexcept 
-            : SrcTexture(_SrcTexture)
-            , SrcTextureTransitionMode(_SrcTextureTransitionMode)
-            , DstTexture(_DstTexture)
-            , DstTextureTransitionMode(_DstTextureTransitionMode)
-        {}
+                            ITexture* _DstTexture, ERESOURCE_STATE_TRANSITION_MODE _DstTextureTransitionMode) noexcept  ;
     };
 }

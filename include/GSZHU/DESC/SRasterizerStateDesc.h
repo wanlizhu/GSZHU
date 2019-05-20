@@ -6,7 +6,7 @@
 
 namespace GSZHU {
     // This structure describes the rasterizer state and is part of the GraphicsPipelineDesc.
-    struct SRasterizerStateDesc {
+    struct GSZHU_API SRasterizerStateDesc {
         EFILL_MODE FillMode = FILL_MODE_SOLID;
         ECULL_MODE CullMode = CULL_MODE_BACK;
         bool FrontCounterClockwise = false;

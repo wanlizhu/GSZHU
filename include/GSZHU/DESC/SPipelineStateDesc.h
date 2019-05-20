@@ -7,7 +7,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SPipelineStateDesc : public SDeviceObjectAttribs {
+    struct GSZHU_API SPipelineStateDesc : public SDeviceObjectAttribs {
         bool IsComputePipeline = false;
         uint32_t SRBAllocationGranularity = 1;
         uint64_t CommandQueueMask = 1;

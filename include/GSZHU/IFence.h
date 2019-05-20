@@ -4,7 +4,7 @@
 #include <GSZHU/DESC/SFenceDesc.h>
 
 namespace GSZHU {
-    class IFence : public IDeviceObject {
+    class GSZHU_API IFence : public IDeviceObject {
     public:
         using DESC = SFenceDesc;
 

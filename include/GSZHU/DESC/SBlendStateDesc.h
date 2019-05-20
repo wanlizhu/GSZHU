@@ -6,7 +6,7 @@
 
 namespace GSZHU {
     // This structure describes the blend state and is part of the GraphicsPipelineDesc.
-    struct SBlendStateDesc {
+    struct GSZHU_API SBlendStateDesc {
         bool AlphaToCoverageEnable = false; // Specifies whether to use alpha-to-coverage as a multisampling technique 
         bool IndependentBlendEnable = false; // Specifies whether to enable independent blending in simultaneous render targets. 
         SRenderTargetBlendDesc RenderTargetArray[MAX_RENDER_TARGETS];

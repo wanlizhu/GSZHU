@@ -2,10 +2,11 @@
 
 #include <GSZHU/BasicTypes.h>
 #include <GSZHU/CUniqueID.h>
+#include "CObjectBase.h"
 
 namespace GSZHU {
     template<typename INTERFACE, typename RENDER_DEVICE>
-    class CDeviceObjectBase : public INTERFACE {
+    class CDeviceObjectBase : public CObjectBase<INTERFACE> {
     public:
         using BASE = INTERFACE;
         using OBJECT_DESC = typename INTERFACE::DESC;

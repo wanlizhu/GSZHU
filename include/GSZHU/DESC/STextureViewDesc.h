@@ -8,7 +8,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct STextureViewDesc : public SDeviceObjectAttribs {
+    struct GSZHU_API STextureViewDesc : public SDeviceObjectAttribs {
         ETEXTURE_VIEW_TYPE ViewType = TEXTURE_VIEW_UNDEFINED;
         ERESOURCE_DIMENSION TextureDim = RESOURCE_DIM_UNDEFINED;
         ETEXTURE_FORMAT Format = TEX_FORMAT_UNKNOWN;

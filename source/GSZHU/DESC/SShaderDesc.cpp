@@ -14,12 +14,12 @@ namespace GSZHU {
             return false;
         }
 
-        for (int i = 0; i < NumVariables; i++) {
+        for (unsigned int i = 0; i < NumVariables; i++) {
             if (!(VariableArray[i] == rhs.VariableArray[i]))
                 return false;
         }
 
-        for (int i = 0; i < NumStaticSamplers; i++) {
+        for (unsigned int i = 0; i < NumStaticSamplers; i++) {
             if (!(StaticSamplerArray[i] == rhs.StaticSamplerArray[i]))
                 return false;
         }

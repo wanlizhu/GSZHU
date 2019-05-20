@@ -2,9 +2,10 @@
 
 #include <GSZHU/BasicTypes.h>
 #include <GSZHU/ENUM/ETextureFormat.h>
+#include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SSwapChainDesc {
+    struct GSZHU_API SSwapChainDesc {
         uint32_t Width = 0;
         uint32_t Height = 0;
         ETEXTURE_FORMAT ColorBufferFormat = TEX_FORMAT_RGBA8_UNORM_SRGB;
@@ -14,15 +15,11 @@ namespace GSZHU {
         float DefaultDepthValue = 1.f;
         uint8_t DefaultStencilValue = 0;
 
-        SSwapChainDesc() noexcept {}
+        SSwapChainDesc() noexcept;
         SSwapChainDesc(uint32_t _Width,
                        uint32_t _Height,
                        ETEXTURE_FORMAT _ColorBufferFormat,
-                       ETEXTURE_FORMAT _DepthBufferFormat) 
-            : Width(_Width)
-            , Height(_Height)
-            , ColorBufferFormat(_ColorBufferFormat)
-        {}
+                       ETEXTURE_FORMAT _DepthBufferFormat) noexcept;
 
         bool operator==(const SSwapChainDesc& rhs) const;
     };

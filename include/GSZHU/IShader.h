@@ -5,7 +5,7 @@
 #include <GSZHU/IResourceTable.h>
 
 namespace GSZHU {
-    class IShader : public IDeviceObject {
+    class GSZHU_API IShader : public IDeviceObject {
     public:
         using DESC = SShaderDesc;
 

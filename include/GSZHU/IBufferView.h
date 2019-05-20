@@ -5,7 +5,7 @@
 #include <GSZHU/IBuffer.h>
 
 namespace GSZHU {
-    class IBufferView : public IDeviceObject {
+    class GSZHU_API IBufferView : public IDeviceObject {
     public:
         using DESC = SBufferViewDesc;
 

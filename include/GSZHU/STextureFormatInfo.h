@@ -4,11 +4,11 @@
 #include <GSZHU/STextureFormatAttribs.h>
 
 namespace GSZHU {
-    struct STextureFormatInfo : public STextureFormatAttribs {
+    struct GSZHU_API STextureFormatInfo : public STextureFormatAttribs {
         bool Supported = false; // Indicates if the format is supported by the device
     };
 
-    struct STextureFormatInfoEXT : public STextureFormatInfo {
+    struct GSZHU_API STextureFormatInfoEXT : public STextureFormatInfo {
         bool Filterable = false;
         bool ColorRenderable = false;
         bool DepthRenderable = false;

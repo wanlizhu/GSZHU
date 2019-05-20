@@ -20,7 +20,7 @@
 #include <GSZHU/STextureFormatInfo.h>
 
 namespace GSZHU {
-    class IRenderDevice : public IObject {
+    class GSZHU_API IRenderDevice : public IObject {
     public:
         virtual IBuffer* CreateBuffer(const SBufferDesc& BufferDesc, const SBufferData* BufferData) = 0;
         virtual IShader* CreateShader(const SShaderCreationAttribs& CreationAttribs) = 0;

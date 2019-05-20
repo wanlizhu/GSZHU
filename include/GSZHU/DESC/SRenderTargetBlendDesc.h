@@ -8,7 +8,7 @@
 
 namespace GSZHU {
     // This structure is used by BlendStateDesc to describe blend states for render targets
-    struct SRenderTargetBlendDesc {
+    struct GSZHU_API SRenderTargetBlendDesc {
         bool BlendEnable = false;
         bool LogicOperationEnable = false;
 

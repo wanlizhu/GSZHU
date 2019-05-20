@@ -12,7 +12,7 @@
 
 namespace GSZHU {
     // This structure describes the graphics pipeline state and is part of the PipelineStateDesc structure.
-    struct SGraphicsPipelineDesc {
+    struct GSZHU_API SGraphicsPipelineDesc {
         IShader* ShaderVS = nullptr;
         IShader* ShaderPS = nullptr;
         IShader* ShaderDS = nullptr;

@@ -7,7 +7,7 @@
 
 namespace GSZHU {
     // The swap chain is created by a platform-dependent function
-    class ISwapChain : public IObject {
+    class GSZHU_API ISwapChain : public IObject {
     public:
         using DESC = SSwapChainDesc;
 

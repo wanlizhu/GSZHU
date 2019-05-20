@@ -37,7 +37,7 @@
 namespace GSZHU {
     // Device context keeps strong references to all objects currently bound to the pipeline
     // The context also keeps strong reference to the device and the swap chain.
-    class IDeviceContext : public IObject {
+    class GSZHU_API IDeviceContext : public IObject {
     public:
         virtual void SetPipelineState(IPipelineState* PipelineState) = 0;
         virtual void TransitionShaderResources(IPipelineState* PipelineState, IShaderResourceBinding* ShaderResourceBinding) = 0;

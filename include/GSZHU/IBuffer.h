@@ -8,7 +8,7 @@
 namespace GSZHU {
     class IBufferView;
 
-    class IBuffer : public IDeviceObject {
+    class GSZHU_API IBuffer : public IDeviceObject {
     public:
         using DESC = SBufferDesc;
 

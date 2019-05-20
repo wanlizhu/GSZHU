@@ -3,7 +3,7 @@
 #include <GSZHU/IDeviceObject.h>
 
 namespace GSZHU {
-    class IResourceTable : public IObject {
+    class GSZHU_API IResourceTable : public IObject {
     public:
         struct SResourceEntry {
             const char* Name = nullptr;

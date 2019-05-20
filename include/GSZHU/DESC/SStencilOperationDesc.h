@@ -6,7 +6,7 @@
 
 namespace GSZHU {
     // It is used by DepthStencilStateDesc to describe the stencil operations for the front and back facing polygons.
-    struct SStencilOpDesc {
+    struct GSZHU_API SStencilOpDesc {
         ESTENCIL_OP StencilFailOp = STENCIL_OP_KEEP;
         ESTENCIL_OP StencilDepthFailOp = STENCIL_OP_KEEP;
         ESTENCIL_OP StencilPassOp = STENCIL_OP_KEEP;

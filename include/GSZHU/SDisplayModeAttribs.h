@@ -4,7 +4,7 @@
 #include <GSZHU/ENUM/ETextureFormat.h>
 
 namespace GSZHU {
-    struct SDisplayModeAttribs {
+    struct GSZHU_API SDisplayModeAttribs {
         enum SCALING {
             SCALING_UNSPECIFIED = 0,
             SCALING_CENTERED = 1,

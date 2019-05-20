@@ -3,7 +3,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SSampleDesc {
+    struct GSZHU_API SSampleDesc {
         uint8_t Count = 1;
         uint8_t Quality = 0;
 

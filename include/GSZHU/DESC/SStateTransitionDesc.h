@@ -9,7 +9,7 @@
 
 namespace GSZHU {
     // Resource state transition barrier description
-    struct SStateTransitionDesc {
+    struct GSZHU_API SStateTransitionDesc {
         ITexture* Texture = nullptr;
         IBuffer* Buffer = nullptr;
         uint32_t FirstMipLevel = 0;

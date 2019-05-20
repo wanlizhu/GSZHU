@@ -43,6 +43,60 @@ namespace GSZHU {
     }
 
     template<typename INTERFACE, typename RENDER_DEVICE>
+    IShader* CPipelineStateBase<INTERFACE, RENDER_DEVICE>::GetShaderVS() const {
+        for (auto Shader : mShaders) {
+            if (Shader->GetDesc().ShaderType == SHADER_TYPE_VERTEX)
+                return Shader;
+        }
+        return nullptr;
+    }
+
+    template<typename INTERFACE, typename RENDER_DEVICE>
+    IShader* CPipelineStateBase<INTERFACE, RENDER_DEVICE>::GetShaderPS() const {
+        for (auto Shader : mShaders) {
+            if (Shader->GetDesc().ShaderType == SHADER_TYPE_PIXEL)
+                return Shader;
+        }
+        return nullptr;
+    }
+
+    template<typename INTERFACE, typename RENDER_DEVICE>
+    IShader* CPipelineStateBase<INTERFACE, RENDER_DEVICE>::GetShaderGS() const {
+        for (auto Shader : mShaders) {
+            if (Shader->GetDesc().ShaderType == SHADER_TYPE_GEOMETRY)
+                return Shader;
+        }
+        return nullptr;
+    }
+
+    template<typename INTERFACE, typename RENDER_DEVICE>
+    IShader* CPipelineStateBase<INTERFACE, RENDER_DEVICE>::GetShaderDS() const {
+        for (auto Shader : mShaders) {
+            if (Shader->GetDesc().ShaderType == SHADER_TYPE_DOMAIN)
+                return Shader;
+        }
+        return nullptr;
+    }
+
+    template<typename INTERFACE, typename RENDER_DEVICE>
+    IShader* CPipelineStateBase<INTERFACE, RENDER_DEVICE>::GetShaderHS() const {
+        for (auto Shader : mShaders) {
+            if (Shader->GetDesc().ShaderType == SHADER_TYPE_HULL)
+                return Shader;
+        }
+        return nullptr;
+    }
+
+    template<typename INTERFACE, typename RENDER_DEVICE>
+    IShader* CPipelineStateBase<INTERFACE, RENDER_DEVICE>::GetShaderCS() const {
+        for (auto Shader : mShaders) {
+            if (Shader->GetDesc().ShaderType == SHADER_TYPE_COMPUTE)
+                return Shader;
+        }
+        return nullptr;
+    }
+
+    template<typename INTERFACE, typename RENDER_DEVICE>
     size_t CPipelineStateBase<INTERFACE, RENDER_DEVICE>::GetShaderResourceLayoutHash() const {
         return mShaderResourceLayoutHash;
     }

@@ -3,7 +3,7 @@
 #include <GSZHU/IDeviceObject.h>
 
 namespace GSZHU {
-    class ICommandList : public IDeviceObject {
+    class GSZHU_API ICommandList : public IDeviceObject {
     public:
 
     };

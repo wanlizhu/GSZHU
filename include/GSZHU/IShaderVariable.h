@@ -5,7 +5,7 @@
 #include <GSZHU/IDeviceObject.h>
 
 namespace GSZHU {
-    class IShaderVariable : public IObject {
+    class GSZHU_API IShaderVariable : public IObject {
     public:
         virtual void Set(IDeviceObject* Object) = 0;
         virtual void SetArray(IDeviceObject* const* Objects, uint32_t FirstElement, uint32_t NumElements) = 0;

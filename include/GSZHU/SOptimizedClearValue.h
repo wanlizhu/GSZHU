@@ -5,20 +5,12 @@
 #include <GSZHU/BasicTypes.h>
 
 namespace GSZHU {
-    struct SOptimizedClearValue {
+    struct GSZHU_API SOptimizedClearValue {
         ETEXTURE_FORMAT Format = TEX_FORMAT_UNKNOWN;
         float Color[4] = { 0, 0, 0, 0 };
         SDepthStencilClearValue DepthStencil;
 
-        bool operator==(const SOptimizedClearValue& rhs) const {
-            return Format == rhs.Format 
-                && FLT_EQ(Color[0] == rhs.Color[0]) 
-                && FLT_EQ(Color[1] == rhs.Color[1]) 
-                && FLT_EQ(Color[2] == rhs.Color[2]) 
-                && FLT_EQ(Color[3] == rhs.Color[3]) 
-                && DepthStencil.Depth == rhs.DepthStencil.Depth
-                && DepthStencil.Stencil == rhs.DepthStencil.Stencil;
-        }
+        bool operator==(const SOptimizedClearValue& rhs) const;
     };
 }
 

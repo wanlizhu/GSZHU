@@ -5,7 +5,7 @@
 #include <GSZHU/BasicTools.h>
 
 namespace GSZHU {
-    struct SFenceDesc : public SDeviceObjectAttribs {
+    struct GSZHU_API SFenceDesc : public SDeviceObjectAttribs {
 
     };
 }

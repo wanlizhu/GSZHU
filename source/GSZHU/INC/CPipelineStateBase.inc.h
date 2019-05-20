@@ -18,16 +18,16 @@ namespace GSZHU {
 
         virtual const uint32_t* GetBufferStrides() const;
         uint32_t GetNumBufferSlots() const;
-        IShader* const* GetShaders() const;
-        uint32_t GetNumShaders() const;
         size_t GetShaderResourceLayoutHash() const;
         virtual void BindShaderResources(IResourceTable* ResourceTable, uint32_t Flags) override;
-        template<typename Class, uint32_t Type> IShader* GetShader() const {
-            auto Iter = std::find_if(mShaders.begin(), mShaders.end(), [&](const IShader*& Item) {
-                return Item->GetDesc().ShaderType == Type;
-            });
-            return dynamic_cast<Class>(Iter ? *Iter : nullptr);
-        }
+        IShader* const* GetShaders() const;
+        uint32_t GetNumShaders() const;
+        IShader* GetShaderVS() const;
+        IShader* GetShaderPS() const;
+        IShader* GetShaderGS() const;
+        IShader* GetShaderDS() const;
+        IShader* GetShaderHS() const;
+        IShader* GetShaderCS() const;
 
     protected:
         std::vector<SLayoutElement> mLayoutElements;
