@@ -21,23 +21,17 @@ namespace GSZHU {
             typedef CSTDAllocator<U, ALLOCATOR> other;
         };
 
-        CSTDAllocator(ALLOCATOR* Allocator, const char* Desc, const char* File, int Line) noexcept
+        CSTDAllocator(ALLOCATOR* Allocator) noexcept
             : mAllocator(Allocator)
-            , mDesc(Desc)
-            , mFile(File)
-            , mLine(Line)
         {}
 
         template<typename U>
         CSTDAllocator(const CSTDAllocator<U, ALLOCATOR>& Other) noexcept
             : mAllocator(Other.mAllocator)
-            , mDesc(Other.mDesc)
-            , mFile(Other.mFile)
-            , mLine(Other.mLine)
         {}
 
         T* allocate(std::size_t count) {
-            return reinterpret_cast<T*>(mAllocator->Allocate(count * sizeof(T), mDesc.c_str(), mFile.c_str(), mLine));
+            return reinterpret_cast<T*>(mAllocator->Allocate(count * sizeof(T)));
         }
 
         pointer address(reference ref) { return &ref; }
@@ -56,13 +50,7 @@ namespace GSZHU {
 
     public:
         ALLOCATOR* mAllocator = nullptr;
-        const std::string mDesc;
-        const std::string mFile;
-        const int mLine;
     };
-
-#define STD_ALLOCATOR(Type, Allocator, Desc) CSTDAllocator<Type, IMemoryAllocator>(Allocator, Desc, __FILE__, __LINE__)
-
 
     template <class T, class U, class A>
     bool operator==(const CSTDAllocator<T, A>&left, const CSTDAllocator<U, A>&right) {

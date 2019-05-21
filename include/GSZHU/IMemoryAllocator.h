@@ -5,7 +5,7 @@
 namespace GSZHU {
     class GSZHU_API IMemoryAllocator {
     public:
-        virtual void* Allocate(size_t Size, const char* Desc, const char* File, int Line) = 0;
+        virtual void* Allocate(size_t Size, size_t Align = 0) = 0;
         virtual void Free(void* Ptr) = 0;
     };
 }

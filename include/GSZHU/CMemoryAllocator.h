@@ -11,7 +11,7 @@ namespace GSZHU {
         CMemoryAllocator& operator=(const CMemoryAllocator&) = delete;
         CMemoryAllocator& operator=(CMemoryAllocator&&) = delete;
 
-        virtual void* Allocate(size_t Size, const char* Desc, const char* File, int Line) override;
+        virtual void* Allocate(size_t Size, size_t Align = 0) override;
         virtual void Free(void* Ptr) override;
     };
 }

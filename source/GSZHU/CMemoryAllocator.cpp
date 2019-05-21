@@ -1,7 +1,7 @@
 #include <GSZHU/CMemoryAllocator.h>
 
 namespace GSZHU {
-    void* CMemoryAllocator::Allocate(size_t Size, const char* Desc, const char* File, int Line) {
+    void* CMemoryAllocator::Allocate(size_t Size) {
         return new char[Size];
     }
 
