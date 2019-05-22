@@ -1,7 +1,7 @@
 #include <GSZHU/CMemoryAllocator.h>
 
 namespace GSZHU {
-    void* CMemoryAllocator::Allocate(size_t Size) {
+    void* CMemoryAllocator::Allocate(size_t Size, size_t Align) {
         return new char[Size];
     }
 
