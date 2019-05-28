@@ -5,7 +5,6 @@
 namespace GSZHU {
     class IUserInput : public CManagedAPI<IUserInput> {
     public:
-        virtual void OnRender() = 0;
         virtual void OnKeyDown() = 0;
         virtual void OnKeyUp() = 0;
         virtual void OnMouseButtonDown() = 0;
