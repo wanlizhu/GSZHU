@@ -51,6 +51,7 @@ if (WIN32 AND MSVC)
     add_definitions(-D_SCL_SECURE_NO_WARNINGS)
     add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
     add_definitions(-DNOMINMAX)
+    add_definitions(-DWIN32_LEAN_AND_MEAN)
     add_definitions(-DGSZHU_OS_WINDOWS)
     list(APPEND GSZHU_RESOURCE_FILES "resources/Win32/GSZHU.rc" 
                                      "resources/Win32/app_icon.ico" 

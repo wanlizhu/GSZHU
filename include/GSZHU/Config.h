@@ -24,6 +24,9 @@
 namespace GSZHU {
     typedef std::string STRING;
     typedef std::wstring WSTRING;
+    typedef std::array<int, 2> INT2;
+    typedef std::array<int, 3> INT3;
+    typedef std::array<int, 4> INT4;
     typedef std::vector<std::string> STRING_LIST;
     typedef std::unordered_map<std::string, std::string> STRING_MAP;
 
