@@ -1,5 +1,5 @@
 #include <catch2/catch.hpp>
-#include "GSZHU/INC/CObjectPool.h"
+#include <GSZHU/CObjectPool.h>
 #include <cstdint>
 #include <functional>
 #include <memory>

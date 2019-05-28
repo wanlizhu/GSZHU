@@ -1,12 +1,11 @@
 #pragma once
 
-#include <GSZHU/BasicTypes.h>
 #include <atomic>
 
 namespace GSZHU {
     // Template switch is used to have distinct counters for unrelated groups of objects
      template<typename GROUP>
-     class GSZHU_API CUNIQUE_ID {
+     class CUNIQUE_ID {
      public:
          CUNIQUE_ID()
              : mID(0)
@@ -27,7 +26,7 @@ namespace GSZHU {
              return *this;
          }
 
-         ATOMIC_LONG GetID() const {
+         std::atomic<long> GetID() const {
              if (!mInited) {
                  static ATOMIC_LONG smGlobalCounter;
                  mID = ++smGlobalCounter;
