@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GSZHU/CBuilderBase.h>
+#include "CBuilderBase.h"
 
 namespace GSZHU {
     template<typename T>
@@ -10,8 +10,8 @@ namespace GSZHU {
 
     template<typename T>
     template<typename ... ARGS>
-    CBuilderBase<T>::CBuilderBase(ARGS&& ... Args) noexcept
-        : mImpl(new T(std::forward<ARGS>(Args)...)) {
+    CBuilderBase<T>::CBuilderBase(ARGS&& ... args) noexcept
+        : mImpl(new T(std::forward<ARGS>(args)...)) {
     }
 
     template<typename T>
@@ -20,13 +20,13 @@ namespace GSZHU {
     }
 
     template<typename T>
-    CBuilderBase<T>::CBuilderBase(CBuilderBase const& RHS) noexcept
-        : mImpl(new T(*RHS.mImpl)) {
+    CBuilderBase<T>::CBuilderBase(CBuilderBase const& rhs) noexcept
+        : mImpl(new T(*rhs.mImpl)) {
     }
 
     template<typename T>
-    CBuilderBase<T>& CBuilderBase<T>::operator=(CBuilderBase<T> const& RHS) noexcept {
-        *mImpl = *RHS.mImpl;
+    CBuilderBase<T>& CBuilderBase<T>::operator=(CBuilderBase<T> const& rhs) noexcept {
+        *mImpl = *rhs.mImpl;
         return *this;
     }
 }

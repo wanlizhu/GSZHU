@@ -32,4 +32,6 @@ namespace GSZHU {
 
     template<typename K, typename V>
     using HASH_MAP = std::unordered_map<K, V>;
+
+    typedef void* HANDLE;
 }

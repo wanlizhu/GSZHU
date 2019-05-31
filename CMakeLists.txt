@@ -26,7 +26,7 @@ set(GSZHU_ENGINE_INCLUDES "source" "thirdparty/include")
 set(GSZHU_WARNINGS_TO_DISABLE "")
 option(GSZHU_BUILD_STATIC "Build static library" ON)
 option(GSZHU_DISABLE_WARNINGS "Turn off various warnings." ON)
-option(GSZHU_BUILD_EDITOR "Build editor application." ON)
+option(GSZHU_BUILD_SAMPLE "Build sample application." ON)
 option(GSZHU_BUILD_TEST "Build unit test" ON)
 
 
@@ -53,9 +53,9 @@ if (WIN32 AND MSVC)
     add_definitions(-DNOMINMAX)
     add_definitions(-DWIN32_LEAN_AND_MEAN)
     add_definitions(-DGSZHU_OS_WINDOWS)
-    list(APPEND GSZHU_RESOURCE_FILES "resources/Win32/GSZHU.rc" 
-                                     "resources/Win32/app_icon.ico" 
-                                     "resources/Win32/resource.h")
+    list(APPEND GSZHU_RESOURCE_FILES "source/Win32/resource/GSZHU.rc" 
+                                     "source/Win32/resource/app_icon.ico" 
+                                     "source/Win32/resource/resource.h")
     source_group("Resources" FILES ${GSZHU_RESOURCE_FILES})
 
     if (GSZHU_DISABLE_WARNINGS)
@@ -101,8 +101,8 @@ install(FILES ${DLL_FILES} DESTINATION "GSZHU/bin")
 install(FILES ${GSZHU_ENGINE_INTERFACES} DESTINATION "GSZHU/include")
 
 
-if (GSZHU_BUILD_EDITOR)
-    add_subdirectory(editor)
+if (GSZHU_BUILD_SAMPLE)
+    add_subdirectory(sample)
 endif()
 
 if (GSZHU_BUILD_TEST)

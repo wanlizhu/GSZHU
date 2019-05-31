@@ -1,17 +1,14 @@
 #pragma once
 
-#include <GSZHU/CManagedAPI.h>
+#include <GSZHU/Config.h>
+#include <GSZHU/IOEvents.h>
 
 namespace GSZHU {
-    class IUserInput : public CManagedAPI<IUserInput> {
+    class IUserInput {
     public:
-        virtual void OnKeyDown() = 0;
-        virtual void OnKeyUp() = 0;
-        virtual void OnMouseButtonDown() = 0;
-        virtual void OnMouseButtonUp() = 0;
-        virtual void OnMouseMove() = 0;
-        virtual void OnMouseWheel() = 0;
-        virtual void OnWindowResize() = 0;
-        virtual void OnWindowDestroy() = 0;
+        virtual void OnKey(SKeyEvent keyEvent) = 0;
+        virtual void OnMouseButton(SMouseButtonEvent buttonEvent) = 0;
+        virtual void OnMouseMotion(SMouseMotionEvent motionEvent) = 0;
+        virtual void OnMouseWheel(SMouseWheelEvent wheelEvent) = 0;
     };
 }
