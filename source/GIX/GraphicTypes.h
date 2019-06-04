@@ -133,15 +133,14 @@ namespace GSZHU {
         DepthStencil,
     };
 
-    enum class ETextureDimension : unsigned char {
-        Undefined,
-        _1D,
-        _2D,
-        _3D,
-        Cube,
-        _1DArray,
-        _2DArray,
-        CubeArray
+    enum class ETextureType {
+        Undefined = 0,
+        Tex1D,
+        Tex1DArray,
+        Tex2D,
+        Tex2DArray,
+        Tex3D,
+        CubeTex,
     };
 
     enum class EPixelFormat : unsigned int {

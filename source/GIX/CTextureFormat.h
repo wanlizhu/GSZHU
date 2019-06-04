@@ -7,19 +7,14 @@
 namespace GSZHU {
     class CTextureFormat {
     public:
-        CTextureFormat(ETextureDimension dim, EPixelFormat format,
-                       uint32_t width, uint32_t height = 0, uint32_t depth = 0,
-                       uint32_t mips = 0, uint32_t samples = 1)
-            : mDimension(dim)
+        CTextureFormat(ETextureType type, EPixelFormat format, uint32_t width, uint32_t height)
+            : mType(type)
             , mWidth(width)
             , mHeight(height)
-            , mDepth(depth)
             , mPixelFormat(format)
-            , mMipLevels(mips)
-            , mSampleCount(samples)
         {}
 
-        ETextureDimension GetDimension() const { return mDimension; }
+        ETextureType GetTextureType() const { return mType; }
         uint32_t GetWidth() const { return mWidth; }
         uint32_t GetHeight() const { assert(mHeight != 0); return mHeight; }
         uint32_t GetDepth() const { assert(mDepth != 0);  return mDepth; }
@@ -27,8 +22,12 @@ namespace GSZHU {
         uint32_t GetMipLevels() const { return mMipLevels; }
         uint32_t GetSampleCount() const { return mSampleCount; }
 
+        void SetDepth(uint32_t depth) { assert(mType == ETextureType::Tex3D); mDepth = depth; }
+        void SetMipLevels(uint32_t levels) { mMipLevels = levels; }
+        void SetSampleCount(uint32_t count) { mSampleCount = count; }
+
     private:
-        ETextureDimension mDimension = ETextureDimension::Undefined;
+        ETextureType mType = ETextureType::Undefined;
         uint32_t mWidth = 0;
         uint32_t mHeight = 0;
         uint32_t mDepth = 0;

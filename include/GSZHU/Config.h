@@ -11,6 +11,12 @@
 #include <stdint.h>
 #include <math.h>
 #include <atomic>
+#include <thread>
+#include <mutex>
+#include <chrono>
+#include <list>
+#include <queue>
+#include <limits>
 #include <stdint.h>
 
 #ifdef GSZHU_EXPORT_SHARED

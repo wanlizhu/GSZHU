@@ -6,25 +6,25 @@
 namespace GSZHU {
     class CTextureViewDesc : public IResourceDesc {
     public:
-        CTextureViewDesc(ETextureViewType type, ETextureDimension dim, EPixelFormat format, 
-                         uint32_t mips = 0, EAccess access = EAccess::None)
+        CTextureViewDesc(ETextureViewType viewType, ETextureType texType, EPixelFormat format)
             : IResourceDesc(typeid(CTextureViewDesc).name())
-            , mType(type)
-            , mDimension(dim)
+            , mViewType(viewType)
+            , mTextureType(texType)
             , mPixelFormat(format)
-            , mNumMipLevels(mips)
-            , mUAVAccess(access)
         {}
 
-        ETextureViewType GetViewType() const { return mType; }
-        ETextureDimension GetDimension() const { return mDimension; }
+        ETextureViewType GetViewType() const { return mViewType; }
+        ETextureType GetTextureType() const { return mTextureType; }
         EPixelFormat GetPixelFormat() const { return mPixelFormat; }
         uint32_t GetNumMipLevels() const { return mNumMipLevels; }
         EAccess GetUAVAccess() const { return mUAVAccess; }
 
+        void SetNumMipLevels(uint32_t levels) { mNumMipLevels = levels; }
+        void SetUAVAccess(EAccess access) { mUAVAccess = access; }
+
     private:
-        ETextureViewType mType = ETextureViewType::Undefined;
-        ETextureDimension mDimension = ETextureDimension::Undefined;
+        ETextureViewType mViewType = ETextureViewType::Undefined;
+        ETextureType mTextureType = ETextureType::Undefined;
         EPixelFormat mPixelFormat;
         uint32_t mNumMipLevels = 0; // For a render target or a depth stencil view, only one mip level
         EAccess mUAVAccess = EAccess::None;
