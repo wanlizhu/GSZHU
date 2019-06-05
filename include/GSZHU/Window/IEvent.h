@@ -5,6 +5,9 @@
 namespace GSZHU {
     class IEvent {
     public:
+        template<typename T>
+        class CBuilder;
+
         enum class EType : int {
             Key,
             MouseMotion,

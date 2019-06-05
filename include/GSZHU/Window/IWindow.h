@@ -25,8 +25,8 @@ namespace GSZHU {
         
         virtual void Show() = 0;
         virtual void Hide() = 0;
-        virtual void OnEvent(IEvent const& event) = 0;
-        virtual void PostEvent(IEvent const& event) = 0;
+        virtual void OnEvent(std::shared_ptr<IEvent> event) = 0;
+        virtual void PostEvent(std::shared_ptr<IEvent> event) = 0;
         virtual void SetRenderer(std::weak_ptr<IRenderer> renderer) = 0;
         virtual void SetUserInputHandler(std::weak_ptr<IUserInput> handler) = 0;
     };

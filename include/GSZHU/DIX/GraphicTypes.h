@@ -64,6 +64,9 @@ namespace GSZHU {
         static const bool enable = true;\
     };
 
+
+
+
     enum class EBindMask : unsigned int {
         None = 0x0L, 
         VertexBuffer = 0x1L,
@@ -94,7 +97,7 @@ namespace GSZHU {
         CPUCanWrite,
     };
 
-    enum class EBufferMode : unsigned char {
+    enum class EBuffer : unsigned char {
         Undefined = 0,
         Formatted, //In this mode, ElementByteStride member of buffer desc defines the buffer element size.
         Structured, // In this mode, ElementByteStride member of buffer desc defines the structure stride.
@@ -119,13 +122,13 @@ namespace GSZHU {
         Float64
     };
 
-    enum class EBufferViewType : unsigned char {
+    enum class EBufferView : unsigned char {
         Undefined = 0,
         SRV, // Shader resource view
         UAV  // Unordered access view
     };
 
-    enum class ETextureViewType : unsigned char {
+    enum class ETextureView : unsigned char {
         Undefined = 0,
         SRV,
         UAV,
@@ -133,7 +136,7 @@ namespace GSZHU {
         DepthStencil,
     };
 
-    enum class ETextureType {
+    enum class ETexture {
         Undefined = 0,
         Tex1D,
         Tex1DArray,
@@ -170,5 +173,21 @@ namespace GSZHU {
         Clamp,
         Border,
         MirrorOnce
+    };
+
+    enum class EShader : unsigned int {
+        Unknown = 0,
+        VertexShader,
+        PixelShader,
+        GeometryShader,
+        HullShader,
+        DomainShader,
+        ComputeShader
+    };
+
+    enum class EShaderVariable : unsigned char {
+        Static, // is constant across all shader instances (within a frame, like Camera attributes)
+        Mutable, // is constant across SRB instance (within the same material, like the diffuse and specular textures)
+        Dynamic
     };
 }

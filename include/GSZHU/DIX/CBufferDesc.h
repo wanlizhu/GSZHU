@@ -4,12 +4,12 @@
 
 namespace GSZHU {
     struct SBufferMode {
-        EBufferMode Mode = EBufferMode::Undefined;
+        EBuffer Mode = EBuffer::Undefined;
         // For a structured buffer, the size of each buffer element
         // For a formatted buffer, the size of the format that will be used for this buffer's views
         uint32_t ElementSize = 0;
 
-        SBufferMode(EBufferMode mode, uint32_t size)
+        SBufferMode(EBuffer mode, uint32_t size)
             : Mode(mode)
             , ElementSize(size)
         {}

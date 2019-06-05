@@ -8,9 +8,9 @@ namespace GSZHU {
     class IRenderer {
     public:
         virtual void OnInitialize() = 0;
-        virtual void OnUpdate(SWindowUpdateEvent updateEvent) = 0;
-        virtual void OnRender(SWindowRenderEvent renderEvent) = 0;
-        virtual void OnResize(SWindowResizeEvent resizeEvent) = 0;
+        virtual void OnUpdate(std::shared_ptr<SWindowUpdateEvent> updateEvent) = 0;
+        virtual void OnRender(std::shared_ptr<SWindowRenderEvent> renderEvent) = 0;
+        virtual void OnResize(std::shared_ptr<SWindowResizeEvent> resizeEvent) = 0;
         virtual void OnDestroy() = 0;
     };
 }

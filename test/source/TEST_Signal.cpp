@@ -1,5 +1,5 @@
 #include <catch2/catch.hpp>
-#include <GSZHU/CSignal.h>
+#include "CSignal.h"
 
 using namespace GSZHU;
 

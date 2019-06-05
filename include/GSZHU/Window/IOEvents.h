@@ -37,6 +37,7 @@ namespace GSZHU {
         SModifierSet mods;
 
         virtual EType GetType() const override { return EType::Key; }
+
     };
 
     struct SMouseMotionEvent : public IEvent {

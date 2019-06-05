@@ -108,7 +108,7 @@ namespace GSZHU {
                     // Determine which key was released by converting the key code and the scan code
                     // to a printable character (if possible).
                     unsigned char keyboardState[256];
-                    ::GetKeyboardState(keyboardState);
+                    auto success = ::GetKeyboardState(keyboardState);
                     wchar_t translatedChars[4];
                     if (int result = ::ToUnicodeEx(static_cast<UINT>(wParam), scanCode, keyboardState, translatedChars, 4, 0, NULL) > 0) {
                         unicode = translatedChars[0];
