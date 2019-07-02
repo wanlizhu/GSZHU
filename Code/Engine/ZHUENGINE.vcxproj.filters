@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{c5e848eb-481d-46b1-851b-314227e5df8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{38993c2e-c234-4fd8-9d31-9546232f5f64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{41c7ff60-bdce-4cd5-be4b-a1bdca14d58e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\RHI">
+      <UniqueIdentifier>{bca08da7-6999-4892-af29-624598659ecf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Platform">
+      <UniqueIdentifier>{263dfc16-b835-4ef1-b40a-07bec53bc6ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\RHI\OpenGL">
+      <UniqueIdentifier>{9aa3dff3-f503-4844-9788-3224d3d6c8de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\RHI\D3D12">
+      <UniqueIdentifier>{7ba1f3a5-d66d-4c3a-bed6-8b5f4b2ad05a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\RHI\Vulkan">
+      <UniqueIdentifier>{1e4dbe6f-b183-41c1-93d5-0a77d48cd0a2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common\Object.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Config.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Log.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\IEvent.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\NonCopyable.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ObjectFactory.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\WindowsFiles.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasicTypes.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ZHUENGINE_PCH.h" />
+    <ClInclude Include="Common\Platform\OS.h">
+      <Filter>Common\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\BasicPrimitives.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Math3D.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\String.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\EnumClass.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ConstExpr.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ThreadPool.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Signal.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ZHUENGINE_PCH.cpp" />
+    <ClCompile Include="Common\Log.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Object.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Platform\OS_Win32.cpp">
+      <Filter>Common\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Math3D.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\String.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\ThreadPool.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

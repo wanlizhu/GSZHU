@@ -1,5 +1,8 @@
-/build
-/build_vs2015
-/build_vs2017
-/build_vs2019
-*/.vscode
+# Binary directories.
+/[Bb]uild*/
+
+# Temporary directories.
+/Solutions/*
+/.vscode/*
+/.vs/*
+__pycache__/*
