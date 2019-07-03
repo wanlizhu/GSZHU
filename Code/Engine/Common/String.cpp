@@ -1,6 +1,7 @@
 #include "ZHUENGINE_PCH.h"
 #include "./String.h"
 #include <regex>
+#include <cctype>
 
 namespace ZHU
 {

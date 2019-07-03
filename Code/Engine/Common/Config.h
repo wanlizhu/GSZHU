@@ -8,14 +8,12 @@
 #define ZHU_DLL_IMPORT extern
 #endif
 
-#ifdef ZHU_BUILD_SHARED
-#    define ZHU_API ZHU_DLL_EXPORT
-#elif defined(ZHU_BUILD_STATIC)
-#    define ZHU_API 
-#elif defined(ZHU_USE_SHARED)
-#    define ZHU_API ZHU_DLL_IMPORT
-#elif defined(ZHU_USE_STATIC)
+#ifdef ZHU_STATIC
 #    define ZHU_API
 #else
-#    error "!!!No API export/import macro specified"
+#    ifdef ZHU_SHARED_EXPORTS
+#        define ZHU_API ZHU_DLL_EXPORT
+#    else
+#        define ZHU_API ZHU_DLL_IMPORT
+#    endif
 #endif
