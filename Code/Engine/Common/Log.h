@@ -22,14 +22,14 @@ namespace ZHU
         template<typename... ARGS>
         static void Append(ESeverity severity, const std::string& format, ARGS&& ... args) {
             if (severity == ESeverity::Fatal) {
-                auto message = StringFormat(format, StringClean(std::forward<ARGS>(args)...));
+                auto message = StringFormat(format, Log::StringClean(std::forward<ARGS>(args))...);
                 AsyncWrite(ESeverity::Fatal, message);
                 if (smStream.is_open()) 
                     smStream.close();
                 ::MessageBoxA(nullptr, message.c_str(), "Fatal Error", 0);
             }
             else {
-                AsyncWrite(severity, StringFormat(format, StringClean(std::forward<ARGS>(args)...)));
+                AsyncWrite(severity, StringFormat(format, Log::StringClean(std::forward<ARGS>(args))...));
             }
         }
 

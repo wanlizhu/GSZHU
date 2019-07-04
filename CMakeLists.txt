@@ -4,7 +4,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
 project(ZHUENGINE VERSION 1.0.0 LANGUAGES C CXX)
 
 option(BUILD_SHARED_LIBS "Build Shared Libraries"    ON)
-option(BUILD_TESTS       "Build test applications"   OFF)
+option(BUILD_TESTS       "Build test applications"   ON)
 option(BUILD_BENCHMARKS  "Build test applications"   OFF)
 option(BUILD_EDITOR      "Build editor applications" OFF)
 option(ENABLE_D3D12      "Enable D3D12"              ON)

@@ -41,12 +41,12 @@ target_include_directories(ZHUENGINE
 # Link libraries
 target_link_libraries(ZHUENGINE
 		PUBLIC
+        Eigen
 		$<$<PLATFORM_ID:Windows>:ws2_32>
 		$<$<PLATFORM_ID:Windows>:dbghelp>
 		PRIVATE
         Assimp
         SDL2
-        Eigen
         JSON
         $<$<BOOL:${ENABLE_VULKAN}>:Vulkan::Vulkan>
 )

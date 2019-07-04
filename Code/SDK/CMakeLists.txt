@@ -29,12 +29,14 @@ list(APPEND ZHU_SDK_DLLS "${CMAKE_CURRENT_LIST_DIR}/SDL2/bin/${ARCH}/SDL2.dll")
 add_library(GoogleTest     STATIC IMPORTED GLOBAL)
 add_library(GoogleTestMock STATIC IMPORTED GLOBAL)
 set_target_properties(GoogleTest PROPERTIES
-        INTERFACE_LINK_LIBRARIES      "${CMAKE_CURRENT_LIST_DIR}/GoogleTest/lib/${ARCH}/gtest.lib"
+        IMPORTED_LOCATION             "${CMAKE_CURRENT_LIST_DIR}/GoogleTest/lib/${ARCH}/gtest.lib"
+        IMPORTED_LOCATION_DEBUG       "${CMAKE_CURRENT_LIST_DIR}/GoogleTest/lib/${ARCH}/gtestd.lib"
         INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_LIST_DIR}/GoogleTest/include" 
         INTERFACE_COMPILE_DEFINITIONS ""
 )
 set_target_properties(GoogleTestMock PROPERTIES
-        INTERFACE_LINK_LIBRARIES      "${CMAKE_CURRENT_LIST_DIR}/GoogleTest/lib/${ARCH}/gmock.lib"
+        IMPORTED_LOCATION             "${CMAKE_CURRENT_LIST_DIR}/GoogleTest/lib/${ARCH}/gmock.lib"
+        IMPORTED_LOCATION_DEBUG       "${CMAKE_CURRENT_LIST_DIR}/GoogleTest/lib/${ARCH}/gmockd.lib"
         INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_LIST_DIR}/GoogleTest/include" 
         INTERFACE_COMPILE_DEFINITIONS ""
 )
@@ -56,3 +58,5 @@ set_target_properties(JSON PROPERTIES
 )
 
 set(ZHU_SDK_DLLS ${ZHU_SDK_DLLS} PARENT_SCOPE)
+
+

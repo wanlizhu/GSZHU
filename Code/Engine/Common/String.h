@@ -30,7 +30,8 @@ namespace ZHU
             TrimRight
         };
 
-        static std::vector<std::string> Split(std::string_view str, std::string_view regex);
+        static std::vector<std::string> Split(std::string_view str, std::string_view sep, bool regex = false);
+        static std::vector<size_t>      FindAll(std::string_view str, std::string_view token);
         static bool                     StartsWith(std::string_view str, std::string_view token);
         static bool                     Contains(std::string_view str, std::string_view token);
         static bool                     EndsWith(std::string_view str, std::string_view token);
@@ -43,7 +44,7 @@ namespace ZHU
         static std::string Uppercase(std::string_view str);
 
         template<typename T>
-        static std::string To(const T& val)
+        static std::string From(const T& val)
         {
             if constexpr (std::is_enum_v<T>) {
                 if constexpr (HasEnumFieldName<T>::value) {
@@ -69,7 +70,7 @@ namespace ZHU
         }
 
         template<typename T>
-        static T From(std::string_view str) 
+        static T To(std::string_view str) 
         {
             if constexpr (std::is_enum_v<T>)
             {
@@ -78,12 +79,12 @@ namespace ZHU
                 }
                 else {
                     typedef typename std::underlying_type<T>::type safe_type;
-                    return static_cast<T>(From<safe_type>(str));
+                    return static_cast<T>(To<safe_type>(str));
                 }
             }
             else if constexpr (std::is_same_v<bool, T>)
             {
-                return Lowercase(str) == "true" || From<std::optional<int32_t>>(str) == 1;
+                return Lowercase(str) == "true" || To<std::optional<int32_t>>(str) == 1;
             }
             else if constexpr (std::is_same_v<std::string, T>)
             {
@@ -103,7 +104,7 @@ namespace ZHU
             }
             else {
                 T temp;
-                std::istringstream iss(str);
+                std::istringstream iss(str.data());
                 iss >> temp;
                 return temp;
             }
