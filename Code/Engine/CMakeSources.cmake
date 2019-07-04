@@ -1,6 +1,8 @@
-set(ZHU_HDR_FILES_PUBLIC
-        Common/BasicTypes.h
+set(ZHU_HDR_FILES
+PUBLIC
         Common/Config.h
+        Common/String.h
+        Common/BasicTypes.h
         Common/ConstExpr.h
         Common/EnumClass.h
         Common/IEvent.h
@@ -9,17 +11,13 @@ set(ZHU_HDR_FILES_PUBLIC
         Common/ObjectFactory.h
         Common/Signal.h
         Common/ThreadPool.h
-        Common/WindowsFiles.h
-)
 
-
-set(ZHU_HDR_FILES_PRIVATE
+PRIVATE
         ZHUENGINE_PCH.h
         Common/Platform/OS.h
         Common/Log.h
-        Common/String.h
+        Common/WindowsFiles.h
 )
-
 
 set(ZHU_SRC_FILES
         ZHUENGINE_PCH.cpp
@@ -33,33 +31,43 @@ set(ZHU_SRC_FILES
 
 
 
-# Add public headers (to be installed)
-foreach(HDR IN LISTS ZHU_HDR_FILES_PUBLIC)
-        target_sources(ZHUENGINE PUBLIC
-                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${HDR}>
-                $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/${HDR}>
-        )
-endforeach()
 
-# Add private headers
-foreach(HDR IN LISTS ZHU_HDR_FILES_PRIVATE)
-        target_sources(ZHUENGINE PRIVATE
-                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${HDR}>
-        )
+# Add public headers (to be installed)
+set(IS_PUBLIC_HDR ON)
+foreach(HDR IN LISTS ZHU_HDR_FILES)
+        if (HDR STREQUAL "PUBLIC")
+                set(IS_PUBLIC_HDR ON)
+        elseif(HDR STREQUAL "PRIVATE")
+                set(IS_PUBLIC_HDR OFF)
+        else()
+                if(${IS_PUBLIC_HDR})
+                        target_sources(ZHUENGINE PUBLIC
+                        ${CMAKE_CURRENT_SOURCE_DIR}/${HDR}
+                                #$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${HDR}>
+                                #$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/${HDR}>
+                        )
+                else()
+                        target_sources(ZHUENGINE PRIVATE
+                        ${CMAKE_CURRENT_SOURCE_DIR}/${HDR}
+                                #${CMAKE_CURRENT_SOURCE_DIR}/${HDR}
+                        )
+                endif()
+        endif()
 endforeach()
 
 # Add private source files
 foreach(SRC IN LISTS ZHU_SRC_FILES)
         target_sources(ZHUENGINE PRIVATE
-                ${CMAKE_CURRENT_SOURCE_DIR}/${SRC}
-		)
+        ${CMAKE_CURRENT_SOURCE_DIR}/${SRC}
+                #${CMAKE_CURRENT_SOURCE_DIR}/${SRC}
+        )
 endforeach()
 
 include(PrecompiledHeader)
-#add_precompiled_header(ZHUENGINE 
-#        ZHUENGINE_PCH.h 
-#        SOURCE_CXX 
-#        ZHUENGINE_PCH.cpp
-#        FORCEINCLUDE
-#)
+add_precompiled_header(ZHUENGINE 
+        ZHUENGINE_PCH.h 
+SOURCE_CXX 
+        ZHUENGINE_PCH.cpp
+FORCEINCLUDE
+)
 

@@ -92,6 +92,8 @@ function(add_precompiled_header _target _input)
 
     get_target_property(sources ${_target} SOURCES)
     foreach(_source ${sources})
+      # if the source files are assigned by "target_source()", which requires absolute paths
+      get_filename_component(_source_name ${_source} NAME)
       set(_pch_compile_flags "")
       if(_source MATCHES \\.\(cc|cxx|cpp|c\)$)
         if(_source MATCHES \\.\(cpp|cxx|cc\)$)
@@ -102,11 +104,12 @@ function(add_precompiled_header _target _input)
           set(_pch "${_pch_c_pch}")
         endif()
 
-        if(_source STREQUAL "${_PCH_SOURCE_CXX}")
+        # "if(_source STREQUAL "${_PCH_SOURCE_CXX})" fails if _source is an absolute path
+        if(_source STREQUAL "${_PCH_SOURCE_CXX}" OR _source_name STREQUAL "${_PCH_SOURCE_CXX}")
           set(_pch_compile_flags "${_pch_compile_flags} \"/Fp${_pch_cxx_pch}\" \"/Yc${_input}\"")
           set(_pch_source_cxx_found TRUE)
           set_source_files_properties("${_source}" PROPERTIES OBJECT_OUTPUTS "${_pch_cxx_pch}")
-        elseif(_source STREQUAL "${_PCH_SOURCE_C}")
+        elseif(_source STREQUAL "${_PCH_SOURCE_C}" OR _source_name STREQUAL "${_PCH_SOURCE_C}")
           set(_pch_compile_flags "${_pch_compile_flags} \"/Fp${_pch_c_pch}\" \"/Yc${_input}\"")
           set(_pch_source_c_found TRUE)
           set_source_files_properties("${_source}" PROPERTIES OBJECT_OUTPUTS "${_pch_c_pch}")
@@ -179,7 +182,7 @@ function(add_precompiled_header _target _input)
     get_property(_sources TARGET ${_target} PROPERTY SOURCES)
     foreach(_source ${_sources})
       set(_pch_compile_flags "")
-
+ 
       if(_source MATCHES \\.\(cc|cxx|cpp|c\)$)
         get_source_file_property(_pch_compile_flags "${_source}" COMPILE_FLAGS)
         if(NOT _pch_compile_flags)

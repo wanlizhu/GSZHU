@@ -25,9 +25,6 @@ if(WIN32)
 	set(CMAKE_SHARED_LIBRARY_PREFIX "")
 endif()
 
-# Looks for dependencies
-find_package(Threads REQUIRED)
-
 # Allows usage of configure time content
 include(FetchContent)
 

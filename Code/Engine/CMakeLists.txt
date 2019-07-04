@@ -41,7 +41,6 @@ target_include_directories(ZHUENGINE
 # Link libraries
 target_link_libraries(ZHUENGINE
 		PUBLIC
-		Threads::Threads
 		$<$<PLATFORM_ID:Windows>:ws2_32>
 		$<$<PLATFORM_ID:Windows>:dbghelp>
 		PRIVATE
