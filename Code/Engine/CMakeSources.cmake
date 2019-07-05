@@ -11,6 +11,8 @@ PUBLIC
         Common/ObjectFactory.h
         Common/Signal.h
         Common/ThreadPool.h
+        Graphics/BasicPrimitives.h
+        Graphics/Math3D.h
 
 PRIVATE
         ZHUENGINE_PCH.h
@@ -26,6 +28,7 @@ ALL
         Common/Object.cpp
         Common/String.cpp
         Common/ThreadPool.cpp
+        Graphics/Math3D.cpp
 WINDOWS
         Common/Platform/OS_Win32.cpp
 )

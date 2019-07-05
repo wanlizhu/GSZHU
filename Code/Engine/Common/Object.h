@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "NonCopyable.h"
 #include "BasicTypes.h"
+#include "TypeInfo.h"
 #include <condition_variable>
 #include <mutex>
 #include <atomic>

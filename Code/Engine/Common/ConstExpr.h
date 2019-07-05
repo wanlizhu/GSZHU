@@ -117,4 +117,33 @@ namespace ZHU
     template<typename T> 
     inline constexpr bool is_ptr_access_v = std::is_pointer_v<T> || is_unique_ptr_v<T> || is_shared_ptr_v<T> || is_weak_ptr_v<T>;
 
+    struct ConstExpr 
+    {
+        template<typename T>
+        static T* AsPtr(T& obj) { return &obj; }
+
+        template<typename T>
+        static T* AsPtr(T* obj) { return obj; }
+
+        template<typename T>
+        static T* AsPtr(const std::shared_ptr<T>& obj) { return obj.get(); }
+
+        template<typename T>
+        static T* AsPtr(const std::unique_ptr<T>& obj) { return obj.get(); }
+
+
+
+
+        template<typename T>
+        static const T& AsRef(T& obj) { return obj; }
+
+        template<typename T>
+        static const T& AsRef(T* obj) { return *obj; }
+
+        template<typename T>
+        static const T& AsRef(const std::shared_ptr<T>& obj) { return *obj.get(); }
+
+        template<typename T>
+        static const T& AsRef(const std::unique_ptr<T>& obj) { return *obj.get(); }
+    };
 }
