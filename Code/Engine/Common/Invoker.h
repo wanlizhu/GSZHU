@@ -19,13 +19,19 @@ namespace ZHU
             std::lock_guard<std::mutex> lock(delegate.mMutex);
             RETURN_VEC returns;
 
-            for (auto it = delegate.mObservedFunctions.begin(); it != delegate.mObservedFunctions.end();) {
-                if (it->IsExpired()) {
-                    it = delegate.mObservedFunctions.erase(it);
+            for (auto it = delegate.mFunctions.begin(); it != delegate.mFunctions.end();) {
+                returns.emplace_back((*it)(std::forward<ARGS>(args)...));
+                ++it;
+            }
+
+            for (auto it = delegate.mObservers.begin(); it != delegate.mObservers.end();) {
+                auto realptr = (*it).lock();
+                if (realptr == nullptr) {
+                    it = delegate.mObservers.erase(it);
                     continue;
                 }
 
-                returns.emplace_back((it->mFunction)(std::forward<ARGS>(args)...));
+                returns.emplace_back(realptr->Update(std::forward<ARGS>(args)...));
                 ++it;
             }
 
@@ -44,13 +50,19 @@ namespace ZHU
         {
             std::lock_guard<std::mutex> lock(delegate.mMutex);
             
-            for (auto it = delegate.mObservedFunctions.begin(); it != delegate.mObservedFunctions.end();) {
-                if (it->IsExpired()) {
-                    it = delegate.mObservedFunctions.erase(it);
+            for (auto it = delegate.mFunctions.begin(); it != delegate.mFunctions.end();) {
+                (*it)(std::forward<ARGS>(args)...);
+                ++it;
+            }
+
+            for (auto it = delegate.mObservers.begin(); it != delegate.mObservers.end();) {
+                auto realptr = (*it).lock();
+                if (realptr == nullptr) {
+                    it = delegate.mObservers.erase(it);
                     continue;
                 }
 
-                it->mFunction(std::forward<ARGS>(args)...);
+                realptr->Update(std::forward<ARGS>(args)...);
                 ++it;
             }
         }

@@ -8,25 +8,21 @@
 
 namespace ZHU
 {
-    class ZHU_API Engine : public NonCopyable
-                         , public HeapCreator
+    class ZHU_API Engine final : public NonCopyable
     {
     public:
-        typedef std::shared_ptr<Engine> SharedPtr;
-        typedef std::weak_ptr<Engine> WeakPtr;
-        typedef std::unique_ptr<Engine> UniquePtr;
+        friend std::shared_ptr<Engine> std::make_shared<Engine>();
         struct Version { int major, minor, patch; };
 
         static bool      Initialize();
         static Engine*   Get();
         static void      Shutdown();
 
-        int            Run();
-        const Version& GetVersion() const;
-        IRenderer*     GetRenderer() const;
-        void           SetRenderer(std::unique_ptr<IRenderer>&& renderer);
-        int            GetFPS() const;
-        void           Shutdown();
+        int              Run();
+        const Version&   GetVersion() const;
+        IRenderer*       GetRenderer() const;
+        void             SetRenderer(std::unique_ptr<IRenderer>&& renderer);
+        int              GetFPS() const;
 
         template<typename T>
         bool HasModule() const { 
@@ -49,10 +45,13 @@ namespace ZHU
         }
 
     private:
+        Engine();
+
+    private:
         static Version smVersion;
         static std::shared_ptr<Engine> smInstance;
 
-        ModuleManager& mModuleManager;
+        ModuleManager mModuleManager;
         std::unique_ptr<IRenderer> mRenderer;
         FPSCounter mFPS;
     };

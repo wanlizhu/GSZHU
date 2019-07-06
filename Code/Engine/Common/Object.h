@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Config.h"
-#include "NonCopyable.h"
-#include "BasicTypes.h"
-#include "TypeInfo.h"
+#include "Common/Config.h"
+#include "Common/NonCopyable.h"
+#include "Common/BasicTypes.h"
 #include <condition_variable>
 #include <mutex>
 #include <atomic>

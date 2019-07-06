@@ -41,7 +41,7 @@ namespace ZHU
     Time   operator*(const int64_t& left, const Time&    right) { return left * right.mMicroseconds; }
     Time   operator/(const Time& left,    const float&   right) { return left.mMicroseconds / right; }
     Time   operator/(const Time& left,    const int64_t& right) { return left.mMicroseconds / right; }
-    double operator/(const Time& left,    const Time&    right) { return left.mMicroseconds / right.mMicroseconds; }
+    double operator/(const Time& left,    const Time&    right) { return static_cast<double>(left.mMicroseconds.count()) / static_cast<double>(right.mMicroseconds.count()); }
 
     Time& Time::operator+=(const Time& other)    { *this = *this + other; return *this; } 
     Time& Time::operator-=(const Time& other)    { *this = *this - other; return *this; }

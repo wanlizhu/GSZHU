@@ -10,7 +10,6 @@ namespace ZHU
     {
     public:
         friend class Engine;
-        static ModuleManager& GetInstance();
 
         template<typename T>
         inline bool HasModule() const {

@@ -1,5 +1,5 @@
 #pragma once
-#include "Timer.h"
+#include "Common/Timer.h"
 #include "Core/IModule.h"
 #include "Core/Engine.h"
 
@@ -22,7 +22,12 @@ namespace ZHU
 
             auto instance = std::make_unique<Timer>(delay, 1);
 
-            instance->mOnTick.Add(std::move(function), std::forward<ARGS>(args)...);
+            if constexpr (sizeof...(ARGS) == 0) {
+                instance->mOnTick.Add(std::move(function));
+            }
+            else {
+                instance->mOnTick.Add(std::move(std::bind(function, std::forward<ARGS>(args)...)));
+            }
             mTimers.emplace_back(std::move(instance));
 
             mCV.notify_all();
@@ -35,7 +40,12 @@ namespace ZHU
             std::unique_lock<std::mutex> lock(mMutex);
             auto instance = std::make_unique<Timer>(interval, std::nullopt);
 
-            instance->mOnTick.Add(std::move(function), std::forward<ARGS>(args)...);
+            if constexpr (sizeof...(ARGS) == 0) {
+                instance->mOnTick.Add(std::move(function));
+            }
+            else {
+                instance->mOnTick.Add(std::move(std::bind(function, std::forward<ARGS>(args)...)));
+            }
             mTimers.emplace_back(std::move(instance));
 
             mCV.notify_all();
@@ -45,10 +55,15 @@ namespace ZHU
         template<typename... ARGS>
         Timer* Repeat(const Time& interval, const uint32_t& repeat, std::function<void()>&& function, ARGS... args)
         {
-            std::unique_lock<std::mutex> lock(m_mutex);
+            std::unique_lock<std::mutex> lock(mMutex);
             auto instance = std::make_unique<Timer>(interval, repeat);
 
-            instance->mOnTick.Add(std::move(function), std::forward<ARGS>(args)...);
+            if constexpr (sizeof...(ARGS) == 0) {
+                instance->mOnTick.Add(std::move(function));
+            }
+            else {
+                instance->mOnTick.Add(std::move(std::bind(function, std::forward<ARGS>(args)...)));
+            }
             mTimers.emplace_back(std::move(instance));
 
             mCV.notify_all();

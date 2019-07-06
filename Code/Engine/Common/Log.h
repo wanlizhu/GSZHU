@@ -1,7 +1,10 @@
 #pragma once
 
-#include "Config.h"
+#include "Common/Config.h"
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <filesystem>
 #include <mutex>
 #include "WindowsFiles.h"
 
@@ -26,9 +29,13 @@ namespace ZHU
                 AsyncWrite(ESeverity::Fatal, message);
                 if (smStream.is_open()) 
                     smStream.close();
-                ::MessageBoxA(nullptr, message.c_str(), "Fatal Error", 0);
+                //::MessageBoxA(nullptr, message.c_str(), "Fatal Error", 0);
+#if defined(_DEBUG) && defined(_WIN32)
+                __debugbreak();
+#endif
             }
-            else {
+            else {  
+
                 AsyncWrite(severity, StringFormat(format, Log::StringClean(std::forward<ARGS>(args))...));
             }
         }

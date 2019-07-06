@@ -13,38 +13,40 @@ endif()
 
 # Compile definitions
 target_compile_definitions(ZHUENGINE
-        PRIVATE
+    PUBLIC 
+        $<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS _CRT_SECURE_NO_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS>
+    PRIVATE
         $<$<EQUAL:4,${CMAKE_SIZEOF_VOID_P}>:ZHU_BUILD_32BIT>
 		$<$<EQUAL:8,${CMAKE_SIZEOF_VOID_P}>:ZHU_BUILD_64BIT>
         $<$<PLATFORM_ID:Windows>:ZHU_BUILD_WINDOWS WIN32_LEAN_AND_MEAN NOMINMAX>
         $<$<PLATFORM_ID:Linux>:ZHU_BUILD_LINUX>
         $<$<PLATFORM_ID:Darwin>:ZHU_BUILD_MACOS>
-        $<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS _CRT_SECURE_NO_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS>
+        
 )
 
 # Compile options
 target_compile_options(ZHUENGINE
-		PUBLIC
+	PUBLIC
 		$<$<CXX_COMPILER_ID:MSVC>:/wd4251 /wd4592>
-		PRIVATE
+	PRIVATE
 		$<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-msse4.1>
 		$<$<AND:$<CXX_COMPILER_ID:MSVC>,$<EQUAL:4,${CMAKE_SIZEOF_VOID_P}>>:/arch:SSE2>
 )
 
 # Include directories
 target_include_directories(ZHUENGINE
-		PUBLIC
+	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}>
 )
 
 # Link libraries
 target_link_libraries(ZHUENGINE
-		PUBLIC
+	PUBLIC
         Eigen
 		$<$<PLATFORM_ID:Windows>:ws2_32>
 		$<$<PLATFORM_ID:Windows>:dbghelp>
-		PRIVATE
+	PRIVATE
         Assimp
         SDL2
         JSON

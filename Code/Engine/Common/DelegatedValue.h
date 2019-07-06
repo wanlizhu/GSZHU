@@ -1,6 +1,6 @@
 #pragma once
-#include "Delegate.h"
-#include "NonCopyable.h"
+#include "Common/Delegate.h"
+#include "Common/NonCopyable.h"
 
 // A value container that calls a delegate on value assignments.
 // DelegateValue<Vector3f> da;

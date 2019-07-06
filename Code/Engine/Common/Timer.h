@@ -1,8 +1,8 @@
 #pragma once
-#include "Config.h"
+#include "Common/Config.h"
+#include "Common/Time.h"
+#include "Common/Delegate.h"
 #include <optional>
-#include "Time.h"
-#include "Delegate.h"
 #include <atomic>
 
 namespace ZHU

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Config.h"
+#include "Common/Config.h"
+#include "Common/Platform/OS.h"
+#include "Common/EnumClass.h"
+#include "Common/ConstExpr.h"
 #include <string>
 #include <vector>
 #include <locale>
-#include "Platform/OS.h"
-#include "EnumClass.h"
-#include "ConstExpr.h"
 #include <optional>
 #include <sstream>
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "Config.h"
-#include "BasicTypes.h"
+#include "Common/Config.h"
+#include "Common/BasicTypes.h"
 #include <string_view>
 #include <assert.h>
 #include <stdexcept>

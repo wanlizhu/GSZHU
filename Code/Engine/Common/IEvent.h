@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Object.h"
+#include "Common/Object.h"
 
 namespace ZHU
 {

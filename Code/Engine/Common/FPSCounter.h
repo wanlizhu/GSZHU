@@ -1,6 +1,6 @@
 #pragma once
-#include "Config.h"
-#include "Time.h"
+#include "Common/Config.h"
+#include "Common/Time.h"
 
 namespace ZHU
 {
