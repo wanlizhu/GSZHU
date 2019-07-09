@@ -69,6 +69,7 @@ target_link_libraries(ZHUENGINE
         Assimp
         SDL2
         JSON
+        TinyXML2
         $<$<BOOL:${ENABLE_VULKAN}>:Vulkan::Vulkan>
 )
 

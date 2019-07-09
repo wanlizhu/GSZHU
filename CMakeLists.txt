@@ -21,6 +21,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON) # To allow making project folders i
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
+set(CMAKE_INSTALL_PREFIX "D:/Program Files/ZHUENGINE")
 
 if(WIN32)
     # UNIX will keep a prefix set as "lib"
