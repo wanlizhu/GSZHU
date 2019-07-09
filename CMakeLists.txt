@@ -32,5 +32,6 @@ endif()
 
 add_subdirectory(Engine)
 if(BUILD_SAMPLES)
-    add_subdirectory(Samples/BoundlessCity)
+    add_subdirectory(Samples/InfiniteCity)
+    add_subdirectory(Samples/CAD)
 endif()
