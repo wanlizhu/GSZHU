@@ -5,7 +5,6 @@ if(!(Get-Module "VSSetup")){
 }
 
 $VSSetupInstance = Get-VSSetupInstance | Select-VSSetupInstance -Latest -Require Microsoft.VisualStudio.Component.VC.Tools.x86.x64
-$VsDevCmd = Join-Path -Path $VSSetupInstance.InstallationPath -ChildPath Common7\Tools\VsDevCmd.bat
 $DevEnv = Join-Path -Path $VSSetupInstance.InstallationPath -ChildPath Common7\IDE\devenv.exe
 
 function Start-Process2 {
@@ -34,4 +33,9 @@ if((Test-Path .\Build\*.sln)) {
     
     $GTestRunner = ".\Engine\Programs\GTestRunner\bin\gtest-runner.exe"
     Start-Process -Wait -FilePath $GTestRunner -ArgumentList ".\Build\bin\Debug\ZHUENGINE_UnitTest.exe"
+}
+
+if(-Not $?) {
+    Write-Host "!!! Command failed"
+    Pause
 }
