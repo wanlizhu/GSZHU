@@ -1,0 +1,7 @@
+set(ZHU_ENGINE_DIR  "${CMAKE_CURRENT_SOURCE_DIR}")
+set(ZHU_CONFIG_DIR  "${ZHU_ENGINE_DIR}/Config")
+set(ZHU_CONTENT_DIR "${ZHU_ENGINE_DIR}/Content")
+add_subdirectory(Libraries)
+add_subdirectory(Programs)
+add_subdirectory(Shaders)
+add_subdirectory(Source)
