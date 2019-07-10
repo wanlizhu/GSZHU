@@ -1,15 +1,19 @@
 cmake_minimum_required(VERSION 3.11.0 FATAL_ERROR)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
 
-project(ZHUENGINE VERSION 1.0.0 LANGUAGES C CXX)
+# Disable in-source builds to prevent source tree corruption.
+if(" ${CMAKE_SOURCE_DIR}" STREQUAL " ${CMAKE_BINARY_DIR}")
+    message(FATAL_ERROR "
+FATAL: In-source builds are not allowed.
+       You should create a separate directory for build files.
+")
+endif()
+
+project(GraphicsEngine VERSION 1.0.0 LANGUAGES C CXX)
 
 # Global flag to cause add_library to create shared libraries if on
 option(BUILD_SHARED_LIBS "Build Shared Libraries"    ON)
-option(BUILD_TESTS       "Build test applications"   ON)
-option(BUILD_EDITOR      "Build editor applications" OFF)
 option(BUILD_SAMPLES     "Build sample applications" OFF)
-option(ENABLE_D3D12      "Enable D3D12"              ON)
-option(ENABLE_VULKAN     "Enable Vulkan"             OFF)
 
 # Sets the install directories defined by GNU
 include(GNUInstallDirs)
@@ -21,18 +25,17 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON) # To allow making project folders i
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
-set(CMAKE_INSTALL_PREFIX "D:/Program Files/ZHUENGINE")
-
-if(WIN32)
-    # UNIX will keep a prefix set as "lib"
-	set(CMAKE_SHARED_LIBRARY_PREFIX "")
-endif()
+set(CMAKE_INSTALL_PREFIX "D:/Program Files/GraphicsEngine")
 
 
 
 
+add_subdirectory(Library)
 add_subdirectory(Engine)
+add_subdirectory(UnitTest)
 if(BUILD_SAMPLES)
     add_subdirectory(Samples/InfiniteCity)
-    add_subdirectory(Samples/CAD)
+    add_subdirectory(Samples/GI)
+    add_subdirectory(Samples/CUDA)
+    add_subdirectory(Samples/RayTracing)
 endif()

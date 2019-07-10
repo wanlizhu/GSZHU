@@ -1,6 +1,6 @@
 #pragma once
-#include <ZHUENGINE/Config.h>
-#include <ZHUENGINE/Core/Common/BasicTypes.h>
+#include <Engine/Config.h>
+#include <Engine/Core/Common/BasicTypes.h>
 #include <string>
 
 namespace ZHU

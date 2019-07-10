@@ -1,7 +1,7 @@
-#include "ZHUENGINE_PCH.h"
-#include <ZHUENGINE/Core/Engine.h>
-#include <ZHUENGINE/Core/Timers.h>
-#include "ZHUENGINE/Core/Common/Log.h"
+#include "ENGINE_PCH.h"
+#include <Engine/Core/Engine.h>
+#include <Engine/Core/Timers.h>
+#include "Engine/Core/Common/Log.h"
 
 namespace ZHU
 {
