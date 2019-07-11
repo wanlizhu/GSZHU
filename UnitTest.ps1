@@ -1,4 +1,4 @@
-& .\RUN-BuildAll.ps1 -CloseShell
+& .\BuildAll.ps1 -CloseShell
 
 if($?) {
     $GTestRunner = ".\Tools\GTestRunner\bin\gtest-runner.exe"

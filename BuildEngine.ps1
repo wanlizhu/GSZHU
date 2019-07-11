@@ -2,7 +2,7 @@ Param (
     [Switch]$CloseShell
 )
 
-& .\RUN-Generate.ps1 -Arguments "-DBUILD_SAMPLES=OFF -DBUILD_TESTS=OFF"
+& .\Generate.ps1 -Arguments "-DBUILD_SAMPLES=OFF -DBUILD_TESTS=OFF"
 & cmake --build .\Build --parallel --target Engine --config Debug
 
 if($LASTEXITCODE -NE 0) {

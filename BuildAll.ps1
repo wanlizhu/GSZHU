@@ -2,7 +2,7 @@ Param (
     [Switch]$CloseShell
 )
 
-& .\RUN-Generate.ps1 -Arguments "-DBUILD_SAMPLES=ON -DBUILD_TESTS=ON"
+& .\Generate.ps1 -Arguments "-DBUILD_SAMPLES=ON -DBUILD_TESTS=ON"
 
 & cmake --build .\Build --parallel --target ALL_BUILD --config Debug
 

@@ -1,4 +1,4 @@
-& .\RUN-Generate.ps1
+& .\Generate.ps1
 & cmake --open .\Build
 
 if($LASTEXITCODE -NE 0) {
