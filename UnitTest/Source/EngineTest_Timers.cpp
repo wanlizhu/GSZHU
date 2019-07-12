@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <thread>
-#include <Engine/Core/Engine.h>
-#include <Engine/Core/Timers.h>
+#include <Common/Core/Engine.h>
+#include <Common/Core/Timers.h>
 
 using namespace ZHU;
 

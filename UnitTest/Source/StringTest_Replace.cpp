@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Core/Common/String.h"
+#include "Common/Utilities/String.h"
 
 struct StringReplaceParam 
 {

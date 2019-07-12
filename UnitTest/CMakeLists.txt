@@ -4,7 +4,7 @@ add_executable(Engine_UnitTest ${SOURCE_LIST})
 
 target_include_directories(Engine_UnitTest
 PRIVATE
-    "../Engine/Source"
+    "../Engine"
 )
 
 target_link_libraries(Engine_UnitTest

@@ -12,8 +12,9 @@ endif()
 project(GraphicsEngine VERSION 1.0.0 LANGUAGES C CXX)
 
 # Global flag to cause add_library to create shared libraries if on
-option(BUILD_SHARED_LIBS "Build Shared Libraries"    ON)
-option(BUILD_SAMPLES     "Build sample applications" OFF)
+option(BUILD_SHARED_LIBS  "Build Shared Libraries"     ON)
+option(BUILD_LAUNCHER     "Build launcher application" OFF)
+option(BUILD_UNIT_TEST    "Build launcher application" ON)
 
 # Sets the install directories defined by GNU
 include(GNUInstallDirs)
@@ -30,12 +31,11 @@ set(CMAKE_INSTALL_PREFIX "D:/Program Files/GraphicsEngine")
 
 
 
-add_subdirectory(Library)
+add_subdirectory(External)
 add_subdirectory(Engine)
-add_subdirectory(UnitTest)
-if(BUILD_SAMPLES)
-    add_subdirectory(Samples/InfiniteCity)
-    add_subdirectory(Samples/GI)
-    add_subdirectory(Samples/CUDA)
-    add_subdirectory(Samples/RayTracing)
+if(BUILD_UNIT_TEST)
+    add_subdirectory(UnitTest)
+endif()
+if(BUILD_LAUNCHER)
+    add_subdirectory(Launcher)
 endif()
