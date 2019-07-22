@@ -1,8 +1,11 @@
 # Binary directories.
 /[Bb]uild*/
+/[Bb]in/
+/[Ll]ib/
 
 # Temporary directories.
 /Solutions/*
 /.vscode/*
 /.vs/*
 __pycache__/*
+__cache__/*
