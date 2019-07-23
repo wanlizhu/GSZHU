@@ -5,7 +5,7 @@
 
 namespace ZHU
 {
-    class Image
+    class ZHU_API Image
     {
     public:
         Image();

@@ -50,9 +50,6 @@
     <ClInclude Include="include\Engine\Signal\Signal.h">
       <Filter>Header Files\Signal</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Common\Log.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\Engine\Common\Image.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>

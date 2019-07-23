@@ -19,7 +19,7 @@ namespace ZHU
             return false;
         }
 
-        size_t size = mWidth * mHeight * mChannels * sizeof(char);
+        int size = mWidth * mHeight * mChannels * sizeof(char);
         mData.resize(size);
         std::memcpy(mData.data(), data, size);
         stbi_image_free(data);
@@ -35,7 +35,7 @@ namespace ZHU
             return false;
         }
 
-        size_t size_ = mWidth * mHeight * mChannels * sizeof(char);
+        int size_ = mWidth * mHeight * mChannels * sizeof(char);
         mData.resize(size_);
         std::memcpy(mData.data(), data, size_);
         stbi_image_free(data);

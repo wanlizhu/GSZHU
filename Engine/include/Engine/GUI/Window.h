@@ -17,7 +17,7 @@ namespace ZHU
 #define SCREEN_CENTER Vec2i(-1, -1)
 #define SCREEN_HALF   Vec2i(-2, -2)
 
-    class Window : public NonCopyable
+    class ZHU_API Window : public NonCopyable
     {
     public:
         Window();

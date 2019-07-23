@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Engine/Common/Config.h"
+
 namespace ZHU
 {
-    class NonCopyable
+    class ZHU_API NonCopyable
     {
     public:
         NonCopyable(const NonCopyable&) = delete;
