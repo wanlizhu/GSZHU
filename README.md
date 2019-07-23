@@ -77,3 +77,8 @@ For example, if you received this warning and you want to create an executable f
 
 /NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:msvcrt.lib /NODEFAULTLIB:libcd.lib /NODEFAULTLIB:libcmtd.lib /NODEFAULTLIB:msvcrtd.lib
 
+
+
+
+* **Don't link release application with debug static library or vice versa**
+    Because this may cuase errors like: _iterator_debug_level value '0' doesn't match value '2'

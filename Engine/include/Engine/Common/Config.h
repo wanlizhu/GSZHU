@@ -1,10 +1,5 @@
 #pragma once
 
-#define ZHU_USE_BOOST
-#define ZHU_USE_GLFW
-#define ZHU_USE_ASSIMP
-#define ZHU_USE_VULKAN
-
 /* ZHU_API is used to declare public API functions for export
  * from the DLL / shared library / dynamic library.
 */
