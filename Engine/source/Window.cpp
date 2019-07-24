@@ -60,7 +60,7 @@ namespace ZHU
     {
         glfwWindowHint(hint, value);
     }
-
+    
     void Window::MainLoop()
     {
         while (!glfwWindowShouldClose(mpWindow)) {

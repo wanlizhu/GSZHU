@@ -25,6 +25,7 @@
     <ClCompile Include="source\compile_stb_image.cpp" />
     <ClCompile Include="source\Config.cpp" />
     <ClCompile Include="source\dllmain.cpp" />
+    <ClCompile Include="source\GeometricComputing.cpp" />
     <ClCompile Include="source\Image.cpp" />
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
@@ -74,7 +75,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)external\Eigen\include;$(ProjectDir)external\GLFW\include;$(ProjectDir)external\CGAL\include;$(ProjectDir)external\nlohmann\include;$(ProjectDir)external\glog\include;$(ProjectDir)external\stb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>ZHU_BUILD_DLL;GOOGLE_GLOG_DLL_DECL=;GLOG_NO_ABBREVIATED_SEVERITIES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -82,8 +83,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <ImportLibrary>$(SolutionDir)lib\$(Configuration)\$(TargetName).lib</ImportLibrary>
-      <AdditionalLibraryDirectories>$(ProjectDir)external\lib;$(SolutionDir)lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3d-vc142-mdd.lib;glogd-vc142-mdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)external\glog\lib;$(ProjectDir)external\GLFW\lib;$(ProjectDir)external\CGAL\lib;$(SolutionDir)lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3d-vc142-mdd.lib;glogd-vc142-mdd.lib;CGAL-vc142-mt-gd-4.13.1.lib;CGAL_Core-vc142-mt-gd-4.13.1.lib;CGAL_ImageIO-vc142-mt-gd-4.13.1.lib;libgmp-10.lib;libmpfr-4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <Lib>
@@ -94,6 +95,11 @@
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
+    <PostBuildEvent>
+      <Command>cd "$(ProjectDir)"
+set PATH=%PATH%;$(ProjectDir)tools\bin
+call copy_file.exe  --configuration $(Configuration)  --from "$(ProjectDir)external\"  --to "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -103,7 +109,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)external\Eigen\include;$(ProjectDir)external\GLFW\include;$(ProjectDir)external\CGAL\include;$(ProjectDir)external\nlohmann\include;$(ProjectDir)external\glog\include;$(ProjectDir)external\stb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>ZHU_BUILD_DLL;GOOGLE_GLOG_DLL_DECL=;GLOG_NO_ABBREVIATED_SEVERITIES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -113,8 +119,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ImportLibrary>$(SolutionDir)lib\$(Configuration)\$(TargetName).lib</ImportLibrary>
-      <AdditionalLibraryDirectories>$(ProjectDir)external\lib;$(SolutionDir)lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3-vc142-md.lib;glog-vc142-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)external\glog\lib;$(ProjectDir)external\GLFW\lib;$(ProjectDir)external\CGAL\lib;$(SolutionDir)lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3-vc142-md.lib;glog-vc142-md.lib;CGAL-vc142-mt-4.13.1.lib;CGAL_Core-vc142-mt-4.13.1.lib;CGAL_ImageIO-vc142-mt-4.13.1.lib;libgmp-10.lib;libmpfr-4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)external\lib;$(SolutionDir)lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -124,6 +130,11 @@
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
+    <PostBuildEvent>
+      <Command>cd "$(ProjectDir)"
+set PATH=%PATH%;$(ProjectDir)tools\bin
+call copy_file.exe  --configuration $(Configuration)  --from "$(ProjectDir)external\"  --to "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
