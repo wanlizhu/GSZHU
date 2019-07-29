@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{5DD02130-FBD3-460D-A1C7-879C5024800E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5A79BB45-71CE-44AE-9C6A-799734DAE9E3} = {5A79BB45-71CE-44AE-9C6A-799734DAE9E3}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{74CD599F-214C-4D1A-ACD7-0BA13A21A2A6}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -19,8 +16,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Launcher", "Launcher\Launch
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EngineTools", "EngineTools", "{075BD3F7-9B42-4FC9-AACD-1C5A293C5BA8}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "copy_file", "Engine\tools\copy_file\copy_file.vcxproj", "{5A79BB45-71CE-44AE-9C6A-799734DAE9E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,16 +35,9 @@ Global
 		{B9B272BF-998C-43E4-93C3-E65DC4734DAE}.Debug|x64.Build.0 = Debug|x64
 		{B9B272BF-998C-43E4-93C3-E65DC4734DAE}.Release|x64.ActiveCfg = Release|x64
 		{B9B272BF-998C-43E4-93C3-E65DC4734DAE}.Release|x64.Build.0 = Release|x64
-		{5A79BB45-71CE-44AE-9C6A-799734DAE9E3}.Debug|x64.ActiveCfg = Debug|x64
-		{5A79BB45-71CE-44AE-9C6A-799734DAE9E3}.Debug|x64.Build.0 = Debug|x64
-		{5A79BB45-71CE-44AE-9C6A-799734DAE9E3}.Release|x64.ActiveCfg = Release|x64
-		{5A79BB45-71CE-44AE-9C6A-799734DAE9E3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{5A79BB45-71CE-44AE-9C6A-799734DAE9E3} = {075BD3F7-9B42-4FC9-AACD-1C5A293C5BA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {72CFDC0E-5C6C-4518-8BDD-59190E0F0A9E}
