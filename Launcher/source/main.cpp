@@ -5,8 +5,11 @@ using namespace ZHU;
 
 int main()
 {
-    Window::Initialize();
-    Window window("Graphics Engine", SCREEN_HALF, SCREEN_CENTER);
+    Window::CreationInfo info;
+    info.title = "Graphics Engine";
+    info.size = Window::DefaultSize();
+    info.pos = Window::DefaultPos();
+    Window window(info);
     window.MainLoop();
 
     return 0;

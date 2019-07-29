@@ -5,6 +5,12 @@
 
 namespace ZHU
 {
+    template<typename T, int N>
+    using Vector = Eigen::Matrix<T, N, 1>;
+
+    template<typename T, int ROWS, int COLS>
+    using Matrix = Eigen::Matrix<T, ROWS, COLS>;
+
     typedef Eigen::Vector2f Vec2f;
     typedef Eigen::Vector2i Vec2i;
     typedef Eigen::Vector2d Vec2d;

@@ -13,9 +13,11 @@
   <ItemGroup>
     <ClInclude Include="include\Engine\Common\Config.h" />
     <ClInclude Include="include\Engine\Common\Image.h" />
+    <ClInclude Include="include\Engine\Common\Math.h" />
     <ClInclude Include="include\Engine\Common\NonCopyable.h" />
+    <ClInclude Include="include\Engine\Geometry\Algebra\AxisAngle.h" />
     <ClInclude Include="include\Engine\GUI\Window.h" />
-    <ClInclude Include="include\Engine\Math\Math.h" />
+    <ClInclude Include="include\Engine\GUI\WindowBase.h" />
     <ClInclude Include="include\Engine\Signal\Function.h" />
     <ClInclude Include="include\Engine\Signal\Mutex.h" />
     <ClInclude Include="include\Engine\Signal\Observer.h" />

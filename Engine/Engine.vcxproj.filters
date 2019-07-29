@@ -15,14 +15,17 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{ce4aa74f-a728-40c5-a4e5-a00c791959a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Math">
-      <UniqueIdentifier>{4ff0fc5f-2ea3-494f-8015-fa1e7e5a1168}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Signal">
       <UniqueIdentifier>{4aa92c6f-98f8-4d8a-8a1a-c2aa153c2542}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\RHI">
+    <Filter Include="Header Files\Geometry">
+      <UniqueIdentifier>{4ff0fc5f-2ea3-494f-8015-fa1e7e5a1168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{46a2bab5-d54c-4039-8949-fc405a9fa63a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry\Algebra">
+      <UniqueIdentifier>{018a239a-be82-4cf6-86a0-0dd28fd68a50}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,9 +37,6 @@
     </ClInclude>
     <ClInclude Include="include\Engine\Common\NonCopyable.h">
       <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Math\Math.h">
-      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="include\Engine\Signal\Function.h">
       <Filter>Header Files\Signal</Filter>
@@ -51,6 +51,15 @@
       <Filter>Header Files\Signal</Filter>
     </ClInclude>
     <ClInclude Include="include\Engine\Common\Image.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\GUI\WindowBase.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Geometry\Algebra\AxisAngle.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Common\Math.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>

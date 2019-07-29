@@ -2,7 +2,7 @@
 
 #include "Engine/Common/Config.h"
 #include "Engine/Common/NonCopyable.h"
-#include "Engine/Math/Math.h"
+#include "Engine/GUI/WindowBase.h"
 #include <any>
 #include <memory>
 #include <string>
@@ -14,32 +14,34 @@ struct GLFWwindow;
 
 namespace ZHU
 {
-#define SCREEN_CENTER Vec2i(-1, -1)
-#define SCREEN_HALF   Vec2i(-2, -2)
-
-    class ZHU_API Window : public NonCopyable
+    class ZHU_API Window : public WindowBase, public NonCopyable
     {
     public:
         Window();
-        Window(const char* title, const Vec2i& size, const Vec2i& pos, bool fullscreen = false);
+        Window(const CreationInfo& info);
         virtual ~Window();
 
-        static void Initialize();
-        static void SetCreationHint(int hint, int value);
-        
-        void SetFullScreen(bool enabled);
-        void SetSize(int width, int height);
-        void MoveTo(int x, int y);
-        void SetAttrib(int attrib, int value);
-        void MainLoop();
-        void Destroy();
+        static INT2 DefaultPos();
+        static INT2 DefaultSize();
 
-        GLFWwindow* GetID() const;
-        Vec2i GetPosition() const;
-        Vec2i GetSize() const;
+        virtual void SetTitle(PCCH title) override;
+        virtual void SetFullScreen(bool enabled = true) override;
+        virtual void SetSize(int width, int height) override;
+        virtual void MoveTo(int x, int y) override;
+        virtual void MainLoop() override;
+        virtual void Hide() override;
+        virtual void Show() override;
+        virtual void Destroy() override;
+
+        virtual PCCH GetTitle() const override;
+        virtual INT2 GetPosition() const override;
+        virtual INT2 GetSize() const override;
         
+    protected:
+        static void Initialize();
+
     private:
         GLFWwindow* mpWindow = nullptr;
     };
-
+      
 }
