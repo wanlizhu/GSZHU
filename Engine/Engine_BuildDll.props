@@ -23,6 +23,11 @@
       <ImportLibrary>$(GraphicsEngineOutputDir_IMPLIB)$(TargetName).lib</ImportLibrary>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>if not exist $(ProjectDir)include\Eigen (
+        mklink /j "$(ProjectDir)include\Eigen" "$(ProjectDir)external\Eigen\include\Eigen"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <BuildMacro Include="GraphicsEngineSolutionDir">

@@ -3,8 +3,8 @@
 #include <mutex>
 #include <functional>
 #include "gtest/gtest.h"
-#include "Signal/Signal.h"
-#include "Signal/Mutex.h"
+#include "Engine/Signal/Signal.h"
+#include "Engine/Signal/Mutex.h"
 
 #define ZHU_THREAD_SAFE_SIGNALS
 // the value of a comma expression is equivalent to its last(rightmost) operand 
