@@ -2,7 +2,7 @@
 
 #include "Engine/Common/Config.h"
 #include "Engine/Common/NonCopyable.h"
-#include "Engine/GUI/WindowBase.h"
+#include "./WindowBase.h"
 #include <any>
 #include <memory>
 #include <string>

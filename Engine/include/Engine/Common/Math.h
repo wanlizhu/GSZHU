@@ -8,8 +8,8 @@ namespace ZHU
     template<typename T, int N>
     using Vector = Eigen::Matrix<T, N, 1>;
 
-    template<typename T, int ROWS, int COLS>
-    using Matrix = Eigen::Matrix<T, ROWS, COLS>;
+    template<typename T, int _NumRows, int _NumCols>
+    using Matrix = Eigen::Matrix<T, _NumRows, _NumCols>;
 
     typedef Eigen::Vector2f Vec2f;
     typedef Eigen::Vector2i Vec2i;
@@ -33,4 +33,15 @@ namespace ZHU
 
     typedef Eigen::Quaternionf Quatf;
     typedef Eigen::Quaterniond Quatd;
+
+    template<typename T, int _NumRows, int _NumCols>
+    Matrix<T, _NumRows, _NumCols> SetColumn(Matrix<T, _NumRows, _NumCols>& mat,
+                                            int col,
+                                            const Vector<T, _NumRows>& vec)
+    {
+        for (int i = 0; i < _NumRows; i++) {
+            mat(i, col) = vec[i];
+        }
+        return mat;
+    }
 }

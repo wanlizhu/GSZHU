@@ -1,4 +1,4 @@
-#include "Engine/GUI/Window.h"
+#include "Engine/Common/GUI/Window.h"
 #include <cassert>
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include "GLFW/glfw3.h"

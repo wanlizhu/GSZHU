@@ -12,16 +12,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine\Common\Config.h" />
+    <ClInclude Include="include\Engine\Common\GUI\Window.h" />
+    <ClInclude Include="include\Engine\Common\GUI\WindowBase.h" />
     <ClInclude Include="include\Engine\Common\Image.h" />
     <ClInclude Include="include\Engine\Common\Math.h" />
     <ClInclude Include="include\Engine\Common\NonCopyable.h" />
-    <ClInclude Include="include\Engine\Geometry\Algebra\AxisAngle.h" />
-    <ClInclude Include="include\Engine\GUI\Window.h" />
-    <ClInclude Include="include\Engine\GUI\WindowBase.h" />
-    <ClInclude Include="include\Engine\Signal\Function.h" />
-    <ClInclude Include="include\Engine\Signal\Mutex.h" />
-    <ClInclude Include="include\Engine\Signal\Observer.h" />
-    <ClInclude Include="include\Engine\Signal\Signal.h" />
+    <ClInclude Include="include\Engine\Common\Signal\Function.h" />
+    <ClInclude Include="include\Engine\Common\Signal\Mutex.h" />
+    <ClInclude Include="include\Engine\Common\Signal\Observer.h" />
+    <ClInclude Include="include\Engine\Common\Signal\Signal.h" />
+    <ClInclude Include="include\Engine\Geometry\Algebra\ArrayView.h" />
+    <ClInclude Include="include\Engine\Geometry\Algebra\ConvertCoordinates.h" />
+    <ClInclude Include="include\Engine\Geometry\Algebra\GaussianElimination.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\compile_stb_image.cpp" />

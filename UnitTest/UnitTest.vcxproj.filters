@@ -12,6 +12,12 @@
     <Filter Include="Source Files\Signal">
       <UniqueIdentifier>{501a56cf-62f3-4ce3-b2b3-f4e96046e11a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Geometry">
+      <UniqueIdentifier>{1a79ad66-efbf-4662-a464-152dec1389cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Geometry\Algebra">
+      <UniqueIdentifier>{f3e17047-5c2b-4571-9c67-b2259e77d694}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -31,6 +37,9 @@
     </ClCompile>
     <ClCompile Include="source\Signal\Test_Signal_Fire.cpp">
       <Filter>Source Files\Signal</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_ConvertCoordinates.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
