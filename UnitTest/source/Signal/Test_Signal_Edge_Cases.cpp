@@ -25,6 +25,8 @@ TEST_F(Test_Signal_Edge_Cases, Test_Fired_Disconnect)
     };
 
     mo_signal_one.fire(__FILE__);
+    EXPECT_STREQ(anonymous_output::test, __FILE__);
+    anonymous_output::reset();
 }
 
 TEST_F(Test_Signal_Edge_Cases, Test_Fire_Disconnects)
@@ -50,6 +52,8 @@ TEST_F(Test_Signal_Edge_Cases, Test_Fire_Disconnects)
     };
 
     mo_signal_one.fire(__FILE__);
+    EXPECT_STREQ(anonymous_output::test, __FILE__);
+    anonymous_output::reset();
 
     EXPECT_TRUE_INFO(mo_signal_one.is_empty(), "A slot was found.");
 }
@@ -59,6 +63,7 @@ TEST_F(Test_Signal_Edge_Cases, Test_Fire_Connects)
     Delegate_One fo1;
 
     mo_signal_one.connect(fo1);
+    EXPECT_EQ(mo_signal_one.slots_count(), 1);
 
     fo1 = [&] (const char* sl) {
         mo_signal_one.connect(fo1);
@@ -71,6 +76,8 @@ TEST_F(Test_Signal_Edge_Cases, Test_Fire_Connects)
     };
 
     mo_signal_one.fire(__FILE__);
+    EXPECT_EQ(mo_signal_one.slots_count(), 8);
+    anonymous_output::reset();
 }
 
 TEST_F(Test_Signal_Edge_Cases, Test_Fire_Disconnect_All)
@@ -90,6 +97,8 @@ TEST_F(Test_Signal_Edge_Cases, Test_Fire_Disconnect_All)
     };
 
     mo_signal_one.fire(__FILE__);
+    EXPECT_STREQ(anonymous_output::test, __FILE__);
+    anonymous_output::reset();
 
     EXPECT_TRUE_INFO(mo_signal_one.is_empty(), "A slot was found.");
 }
@@ -115,5 +124,7 @@ TEST_F(Test_Signal_Edge_Cases, Test_Fire_Recursive_Fire)
     };
 
     mo_signal_one.fire(__FILE__);
+    EXPECT_STREQ(anonymous_output::test, __FILE__);
+    anonymous_output::reset();
 }
 

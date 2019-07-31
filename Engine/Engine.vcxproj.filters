@@ -27,6 +27,15 @@
     <Filter Include="Header Files\Common\Signal">
       <UniqueIdentifier>{2bfac3e3-144f-47b1-9c99-eefee6dd2120}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Geometry\Distance">
+      <UniqueIdentifier>{4a9be3f4-5b32-49a9-afab-2734ec0cae80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry\Distance\3D">
+      <UniqueIdentifier>{f5cd89ee-b648-4caa-8938-a67dd628e49f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry\Shape">
+      <UniqueIdentifier>{f0c1ba62-7a42-4fb2-a16c-15aa62eafcc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine\Common\Config.h">
@@ -65,7 +74,34 @@
     <ClInclude Include="include\Engine\Geometry\Algebra\ArrayView.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Algebra\GaussianElimination.h">
+    <ClInclude Include="include\Engine\Common\EigenMatrixAddon.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Common\CPUQuery.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Geometry\Distance\DCPQuery.h">
+      <Filter>Header Files\Geometry\Distance</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Geometry\Shape\Circle3.h">
+      <Filter>Header Files\Geometry\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Geometry\Distance\3D\Distance_Point3Circle3.h">
+      <Filter>Header Files\Geometry\Distance\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Geometry\Algebra\OrthogonalComplement.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Geometry\Algebra\Orthonormalize.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Geometry\Algebra\Perpendicular.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Geometry\Algebra\HyperCross.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Geometry\Algebra\Barycentrics.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,6 +119,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CPUQuery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

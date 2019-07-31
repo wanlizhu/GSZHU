@@ -142,11 +142,9 @@ namespace ZHU
              FULL SPECIALIZATION : NO
   -------------------------------+----------------------------------
 */
-#define TEMPLATE_ARGS  template<typename T, int N>
-#define TEMPLATE_CLASS ConvertCoordinates<T, N>
 
-     TEMPLATE_ARGS
-     TEMPLATE_CLASS::ConvertCoordinates() 
+     template<typename T, int N>
+     ConvertCoordinates<T, N>::ConvertCoordinates()
          :    mC(Matrix<T, N, N>::Identity())
          , mInvC(Matrix<T, N, N>::Identity())
          , mIsColumnMajor_U(true)
@@ -156,25 +154,50 @@ namespace ZHU
      {}
 
 
-     TEMPLATE_ARGS
-     bool TEMPLATE_CLASS::operator()(const Matrix<T, N, N>& U, const Matrix<T, N, N>& V)
+     template<typename T, int N>
+     bool ConvertCoordinates<T, N>::operator()(const Matrix<T, N, N>& U, const Matrix<T, N, N>& V)
      {
-         if (!U.isInvertible() || !V.isInvertible())
-             return false;
+         if (0 < N && N <= 4)
+         {
+             Matrix<T, N, N> invU, invV;
+             T detU, detV;
+             bool invertibleU = false;
+             bool invertibleV = false;
 
-         mC = U.inverse() * V;
-         mInvC = V.inverse() * U;
-         mIsColumnMajor_U = U.IsColumnMajor;
-         mIsColumnMajor_V = V.IsColumnMajor;
-         mIsRH_U = U.determinant() > (T)0;
-         mIsRH_V = V.determinant() > (T)0;
+             U.computeInverseAndDetWithCheck(invU, detU, invertibleU);
+             if (!invertibleU)
+                 return false;
+             V.computeInverseAndDetWithCheck(invV, detV, invertibleV);
+             if (!invertibleV)
+                 return false;
+
+             mC = invU * V;
+             mInvC = invV * U;
+             mIsColumnMajor_U = Matrix<T, N, N>::Options == Eigen::ColMajor;
+             mIsColumnMajor_V = Matrix<T, N, N>::Options == Eigen::ColMajor;
+             mIsRH_U = detU > (T)0;
+             mIsRH_V = detV > (T)0;
+         }
+         else
+         {
+             if (!Eigen::FullPivLU<Matrix<T, N, N>>(U).isInvertible() ||
+                 !Eigen::FullPivLU<Matrix<T, N, N>>(V).isInvertible())
+                 return false;
+
+             mC = U.inverse() * V;
+             mInvC = V.inverse() * U;
+             mIsColumnMajor_U = Matrix<T, N, N>::Options == Eigen::ColMajor;
+             mIsColumnMajor_V = Matrix<T, N, N>::Options == Eigen::ColMajor;
+             mIsRH_U = U.determinant() > (T)0;
+             mIsRH_V = V.determinant() > (T)0;
+         }
 
          return true;
      }
 
 
-     TEMPLATE_ARGS
-     Matrix<T, N, N> TEMPLATE_CLASS::U2V(const Matrix<T, N, N>& A) const
+     template<typename T, int N>
+     Matrix<T, N, N> ConvertCoordinates<T, N>::U2V(const Matrix<T, N, N>& A) const
      {
          Matrix<T, N, N> product;
          if (mIsColumnMajor_U){
@@ -198,8 +221,8 @@ namespace ZHU
      }
 
 
-     TEMPLATE_ARGS
-     Matrix<T, N, N> TEMPLATE_CLASS::V2U(const Matrix<T, N, N>& B) const
+     template<typename T, int N>
+     Matrix<T, N, N> ConvertCoordinates<T, N>::V2U(const Matrix<T, N, N>& B) const
      {
          Matrix<T, N, N> product;
          if (mIsColumnMajor_V) {
@@ -221,7 +244,4 @@ namespace ZHU
              }
          }
      }
-
-#undef TEMPLATE_ARGS
-#undef TEMPLATE_CLASS
 }

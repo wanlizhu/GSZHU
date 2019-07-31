@@ -14,7 +14,14 @@ TEST_F(Test_Signal_Fire, Test_Member_Fire)
     mo_signal_two.connect<&Foo::slot_member_signature_two>(mo_foo);
 
     mo_signal_one.fire(__FUNCTION__);
-    mo_signal_two.fire(__FUNCTION__, __LINE__);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    anonymous_output::reset();
+
+    std::size_t line = __LINE__;
+    mo_signal_two.fire(__FUNCTION__, std::move(line));
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    EXPECT_EQ(anonymous_output::line, line);
+    anonymous_output::reset();
 }
 
 TEST_F(Test_Signal_Fire, Test_Const_Member_Fire)
@@ -23,7 +30,14 @@ TEST_F(Test_Signal_Fire, Test_Const_Member_Fire)
     mo_signal_two.connect<&Foo::slot_const_member_signature_two>(mo_foo);
 
     mo_signal_one.fire(__FUNCTION__);
-    mo_signal_two.fire(__FUNCTION__, __LINE__);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    anonymous_output::reset();
+
+    std::size_t line = __LINE__;
+    mo_signal_two.fire(__FUNCTION__, line);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    EXPECT_EQ(anonymous_output::line, line);
+    anonymous_output::reset();
 }
 
 TEST_F(Test_Signal_Fire, Test_Overloaded_Member_Fire)
@@ -32,7 +46,14 @@ TEST_F(Test_Signal_Fire, Test_Overloaded_Member_Fire)
     mo_signal_two.connect<Foo, &Foo::slot_overloaded_member>(mo_foo);
 
     mo_signal_one.fire(__FUNCTION__);
-    mo_signal_two.fire(__FUNCTION__, __LINE__);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    anonymous_output::reset();
+
+    std::size_t line = __LINE__;
+    mo_signal_two.fire(__FUNCTION__, line);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    EXPECT_EQ(anonymous_output::line, line);
+    anonymous_output::reset();
 }
 
 TEST_F(Test_Signal_Fire, Test_Overloaded_Static_Member_Fire)
@@ -41,7 +62,14 @@ TEST_F(Test_Signal_Fire, Test_Overloaded_Static_Member_Fire)
     mo_signal_two.connect<&Foo::slot_static_member_function>();
 
     mo_signal_one.fire(__FUNCTION__);
-    mo_signal_two.fire(__FUNCTION__, __LINE__);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    anonymous_output::reset();
+
+    std::size_t line = __LINE__;
+    mo_signal_two.fire(__FUNCTION__, line);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    EXPECT_EQ(anonymous_output::line, line);
+    anonymous_output::reset();
 }
 
 TEST_F(Test_Signal_Fire, Test_Overloaded_Virtual_Member_Fire)
@@ -50,7 +78,14 @@ TEST_F(Test_Signal_Fire, Test_Overloaded_Virtual_Member_Fire)
     mo_signal_two.connect<Foo, &Foo::slot_virtual_member_function>(mo_foo);
 
     mo_signal_one.fire(__FUNCTION__);
-    mo_signal_two.fire(__FUNCTION__, __LINE__);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    anonymous_output::reset();
+
+    std::size_t line = __LINE__;
+    mo_signal_two.fire(__FUNCTION__, line);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    EXPECT_EQ(anonymous_output::line, line);
+    anonymous_output::reset();
 }
 
 TEST_F(Test_Signal_Fire, Test_Overloaded_Virtual_Derived_Member_Fire)
@@ -59,7 +94,14 @@ TEST_F(Test_Signal_Fire, Test_Overloaded_Virtual_Derived_Member_Fire)
     mo_signal_two.connect<Bar, &Bar::slot_virtual_member_function>(mo_bar);
 
     mo_signal_one.fire(__FUNCTION__);
-    mo_signal_two.fire(__FUNCTION__, __LINE__);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    anonymous_output::reset();
+
+    std::size_t line = __LINE__;
+    mo_signal_two.fire(__FUNCTION__, line);
+    EXPECT_STREQ(anonymous_output::test, __FUNCTION__);
+    EXPECT_EQ(anonymous_output::line, line);
+    anonymous_output::reset();
 }
 
 TEST_F(Test_Signal_Fire, Test_Fire_Accumulate)

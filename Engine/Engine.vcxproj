@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine\Common\Config.h" />
+    <ClInclude Include="include\Engine\Common\CPUQuery.h" />
+    <ClInclude Include="include\Engine\Common\EigenMatrixAddon.h" />
     <ClInclude Include="include\Engine\Common\GUI\Window.h" />
     <ClInclude Include="include\Engine\Common\GUI\WindowBase.h" />
     <ClInclude Include="include\Engine\Common\Image.h" />
@@ -22,12 +24,20 @@
     <ClInclude Include="include\Engine\Common\Signal\Observer.h" />
     <ClInclude Include="include\Engine\Common\Signal\Signal.h" />
     <ClInclude Include="include\Engine\Geometry\Algebra\ArrayView.h" />
+    <ClInclude Include="include\Engine\Geometry\Algebra\Barycentrics.h" />
     <ClInclude Include="include\Engine\Geometry\Algebra\ConvertCoordinates.h" />
-    <ClInclude Include="include\Engine\Geometry\Algebra\GaussianElimination.h" />
+    <ClInclude Include="include\Engine\Geometry\Algebra\HyperCross.h" />
+    <ClInclude Include="include\Engine\Geometry\Algebra\OrthogonalComplement.h" />
+    <ClInclude Include="include\Engine\Geometry\Algebra\Orthonormalize.h" />
+    <ClInclude Include="include\Engine\Geometry\Algebra\Perpendicular.h" />
+    <ClInclude Include="include\Engine\Geometry\Distance\3D\Distance_Point3Circle3.h" />
+    <ClInclude Include="include\Engine\Geometry\Distance\DCPQuery.h" />
+    <ClInclude Include="include\Engine\Geometry\Shape\Circle3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\compile_stb_image.cpp" />
     <ClCompile Include="source\Config.cpp" />
+    <ClCompile Include="source\CPUQuery.cpp" />
     <ClCompile Include="source\dllmain.cpp" />
     <ClCompile Include="source\Image.cpp" />
     <ClCompile Include="source\Window.cpp" />
@@ -77,13 +87,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)external\Eigen\include;$(ProjectDir)external\GLFW\include;$(ProjectDir)external\nlohmann\include;$(ProjectDir)external\glog\include;$(ProjectDir)external\stb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ZHU_BUILD_DLL;GOOGLE_GLOG_DLL_DECL=;GLOG_NO_ABBREVIATED_SEVERITIES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)external\glog\lib;$(ProjectDir)external\GLFW\lib;$(SolutionDir)lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Link />
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)external\lib;$(SolutionDir)lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;glog.lib;%(AdditionalDependencies)</AdditionalDependencies>

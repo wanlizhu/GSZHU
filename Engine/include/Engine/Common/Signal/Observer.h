@@ -44,6 +44,20 @@ namespace ZHU
             return m_connections.empty();
         }
 
+        int slots_count() const 
+        {
+            std::unique_lock<Mutex> lock(m_mutex);
+            auto iter = m_connections.cbegin();
+            auto stop = m_connections.cend();
+
+            int count = 0;
+            while (iter != stop) {
+                ++count;
+                std::advance(iter, 1);
+            }
+            return count;
+        }
+
     protected:
         // Guideline #4: A base class destructor should be
         // either public and virtual, or protected and non-virtual.

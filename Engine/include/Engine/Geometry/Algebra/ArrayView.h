@@ -5,7 +5,7 @@
 
 namespace ZHU
 {
-    template<bool _ColumnMajor, typename T, int... _Dims>
+    template<bool _ColumnMajor, typename T, int... DIMS>
     class ArrayView {};
 
 

@@ -11,13 +11,26 @@
 #define EXPECT_TRUE_INFO(condition, info)  EXPECT_TRUE((info, condition))
 #define EXPECT_FALSE_INFO(condition, info) EXPECT_FALSE((info, condition))
 
-namespace
+struct anonymous_output
 {
-    static void anonymous_output(const char* fn, const char* sl, std::size_t ln)
+    static const char* func;
+    static const char* test;
+    static std::size_t line;
+
+    static void post(const char* fn, const char* sl, std::size_t ln)
     {
-        std::cout << fn << " LINE: " << __LINE__ << " Test: " << sl << " LINE: " << ln << std::endl;
+        //std::cout << fn << " LINE: " << __LINE__ << " Test: " << sl << " LINE: " << ln << std::endl;
+        func = fn;
+        test = sl;
+        line = ln;
     }
-}
+    static void reset()
+    {
+        func = 0;
+        test = 0;
+        line = 0;
+    }
+};
 
 #if defined(ZHU_THREAD_SAFE_SIGNALS)
 using Observer = ZHU::Observer<ZHU::RecursiveMutex>;
@@ -40,47 +53,47 @@ public:
 
     void slot_member_signature_one(const char* sl)
     {
-        anonymous_output(__FUNCTION__, sl, __LINE__);
+        anonymous_output::post(__FUNCTION__, sl, __LINE__);
     }
     void slot_member_signature_two(const char* sl, std::size_t ln)
     {
-        anonymous_output(__FUNCTION__, sl, ln);
+        anonymous_output::post(__FUNCTION__, sl, ln);
     }
 
     void slot_const_member_signature_one(const char* sl) const
     {
-        anonymous_output(__FUNCTION__, sl, __LINE__);
+        anonymous_output::post(__FUNCTION__, sl, __LINE__);
     }
     void slot_const_member_signature_two(const char* sl, std::size_t ln) const
     {
-        anonymous_output(__FUNCTION__, sl, ln);
+        anonymous_output::post(__FUNCTION__, sl, ln);
     }
 
     void slot_overloaded_member(const char* sl)
     {
-        anonymous_output(__FUNCTION__, sl, __LINE__);
+        anonymous_output::post(__FUNCTION__, sl, __LINE__);
     }
     void slot_overloaded_member(const char* sl, std::size_t ln)
     {
-        anonymous_output(__FUNCTION__, sl, ln);
+        anonymous_output::post(__FUNCTION__, sl, ln);
     }
 
     static void slot_static_member_function(const char* sl)
     {
-        anonymous_output(__FUNCTION__, sl, __LINE__);
+        anonymous_output::post(__FUNCTION__, sl, __LINE__);
     }
     static void slot_static_member_function(const char* sl, std::size_t ln)
     {
-        anonymous_output(__FUNCTION__, sl, ln);
+        anonymous_output::post(__FUNCTION__, sl, ln);
     }
 
     virtual void slot_virtual_member_function(const char* sl)
     {
-        anonymous_output(__FUNCTION__, sl, __LINE__);
+        anonymous_output::post(__FUNCTION__, sl, __LINE__);
     }
     virtual void slot_virtual_member_function(const char* sl, std::size_t ln)
     {
-        anonymous_output(__FUNCTION__, sl, ln);
+        anonymous_output::post(__FUNCTION__, sl, ln);
     }
 };
 
@@ -92,11 +105,11 @@ public:
 
     void slot_virtual_member_function(const char* sl) override
     {
-        anonymous_output(__FUNCTION__, sl, __LINE__);
+        anonymous_output::post(__FUNCTION__, sl, __LINE__);
     }
     void slot_virtual_member_function(const char* sl, std::size_t ln) override
     {
-        anonymous_output(__FUNCTION__, sl, ln);
+        anonymous_output::post(__FUNCTION__, sl, ln);
     }
 };
 
@@ -120,11 +133,11 @@ protected:
 
 static void slot_static_free_function(const char* sl)
 {
-    anonymous_output(__FUNCTION__, sl, __LINE__);
+    anonymous_output::post(__FUNCTION__, sl, __LINE__);
 }
 
 static void slot_static_free_function(const char* sl, std::size_t ln)
 {
-    anonymous_output(__FUNCTION__, sl, ln);
+    anonymous_output::post(__FUNCTION__, sl, ln);
 }
 

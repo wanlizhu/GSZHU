@@ -18,6 +18,9 @@
     <Filter Include="Source Files\Geometry\Algebra">
       <UniqueIdentifier>{f3e17047-5c2b-4571-9c67-b2259e77d694}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Geometry\Distance">
+      <UniqueIdentifier>{f1e0446c-049e-452b-9424-7c4e240e7f48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -40,6 +43,12 @@
     </ClCompile>
     <ClCompile Include="source\Geometry\Algebra\Test_ConvertCoordinates.cpp">
       <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Signal\Test_Base.cpp">
+      <Filter>Source Files\Signal</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Distance\Test_Distance_Point3Circle3.cpp">
+      <Filter>Source Files\Geometry\Distance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

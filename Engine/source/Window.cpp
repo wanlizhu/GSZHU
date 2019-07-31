@@ -38,7 +38,7 @@ namespace ZHU
             assert(mpWindow != nullptr);
             return;
          }
-
+        
         mpWindow = glfwCreateWindow(info.size[0], info.size[1], info.title, NULL, NULL);
         assert(mpWindow != nullptr);
 

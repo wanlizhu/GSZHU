@@ -7,6 +7,10 @@
     <Link>
       <AdditionalDependencies>glogd-vc142-mdd.lib;glfw3d-vc142-mdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ClCompile>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <PreprocessorDefinitions>_CRTDBG_MAP_ALLOC;new=new(_NORMAL_BLOCK , __FILE__ , __LINE__);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

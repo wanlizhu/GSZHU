@@ -14,8 +14,8 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)external\Eigen\include;$(ProjectDir)external\GLFW\include;$(ProjectDir)external\nlohmann\include;$(ProjectDir)external\glog\include;$(ProjectDir)external\stb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ZHU_BUILD_DLL;GOOGLE_GLOG_DLL_DECL=;GLOG_NO_ABBREVIATED_SEVERITIES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)external\GLFW\include;$(ProjectDir)external\nlohmann\include;$(ProjectDir)external\glog\include;$(ProjectDir)external\stb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ZHU_BUILD_DLL;GOOGLE_GLOG_DLL_DECL=;GLOG_NO_ABBREVIATED_SEVERITIES;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -24,9 +24,9 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist $(ProjectDir)include\Eigen (
-        mklink /j "$(ProjectDir)include\Eigen" "$(ProjectDir)external\Eigen\include\Eigen"
-)</Command>
+      <Command>set VC_OUTDIR="$(OutDir)"
+set VC_PROJECTDIR="$(ProjectDir)"
+call "$(ProjectDir)Engine_PostBuild.bat"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

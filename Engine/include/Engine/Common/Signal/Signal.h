@@ -143,7 +143,7 @@ namespace ZHU
 
         //----------------------------------------------------FIRE / FIRE ACCUMULATE
         template<typename... Uref>
-        void fire(Uref&&... args)
+        void fire(Uref... args) // todo: should i put it as "(Uref&&... args)"?
         {
             Observer::template for_each<Function>(std::forward<Uref>(args)...);
         }
