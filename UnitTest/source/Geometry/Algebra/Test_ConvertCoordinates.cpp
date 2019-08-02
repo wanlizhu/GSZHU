@@ -1,4 +1,6 @@
 #include "gtest/gtest.h"
+
+#if 0
 #include "Engine/Geometry/Algebra/ConvertCoordinates.h"
 
 using namespace ZHU;
@@ -68,3 +70,4 @@ TEST(Test_ConvertCoordinates, Linear_Change_Of_Basis)
     EXPECT_DOUBLE_EQ(diff[1], 0.0);
     EXPECT_DOUBLE_EQ(diff[2], 0.0);
 }
+#endif

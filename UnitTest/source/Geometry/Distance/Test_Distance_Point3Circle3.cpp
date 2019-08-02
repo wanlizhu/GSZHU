@@ -1,4 +1,6 @@
 #include "gtest/gtest.h"
+
+#if 0
 #include "Engine/Geometry/Distance/3D/Distance_Point3Circle3.h"
 
 using namespace ZHU;
@@ -17,4 +19,23 @@ TEST(Test_Distance_Point3Circle3, Case1)
     bool bb = result.closest == Vector3<double>(0, 0, 0);
     EXPECT_TRUE(bb);
     EXPECT_FALSE(result.equidistant);
+}
+#endif
+
+#include "Geometry/Algebra/Matrix.h"
+
+using namespace ZHU;
+
+TEST(XX, YY)
+{
+    Matrix<float, 2, 3> m0;
+    Matrix<float, 2, 3> m1{1, 2, 3, 4, 5, 6};
+    Matrix<float, 2, 3, false> m2(1, 2, 3, 4, 5, 6);
+
+
+    bool b = std::is_base_of_v<MatrixBase<float, 2, 1, false>, Matrix<float, 2, 3, false>::Vector>;
+    auto n = typeid(Matrix<float, 2, 3, false>::Vector).name();
+    auto nn = typeid(Vector<float, 2, false>).name();
+    auto nnn = typeid(Vector<float, 2, false>::Base).name();
+
 }

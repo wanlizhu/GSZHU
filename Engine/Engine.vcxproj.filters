@@ -12,14 +12,8 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{ce4aa74f-a728-40c5-a4e5-a00c791959a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry">
-      <UniqueIdentifier>{4ff0fc5f-2ea3-494f-8015-fa1e7e5a1168}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{46a2bab5-d54c-4039-8949-fc405a9fa63a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Geometry\Algebra">
-      <UniqueIdentifier>{018a239a-be82-4cf6-86a0-0dd28fd68a50}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Common\GUI">
       <UniqueIdentifier>{d3de0078-ece2-4e02-89b7-3f11c5fc1939}</UniqueIdentifier>
@@ -27,14 +21,20 @@
     <Filter Include="Header Files\Common\Signal">
       <UniqueIdentifier>{2bfac3e3-144f-47b1-9c99-eefee6dd2120}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry\Distance">
-      <UniqueIdentifier>{4a9be3f4-5b32-49a9-afab-2734ec0cae80}</UniqueIdentifier>
+    <Filter Include="Header Files\Geometry">
+      <UniqueIdentifier>{22110103-3c65-411b-adbb-e07455612dc6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry\Distance\3D">
-      <UniqueIdentifier>{f5cd89ee-b648-4caa-8938-a67dd628e49f}</UniqueIdentifier>
+    <Filter Include="Header Files\Geometry\Algebra">
+      <UniqueIdentifier>{25547b0d-e26e-4b6f-8dc5-c1eadb2dddfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry\Distance">
+      <UniqueIdentifier>{7137e7de-7232-4f9b-91c9-b2b967975865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometry\Distance\ND">
+      <UniqueIdentifier>{3dc06d1c-8bf8-41d3-8379-5a337697f495}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Geometry\Shape">
-      <UniqueIdentifier>{f0c1ba62-7a42-4fb2-a16c-15aa62eafcc3}</UniqueIdentifier>
+      <UniqueIdentifier>{2bc143f3-865e-4fad-b781-7662036f4726}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -68,40 +68,49 @@
     <ClInclude Include="include\Engine\Common\Signal\Signal.h">
       <Filter>Header Files\Common\Signal</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Algebra\ConvertCoordinates.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Algebra\ArrayView.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
     <ClInclude Include="include\Engine\Common\EigenMatrixAddon.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="include\Engine\Common\CPUQuery.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Distance\DCPQuery.h">
+    <ClInclude Include="include\Geometry\Algebra\ArrayView.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Barycentrics.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\ConvertCoordinates.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\HyperCross.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\OrthogonalComplement.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Orthonormalize.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Perpendicular.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Distance\DCPQuery.h">
       <Filter>Header Files\Geometry\Distance</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Shape\Circle3.h">
+    <ClInclude Include="include\Geometry\Distance\Distance_Point3Circle3.h">
+      <Filter>Header Files\Geometry\Distance</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Shape\Circle3.h">
       <Filter>Header Files\Geometry\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Distance\3D\Distance_Point3Circle3.h">
-      <Filter>Header Files\Geometry\Distance\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Algebra\OrthogonalComplement.h">
+    <ClInclude Include="include\Geometry\Algebra\MatrixBase.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Algebra\Orthonormalize.h">
+    <ClInclude Include="include\Geometry\Algebra\Matrix.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Algebra\Perpendicular.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Algebra\HyperCross.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Geometry\Algebra\Barycentrics.h">
+    <ClInclude Include="include\Geometry\Algebra\Vector.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
   </ItemGroup>
