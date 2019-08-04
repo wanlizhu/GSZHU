@@ -33,6 +33,23 @@ namespace ZHU
         inline     bool operator> (const MatrixBase& other) const { return !operator<=(other); }
         inline     bool operator>=(const MatrixBase& other) const { return !operator< (other); }
 
+        // Componentwise algebraic operations.
+        inline MatrixBase operator-() const;
+        inline MatrixBase operator+(const MatrixBase& mat) const;
+        inline MatrixBase operator-(const MatrixBase& mat) const;
+        inline MatrixBase operator*(const MatrixBase& mat) const;
+        inline MatrixBase operator/(const MatrixBase& mat) const;
+        inline MatrixBase operator*(const          T& num) const;
+        inline MatrixBase operator/(const          T& num) const;
+        friend inline MatrixBase operator*(const T& num, const MatrixBase& mat) { return mat * num; }
+
+        inline MatrixBase& operator+=(const MatrixBase& mat);
+        inline MatrixBase& operator-=(const MatrixBase& mat);
+        inline MatrixBase& operator*=(const MatrixBase& mat);
+        inline MatrixBase& operator/=(const MatrixBase& mat);
+        inline MatrixBase& operator*=(const          T& num);
+        inline MatrixBase& operator/=(const          T& num);
+
     protected:
         T mData[_NumRows*_NumCols];
     };
@@ -142,5 +159,143 @@ namespace ZHU
                 return false;
         }
         return true;
+    }
+
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator-() const
+    {
+        MatrixBase mat;
+        for (int i = 0; i < _NumRows * _NumCols; i++) {
+            mat.mData[i] = -mData[i];
+        }
+        return mat;
+    }
+
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor> 
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator+(const MatrixBase& mat) const
+    {
+        MatrixBase res;
+        for (int i = 0; i < _NumRows * _NumCols; i++) {
+            res.mData[i] = mData[i] + mat.mData[i];
+        }
+        return res;
+    }
+
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator-(const MatrixBase& mat) const
+    {
+        MatrixBase res;
+        for (int i = 0; i < _NumRows * _NumCols; i++) {
+            res.mData[i] = mData[i] - mat.mData[i];
+        }
+        return res;
+    }
+
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator*(const MatrixBase& mat) const
+    {
+        MatrixBase res;
+        for (int i = 0; i < _NumRows * _NumCols; i++) {
+            res.mData[i] = mData[i] * mat.mData[i];
+        }
+        return res;
+    }
+
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator/(const MatrixBase& mat) const
+    {
+        MatrixBase res;
+        for (int i = 0; i < _NumRows * _NumCols; i++) {
+            res.mData[i] = mData[i] / mat.mData[i];
+        }
+        return res;
+    }
+
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator*(const T& num) const
+    {
+        MatrixBase res;
+        for (int i = 0; i < _NumRows * _NumCols; i++) {
+            res.mData[i] = mData[i] * num;
+        }
+        return res;
+    }
+
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor> 
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator/(const T& num) const
+    {
+        MatrixBase res;
+        for (int i = 0; i < _NumRows * _NumCols; i++) {
+            res.mData[i] = mData[i] / num;
+        }
+        return res;
+    }
+
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>& 
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator+=(const MatrixBase& mat)
+    {
+        *this = *this + mat;
+        return *this;
+    }
+    
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>& 
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator-=(const MatrixBase& mat)
+    {
+        *this = *this - mat;
+        return *this;
+    }
+    
+    
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>& 
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator*=(const MatrixBase& mat)
+    {
+        *this = *this * mat;
+        return *this;
+    }
+    
+    
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>&
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator/=(const MatrixBase& mat)
+    {
+        *this = *this / mat;
+        return *this;
+    }
+    
+    
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>&
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator*=(const T& num)
+    {
+        *this = *this * num;
+        return *this;
+    }
+    
+
+    template<typename T, int _NumRows, int _NumCols, bool _ColumnMajor>
+    inline MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>&
+        MatrixBase<T, _NumRows, _NumCols, _ColumnMajor>::operator/=(const T& num)
+    {
+        *this = *this / num;
+        return *this;
     }
 }

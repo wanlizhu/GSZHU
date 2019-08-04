@@ -13,11 +13,14 @@ namespace ZHU
         using Vector = Vector<T, _ColumnMajor ? _NumRows : _NumCols, _ColumnMajor>;
         static const int IsColumnMajor = _ColumnMajor;
 
-        Matrix() : Base() {}
+        Matrix() 
+            : Base() {}
         template<typename U>
-        Matrix(const std::initializer_list<U>& init) : Base(init) {}
+        Matrix(const std::initializer_list<U>& init) 
+            : Base(init) {}
         template<typename ... ARGS>
-        Matrix(const ARGS& ... args) : Base(std::forward<const ARGS&>(args) ...) {}
+        Matrix(const ARGS& ... args) 
+            : Base(std::forward<const ARGS&>(args) ...) {}
 
     };
 }

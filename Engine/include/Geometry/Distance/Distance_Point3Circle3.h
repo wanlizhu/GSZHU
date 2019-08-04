@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Engine/Geometry/Distance/DCPQuery.h"
-#include "Engine/Geometry/Shape/Circle3.h"
-#include "Engine/Geometry/Algebra/OrthogonalComplement.h"
+#include "Geometry/Distance/DCPQuery.h"
+#include "Geometry/Shape/Circle3.h"
+#include "Geometry/Algebra/OrthogonalComplement.h"
 
 namespace ZHU
 {

@@ -47,9 +47,6 @@
     <ClInclude Include="include\Engine\Common\Image.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Common\Math.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\Engine\Common\GUI\Window.h">
       <Filter>Header Files\Common\GUI</Filter>
     </ClInclude>
@@ -68,14 +65,8 @@
     <ClInclude Include="include\Engine\Common\Signal\Signal.h">
       <Filter>Header Files\Common\Signal</Filter>
     </ClInclude>
-    <ClInclude Include="include\Engine\Common\EigenMatrixAddon.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\Engine\Common\CPUQuery.h">
       <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\ArrayView.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
     <ClInclude Include="include\Geometry\Algebra\Barycentrics.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
@@ -111,6 +102,9 @@
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
     <ClInclude Include="include\Geometry\Algebra\Vector.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\VectorOperators.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
   </ItemGroup>
