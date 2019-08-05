@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/Common/Math.h"
+#include "Geometry/Algebra/Matrix.h"
 
 namespace ZHU
 {
@@ -145,8 +145,8 @@ namespace ZHU
 
      template<typename T, int N>
      ConvertCoordinates<T, N>::ConvertCoordinates()
-         :    mC(Matrix<T, N, N>::Identity())
-         , mInvC(Matrix<T, N, N>::Identity())
+         :    mC()
+         , mInvC()
          , mIsColumnMajor_U(true)
          , mIsColumnMajor_V(true)
          , mIsRH_U(true)

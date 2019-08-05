@@ -68,22 +68,7 @@
     <ClInclude Include="include\Engine\Common\CPUQuery.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Barycentrics.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
     <ClInclude Include="include\Geometry\Algebra\ConvertCoordinates.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\HyperCross.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\OrthogonalComplement.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Orthonormalize.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Perpendicular.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
     <ClInclude Include="include\Geometry\Distance\DCPQuery.h">
@@ -104,7 +89,34 @@
     <ClInclude Include="include\Geometry\Algebra\Vector.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\VectorOperators.h">
+    <ClInclude Include="include\Geometry\Algebra\Vector2.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Vector3.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Vector4.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Matrix2.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Matrix3.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Matrix4.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\AxisAngle.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\EulerAngles.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Quaternion.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\ChebyshevRatio.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
   </ItemGroup>

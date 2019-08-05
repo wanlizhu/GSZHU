@@ -2,7 +2,7 @@
 
 #include "Geometry/Distance/DCPQuery.h"
 #include "Geometry/Shape/Circle3.h"
-#include "Geometry/Algebra/OrthogonalComplement.h"
+#include "Geometry/Algebra/Matrix.h"
 
 namespace ZHU
 {
