@@ -50,6 +50,36 @@
     <ClCompile Include="source\Geometry\Distance\Test_Distance_Point3Circle3.cpp">
       <Filter>Source Files\Geometry\Distance</Filter>
     </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Vector.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Matrix.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Rotation.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Quaternion.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Matrix2.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Matrix3.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Matrix4.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Vector2.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Vector3.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Geometry\Algebra\Test_Vector4.cpp">
+      <Filter>Source Files\Geometry\Algebra</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Signal\Test_Base.hpp">

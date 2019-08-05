@@ -96,8 +96,7 @@ namespace ZHU
       -------------------------------+----------------------------------
     */
 
-    template<typename T, int N, bool CM = true,
-             typename = std::enable_if_t<N == 3 || N == 4>>
+    template<typename T, int N, bool CM, typename>
     Vector<T, N, CM> Cross(const Vector<T, N, CM> & v0, const Vector<T, N, CM> & v1)
     {
         static_assert(N == 3 || N == 4, "Dimension must be 3 or 4.");
@@ -111,8 +110,7 @@ namespace ZHU
     }
 
 
-    template<typename T, int N, bool CM = true, 
-             typename = std::enable_if_t<N == 3 || N == 4>>
+    template<typename T, int N, bool CM, typename>
     Vector<T, N, CM> UnitCross(const Vector<T, N, CM> & v0, const Vector<T, N, CM> & v1,
                            bool robust)
     {
@@ -124,8 +122,7 @@ namespace ZHU
     }
 
 
-    template<typename T, int N, bool CM = true, 
-             typename = std::enable_if_t<N == 3 || N == 4>>
+    template<typename T, int N, bool CM, typename>
     T DotCross(const Vector<T, N, CM> & v0, const Vector<T, N, CM> & v1, const Vector<T, N, CM> & v2)
     {
         static_assert(N == 3 || N == 4, "Dimension must be 3 or 4.");
@@ -134,7 +131,7 @@ namespace ZHU
     }
 
 
-    template<typename T, bool CM = true>
+    template<typename T, bool CM>
     T ComputeOrthoComplement(int numInputs, Vector3<T, CM>* v,
                              bool robust)
     {
@@ -158,7 +155,7 @@ namespace ZHU
 
 
 
-    template<typename T, bool CM = true>
+    template<typename T, bool CM>
     bool ComputeBarycentrics(const Vector3<T, CM>& p,
                              const Vector3<T, CM>& v0,
                              const Vector3<T, CM>& v1,

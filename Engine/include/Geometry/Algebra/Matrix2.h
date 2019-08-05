@@ -66,7 +66,7 @@ namespace ZHU
       -------------------------------+----------------------------------
     */
 
-    template <typename T, bool CM = true>
+    template <typename T, bool CM>
     void MakeRotation(T angle, Matrix2<T, CM>& rotation)
     {
         T cs = std::cos(angle);
@@ -90,7 +90,7 @@ namespace ZHU
     /* Get the angle (radians) from a rotation matrix.
      * The caller is responsible for ensuring the matrix is a rotation.
      */
-    template <typename T, bool CM = true>
+    template <typename T, bool CM>
     T GetRotationAngle(const Matrix2<T, CM>& rotation)
     {
         if constexpr (Matrix2<T, CM>::IsColumnMajor) {
@@ -140,7 +140,7 @@ namespace ZHU
     }
 
 
-    template <typename T, bool CM = true>
+    template <typename T, bool CM>
     T Determinant(const Matrix2<T, CM>& M)
     {
         T det = M(0, 0) * M(1, 1) - M(0, 1) * M(1, 0);
@@ -148,7 +148,7 @@ namespace ZHU
     }
 
 
-    template <typename T, bool CM = true>
+    template <typename T, bool CM>
     T Trace(const Matrix2<T, CM>& M)
     {
         T trace = M(0, 0) + M(1, 1);

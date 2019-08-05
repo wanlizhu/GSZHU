@@ -29,13 +29,13 @@ namespace ZHU
     public:
         EulerAngles()
             : mResult(EulerResult::INVALID)
-            , mAxis({ 0 })
-            , mAngle({ (T)0 })
+            , mAxis{ 0 }
+            , mAngle{ (T)0 }
         {}
         EulerAngles(int i0, int i1, int i2, T a0, T a1, T a2)
             : mResult(EulerResult::UNIQUE)
-            , mAxis({ i0, i1, i2 })
-            , mAngle({ a0, a1, a2 })
+            , mAxis{ i0, i1, i2 }
+            , mAngle{ a0, a1, a2 }
         {}
 
     public:

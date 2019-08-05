@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MatrixBase.h"
+#include "Geometry/Algebra/MatrixBase.h"
 
 namespace ZHU
 {
@@ -135,8 +135,8 @@ namespace ZHU
     inline Vector<T, N, _ColumnMajor>& 
         Vector<T, N, _ColumnMajor>::MakeZero()
     {
-        for (int i = 0; i < _NumRows * _NumCols; i++) {
-            mData[i] = (T)0;
+        for (int i = 0; i < N; i++) {
+            this->mData[i] = (T)0;
         }
         return *this;
     }
@@ -146,8 +146,8 @@ namespace ZHU
     inline Vector<T, N, _ColumnMajor>&
         Vector<T, N, _ColumnMajor>::MakeOnes()
     {
-        for (int i = 0; i < _NumRows * _NumCols; i++) {
-            mData[i] = (T)1;
+        for (int i = 0; i < N; i++) {
+            this->mData[i] = (T)1;
         }
         return *this;
     }
@@ -158,7 +158,7 @@ namespace ZHU
         Vector<T, N, _ColumnMajor>::MakeUnit(int dim) // Component dim is 1, all others are zero.
     {
         MakeZero();
-        mData[dim] = (T)1;
+        this->mData[dim] = (T)1;
         return *this;
     }
 
@@ -170,7 +170,7 @@ namespace ZHU
 
 
 
-    template<typename T, int N, bool CM = true>
+    template<typename T, int N, bool CM>
     T Dot(const Vector<T, N, CM>& v0, const Vector<T, N, CM>& v1)
     {
         T dot = v0[0] * v1[0];
@@ -181,7 +181,7 @@ namespace ZHU
     }
 
 
-    template<typename T, int N, bool CM = true>
+    template<typename T, int N, bool CM>
     T Length(const Vector<T, N, CM>& v, bool robust)
     {
         if (robust) {
@@ -209,7 +209,7 @@ namespace ZHU
     }
 
 
-    template<typename T, int N, bool CM = true>
+    template<typename T, int N, bool CM>
     T Normalize(Vector<T, N, CM>& v, bool robust)
     {
         if (robust) {
@@ -251,8 +251,8 @@ namespace ZHU
     }
 
 
-    template<typename T, int N, bool CM = true>
-    T Orthonormalize(int numElements, Vector<T, N, CM>* v, bool robust)
+    template<typename T, int N, bool CM>
+    T Orthonormalize(int numInputs, Vector<T, N, CM>* v, bool robust)
     {
         if (v && 1 <= numInputs && numInputs <= N) {
             T minLength = Normalize(v[0], robust);
@@ -274,7 +274,7 @@ namespace ZHU
 
 
 
-    template<typename T, int N, bool CM = true>
+    template<typename T, int N, bool CM>
     Vector<T, N, CM> GetOrtho(const Vector<T, N, CM>& v, bool unitLen)
     {
         T cmax = std::abs(v[0]);
@@ -306,7 +306,7 @@ namespace ZHU
 
 
 
-    template<typename T, int N, bool CM = true>
+    template<typename T, int N, bool CM>
     bool ComputeExtremes(int numVectors, const Vector<T, N, CM>* v,
                          Vector<T, N, CM>& vmin,
                          Vector<T, N, CM>& vmax)

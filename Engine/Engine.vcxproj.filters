@@ -119,6 +119,12 @@
     <ClInclude Include="include\Geometry\Algebra\ChebyshevRatio.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\Rotation.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Geometry\Algebra\MatrixAll.h">
+      <Filter>Header Files\Geometry\Algebra</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Window.cpp">

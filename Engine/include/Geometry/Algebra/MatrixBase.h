@@ -50,7 +50,7 @@ namespace ZHU
         inline MatrixBase& operator*=(const          T& num);
         inline MatrixBase& operator/=(const          T& num);
 
-    protected:
+    public:
         T mData[_NumRows*_NumCols];
     };
 

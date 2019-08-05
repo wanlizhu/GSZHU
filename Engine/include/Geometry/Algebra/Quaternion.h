@@ -153,7 +153,8 @@ namespace ZHU
     template<typename T>
     Quaternion<T> SlerpRP(T t,
                           const Quaternion<T>& q0,
-                          const Quaternion<T>& q1);
+                          const Quaternion<T>& q1,
+                          T cosA);
 
 
     /*
@@ -186,7 +187,9 @@ namespace ZHU
     template<typename T>
     Quaternion<T> SlerpRPH(T t,
                            const Quaternion<T>& q0,
-                           const Quaternion<T>& q1);
+                           const Quaternion<T>& q1,
+                           const Quaternion<T>& qh, 
+                           T cosAH);
 
 
 
@@ -440,7 +443,8 @@ namespace ZHU
     template<typename T>
     Quaternion<T> SlerpRP(T t,
                           const Quaternion<T>& q0,
-                          const Quaternion<T>& q1)
+                          const Quaternion<T>& q1,
+                          T cosA)
     {
         T f0, f1;
         ChebyshevRatio<T>::Get(t, cosA, f0, f1);
@@ -451,7 +455,9 @@ namespace ZHU
     template<typename T>
     Quaternion<T> SlerpRPH(T t,
                            const Quaternion<T>& q0,
-                           const Quaternion<T>& q1)
+                           const Quaternion<T>& q1, 
+                           const Quaternion<T>& qh,
+                           T cosAH)
     {
         T f0, f1;
         T twoT = static_cast<T>(2) * t;

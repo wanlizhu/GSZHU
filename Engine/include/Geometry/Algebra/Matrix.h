@@ -67,7 +67,7 @@ namespace ZHU
     inline void Matrix<T, _NumRows, _NumCols, _ColumnMajor>::SetRow(int r, const RowVector& vec)
     {
         for (int i = 0; i < _NumCols; i++) {
-            this->operator(r, i) = vec[i];
+            this->operator()(r, i) = vec[i];
         }
     }
 
@@ -76,7 +76,7 @@ namespace ZHU
     inline void Matrix<T, _NumRows, _NumCols, _ColumnMajor>::SetCol(int c, const ColumnVector& vec)
     {
         for (int i = 0; i < _NumRows; i++) {
-            this->operator(i, c) = vec[i];
+            this->operator()(i, c) = vec[i];
         }
     }
 
@@ -87,7 +87,7 @@ namespace ZHU
     {
         RowVector vec;
         for (int i = 0; i < RowVector::NumColumns; i++) {
-            vec[i] = this->operator(r, i);
+            vec[i] = this->operator()(r, i);
         }
         return vec;
     }
@@ -99,7 +99,7 @@ namespace ZHU
     {
         ColumnVector vec;
         for (int i = 0; i < RowVector::NumRows; i++) {
-            vec[i] = this->operator(i, c);
+            vec[i] = this->operator()(i, c);
         }
         return vec;
     }
@@ -110,7 +110,7 @@ namespace ZHU
         Matrix<T, _NumRows, _NumCols, _ColumnMajor>::MakeZero()
     {
         for (int i = 0; i < _NumRows * _NumCols; i++) {
-            mData[i] = T(0);
+            this->mData[i] = T(0);
         }
         return *this;
     }
@@ -121,7 +121,7 @@ namespace ZHU
         Matrix<T, _NumRows, _NumCols, _ColumnMajor>::MakeUnit(int r, int c) 
     {
         MakeZero();
-        this->operator(r, c) = T(1);
+        this->operator()(r, c) = T(1);
         return *this;
     }
 
@@ -132,7 +132,7 @@ namespace ZHU
     {
         for (int r = 0; r < _NumRows; r++) {
             for (int c = 0; c < _NumCols; c++) {
-                this->operator(r, c) = (r == c ? (T)1 : (T)0);
+                this->operator()(r, c) = (r == c ? (T)1 : (T)0);
             }
        }
         return *this;
