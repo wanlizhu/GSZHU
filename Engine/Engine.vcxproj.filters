@@ -15,12 +15,6 @@
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{46a2bab5-d54c-4039-8949-fc405a9fa63a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Common\GUI">
-      <UniqueIdentifier>{d3de0078-ece2-4e02-89b7-3f11c5fc1939}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Common\Signal">
-      <UniqueIdentifier>{2bfac3e3-144f-47b1-9c99-eefee6dd2120}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{22110103-3c65-411b-adbb-e07455612dc6}</UniqueIdentifier>
     </Filter>
@@ -36,41 +30,14 @@
     <Filter Include="Header Files\Geometry\Shape">
       <UniqueIdentifier>{2bc143f3-865e-4fad-b781-7662036f4726}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry\NumericalMethod">
-      <UniqueIdentifier>{b4def471-2304-4c7d-94b8-0f0065093091}</UniqueIdentifier>
+    <Filter Include="Header Files\Common\GUI">
+      <UniqueIdentifier>{9883eaa3-366f-4eaf-8ab6-5e834fd1e446}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\Signal">
+      <UniqueIdentifier>{e1cde562-4694-4e65-8037-08515334911e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Engine\Common\Config.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Common\NonCopyable.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Common\Image.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Common\GUI\Window.h">
-      <Filter>Header Files\Common\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Common\GUI\WindowBase.h">
-      <Filter>Header Files\Common\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Common\Signal\Function.h">
-      <Filter>Header Files\Common\Signal</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Common\Signal\Mutex.h">
-      <Filter>Header Files\Common\Signal</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Common\Signal\Observer.h">
-      <Filter>Header Files\Common\Signal</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Common\Signal\Signal.h">
-      <Filter>Header Files\Common\Signal</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine\Common\CPUQuery.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\Geometry\Algebra\ConvertCoordinates.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
@@ -95,6 +62,42 @@
     <ClInclude Include="include\Geometry\Algebra\Matrix.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
+    <ClInclude Include="include\Common\Config.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\CPUQuery.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\Image.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\NonCopyable.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\GUI\Window.h">
+      <Filter>Header Files\Common\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\GUI\WindowBase.h">
+      <Filter>Header Files\Common\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\Signal\Function.h">
+      <Filter>Header Files\Common\Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\Signal\Mutex.h">
+      <Filter>Header Files\Common\Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\Signal\Observer.h">
+      <Filter>Header Files\Common\Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\Signal\Signal.h">
+      <Filter>Header Files\Common\Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\IDeviceObject.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\IObject.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Window.cpp">
@@ -113,6 +116,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\CPUQuery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\IObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

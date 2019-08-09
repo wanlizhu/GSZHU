@@ -15,7 +15,7 @@
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)external\GLFW\include;$(ProjectDir)external\Eigen\include;$(ProjectDir)external\nlohmann\include;$(ProjectDir)external\glog\include;$(ProjectDir)external\stb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ZHU_BUILD_DLL;GOOGLE_GLOG_DLL_DECL=;GLOG_NO_ABBREVIATED_SEVERITIES;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZHU_BUILD_DLL;ZHU_MODE_THREAD_SAFE;GOOGLE_GLOG_DLL_DECL=;GLOG_NO_ABBREVIATED_SEVERITIES;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
