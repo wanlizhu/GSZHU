@@ -29,8 +29,23 @@
     <ClInclude Include="include\Geometry\Distance\DCPQuery.h" />
     <ClInclude Include="include\Geometry\Distance\Distance_Point3Circle3.h" />
     <ClInclude Include="include\Geometry\Shape\Circle3.h" />
+    <ClInclude Include="include\Graphics\BufferFormat.h" />
+    <ClInclude Include="include\Graphics\ClearValue.h" />
+    <ClInclude Include="include\Graphics\Constants.h" />
+    <ClInclude Include="include\Graphics\DisplayAttributes.h" />
+    <ClInclude Include="include\Graphics\IBuffer.h" />
+    <ClInclude Include="include\Graphics\IBufferView.h" />
+    <ClInclude Include="include\Graphics\IFence.h" />
     <ClInclude Include="include\Graphics\IDeviceObject.h" />
-    <ClInclude Include="include\Graphics\IObject.h" />
+    <ClInclude Include="include\Graphics\DeviceObjectDescriptor.h" />
+    <ClInclude Include="include\Graphics\ISampler.h" />
+    <ClInclude Include="include\Graphics\IShader.h" />
+    <ClInclude Include="include\Graphics\IShaderVariable.h" />
+    <ClInclude Include="include\Graphics\ISwapChain.h" />
+    <ClInclude Include="include\Graphics\ITexture.h" />
+    <ClInclude Include="include\Graphics\ITextureView.h" />
+    <ClInclude Include="include\Graphics\Object.h" />
+    <ClInclude Include="include\Graphics\Tools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\compile_stb_image.cpp" />
@@ -38,7 +53,7 @@
     <ClCompile Include="source\CPUQuery.cpp" />
     <ClCompile Include="source\dllmain.cpp" />
     <ClCompile Include="source\Image.cpp" />
-    <ClCompile Include="source\IObject.cpp" />
+    <ClCompile Include="source\Object.cpp" />
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
