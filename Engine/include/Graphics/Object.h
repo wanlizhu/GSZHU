@@ -17,7 +17,7 @@ namespace ZHU
     public:
         using Pointer = std::shared_ptr<Object>;
 
-        Object(const std::string& name = "");
+        Object(const std::string& name);
         virtual ~Object();
 
         bool SetObjectName(const std::string& name);
@@ -35,7 +35,7 @@ namespace ZHU
         size_t GetObjectChildCount() const;
         std::weak_ptr<Object> GetObjectChild(int index);
 
-        static std::weak_ptr<Object> FindObject(const std::string& name);
+        static std::shared_ptr<Object> FindObject(const std::string& name);
         static size_t GetObjectCount();
         static std::weak_ptr<Object> GetObject(size_t index);
 

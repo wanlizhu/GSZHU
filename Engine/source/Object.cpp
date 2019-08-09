@@ -102,13 +102,18 @@ namespace ZHU
         mObjectChildren.push_back(child);
     }
 
-    std::weak_ptr<Object> Object::FindObject(const std::string& name)
+    std::shared_ptr<Object> Object::FindObject(const std::string& name)
     {
         auto it = smObjects.find(name);
-        if (it == smObjects.end())
-            return std::weak_ptr<Object>();
-        else
-            return it->second;
+        if (it != smObjects.end()) {
+            auto shared = it->second.lock();
+            if (shared) {
+                return shared;
+            }
+            smObjects.erase(it);
+        }
+
+        return std::shared_ptr<Object>(nullptr);
     }
 
     size_t Object::GetObjectCount()

@@ -52,6 +52,7 @@
     <ClCompile Include="source\Config.cpp" />
     <ClCompile Include="source\CPUQuery.cpp" />
     <ClCompile Include="source\dllmain.cpp" />
+    <ClCompile Include="source\IDeviceObject.cpp" />
     <ClCompile Include="source\Image.cpp" />
     <ClCompile Include="source\Object.cpp" />
     <ClCompile Include="source\Window.cpp" />
