@@ -33,7 +33,7 @@ TEST(XX, YY)
     Matrix<float, 2, 3, false> m2(1, 2, 3, 4, 5, 6);
 
 
-    bool b = std::is_base_of_v<MatrixBase<float, 2, 1, false>, Matrix<float, 2, 3, false>::ColumnVector>;
+    bool b = std::is_base_of_v<MatrixBase<Vector<float, 2, true>, float, 2, 1, false>, Matrix<float, 2, 3, false>::ColumnVector>;
     auto n = typeid(Matrix<float, 2, 3, false>::ColumnVector).name();
     auto nn = typeid(Vector<float, 2, false>).name();
     auto nnn = typeid(Vector<float, 2, false>::Base).name();

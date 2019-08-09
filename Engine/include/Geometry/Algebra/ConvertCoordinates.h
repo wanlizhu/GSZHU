@@ -157,91 +157,20 @@ namespace ZHU
      template<typename T, int N>
      bool ConvertCoordinates<T, N>::operator()(const Matrix<T, N, N>& U, const Matrix<T, N, N>& V)
      {
-         if (0 < N && N <= 4)
-         {
-             Matrix<T, N, N> invU, invV;
-             T detU, detV;
-             bool invertibleU = false;
-             bool invertibleV = false;
-
-             U.computeInverseAndDetWithCheck(invU, detU, invertibleU);
-             if (!invertibleU)
-                 return false;
-             V.computeInverseAndDetWithCheck(invV, detV, invertibleV);
-             if (!invertibleV)
-                 return false;
-
-             mC = invU * V;
-             mInvC = invV * U;
-             mIsColumnMajor_U = Matrix<T, N, N>::Options == Eigen::ColMajor;
-             mIsColumnMajor_V = Matrix<T, N, N>::Options == Eigen::ColMajor;
-             mIsRH_U = detU > (T)0;
-             mIsRH_V = detV > (T)0;
-         }
-         else
-         {
-             if (!Eigen::FullPivLU<Matrix<T, N, N>>(U).isInvertible() ||
-                 !Eigen::FullPivLU<Matrix<T, N, N>>(V).isInvertible())
-                 return false;
-
-             mC = U.inverse() * V;
-             mInvC = V.inverse() * U;
-             mIsColumnMajor_U = Matrix<T, N, N>::Options == Eigen::ColMajor;
-             mIsColumnMajor_V = Matrix<T, N, N>::Options == Eigen::ColMajor;
-             mIsRH_U = U.determinant() > (T)0;
-             mIsRH_V = V.determinant() > (T)0;
-         }
-
-         return true;
+         
      }
 
 
      template<typename T, int N>
      Matrix<T, N, N> ConvertCoordinates<T, N>::U2V(const Matrix<T, N, N>& A) const
      {
-         Matrix<T, N, N> product;
-         if (mIsColumnMajor_U){
-             product = mInvC * A * mC;
-             if (mIsColumnMajor_V){
-                 return product;
-             }
-             else {
-                 return product.transpose();
-             }
-         }
-         else {
-             product = mInvC * A.transpose() * mC;
-             if (mIsColumnMajor_V) {
-                 return product;
-             }
-             else {
-                 return product.transpose();
-             }
-         }
+         
      }
 
 
      template<typename T, int N>
      Matrix<T, N, N> ConvertCoordinates<T, N>::V2U(const Matrix<T, N, N>& B) const
      {
-         Matrix<T, N, N> product;
-         if (mIsColumnMajor_V) {
-             product = mC * B * mInvC;
-             if (mIsColumnMajor_U) {
-                 return product;
-             }
-             else {
-                 return product.transpose();
-             }
-         }
-         else {
-             product = mC * B.transpose() * mInvC;
-             if (mIsColumnMajor_U) {
-                 return product;
-             }
-             else {
-                 product.transpose();
-             }
-         }
+         
      }
 }

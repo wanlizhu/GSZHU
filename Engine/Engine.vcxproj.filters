@@ -36,6 +36,9 @@
     <Filter Include="Header Files\Geometry\Shape">
       <UniqueIdentifier>{2bc143f3-865e-4fad-b781-7662036f4726}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Geometry\NumericalMethod">
+      <UniqueIdentifier>{b4def471-2304-4c7d-94b8-0f0065093091}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine\Common\Config.h">
@@ -80,49 +83,16 @@
     <ClInclude Include="include\Geometry\Shape\Circle3.h">
       <Filter>Header Files\Geometry\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\MatrixBase.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Matrix.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Vector.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Vector2.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Vector3.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Vector4.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Matrix2.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Matrix3.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Matrix4.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
     <ClInclude Include="include\Geometry\Algebra\AxisAngle.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
     <ClInclude Include="include\Geometry\Algebra\EulerAngles.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Quaternion.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\ChebyshevRatio.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
     <ClInclude Include="include\Geometry\Algebra\Rotation.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\MatrixAll.h">
+    <ClInclude Include="include\Geometry\Algebra\Matrix.h">
       <Filter>Header Files\Geometry\Algebra</Filter>
     </ClInclude>
   </ItemGroup>

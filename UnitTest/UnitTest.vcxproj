@@ -58,7 +58,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine\source;$(ProjectDir)external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\external\Eigen\include;$(SolutionDir)Engine\source;$(ProjectDir)external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -74,7 +74,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine\source;$(ProjectDir)external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\external\Eigen\include;$(SolutionDir)Engine\source;$(ProjectDir)external\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,16 +86,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Geometry\Algebra\Test_ConvertCoordinates.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Matrix.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Matrix2.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Matrix3.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Matrix4.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Quaternion.cpp" />
     <ClCompile Include="source\Geometry\Algebra\Test_Rotation.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Vector.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Vector2.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Vector3.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Vector4.cpp" />
     <ClCompile Include="source\Geometry\Distance\Test_Distance_Point3Circle3.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Signal\Test_Base.cpp" />

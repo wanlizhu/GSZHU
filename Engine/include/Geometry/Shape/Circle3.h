@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/Common/Math.h"
+#include "Geometry/Algebra/MatrixAll.h"
 
 namespace ZHU
 {
@@ -29,7 +29,7 @@ namespace ZHU
     public:
         Vector3<T> mCenter;
         Vector3<T> mNormal;
-                T  mRadius;
+        T mRadius;
     };
 
 
