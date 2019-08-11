@@ -273,5 +273,91 @@ namespace ZHU
     };
 
 
-   
+    enum class EColorMask : uint8_t
+    {
+        Red = 1,
+        Green = 2,
+        Blue = 4,
+        Alpha = 8,
+        All = conv(EColorMask::Red) | 
+              conv(EColorMask::Green) |
+              conv(EColorMask::Blue) |
+              conv(EColorMask::Alpha)
+    };
+
+
+    enum class EBlendFactor : uint8_t
+    {
+        Undefined = 0,
+        Zero,
+        One,
+        SourceColor,
+        One_Minus_SourceColor,
+        SourceAlpha,
+        One_Minus_SourceAlpha,
+        DestColor,
+        One_Minus_DestColor,
+        DestAlpha,
+        One_Minus_DestAlpha,
+        ConstantColor,
+        One_Minus_ConstantColor
+    };
+
+
+    enum class EBlendOperation : uint8_t
+    {
+        Undefined = 0,
+        Add,
+        Subtract,
+        Min,
+        Max
+    };
+
+
+    enum class EStencilOperation : uint8_t
+    {
+        Undefined = 0,
+        Keep,
+        Zero,
+        Replace,
+        Increment,
+        IncrementWrap,
+        DecrementWrap,
+        Invert
+    };
+
+
+    enum class EDevice : uint32_t
+    {
+        Undefined = 0,
+        D3D11,
+        D3D12,
+        OpenGL,
+        Vulkan
+    };
+
+
+    enum class EFrequency : uint8_t
+    {
+        Undefined = 0,
+        Vertex,
+        Instance
+    };
+
+
+    enum class EFillMode : int8_t
+    {
+        Undefined = 0,
+        Wireframe,
+        Solid
+    };
+
+
+    enum class ECullMode : uint8_t
+    {
+        Undefined = 0,
+        None,
+        Front,
+        Back
+    };
 }

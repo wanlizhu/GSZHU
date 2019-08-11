@@ -1,4 +1,4 @@
-#include "Engine/Common/Image.h"
+#include "Common/Image.h"
 #include "stb_image.h"
 #include "stb_image_resize.h"
 #include "stb_image_write.h"

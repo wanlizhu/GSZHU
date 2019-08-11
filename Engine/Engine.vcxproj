@@ -11,11 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Common\Allocator.h" />
     <ClInclude Include="include\Common\Config.h" />
     <ClInclude Include="include\Common\CPUQuery.h" />
     <ClInclude Include="include\Common\GUI\Window.h" />
     <ClInclude Include="include\Common\GUI\WindowBase.h" />
     <ClInclude Include="include\Common\Image.h" />
+    <ClInclude Include="include\Common\IMemory.h" />
+    <ClInclude Include="include\Common\MemoryPool.h" />
     <ClInclude Include="include\Common\NonCopyable.h" />
     <ClInclude Include="include\Common\Signal\Function.h" />
     <ClInclude Include="include\Common\Signal\Mutex.h" />
@@ -29,15 +32,22 @@
     <ClInclude Include="include\Geometry\Distance\DCPQuery.h" />
     <ClInclude Include="include\Geometry\Distance\Distance_Point3Circle3.h" />
     <ClInclude Include="include\Geometry\Shape\Circle3.h" />
+    <ClInclude Include="include\Graphics\BlendState.h" />
     <ClInclude Include="include\Graphics\BufferFormat.h" />
     <ClInclude Include="include\Graphics\ClearValue.h" />
     <ClInclude Include="include\Graphics\Constants.h" />
+    <ClInclude Include="include\Graphics\D3D12\IBufferD3D12.h" />
+    <ClInclude Include="include\Graphics\DepthStencilState.h" />
+    <ClInclude Include="include\Graphics\DeviceCaps.h" />
+    <ClInclude Include="include\Graphics\DeviceObjectBase.h" />
     <ClInclude Include="include\Graphics\DisplayAttributes.h" />
     <ClInclude Include="include\Graphics\IBuffer.h" />
     <ClInclude Include="include\Graphics\IBufferView.h" />
+    <ClInclude Include="include\Graphics\ICommandList.h" />
     <ClInclude Include="include\Graphics\IFence.h" />
     <ClInclude Include="include\Graphics\IDeviceObject.h" />
     <ClInclude Include="include\Graphics\DeviceObjectDescriptor.h" />
+    <ClInclude Include="include\Graphics\InputLayout.h" />
     <ClInclude Include="include\Graphics\ISampler.h" />
     <ClInclude Include="include\Graphics\IShader.h" />
     <ClInclude Include="include\Graphics\IShaderVariable.h" />
@@ -45,6 +55,8 @@
     <ClInclude Include="include\Graphics\ITexture.h" />
     <ClInclude Include="include\Graphics\ITextureView.h" />
     <ClInclude Include="include\Graphics\Object.h" />
+    <ClInclude Include="include\Graphics\RasterizerState.h" />
+    <ClInclude Include="include\Graphics\RenderTargetBlend.h" />
     <ClInclude Include="include\Graphics\Tools.h" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +66,7 @@
     <ClCompile Include="source\dllmain.cpp" />
     <ClCompile Include="source\IDeviceObject.cpp" />
     <ClCompile Include="source\Image.cpp" />
+    <ClCompile Include="source\MemoryPool.cpp" />
     <ClCompile Include="source\Object.cpp" />
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
