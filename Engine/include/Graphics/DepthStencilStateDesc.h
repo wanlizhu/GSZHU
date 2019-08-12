@@ -13,7 +13,7 @@ namespace ZHU
     };
 
 
-    struct DepthStencilState
+    struct DepthStencilStateDesc
     {
         bool EnableDepth = true;
         bool EnableDepthWrite = true;

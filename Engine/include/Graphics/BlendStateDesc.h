@@ -5,7 +5,7 @@
 namespace ZHU
 {
     // This structure describes the blend state and is part of the GraphicsPipelineDesc.
-    struct BlendState
+    struct BlendStateDesc
     {
         static constexpr int MaxRenderTargets = 8;
 

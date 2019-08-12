@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-    struct ShaderDescriptor : public DeviceObjectDescriptor
+    struct ShaderDesc : public DeviceObjectDesc
     {
 
     };
@@ -13,7 +13,7 @@ namespace ZHU
     class ZHU_API IShader : public IDeviceObject
     {
     public:
-        virtual const ShaderDescriptor& GetDesc() const = 0;
+        virtual const ShaderDesc& GetDesc() const = 0;
         
         virtual Object::Pointer GetVariable(const std::string& name) const = 0;
         virtual size_t GetVariableCount() const = 0;

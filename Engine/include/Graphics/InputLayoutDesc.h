@@ -21,7 +21,7 @@ namespace ZHU
     };
 
 
-    struct InputLayout
+    struct InputLayoutDesc
     {
         std::vector<LayoutElement> LayoutElements;
     };

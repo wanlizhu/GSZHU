@@ -4,7 +4,7 @@
 #include "Graphics/Object.h"
 #include "Graphics/Constants.h"
 #include "Graphics/Tools.h"
-#include "Graphics/DeviceObjectDescriptor.h"
+#include "Graphics/DeviceObjectDesc.h"
 
 namespace ZHU
 {
@@ -12,9 +12,10 @@ namespace ZHU
     {
     public:
         using Pointer = std::shared_ptr<IDeviceObject>;
+        using Desc = DeviceObjectDesc;
 
         IDeviceObject(const std::string& name);
-        virtual const DeviceObjectDescriptor& GetDesc() const = 0;
+        virtual const DeviceObjectDesc& GetDesc() const = 0;
         
         static Pointer FindDeviceObject(const std::string& name);
         static size_t GetDeviceObjectCount();

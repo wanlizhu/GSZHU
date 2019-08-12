@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-    struct FenceDescriptor : public DeviceObjectDescriptor
+    struct FenceDescriptor : public DeviceObjectDesc
     {};
 
 

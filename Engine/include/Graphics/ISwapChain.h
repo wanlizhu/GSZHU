@@ -5,7 +5,7 @@
 
 namespace ZHU
 {
-    struct SwapChainDescriptor : public DeviceObjectDescriptor
+    struct SwapChainDesc : public DeviceObjectDesc
     {
         uint32_t Width = 0;
         uint32_t Height = 0;
@@ -25,7 +25,7 @@ namespace ZHU
     {
     public:
         virtual void Present(uint32_t sync = 1) = 0;
-        virtual const SwapChainDescriptor& GetDesc() const = 0;
+        virtual const SwapChainDesc& GetDesc() const = 0;
         virtual void Resize(uint32_t width, uint32_t height) = 0;
         virtual void SetFullscreenMode(const DisplayAttributes& display) = 0;
         virtual void SetWindowedMode() = 0;

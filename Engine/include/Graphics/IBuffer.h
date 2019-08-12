@@ -5,7 +5,7 @@
 
 namespace ZHU
 {
-    struct BufferDescriptor : public DeviceObjectDescriptor
+    struct BufferDesc: public DeviceObjectDesc
     {
         uint32_t SizeInBytes = 0;
         BitSet<EBind> BindFlags = conv(EBind::None);
@@ -24,15 +24,16 @@ namespace ZHU
     {
     public:
         using Pointer = std::shared_ptr<IBuffer>;
+        using Desc = BufferDesc;
 
-        virtual const BufferDescriptor& GetDesc() const = 0;
+        virtual const BufferDesc& GetDesc() const = 0;
         // Buffer view will contain strong reference to the buffer.
-        virtual IDeviceObject::Pointer CreateView(const BufferViewDescriptor& viewDesc) = 0;
+        virtual IDeviceObject::Pointer CreateView(const BufferViewDesc& viewDesc) = 0;
         // Default views are only created for structured and raw buffers.
         // As, for formatted buffers, the view format is unknown at buffer initialization time
         virtual IDeviceObject::Pointer GetDefaultView(EBufferView viewType) const = 0;
         virtual void* GetNativeHandle() const = 0;
-        virtual void SetState(EResourceState state);
+        virtual void SetState(EResourceState state) = 0;
         virtual EResourceState GetState() const = 0;
     };
 }

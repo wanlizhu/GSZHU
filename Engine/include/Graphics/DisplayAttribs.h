@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-    struct DisplayAttributes
+    struct DisplayAttribs
     {
         uint32_t Width = 0;
         uint32_t Height = 0;

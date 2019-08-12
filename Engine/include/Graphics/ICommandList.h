@@ -4,6 +4,6 @@
 
 namespace ZHU
 {
-    class ICommandList : public IDeviceObject
+    class ZHU_API ICommandList : public IDeviceObject
     {};
 }

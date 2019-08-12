@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-    struct SamplerDescriptor : public DeviceObjectDescriptor
+    struct SamplerDesc : public DeviceObjectDesc
     {
         EFilter MinFilter = EFilter::Linear;
         EFilter MagFilter = EFilter::Linear;
@@ -26,6 +26,6 @@ namespace ZHU
     class ZHU_API ISampler : public IDeviceObject
     {
     public:
-        virtual const SamplerDescriptor& GetDesc() const = 0;
+        virtual const SamplerDesc& GetDesc() const = 0;
     };
 }

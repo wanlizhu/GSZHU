@@ -5,11 +5,11 @@
 
 namespace ZHU
 {
-    struct ZHU_API DeviceObjectDescriptor : public Object
+    struct ZHU_API DeviceObjectDesc : public Object
     {
         std::string Name = "";
 
-        DeviceObjectDescriptor(const std::string& name);
+        DeviceObjectDesc(const std::string& name);
         
         void AddDependency(const std::string& name);
         size_t GetDependencyCount() const;

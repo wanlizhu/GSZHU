@@ -108,24 +108,25 @@ namespace ZHU
 
     enum class EResourceState : uint32_t
     {
-        Unknown = 0x0,
-        VertexBuffer = 0x1,
-        IndexBuffer = 0x2,
-        UniformBuffer = 0x4,
-        RenderTarget = 0x8,
-        UnorderedAccess = 0x10,
-        DepthWrite = 0x20,
-        DepthRead = 0x40,
-        ShaderResource = 0x80,
-        StreamOut = 0x100,
-        IndirectDraw = 0x200,
+        Undefined = 0x0,
+        Unknown = 0x1,
+        VertexBuffer = 0x2,
+        IndexBuffer = 0x4,
+        UniformBuffer = 0x8,
+        RenderTarget = 0x10,
+        UnorderedAccess = 0x20,
+        DepthWrite = 0x40,
+        DepthRead = 0x80,
+        ShaderResource = 0x100,
+        StreamOut = 0x200,
+        IndirectDraw = 0x400,
 
-        CopySource = 0x400,
-        CopyDestination = 0x800,
-        ResolveSource = 0x1000,
-        ResolveDestination = 0x2000,
+        CopySource = 0x800,
+        CopyDestination = 0x1000,
+        ResolveSource = 0x2000,
+        ResolveDestination = 0x4000,
 
-        Present = 0x4000,
+        Present = 0x8000,
 
         GenericRead = conv(EResourceState::VertexBuffer) |
                       conv(EResourceState::IndexBuffer) |
@@ -359,5 +360,25 @@ namespace ZHU
         None,
         Front,
         Back
+    };
+
+
+    enum class EPrimitiveTopology : uint8_t
+    {
+        Undefined = 0,
+        PointList,
+
+        LineList,
+        LineStrip,
+        TriangleList,
+        TriangleStrip,
+
+        LineStripAdjacency,
+        TriangleListAdjacency,
+        LineListAdjacency,
+        TriangleStripAdjacency,
+
+        TriangleFan,
+        PatchList
     };
 }

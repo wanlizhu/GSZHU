@@ -2,13 +2,13 @@
 
 #include "Graphics/IDeviceObject.h"
 #include "Graphics/BufferFormat.h"
-#include "Graphics/DeviceObjectDescriptor.h"
+#include "Graphics/DeviceObjectDesc.h"
 
 namespace ZHU
 {
     class IBuffer;
 
-    struct BufferViewDescriptor : public DeviceObjectDescriptor
+    struct BufferViewDesc : public DeviceObjectDesc
     {
         EBufferView Type = EBufferView::Undefined;
         BufferFormat Format;
@@ -20,7 +20,10 @@ namespace ZHU
     class ZHU_API IBufferView : public IDeviceObject
     {
     public:
-        virtual const BufferViewDescriptor& GetDesc() const = 0;
+        using Pointer = std::shared_ptr<IBufferView>;
+        using Desc = BufferViewDesc;
+
+        virtual const BufferViewDesc& GetDesc() const = 0;
         virtual IBuffer& GetBuffer() const = 0;
     };
 }

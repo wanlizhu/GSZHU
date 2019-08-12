@@ -6,7 +6,7 @@
 
 namespace ZHU
 {
-    struct TextureDescriptor : public DeviceObjectDescriptor
+    struct TextureDesc : public DeviceObjectDesc
     {
         ETextureDimension Type = ETextureDimension::Undefined;
         uint32_t Width = 0;
@@ -31,9 +31,9 @@ namespace ZHU
     class ZHU_API ITexture : public IDeviceObject
     {
     public:
-        virtual const TextureDescriptor& GetDesc() const = 0;
+        virtual const TextureDesc& GetDesc() const = 0;
         // Texture view will contain strong reference to the texture
-        virtual IDeviceObject::Pointer CreateView(const TextureViewDescriptor& viewDesc) = 0;
+        virtual IDeviceObject::Pointer CreateView(const TextureViewDesc& viewDesc) = 0;
         virtual IDeviceObject::Pointer GetDefaultView(ETextureView type) const = 0;
         virtual void* GetNativeHandle() const = 0;
         virtual void SetState(EResourceState state) = 0;

@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-    struct RasterizerState
+    struct RasterizerStateDesc
     {
         EFillMode FillMode = EFillMode::Solid;
         ECullMode CullMode = ECullMode::Back;

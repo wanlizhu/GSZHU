@@ -1,11 +1,14 @@
 #pragma once
 
 #include "Graphics/Constants.h"
-#include "Graphics/DeviceObjectDescriptor.h"
+#include "Graphics/DeviceObjectDesc.h"
+#include "Graphics/IDeviceObject.h"
+#include "Graphics/ISampler.h"
+#include "Graphics/ITexture.h"
 
 namespace ZHU
 {
-    struct TextureViewDescriptor : public DeviceObjectDescriptor
+    struct TextureViewDesc : public DeviceObjectDesc
     {
         ETextureView Type = ETextureView::Undefined;
         ETextureDimension Dimension = ETextureDimension::Undefined;
@@ -23,5 +26,15 @@ namespace ZHU
         };
 
         EUAVAccess UAVAccess = EUAVAccess::Undefined;
+    };
+
+
+    class ZHU_API ITextureView : public IDeviceObject
+    {
+    public:
+        virtual const TextureViewDesc& GetDesc() const = 0;
+        virtual void SetSampler(ISampler::Pointer sampler) = 0;
+        virtual ISampler::Pointer GetSampler() const = 0;
+        virtual ITexture::Pointer GetTexture() const = 0;
     };
 }
