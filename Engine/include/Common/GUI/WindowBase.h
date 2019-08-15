@@ -5,10 +5,10 @@
 
 namespace ZHU
 {
-    class ZHU_API WindowBase
+    class ZHU_COMMON_API WindowBase
     {
     public:
-        struct ZHU_API CreationInfo
+        struct ZHU_COMMON_API CreationInfo
         {
             PCCH title = "Untitled";
             INT2 pos{ 0, 0 };

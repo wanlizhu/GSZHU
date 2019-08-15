@@ -39,6 +39,15 @@
     <Filter Include="Header Files\Graphics\D3D12">
       <UniqueIdentifier>{7057e098-568a-494a-a5bc-f63136bad187}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{630a1990-c7a4-4788-a1f1-9f0c3ddd3be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{187ebacf-67e2-454d-ad92-19864ed8c6a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Vulkan">
+      <UniqueIdentifier>{c7fba52a-3c9d-45b2-8c34-6a8accd91d9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Geometry\Algebra\ConvertCoordinates.h">
@@ -95,81 +104,6 @@
     <ClInclude Include="include\Common\Signal\Signal.h">
       <Filter>Header Files\Common\Signal</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\IDeviceObject.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Object.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\DeviceObjectDescriptor.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\IFence.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\IBuffer.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Constants.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Tools.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\BufferFormat.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\IBufferView.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\ISampler.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\ITexture.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\ClearValue.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\ITextureView.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\ISwapChain.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\DisplayAttributes.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\IShader.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\IShaderVariable.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\ICommandList.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RenderTargetBlend.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\BlendState.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\DepthStencilState.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\DeviceCaps.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\D3D12\IBufferD3D12.h">
-      <Filter>Header Files\Graphics\D3D12</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\InputLayout.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RasterizerState.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="include\Common\IMemory.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
@@ -179,37 +113,130 @@
     <ClInclude Include="include\Common\Allocator.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\DeviceObjectBase.h">
+    <ClInclude Include="include\Graphics\RHI\D3D12\IBufferD3D12.h">
+      <Filter>Header Files\Graphics\D3D12</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\BufferFormat.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\ClearValue.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\Constants.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\CopyTextureAttribs.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\DepthStencilStateDesc.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\DeviceCaps.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\DeviceObjectDesc.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\DispatchComputeAttribs.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\DisplayAttribs.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\DrawAttribs.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\IBuffer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\IBufferView.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\ICommandList.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\IDeviceContext.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\IDeviceObject.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\IFence.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\InputLayoutDesc.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\IPipelineState.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\ISampler.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\IShader.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\IShaderVariable.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\ISwapChain.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\ITexture.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\ITextureView.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\Object.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\RasterizerStateDesc.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\RenderTargetBlend.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\SampleDesc.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\Tools.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\Viewport.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\Config.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\BlendState.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Window.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\Common\compile_stb_image.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="source\Config.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\Common\CPUQuery.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="source\Image.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\Common\dllmain.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="source\compile_stb_image.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\Common\Image.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="source\dllmain.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\Common\MemoryPool.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="source\CPUQuery.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\Common\Window.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="source\Object.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\Graphics\IDeviceObject.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="source\IDeviceObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\MemoryPool.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\Graphics\Object.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

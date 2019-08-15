@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-    class ZHU_API NonCopyable
+    class ZHU_COMMON_API NonCopyable
     {
     public:
         NonCopyable(const NonCopyable&) = delete;

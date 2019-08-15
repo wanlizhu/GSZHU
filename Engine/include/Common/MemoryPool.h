@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-    class ZHU_API MemoryPool : public IMemory
+    class ZHU_COMMON_API MemoryPool : public IMemory
     {
     public:
         virtual void* Allocate(size_t size) override;

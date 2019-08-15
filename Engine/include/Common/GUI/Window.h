@@ -14,7 +14,7 @@ struct GLFWwindow;
 
 namespace ZHU
 {
-    class ZHU_API Window : public WindowBase, public NonCopyable
+    class ZHU_COMMON_API Window : public WindowBase, public NonCopyable
     {
     public:
         Window();

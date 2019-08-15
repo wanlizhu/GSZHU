@@ -19,7 +19,7 @@ namespace ZHU
     {}
 
 
-    class ZHU_API IMemory
+    class ZHU_COMMON_API IMemory
     {
     public:
         virtual void* Allocate(size_t size) = 0;
