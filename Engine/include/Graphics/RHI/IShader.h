@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-    struct ZHU_GS_API ShaderDesc : public DeviceObjectDesc
+    struct ZHU_GS_API ShaderDesc : public IDeviceObjectDesc
     {
 
     };

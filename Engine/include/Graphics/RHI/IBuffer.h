@@ -1,16 +1,15 @@
 #pragma once
 
 #include "Graphics/RHI/Constants.h"
-#include "Graphics/RHI/DeviceObjectDesc.h"
-#include "Graphics/RHI/IDeviceObject.h"
+#include "Graphics/RHI/IDeviceResource.h"
 #include "Graphics/RHI/IBufferView.h"
 
 namespace ZHU
 {
-    struct ZHU_GS_API BufferDesc: public DeviceObjectDesc
+    struct ZHU_GS_API BufferDesc: public IDeviceResourceDesc
     {
         uint32_t SizeInBytes = 0;
-        ECanBindAs BindFlags = ECanBindAs::None;
+		EBindFlags BindFlags = EBindFlags::None;
         EUsage Usage = EUsage::Default;
         EAccess CPUAccess = EAccess::None;
         EBufferMode Mode = EBufferMode::Undefined;
@@ -22,7 +21,7 @@ namespace ZHU
     };
 
 
-    class ZHU_GS_API IBuffer : public IDeviceObject
+    class ZHU_GS_API IBuffer : public IDeviceResource
     {
     public:
         using Pointer = std::shared_ptr<IBuffer>;

@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-    struct ZHU_GS_API SamplerDesc : public DeviceObjectDesc
+    struct ZHU_GS_API SamplerDesc : public IDeviceObjectDesc
     {
         EFilter MinFilter = EFilter::Linear;
         EFilter MagFilter = EFilter::Linear;

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Graphics/RHI/ISampler.h"
-#include "Graphics/RHI/ClearValue.h"
 #include "Graphics/RHI/ITextureView.h"
+#include "Graphics/RHI/IDeviceResource.h"
 
 namespace ZHU
 {
-    struct ZHU_GS_API TextureDesc : public DeviceObjectDesc
+    struct ZHU_GS_API TextureDesc : public IDeviceResourceDesc
     {
 		struct ZHU_GS_API OptimizedClearValue
 		{
@@ -16,7 +16,7 @@ namespace ZHU
 			uint8_t Stencil = 0;
 		};
 
-        ETextureDimension Type = ETextureDimension::Undefined;
+		EResourceDimension Type = EResourceDimension::Undefined;
         uint32_t Width = 0;
         uint32_t Height = 0;
         union {
@@ -29,14 +29,14 @@ namespace ZHU
         uint32_t SampleCount = 1; // Only 2D textures or 2D texture arrays can be multisampled.
 
         EUsage Usage = EUsage::Default;
-        ECanBindAs BindFlags = ECanBindAs::None;
+        EBindFlags BindFlags = EBindFlags::None;
         EAccess CPUAccess = EAccess::None;
         OptimizedClearValue ClearValue;
         uint64_t CommandQueueMask = 1;
     };
 
 
-    class ZHU_GS_API ITexture : public IDeviceObject
+    class ZHU_GS_API ITexture : public IDeviceResource
     {
     public:
         virtual const TextureDesc& GetDesc() const = 0;

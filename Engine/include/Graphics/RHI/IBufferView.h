@@ -1,13 +1,12 @@
 #pragma once
 
 #include "Graphics/RHI/IDeviceObject.h"
-#include "Graphics/RHI/DeviceObjectDesc.h"
 
 namespace ZHU
 {
     class IBuffer;
 
-    struct ZHU_GS_API BufferViewDesc : public DeviceObjectDesc
+    struct ZHU_GS_API BufferViewDesc : public IDeviceObjectDesc
     {
 		struct ZHU_GS_API BufferFormat
 		{

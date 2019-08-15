@@ -9,7 +9,7 @@
 
 namespace ZHU
 {
-	struct ZHU_GS_API IPipelineStateDesc : public DeviceObjectDesc
+	struct ZHU_GS_API IPipelineStateDesc : public IDeviceObjectDesc
 	{
 		uint32_t AllocationGranularity = 1;
 		uint64_t CommandQueueMask = 1;

@@ -48,9 +48,5 @@ namespace ZHU
         virtual void GenerateMips() = 0;
         virtual void SetSwapChain() = 0;
         virtual void FinishFrame() = 0;
-
-        virtual void TransitionShaderResources() = 0;
-        virtual void CommitShaderResources() = 0;
-        virtual void TransitionResourceStates() = 0;
     };
 }

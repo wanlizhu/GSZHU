@@ -1,17 +1,16 @@
 #pragma once
 
 #include "Graphics/RHI/Constants.h"
-#include "Graphics/RHI/DeviceObjectDesc.h"
 #include "Graphics/RHI/IDeviceObject.h"
 #include "Graphics/RHI/ISampler.h"
 #include "Graphics/RHI/ITexture.h"
 
 namespace ZHU
 {
-    struct ZHU_GS_API TextureViewDesc : public DeviceObjectDesc
+    struct ZHU_GS_API TextureViewDesc : public IDeviceObjectDesc
     {
         ETextureView Type = ETextureView::Undefined;
-        ETextureDimension Dimension = ETextureDimension::Undefined;
+		EResourceDimension Dimension = EResourceDimension::Undefined;
         ETextureFormat Format = ETextureFormat::Unknown;
         
         uint32_t MostDetailedMip = 0;

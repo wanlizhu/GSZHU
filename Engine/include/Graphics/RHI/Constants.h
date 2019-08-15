@@ -33,7 +33,7 @@ namespace ZHU
     };
 
 
-    enum class ECanBindAs : uint32_t
+    enum class EBindFlags : uint32_t
     {
         None = 0x0,
         VertexBuffer = 0x1,
@@ -48,7 +48,7 @@ namespace ZHU
         UnorderedAccess = 0x80,
         IndirectDrawArgs = 0x100
     };
-	DEFINE_ENUM_OPERATORS(ECanBindAs);
+	DEFINE_ENUM_OPERATORS(EBindFlags);
 
 
     enum class EUsage : uint8_t
@@ -225,7 +225,7 @@ namespace ZHU
     };
 
 
-    enum class ETextureDimension : uint8_t
+    enum class EResourceDimension : uint8_t
     {
         Undefined = 0,
         Buffer,

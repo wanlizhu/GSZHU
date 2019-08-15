@@ -17,7 +17,7 @@ namespace ZHU
 	};
 
 
-    struct ZHU_GS_API SwapChainDesc : public DeviceObjectDesc
+    struct ZHU_GS_API SwapChainDesc : public IDeviceObjectDesc
     {
         uint32_t Width = 0;
         uint32_t Height = 0;

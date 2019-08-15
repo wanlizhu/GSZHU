@@ -39,8 +39,8 @@
     <ClInclude Include="include\Graphics\RHI\DepthStencilStateDesc.h" />
     <ClInclude Include="include\Graphics\RHI\DeviceCaps.h" />
     <ClInclude Include="include\Graphics\RHI\IDeviceContextArgs.h" />
+    <ClInclude Include="include\Graphics\RHI\IDeviceResource.h" />
     <ClInclude Include="include\Graphics\RHI\IRenderDevice.h" />
-    <ClInclude Include="include\Graphics\RHI\DeviceObjectDesc.h" />
     <ClInclude Include="include\Graphics\RHI\IBuffer.h" />
     <ClInclude Include="include\Graphics\RHI\IBufferView.h" />
     <ClInclude Include="include\Graphics\RHI\ICommandList.h" />
@@ -57,7 +57,6 @@
     <ClInclude Include="include\Graphics\RHI\ITextureView.h" />
     <ClInclude Include="include\Graphics\RHI\Object.h" />
     <ClInclude Include="include\Graphics\RHI\RasterizerStateDesc.h" />
-    <ClInclude Include="include\Graphics\RHI\Viewport.h" />
     <ClInclude Include="include\Graphics\Tools.h" />
   </ItemGroup>
   <ItemGroup>

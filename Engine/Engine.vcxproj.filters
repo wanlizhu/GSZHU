@@ -128,9 +128,6 @@
     <ClInclude Include="include\Graphics\RHI\IRenderDevice.h">
       <Filter>Header Files\Graphics\RHI</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\DeviceObjectDesc.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
     <ClInclude Include="include\Graphics\RHI\IBuffer.h">
       <Filter>Header Files\Graphics\RHI</Filter>
     </ClInclude>
@@ -176,9 +173,6 @@
     <ClInclude Include="include\Graphics\RHI\Object.h">
       <Filter>Header Files\Graphics\RHI</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\Viewport.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
     <ClInclude Include="include\Graphics\Config.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -195,6 +189,9 @@
       <Filter>Header Files\Graphics\RHI</Filter>
     </ClInclude>
     <ClInclude Include="include\Graphics\RHI\IDeviceContextArgs.h">
+      <Filter>Header Files\Graphics\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics\RHI\IDeviceResource.h">
       <Filter>Header Files\Graphics\RHI</Filter>
     </ClInclude>
   </ItemGroup>
