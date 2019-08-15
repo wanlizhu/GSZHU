@@ -4,5 +4,9 @@
 
 namespace ZHU
 {
-    
+	class ZHU_GS_API IRenderDevice
+	{
+	public:
+
+	};
 }

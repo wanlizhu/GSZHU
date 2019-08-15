@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Graphics/Constants.h"
-#include "Graphics/DeviceObjectDesc.h"
-#include "Graphics/IDeviceObject.h"
-#include "Graphics/ISampler.h"
-#include "Graphics/ITexture.h"
+#include "Graphics/RHI/Constants.h"
+#include "Graphics/RHI/DeviceObjectDesc.h"
+#include "Graphics/RHI/IDeviceObject.h"
+#include "Graphics/RHI/ISampler.h"
+#include "Graphics/RHI/ITexture.h"
 
 namespace ZHU
 {
-    struct TextureViewDesc : public DeviceObjectDesc
+    struct ZHU_GS_API TextureViewDesc : public DeviceObjectDesc
     {
         ETextureView Type = ETextureView::Undefined;
         ETextureDimension Dimension = ETextureDimension::Undefined;
-        EPixelFormat Format = EPixelFormat::Unknown;
+        ETextureFormat Format = ETextureFormat::Unknown;
         
         uint32_t MostDetailedMip = 0;
         uint32_t NumMipLevels = 0;
@@ -25,11 +25,11 @@ namespace ZHU
             uint32_t NumDepthSlices; // For a 3D texture
         };
 
-        EUAVAccess UAVAccess = EUAVAccess::Undefined;
+        EUAVAccess UAVAccess = EUAVAccess::None;
     };
 
 
-    class ZHU_API ITextureView : public IDeviceObject
+    class ZHU_GS_API ITextureView : public IDeviceObject
     {
     public:
         virtual const TextureViewDesc& GetDesc() const = 0;

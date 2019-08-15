@@ -1,16 +1,23 @@
 #pragma once
 
-#include "Graphics/Constants.h"
-#include "Graphics/IShader.h"
-#include "Graphics/BlendStateDesc.h"
-#include "Graphics/RasterizerStateDesc.h"
-#include "Graphics/DepthStencilStateDesc.h"
-#include "Graphics/InputLayoutDesc.h"
-#include "Graphics/SampleDesc.h"
+#include "Graphics/RHI/Constants.h"
+#include "Graphics/RHI/IShader.h"
+#include "Graphics/RHI/InputLayoutDesc.h"
+#include "Graphics/RHI/BlendStateDesc.h"
+#include "Graphics/RHI/RasterizerStateDesc.h"
+#include "Graphics/RHI/DepthStencilStateDesc.h"
 
 namespace ZHU
 {
-    struct GraphicsPipelineDesc
+	struct ZHU_GS_API IPipelineStateDesc : public DeviceObjectDesc
+	{
+		uint32_t AllocationGranularity = 1;
+		uint64_t CommandQueueMask = 1;
+
+		virtual bool IsComputePipelineState() const = 0;
+	};
+
+    struct ZHU_GS_API GraphicsPipelineStateDesc : public IPipelineStateDesc
     {
         IShader::Pointer VertexShader = nullptr;
         IShader::Pointer PixelShader = nullptr;
@@ -25,35 +32,31 @@ namespace ZHU
         uint32_t SamplerMask = 0xffffffff;
         InputLayoutDesc InputLayout;
         EPrimitiveTopology PrimitiveTopology = EPrimitiveTopology::Undefined;
-        uint8_t NumViewports = 1;
-        uint8_t NumRenderTargets = 1;
-        std::vector<EPixelFormat> RTVFormats;
-        EPixelFormat DSVFormat = EPixelFormat::Unknown;
-        SampleDesc Sample;
+        std::vector<ETextureFormat> RenderTargetFormats;
+		ETextureFormat DepthStencilFormat = ETextureFormat::Unknown;
+
+        uint8_t SampleCount = 1;
+		uint8_t SampleQuality = 0;
+
+		virtual bool IsComputePipelineState() const override { return false; }
     };
 
 
-    struct ComputePipelineDesc
+    struct ZHU_GS_API ComputePipelineStateDesc : public IPipelineStateDesc
     {
         IShader::Pointer ComputeShader = nullptr;
+
+		virtual bool IsComputePipelineState() const override { return true; }
     };
 
 
-    struct PipelineStateDesc : public DeviceObjectDesc
+    class ZHU_GS_API IPipelineState : public IDeviceObject
     {
-        bool IsComputePipeline = false;
-        uint32_t AllocationGranularity = 1;
-        uint64_t CommandQueueMask = 1;
+	public:
+		using Pointer = std::shared_ptr<IPipelineState>;
+		using Desc = IPipelineStateDesc;
 
-        GraphicsPipelineDesc GraphicsPipeline;
-        ComputePipelineDesc ComputePipeline;
-    };
-
-
-    class ZHU_API IPipelineState : public IDeviceObject
-    {
-    public:
-        virtual const PipelineStateDesc& GetDesc() const = 0;
+        virtual const IPipelineStateDesc& GetDesc() const = 0;
 
     };
 }

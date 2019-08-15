@@ -3,13 +3,13 @@
 #include <type_traits>
 
 #if defined(_WIN32) && defined(ZHU_BUILD_DLL)
-#    define ZHU_GRAPHICS_API __declspec(dllexport)
+#    define ZHU_GS_API __declspec(dllexport)
 #elif defined(_WIN32) && defined(ZHU_USE_STATIC)
-#    define ZHU_GRAPHICS_API
+#    define ZHU_GS_API
 #elif defined(__GNUC__) && defined(ZHU_BUILD_DLL)
-#    define ZHU_GRAPHICS_API __attribute__((visibility("default")))
+#    define ZHU_GS_API __attribute__((visibility("default")))
 #else // Build and use it as a static library
-#    define ZHU_GRAPHICS_API __declspec(dllimport)
+#    define ZHU_GS_API __declspec(dllimport)
 #endif
 
 namespace ZHU

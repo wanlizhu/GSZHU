@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Graphics/IDeviceObject.h"
+#include "Graphics/RHI/IDeviceObject.h"
 
 namespace ZHU
 {
-    struct FenceDescriptor : public DeviceObjectDesc
+    struct ZHU_GS_API FenceDescriptor : public DeviceObjectDesc
     {};
 
 
-    class ZHU_API IFence : public IDeviceObject
+    class ZHU_GS_API IFence : public IDeviceObject
     {
     public:
         using Pointer = std::shared_ptr<IFence>;

@@ -1,30 +1,23 @@
 #pragma once
 
 #include "Common/Config.h"
-#include "Graphics/Object.h"
-#include "Graphics/Constants.h"
+#include "Graphics/RHI/Object.h"
+#include "Graphics/RHI/Constants.h"
 #include "Graphics/Tools.h"
-#include "Graphics/DeviceObjectDesc.h"
+#include "Graphics/RHI/DeviceObjectDesc.h"
 
 namespace ZHU
 {
-    class ZHU_API IDeviceObject : public Object
+    class ZHU_GS_API IDeviceObject : public Object
     {
     public:
         using Pointer = std::shared_ptr<IDeviceObject>;
         using Desc = DeviceObjectDesc;
 
-        IDeviceObject(const std::string& name);
+		IDeviceObject(const std::string& name) : Object(name) {}
         virtual const DeviceObjectDesc& GetDesc() const = 0;
-        
-        static Pointer FindDeviceObject(const std::string& name);
-        static size_t GetDeviceObjectCount();
-        static std::weak_ptr<IDeviceObject> GetDeviceObject(size_t index);
 
     protected:
         virtual bool Initialize() = 0;
-
-    private:
-        static std::unordered_map<std::string, std::weak_ptr<IDeviceObject>> smDeviceObjects;
     };
 }

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Graphics/IDeviceObject.h"
+#include "Graphics/RHI/IDeviceObject.h"
 
 namespace ZHU
 {
-    class ZHU_API ICommandList : public IDeviceObject
+    class ZHU_GS_API ICommandList : public IDeviceObject
     {};
 }

@@ -1,14 +1,12 @@
 #pragma once
 
-#include "Common/Config.h"
-#include "Graphics/Object.h"
+#include "Graphics/Config.h"
+#include "Graphics/RHI/Object.h"
 
 namespace ZHU
 {
-    struct ZHU_API DeviceObjectDesc : public Object
+    struct ZHU_GS_API DeviceObjectDesc : public Object
     {
-        std::string Name = "";
-
         DeviceObjectDesc(const std::string& name);
         
         void AddDependency(const std::string& name);

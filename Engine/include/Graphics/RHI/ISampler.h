@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Graphics/IDeviceObject.h"
+#include "Graphics/RHI/IDeviceObject.h"
 
 namespace ZHU
 {
-    struct SamplerDesc : public DeviceObjectDesc
+    struct ZHU_GS_API SamplerDesc : public DeviceObjectDesc
     {
         EFilter MinFilter = EFilter::Linear;
         EFilter MagFilter = EFilter::Linear;
@@ -23,7 +23,7 @@ namespace ZHU
     };
 
 
-    class ZHU_API ISampler : public IDeviceObject
+    class ZHU_GS_API ISampler : public IDeviceObject
     {
     public:
         virtual const SamplerDesc& GetDesc() const = 0;

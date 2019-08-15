@@ -68,9 +68,20 @@ namespace ZHU
     {
         None = 0,
         Read = 1, // A resource can be mapped for reading
-        Write = 2 // A resource can be mapped for writing
+        Write = 2, // A resource can be mapped for writing
+		ReadWrite = 3
     };
 	DEFINE_ENUM_OPERATORS(EAccess);
+
+
+	enum class EUAVAccess : uint8_t
+	{
+		None = 0,
+		Read = 1,
+		Write = 2,
+		ReadWrite = 3
+	};
+	DEFINE_ENUM_OPERATORS(EUAVAccess);
 
 
 	// Describes how a mapped resource will be accessed.
@@ -452,4 +463,14 @@ namespace ZHU
 		CopySource = 4
 	};
 	DEFINE_ENUM_OPERATORS(ESwapChainUsage);
+
+
+	enum class EClearDS : uint8_t
+	{
+		None = 0,
+		Depth = 1,
+		Stencil = 2,
+		DepthStencil = 3
+	};
+	DEFINE_ENUM_OPERATORS(EClearDS);
 }

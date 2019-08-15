@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Graphics/IDeviceObject.h"
+#include "Graphics/RHI/IDeviceObject.h"
 
 namespace ZHU
 {
-    class ZHU_API IShaderVariable : public Object
+    class ZHU_GS_API IShaderVariable : public Object
     {
     public:
         virtual const std::string& GetName() const = 0;

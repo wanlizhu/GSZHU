@@ -1,28 +1,27 @@
 #pragma once
 
-#include "Graphics/Constants.h"
+#include "Graphics/RHI/Constants.h"
 
 namespace ZHU
 {
-    struct StencilOperation
-    {
-        EComparisonFunction StencilFunction = EComparisonFunction::Always;
-        EStencilOperation StencilFailOperation;
-        EStencilOperation StencilDepthFailOperation;
-        EStencilOperation StencilPassOperation;
-    };
+	struct ZHU_GS_API DepthStencilStateDesc
+	{
+		struct ZHU_GS_API StencilOperation
+		{
+			EComparisonFunction StencilFunction = EComparisonFunction::Always;
+			EStencilOperation StencilFailOperation = EStencilOperation::Keep;
+			EStencilOperation StencilDepthFailOperation = EStencilOperation::Keep;
+			EStencilOperation StencilPassOperation = EStencilOperation::Keep;
+		};
 
+		bool EnableDepth = true;
+		bool EnableDepthWrite = true;
+		bool EnableStencil = true;
 
-    struct DepthStencilStateDesc
-    {
-        bool EnableDepth = true;
-        bool EnableDepthWrite = true;
-        bool EnableStencil = true;
-
-        EComparisonFunction DepthFunction = EComparisonFunction::Less;
-        uint8_t StencilReadMask = 0xff;
-        uint8_t StencilWriteMask = 0xff;
-        StencilOperation FrontFaceStencil;
-        StencilOperation BackFaceStencil;
-    };
+		EComparisonFunction DepthFunction = EComparisonFunction::Less;
+		uint8_t StencilReadMask = 0xff;
+		uint8_t StencilWriteMask = 0xff;
+		StencilOperation FrontFaceStencil;
+		StencilOperation BackFaceStencil;
+	};
 }

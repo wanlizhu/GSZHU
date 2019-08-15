@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Graphics/IDeviceObject.h"
+#include "Graphics/RHI/IDeviceObject.h"
 
 namespace ZHU
 {
-    struct ShaderDesc : public DeviceObjectDesc
+    struct ZHU_GS_API ShaderDesc : public DeviceObjectDesc
     {
 
     };
 
 
-    class ZHU_API IShader : public IDeviceObject
+    class ZHU_GS_API IShader : public IDeviceObject
     {
     public:
         virtual const ShaderDesc& GetDesc() const = 0;

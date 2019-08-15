@@ -1,15 +1,21 @@
 #pragma once
 
-#include "Graphics/IDeviceObject.h"
-#include "Graphics/BufferFormat.h"
-#include "Graphics/DeviceObjectDesc.h"
+#include "Graphics/RHI/IDeviceObject.h"
+#include "Graphics/RHI/DeviceObjectDesc.h"
 
 namespace ZHU
 {
     class IBuffer;
 
-    struct BufferViewDesc : public DeviceObjectDesc
+    struct ZHU_GS_API BufferViewDesc : public DeviceObjectDesc
     {
+		struct ZHU_GS_API BufferFormat
+		{
+			EComponent Component = EComponent::Undefined;
+			uint8_t NumComponents = 0;
+			bool IsNormalized = false;
+		};
+
         EBufferView Type = EBufferView::Undefined;
         BufferFormat Format;
         uint32_t ByteOffset = 0;
@@ -17,7 +23,7 @@ namespace ZHU
     };
 
 
-    class ZHU_API IBufferView : public IDeviceObject
+    class ZHU_GS_API IBufferView : public IDeviceObject
     {
     public:
         using Pointer = std::shared_ptr<IBufferView>;

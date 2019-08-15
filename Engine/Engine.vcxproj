@@ -33,18 +33,14 @@
     <ClInclude Include="include\Geometry\Distance\Distance_Point3Circle3.h" />
     <ClInclude Include="include\Geometry\Shape\Circle3.h" />
     <ClInclude Include="include\Graphics\Config.h" />
-    <ClInclude Include="include\Graphics\RHI\BlendState.h" />
-    <ClInclude Include="include\Graphics\RHI\BufferFormat.h" />
-    <ClInclude Include="include\Graphics\RHI\ClearValue.h" />
+    <ClInclude Include="include\Graphics\RHI\BlendStateDesc.h" />
     <ClInclude Include="include\Graphics\RHI\Constants.h" />
-    <ClInclude Include="include\Graphics\RHI\CopyTextureAttribs.h" />
     <ClInclude Include="include\Graphics\RHI\D3D12\IBufferD3D12.h" />
     <ClInclude Include="include\Graphics\RHI\DepthStencilStateDesc.h" />
     <ClInclude Include="include\Graphics\RHI\DeviceCaps.h" />
+    <ClInclude Include="include\Graphics\RHI\IDeviceContextArgs.h" />
+    <ClInclude Include="include\Graphics\RHI\IRenderDevice.h" />
     <ClInclude Include="include\Graphics\RHI\DeviceObjectDesc.h" />
-    <ClInclude Include="include\Graphics\RHI\DispatchComputeAttribs.h" />
-    <ClInclude Include="include\Graphics\RHI\DisplayAttribs.h" />
-    <ClInclude Include="include\Graphics\RHI\DrawAttribs.h" />
     <ClInclude Include="include\Graphics\RHI\IBuffer.h" />
     <ClInclude Include="include\Graphics\RHI\IBufferView.h" />
     <ClInclude Include="include\Graphics\RHI\ICommandList.h" />
@@ -61,10 +57,8 @@
     <ClInclude Include="include\Graphics\RHI\ITextureView.h" />
     <ClInclude Include="include\Graphics\RHI\Object.h" />
     <ClInclude Include="include\Graphics\RHI\RasterizerStateDesc.h" />
-    <ClInclude Include="include\Graphics\RHI\RenderTargetBlend.h" />
-    <ClInclude Include="include\Graphics\RHI\SampleDesc.h" />
-    <ClInclude Include="include\Graphics\RHI\Tools.h" />
     <ClInclude Include="include\Graphics\RHI\Viewport.h" />
+    <ClInclude Include="include\Graphics\Tools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Common\compile_stb_image.cpp" />
@@ -73,7 +67,8 @@
     <ClCompile Include="source\Common\Image.cpp" />
     <ClCompile Include="source\Common\MemoryPool.cpp" />
     <ClCompile Include="source\Common\Window.cpp" />
-    <ClCompile Include="source\Graphics\IDeviceObject.cpp" />
+    <ClCompile Include="source\Graphics\DeviceCaps.cpp" />
+    <ClCompile Include="source\Graphics\DeviceObjectDesc.cpp" />
     <ClCompile Include="source\Graphics\Object.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

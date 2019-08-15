@@ -1,28 +1,27 @@
 #pragma once
 
-#include "Graphics/Constants.h"
+#include "Graphics/RHI/Constants.h"
 #include <vector>
 
 namespace ZHU
 {
-    struct LayoutElement
+    struct ZHU_GS_API InputLayoutDesc
     {
-        uint32_t InputIndex = 0;
-        uint32_t BufferSlot = 0;
+		struct ZHU_GS_API LayoutElement
+		{
+			uint32_t InputIndex = 0;
+			uint32_t BufferSlot = 0;
 
-        EComponent ComponentType = EComponent::FLOAT32;
-        uint32_t NumComponents = 0;
-        bool IsNormalized = true;
-        uint32_t Offset = 0;
-        uint32_t Stride = 0;
+			EComponent ComponentType = EComponent::FLOAT32;
+			uint32_t NumComponents = 0;
+			bool IsNormalized = true;
+			uint32_t Offset = 0;
+			uint32_t Stride = 0;
 
-        EFrequency Frequency = EFrequency::Vertex;
-        uint32_t InstanceStep = 1;
-    };
+			EFrequency Frequency = EFrequency::Vertex;
+			uint32_t InstanceStep = 1;
+		};
 
-
-    struct InputLayoutDesc
-    {
         std::vector<LayoutElement> LayoutElements;
     };
 }

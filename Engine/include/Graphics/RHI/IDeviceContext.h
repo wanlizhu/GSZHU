@@ -1,25 +1,21 @@
 #pragma once
 
-#include "Graphics/Viewport.h"
-#include "Graphics/CopyTextureAttribs.h"
-#include "Graphics/DrawAttribs.h"
-#include "Graphics/DispatchComputeAttribs.h"
-#include "Graphics/IDeviceObject.h"
-#include "Graphics/IBuffer.h"
-#include "Graphics/IShader.h"
-#include "Graphics/ITexture.h"
-#include "Graphics/DepthStencilState.h"
-#include "Graphics/RasterizerState.h"
-#include "Graphics/IFence.h"
-#include "Graphics/ICommandList.h"
-#include "Graphics/ISwapChain.h"
+#include "Graphics/RHI/Viewport.h"
+#include "Graphics/RHI/IDeviceObject.h"
+#include "Graphics/RHI/IBuffer.h"
+#include "Graphics/RHI/IPipelineState.h"
+#include "Graphics/RHI/ITexture.h"
+#include "Graphics/RHI/IFence.h"
+#include "Graphics/RHI/ICommandList.h"
+#include "Graphics/RHI/ISwapChain.h"
+#include "Graphics/RHI/IDeviceContextArgs.h"
 
 namespace ZHU
 {
-    class ZHU_API IDeviceContext : public Object
+    class ZHU_GS_API IDeviceContext : public Object
     {
     public:
-        virtual void SetPipelineState() = 0;
+        virtual void SetPipelineState(IPipelineState::Pointer PSO) = 0;
         
         virtual void SetStencilRef(uint32_t ref) = 0;
         virtual void SetBlendState() = 0;
