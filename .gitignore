@@ -9,3 +9,4 @@
 /.vs/*
 __pycache__/*
 __cache__/
+Engine/external/GLFW/build

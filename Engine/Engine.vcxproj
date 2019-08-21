@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -11,64 +11,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Common\Allocator.h" />
-    <ClInclude Include="include\Common\Config.h" />
-    <ClInclude Include="include\Common\CPUQuery.h" />
-    <ClInclude Include="include\Common\GUI\Window.h" />
-    <ClInclude Include="include\Common\GUI\WindowBase.h" />
-    <ClInclude Include="include\Common\Image.h" />
-    <ClInclude Include="include\Common\IMemory.h" />
-    <ClInclude Include="include\Common\MemoryPool.h" />
-    <ClInclude Include="include\Common\NonCopyable.h" />
-    <ClInclude Include="include\Common\Signal\Function.h" />
-    <ClInclude Include="include\Common\Signal\Mutex.h" />
-    <ClInclude Include="include\Common\Signal\Observer.h" />
-    <ClInclude Include="include\Common\Signal\Signal.h" />
-    <ClInclude Include="include\Geometry\Algebra\AxisAngle.h" />
-    <ClInclude Include="include\Geometry\Algebra\ConvertCoordinates.h" />
-    <ClInclude Include="include\Geometry\Algebra\EulerAngles.h" />
-    <ClInclude Include="include\Geometry\Algebra\Matrix.h" />
-    <ClInclude Include="include\Geometry\Algebra\Rotation.h" />
-    <ClInclude Include="include\Geometry\Distance\DCPQuery.h" />
-    <ClInclude Include="include\Geometry\Distance\Distance_Point3Circle3.h" />
-    <ClInclude Include="include\Geometry\Shape\Circle3.h" />
-    <ClInclude Include="include\Graphics\Config.h" />
-    <ClInclude Include="include\Graphics\RHI\BlendStateDesc.h" />
-    <ClInclude Include="include\Graphics\RHI\Constants.h" />
-    <ClInclude Include="include\Graphics\RHI\D3D12\IBufferD3D12.h" />
-    <ClInclude Include="include\Graphics\RHI\DepthStencilStateDesc.h" />
-    <ClInclude Include="include\Graphics\RHI\DeviceCaps.h" />
-    <ClInclude Include="include\Graphics\RHI\IDeviceContextArgs.h" />
-    <ClInclude Include="include\Graphics\RHI\IDeviceResource.h" />
-    <ClInclude Include="include\Graphics\RHI\IRenderDevice.h" />
-    <ClInclude Include="include\Graphics\RHI\IBuffer.h" />
-    <ClInclude Include="include\Graphics\RHI\IBufferView.h" />
-    <ClInclude Include="include\Graphics\RHI\ICommandList.h" />
-    <ClInclude Include="include\Graphics\RHI\IDeviceContext.h" />
-    <ClInclude Include="include\Graphics\RHI\IDeviceObject.h" />
-    <ClInclude Include="include\Graphics\RHI\IFence.h" />
-    <ClInclude Include="include\Graphics\RHI\InputLayoutDesc.h" />
-    <ClInclude Include="include\Graphics\RHI\IPipelineState.h" />
-    <ClInclude Include="include\Graphics\RHI\ISampler.h" />
-    <ClInclude Include="include\Graphics\RHI\IShader.h" />
-    <ClInclude Include="include\Graphics\RHI\IShaderVariable.h" />
-    <ClInclude Include="include\Graphics\RHI\ISwapChain.h" />
-    <ClInclude Include="include\Graphics\RHI\ITexture.h" />
-    <ClInclude Include="include\Graphics\RHI\ITextureView.h" />
-    <ClInclude Include="include\Graphics\RHI\Object.h" />
-    <ClInclude Include="include\Graphics\RHI\RasterizerStateDesc.h" />
-    <ClInclude Include="include\Graphics\Tools.h" />
+    <ClInclude Include="include\ApplicationBase.h" />
+    <ClInclude Include="include\Engine.h" />
+    <ClInclude Include="include\EngineConfig.h" />
+    <ClInclude Include="include\Framework.h" />
+    <ClInclude Include="include\Graphics\Region.h" />
+    <ClInclude Include="include\IRenderer.h" />
+    <ClInclude Include="include\Object.h" />
+    <ClInclude Include="include\RHI\D3D12\EngineD3D12.h" />
+    <ClInclude Include="include\RHI\Formats.h" />
+    <ClInclude Include="include\Utils\Bitmap.h" />
+    <ClInclude Include="include\Utils\CPUQuery.h" />
+    <ClInclude Include="include\Utils\Platform\OS.h" />
+    <ClInclude Include="include\Utils\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Common\compile_stb_image.cpp" />
-    <ClCompile Include="source\Common\CPUQuery.cpp" />
-    <ClCompile Include="source\Common\dllmain.cpp" />
-    <ClCompile Include="source\Common\Image.cpp" />
-    <ClCompile Include="source\Common\MemoryPool.cpp" />
-    <ClCompile Include="source\Common\Window.cpp" />
-    <ClCompile Include="source\Graphics\DeviceCaps.cpp" />
-    <ClCompile Include="source\Graphics\DeviceObjectDesc.cpp" />
-    <ClCompile Include="source\Graphics\Object.cpp" />
+    <ClCompile Include="source\dllmain.cpp" />
+    <ClCompile Include="source\RHI\Formats.cpp" />
+    <ClCompile Include="source\Utils\compile_stb_image.cpp" />
+    <ClCompile Include="source\Utils\CPUQuery.cpp" />
+    <ClCompile Include="source\Utils\Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

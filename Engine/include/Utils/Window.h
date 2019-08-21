@@ -1,17 +1,17 @@
 #pragma once
 
-#include "EngineConfig.h"
-#include "NonCopyable.h"
+#include "Framework.h"
 #include <any>
 #include <memory>
 #include <string>
 #include <list>
+#include <array>
 #include <unordered_map>
 #include <functional>
 
 struct GLFWwindow;
 
-namespace ZHU
+namespace GS
 {
 	struct InputModifiers
 	{
@@ -55,15 +55,13 @@ namespace ZHU
 		std::array<int, 2> WheelDelta;
 	};
 	
-    class GS_API Window : public std::enable_shared_from_this<Window>,
-                          public NonCopyable
+    class GS_API Window : public inherit_shared_from_this<Object, Window>
     {
     public:
 		using SharedPtr = std::shared_ptr<Window>;
 		using UniquePtr = std::unique_ptr<Window>;
 		using MSG_ID = uint32_t;
-		using HWINDOW = void*;
-		using MSG_FUNC = std::function<void(HWINDOW, uint32_t, uint32_t)>;
+		using MSG_FUNC = std::function<void(WindowHandle, uint32_t, uint32_t)>;
 		struct Desc 
 		{
 			std::string Title = "Untitled";
@@ -87,7 +85,7 @@ namespace ZHU
 
         static std::array<int, 2> DefaultPos();
         static std::array<int, 2> DefaultSize();
-		static SharedPtr Create(const WindowDesc& desc, ICallbacks* callbacks);
+		static SharedPtr Create(const Window::Desc& desc, ICallbacks* callbacks);
 
 		void SetCallbacks(ICallbacks* callbacks);
         void SetTitle(const std::string& title);
@@ -103,6 +101,7 @@ namespace ZHU
         std::string GetTitle() const;
         std::array<int, 2> GetPosition() const;
         std::array<int, 2> GetSize() const;
+		WindowHandle GetWindowHandle() const;
         
     protected:
         static void Initialize();

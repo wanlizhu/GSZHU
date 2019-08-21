@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace ZHU
+namespace GS
 {
     /* Determine the capabilities of Intel or AMD CPU processors.  This class is
      * based on sample code found at

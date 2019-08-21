@@ -2,16 +2,13 @@
 
 
 #include "EngineConfig.h"
-#include "Utils/Logger.h"
-#include "Utils/Script.h"
-#include "Utils/Platform/OS.h"
-#include "Utils/Profiler.h"
+#include "Object.h"
 #ifdef GS_USE_D3D12
-#include "RHI/D3D12/RHI_D3D12.h"
+#include "RHI/D3D12/EngineD3D12.h"
 #elif defined(GS_USE_VULKAN)
-#include "RHI/Vulkan/RHI_Vulkan.h"
+#include "RHI/Vulkan/EngineVulkan.h"
 #elif defined(GS_USE_OPENGL)
-#include "RHI/OpenGL/RHI_OpenGL.h"
+#include "RHI/OpenGL/EngineOpenGL.h"
 #else
 #error Undefined GS backend. Make sure that a backend is selected in "EngineConfig.h"
 #endif
@@ -28,27 +25,7 @@
 #include <vector>
 #include <unordered_map>
 #include <Eigen/Eigen>
-namespace GS 
-{
-    using namespace Eigen;
-}
-
-// Define DLL export/import
-#ifdef _MSC_VER
-#define DLL_EXPORT __declspec(dllexport)
-#define DLL_IMPORT __declspec(dllimport)
-#elif defined(__GNUC__) 
-#define DLL_EXPORT __attribute__ ((visibility ("default")))
-#define DLL_IMPORT extern
-#endif
-
-#ifdef BUILD_SHARED_LIBS
-#define GS_API DLL_EXPORT
-#elif BUILD_STATIC_LIBS
-#define GS_API
-#else
-#define GS_API DLL_IMPORT
-#endif
+#include <glog/logging.h>
 
 #ifndef arraysize
 #define arraysize(a) (sizeof(a)/sizeof(a[0]))
@@ -62,7 +39,7 @@ namespace GS
     if (!(a)) {\
         std::string str = "Assertion Failed(" + std::string(#a) + ")\n" +\
         "File " + __FILE__ + ", Line " + std::to_string(__LINE__);\
-        GS::LogError(str);\
+        LOG(FATAL) << str;\
     }
 
 #define SHOULD_NOT_GET_HERE() ASSERT(false)
@@ -91,12 +68,10 @@ namespace GS
 #define DEPRECATED(msg)  __declspec(deprecated(msg))
 #define SUPPRESS_DEPRECATION  __pragma(warning(suppress : 4996));
 #define FORCEINLINE __forceinline
-using HDLL = HMODULE;
 #elif defined(__GNUC__)
 #define DEPRECATED(msg) __attribute__ ((deprecated(_msg_)))
 #define SUPPRESS_DEPRECATION _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
 #define FORCEINLINE __attribute__((always_inline))
-using HDLL = void*;
 #endif
 
 
@@ -104,17 +79,6 @@ using HDLL = void*;
 
 namespace GS
 {
-#define TO_ENUM(a) static_cast<E>(a)
-#define TO_ULT(a)  static_cast<std::underlying_type<E>::type>(a)
-#define ENUM_CLASS_OPERATORS(E)\
-    inline E  operator& (E  a, E  b) { return TO_ENUM(TO_ULT(a) & TO_ULT(b)); }\
-    inline E  operator| (E  a, E  b) { return TO_ENUM(TO_ULT(a) | TO_ULT(b)); }\
-    inline E& operator&=(E& a, E& b) { a = a & b; return a; }\
-    inline E& operator|=(E& a, E& b) { a = a | b; return a; }\
-    inline E  operator~(E a) { return TO_ENUM(~TO_ULT(a)); }\
-    inline bool is_set(E val, E flag) { return (val & flag) != (E)0; }
-
-
     enum class EShaderType 
     {
         Unknown = 0,

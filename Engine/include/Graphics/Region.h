@@ -2,7 +2,7 @@
 
 #include <array>
 
-namespace ZHU
+namespace GS
 {
 	template<typename T>
 	struct Region

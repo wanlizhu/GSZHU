@@ -9,219 +9,96 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files\Common">
-      <UniqueIdentifier>{ce4aa74f-a728-40c5-a4e5-a00c791959a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{46a2bab5-d54c-4039-8949-fc405a9fa63a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{22110103-3c65-411b-adbb-e07455612dc6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry\Algebra">
-      <UniqueIdentifier>{25547b0d-e26e-4b6f-8dc5-c1eadb2dddfc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Geometry\Distance">
-      <UniqueIdentifier>{7137e7de-7232-4f9b-91c9-b2b967975865}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Geometry\Distance\ND">
-      <UniqueIdentifier>{3dc06d1c-8bf8-41d3-8379-5a337697f495}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Geometry\Shape">
-      <UniqueIdentifier>{2bc143f3-865e-4fad-b781-7662036f4726}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Common\GUI">
-      <UniqueIdentifier>{9883eaa3-366f-4eaf-8ab6-5e834fd1e446}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Common\Signal">
-      <UniqueIdentifier>{e1cde562-4694-4e65-8037-08515334911e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Common">
-      <UniqueIdentifier>{630a1990-c7a4-4788-a1f1-9f0c3ddd3be4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{187ebacf-67e2-454d-ad92-19864ed8c6a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics\RHI">
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{ce4aa74f-a728-40c5-a4e5-a00c791959a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{630a1990-c7a4-4788-a1f1-9f0c3ddd3be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Geometry">
+      <UniqueIdentifier>{c6050bab-f84c-41e5-9f97-e6293911fefc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RHI">
+      <UniqueIdentifier>{da69e588-a653-4d8e-8b6d-a4174e37a713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RHI">
       <UniqueIdentifier>{df7fd9ea-6e01-48bc-bcfe-6c8be680b7a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics\RHI\D3D12">
-      <UniqueIdentifier>{7057e098-568a-494a-a5bc-f63136bad187}</UniqueIdentifier>
+    <Filter Include="Header Files\Utils\Platform">
+      <UniqueIdentifier>{036d5417-7cbd-44cb-aab8-432d37907c0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics\RHI\Vulkan">
-      <UniqueIdentifier>{c7fba52a-3c9d-45b2-8c34-6a8accd91d9f}</UniqueIdentifier>
+    <Filter Include="Header Files\Utils\Platform\Window">
+      <UniqueIdentifier>{c2cba5cf-f1c3-4ca8-b22c-f79a374e14b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RHI\D3D12">
+      <UniqueIdentifier>{2d5a95ff-5e9c-4f49-8eaa-b9b83c1f5368}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Geometry\Algebra\ConvertCoordinates.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
+    <ClInclude Include="include\ApplicationBase.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Distance\DCPQuery.h">
-      <Filter>Header Files\Geometry\Distance</Filter>
+    <ClInclude Include="include\Engine.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Distance\Distance_Point3Circle3.h">
-      <Filter>Header Files\Geometry\Distance</Filter>
+    <ClInclude Include="include\EngineConfig.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Shape\Circle3.h">
-      <Filter>Header Files\Geometry\Shape</Filter>
+    <ClInclude Include="include\Framework.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\AxisAngle.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
+    <ClInclude Include="include\IRenderer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\EulerAngles.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
+    <ClInclude Include="include\Object.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Rotation.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Geometry\Algebra\Matrix.h">
-      <Filter>Header Files\Geometry\Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\Config.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\CPUQuery.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\Image.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\NonCopyable.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\GUI\Window.h">
-      <Filter>Header Files\Common\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\GUI\WindowBase.h">
-      <Filter>Header Files\Common\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\Signal\Function.h">
-      <Filter>Header Files\Common\Signal</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\Signal\Mutex.h">
-      <Filter>Header Files\Common\Signal</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\Signal\Observer.h">
-      <Filter>Header Files\Common\Signal</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\Signal\Signal.h">
-      <Filter>Header Files\Common\Signal</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\IMemory.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\MemoryPool.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\Allocator.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\D3D12\IBufferD3D12.h">
-      <Filter>Header Files\Graphics\RHI\D3D12</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\BlendStateDesc.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\Constants.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IRenderDevice.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IBuffer.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IBufferView.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\ICommandList.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IDeviceContext.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IDeviceObject.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IFence.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\InputLayoutDesc.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IPipelineState.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\ISampler.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IShader.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IShaderVariable.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\ISwapChain.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\ITexture.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\ITextureView.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\Object.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Config.h">
+    <ClInclude Include="include\Graphics\Region.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\Tools.h">
-      <Filter>Header Files\Graphics</Filter>
+    <ClInclude Include="include\RHI\Formats.h">
+      <Filter>Header Files\RHI</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\DepthStencilStateDesc.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
+    <ClInclude Include="include\Utils\Platform\OS.h">
+      <Filter>Header Files\Utils\Platform</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\RasterizerStateDesc.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
+    <ClInclude Include="include\RHI\D3D12\EngineD3D12.h">
+      <Filter>Header Files\RHI\D3D12</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\DeviceCaps.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
+    <ClInclude Include="include\Utils\Bitmap.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IDeviceContextArgs.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
+    <ClInclude Include="include\Utils\CPUQuery.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="include\Graphics\RHI\IDeviceResource.h">
-      <Filter>Header Files\Graphics\RHI</Filter>
+    <ClInclude Include="include\Utils\Window.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Common\compile_stb_image.cpp">
-      <Filter>Source Files\Common</Filter>
+    <ClCompile Include="source\RHI\Formats.cpp">
+      <Filter>Source Files\RHI</Filter>
     </ClCompile>
-    <ClCompile Include="source\Common\CPUQuery.cpp">
-      <Filter>Source Files\Common</Filter>
+    <ClCompile Include="source\Utils\compile_stb_image.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="source\Common\dllmain.cpp">
-      <Filter>Source Files\Common</Filter>
+    <ClCompile Include="source\dllmain.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Common\Image.cpp">
-      <Filter>Source Files\Common</Filter>
+    <ClCompile Include="source\Utils\CPUQuery.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="source\Common\MemoryPool.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Common\Window.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Graphics\Object.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Graphics\DeviceObjectDesc.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Graphics\DeviceCaps.cpp">
-      <Filter>Source Files\Graphics</Filter>
+    <ClCompile Include="source\Utils\Window.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

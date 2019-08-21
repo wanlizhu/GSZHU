@@ -1,37 +1,73 @@
 #pragma once
 
-#include "Common/Config.h"
+#include "Framework.h"
 #include <vector>
+#include "RHI/Formats.h"
+#include "Object.h"
 
-namespace ZHU
+namespace GS
 {
-    class ZHU_COMMON_API Image
+	class ITexture;
+
+    class GS_API Bitmap : public inherit_shared_from_this<Object, Bitmap>
     {
     public:
-        Image();
-        virtual ~Image();
+		enum class EExportFlags : uint32_t
+		{
+			None = 0,
+			ExportAlpha = 1,
+			Lossy = 2,
+			Uncompressed = 4,
+		};
 
-        bool LoadFile(const char* path);
-        bool LoadMemory(const unsigned char* src, size_t size);
-        bool SaveToFile(const char* path);
-        void Destroy();
-        
-        bool IsValid() const;
-        int Width() const;
-        int Height() const;
-        int Channels() const;
-        int GetSizeInBytes() const;
-        unsigned char* GetData();
-        const unsigned char* GetData() const;
+		enum class EFileFormat
+		{
+			PNG,  // lossless compressed 8-bits images with optional alpha
+			JPEG, // lossy compressed 8-bits images without alpha
+			TGA,  // lossless uncompressed 8-bits images with optional alpha
+			BMP,  // lossless uncompressed 8-bits images with optional alpha
+			PFM,  // floating point HDR images with 32-bit float per channel
+			EXR,  // floating point HDR images with 16-bit float per channel
+		};
 
-        void SetData(const unsigned char* data, size_t size);
-        void SetSize(int width, int height);
-        void SetChannels(int channels);
+		using UniquePtr = std::unique_ptr<Bitmap>;
+		using UniqueConstPtr = std::unique_ptr<const Bitmap>;
+
+		Bitmap();
+        virtual ~Bitmap();
+
+		// If isFlipOver is true, the top-left pixel is the first pixel in the buffer
+		static UniqueConstPtr Create(const std::string& filename);
+		static UniqueConstPtr Create(uint32_t width, 
+									 uint32_t height,
+									 EResourceFormat format,
+									 const void* data = nullptr);
+		static void Save(const std::string& filename, 
+						 EFileFormat fileFormat,
+						 EExportFlags flags,
+						 UniqueConstPtr bitmap);
+		static void Save(const std::string& filename, 
+						 uint32_t width, 
+						 uint32_t height,
+						 EFileFormat fileFormat,
+						 EExportFlags exportFlags,
+						 EResourceFormat resourceFormat,
+						 const void* data);
+		static void SaveDialog(std::shared_ptr<const ITexture> texture);
+
+		Bitmap() = default;
+		virtual ~Bitmap();
+
+		inline const uint8_t* GetData() const { return mData.data(); }
+		inline uint8_t* GetData() { return mData.data(); }
+		inline uint32_t GetWidth() const { return mWidth; }
+		inline uint32_t GetHeight() const { return mHeight; }
+		EResourceFormat GetFormat() const { return mFormat; }
 
     protected:
         std::vector<unsigned char> mData;
         int mWidth = 0;
         int mHeight = 0;
-        int mChannels = 0;
+		EResourceFormat mFormat;
     };
 }
