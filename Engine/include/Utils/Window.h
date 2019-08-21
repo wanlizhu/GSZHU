@@ -105,6 +105,8 @@ namespace GS
         
     protected:
         static void Initialize();
+		Window();
+		virtual ~Window();
 
     private:
         GLFWwindow* mpWindow = nullptr;
