@@ -36,11 +36,11 @@
     <Filter Include="Header Files\Utils\Platform">
       <UniqueIdentifier>{036d5417-7cbd-44cb-aab8-432d37907c0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utils\Platform\Window">
-      <UniqueIdentifier>{c2cba5cf-f1c3-4ca8-b22c-f79a374e14b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\RHI\D3D12">
       <UniqueIdentifier>{2d5a95ff-5e9c-4f49-8eaa-b9b83c1f5368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\Platform">
+      <UniqueIdentifier>{38d86324-4b26-463d-bf64-289f65c0aec1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +83,9 @@
     <ClInclude Include="include\Utils\Window.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utils\String.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\RHI\Formats.cpp">
@@ -99,6 +102,18 @@
     </ClCompile>
     <ClCompile Include="source\Utils\Window.cpp">
       <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Utils\Platform\OS_Win32.cpp">
+      <Filter>Source Files\Utils\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Utils\Platform\OS_Common.cpp">
+      <Filter>Source Files\Utils\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Utils\String.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Object.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

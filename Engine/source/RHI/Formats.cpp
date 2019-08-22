@@ -1,4 +1,5 @@
 #include "RHI/Formats.h"
+#include "Framework.h"
 
 namespace GS
 {

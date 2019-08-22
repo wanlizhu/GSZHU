@@ -59,6 +59,7 @@ namespace GS
 		static bool OpenFileDialog(const std::vector<FileDialogFilter>& filters, std::string* filename);
 		static bool SaveFileDialog(const std::vector<FileDialogFilter>& filters, std::string* filename);
 		
+		static bool IsAbsolutePath(const std::string& filename);
 		static bool FileExists(const std::string& filename);
 		static bool DirectoryExists(const std::string& filename);
 		static void StartFileWatcher(const std::string& filename, const std::function<void()>& callback = {});
@@ -76,14 +77,13 @@ namespace GS
 		static std::string GetTMPFile();
 		static bool ReadEnvironmentVariable(const std::string& name, std::string* value);
 		
-		static const std::vector<std::string>& GetDataDirectory();
+		static const std::vector<std::string>& GetDataDirectories();
 		static void AddDataDirectory(const std::string& directory);
 		static void RemoveDataDirectory(const std::string& directory);
 
-		static bool FindAvailableFileName(const std::string& basename, 
-										  const std::string& ext,
-										  const std::string& directory,
-										  std::string* result);
+		static std::string FindAvailableFileName(const std::string& basename, 
+										         const std::string& ext,
+										         const std::string& directory);
 		static bool IsDebuggerAttached();
 		static void DebugBreak();
 		static void DebugOutput(const std::string& msg);

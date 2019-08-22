@@ -10,14 +10,13 @@
 #include "Framework.h"
 #include "ApplicationBase.h"
 #include "IRenderer.h"
-#include "ScriptBindings.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 
 // Core
-#include "RHI/Object.h"
-#include "RHI/IDeviceObject.h"
-#include "RHI/IResource.h"
-#include "RHI/IBuffer.h"
+//#include "RHI/Object.h"
+//#include "RHI/IDeviceObject.h"
+//#include "RHI/IResource.h"
+//#include "RHI/IBuffer.h"
 

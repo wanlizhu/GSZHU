@@ -17,9 +17,8 @@ namespace GS
     public:
         using SharedPtr = std::shared_ptr<Object>;
         using UniquePtr = std::unique_ptr<Object>;
-
-        Object(const std::string& name);
-        virtual ~Object();
+		
+		virtual ~Object();
 
         bool SetObjectName(const std::string& name);
         const std::string& GetObjectName() const;
@@ -30,6 +29,9 @@ namespace GS
         static SharedPtr FindObject(const std::string& name);
         static void ForEachObject(const std::function<void(SharedPtr)>& func);
         
+	protected:
+		Object(const std::string& name);
+		
     private:
         std::string mObjectName;
         std::unordered_map<std::string, std::string> mObjectProperties;

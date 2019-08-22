@@ -148,14 +148,14 @@ namespace GS
     class inherit_shared_from_this
     {
     public:
-        typename std::shared_ptr<DERIVED> shared_from_this()
+        std::shared_ptr<DERIVED> shared_from_this()
         {
             BASE* base = static_cast<DERIVED*>(this);
             std::shared_ptr<BASE> shared = base->shared_from_this();
             return std::static_pointer_cast<DERIVED>(shared);
         }
 
-        typename std::shared_ptr<const DERIVED> shared_from_this() const
+        std::shared_ptr<const DERIVED> shared_from_this() const
         {
             const BASE* base = static_cast<const DERIVED*>(this);
             std::shared_ptr<const BASE> shared = base->shared_from_this();
@@ -224,7 +224,7 @@ namespace GS
             return "GreaterEqual";
         default:
             SHOULD_NOT_GET_HERE();
-            return ""
+			return "";
         }
     }
 }

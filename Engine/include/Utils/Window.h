@@ -55,11 +55,13 @@ namespace GS
 		std::array<int, 2> WheelDelta;
 	};
 	
-    class GS_API Window : public inherit_shared_from_this<Object, Window>
+    class GS_API Window : public Object,
+		                  public inherit_shared_from_this<Object, Window>
     {
     public:
 		using SharedPtr = std::shared_ptr<Window>;
-		using UniquePtr = std::unique_ptr<Window>;
+		using SharedConstPtr = std::shared_ptr<const Window>;
+		using inherit_shared_from_this<Object, Window>::shared_from_this;
 		using MSG_ID = uint32_t;
 		using MSG_FUNC = std::function<void(WindowHandle, uint32_t, uint32_t)>;
 		struct Desc 
@@ -87,6 +89,7 @@ namespace GS
         static std::array<int, 2> DefaultSize();
 		static SharedPtr Create(const Window::Desc& desc, ICallbacks* callbacks);
 
+		virtual ~Window();
 		void SetCallbacks(ICallbacks* callbacks);
         void SetTitle(const std::string& title);
         void SetFullScreen(bool enabled = true) ;
@@ -105,9 +108,8 @@ namespace GS
         
     protected:
         static void Initialize();
-		Window();
-		virtual ~Window();
-
+		Window(const std::string& name);
+		
     private:
         GLFWwindow* mpWindow = nullptr;
 		ICallbacks* mpCallbacks = nullptr;

@@ -21,14 +21,15 @@ namespace GS
 		}
 	}
 
-	Window::Window()
+	Window::Window(const std::string& name)
+		: Object(name)
 	{
 		Window::Initialize();
 	}
 
 	Window::~Window()
 	{
-		Destroy();
+		Window::Destroy();
 	}
 
 	std::array<int, 2> Window::DefaultPos()
@@ -83,7 +84,8 @@ namespace GS
 			glfwSetWindowPos(window, desc.Position[0], desc.Position[1]);
 		}
 
-		SharedPtr shared = std::make_shared<Window>();
+		static int64_t _id = 0;
+		Window::SharedPtr shared(new Window("Window" + std::to_string(_id++)));
 		shared->mpWindow = window;
 
 		return shared;
