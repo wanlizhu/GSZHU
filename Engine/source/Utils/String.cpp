@@ -1,4 +1,5 @@
 #include "Utils/String.h"
+#include "Utils/Platform/OS.h"
 #include <regex>
 
 namespace GS
@@ -96,6 +97,27 @@ namespace GS
 			res.replace(offset, src.length(), dst);
 			offset += dst.length();
 			offset = res.find(src, offset);
+		}
+
+		return res;
+	}
+
+	char SZ::GetPreferredSeparator()
+	{
+		return OS::GetPreferredSeparator();
+	}
+
+	std::string SZ::Canonicalize(const std::string& path)
+	{
+		static const std::string kSeparator = { SZ::GetPreferredSeparator() , '\0' };
+		std::string res = SZ::Replace(path,
+									kSeparator == "\\" ? "/" : "\\",
+									kSeparator);
+		size_t offset = res.find(kSeparator + kSeparator);
+		while (offset != std::string::npos)
+		{
+			res = res.replace(offset, 2, kSeparator.c_str());
+			offset = res.find(kSeparator + kSeparator);
 		}
 
 		return res;

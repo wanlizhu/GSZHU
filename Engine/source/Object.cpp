@@ -2,6 +2,8 @@
 
 namespace GS
 {
+	std::unordered_map<std::string, std::weak_ptr<Object>> Object::smObjects;
+
 	Object::Object(const std::string& name)
 		: mObjectName(name)
 	{

@@ -86,6 +86,9 @@
     <ClInclude Include="include\Utils\String.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utils\Platform\MonitorInfo.h">
+      <Filter>Header Files\Utils\Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\RHI\Formats.cpp">
@@ -114,6 +117,9 @@
     </ClCompile>
     <ClCompile Include="source\Object.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Utils\Platform\MonitorInfo_Win32.cpp">
+      <Filter>Source Files\Utils\Platform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

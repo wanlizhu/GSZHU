@@ -8,7 +8,7 @@ namespace fs = std::filesystem;
 
 namespace GS
 {
-	std::vector<std::string> _gDataDirectories =
+	static std::vector<std::string> _sDataDirectories =
 	{
 		OS::GetPWD(),
 		OS::Canonicalize(OS::GetPWD() + "/data"),
@@ -17,57 +17,51 @@ namespace GS
 	};
 
 	template<bool OPEN>
-	bool FileDialog(const std::vector<OS::FileDialogFilter>&, std::string*);
+	std::optional<std::string> FileDialog(const std::vector<OS::FileDialogFilter>&);
 
-	bool OS::OpenFileDialog(const std::vector<OS::FileDialogFilter>& filters, std::string* filename)
+
+	std::optional<std::string> OS::OpenFileDialog(const std::vector<OS::FileDialogFilter>& filters)
 	{
-		return FileDialog<true>(filters, filename);
+		return FileDialog<true>(filters);
 	}
 
-	bool OS::SaveFileDialog(const std::vector<OS::FileDialogFilter>& filters, std::string* filename)
+	std::optional<std::string> OS::SaveFileDialog(const std::vector<OS::FileDialogFilter>& filters)
 	{
-		return FileDialog<false>(filters, filename);
+		return FileDialog<false>(filters);
 	}
 
 	const std::vector<std::string>& OS::GetDataDirectories()
 	{
-		return _gDataDirectories;
+		return _sDataDirectories;
 	}
 
 	void OS::AddDataDirectory(const std::string& directory)
 	{
-		auto it = std::find_if(_gDataDirectories.begin(), _gDataDirectories.end(), 
+		auto it = std::find_if(_sDataDirectories.begin(), _sDataDirectories.end(),
 							   [&](const std::string& str) {
 								   return OS::Canonicalize(directory) == str;
 							   });
-		if (it == _gDataDirectories.end())
+		if (it == _sDataDirectories.end())
 		{
-			_gDataDirectories.push_back(OS::Canonicalize(directory));
+			_sDataDirectories.push_back(OS::Canonicalize(directory));
 		}
 	}
 
 	void OS::RemoveDataDirectory(const std::string& directory)
 	{
-		auto it = std::find_if(_gDataDirectories.begin(), _gDataDirectories.end(),
+		auto it = std::find_if(_sDataDirectories.begin(), _sDataDirectories.end(),
 							   [&](const std::string& str) {
 								   return OS::Canonicalize(directory) == str;
 							   });
-		if (it != _gDataDirectories.end())
+		if (it != _sDataDirectories.end())
 		{
-			_gDataDirectories.erase(it);
+			_sDataDirectories.erase(it);
 		}
 	}
 
 	std::string OS::Canonicalize(const std::string& filename)
 	{
-#ifdef _WIN32
-#define NORM "\\"
-#define INV "/"
-#else
-#define NORM "/"
-#define INV "\\"
-#endif
-		fs::path path(SZ::Replace(filename, INV, NORM));
+		fs::path path(SZ::Canonicalize(filename));
 		return fs::canonical(path).string();
 	}
 
@@ -76,31 +70,31 @@ namespace GS
 		return fs::path(filename).is_absolute();
 	}
 
-	std::string OS::FindDataFile(const std::string& filename)
+	std::optional<std::string> OS::FindDataFile(const std::string& filename)
 	{
 		static bool _inited = false;
 		if (!_inited)
 		{
 			_inited = true;
-			std::string value;
-			if (OS::ReadEnvironmentVariable("GS_DATA_PATH", &value))
+			std::optional<std::string> value;
+			if (value = OS::EnvironmentVariable("GS_DATA_PATH"))
 			{
-				auto dirs = SZ::Split(value, ";");
-				_gDataDirectories.insert(_gDataDirectories.end(), dirs.begin(), dirs.end());
+				auto dirs = SZ::Split(value.value(), ";");
+				_sDataDirectories.insert(_sDataDirectories.end(), dirs.begin(), dirs.end());
 			}
 		}
 
 		if (OS::FileExists(filename))
 			return OS::Canonicalize(filename);
 
-		for (const auto dir : _gDataDirectories)
+		for (const auto dir : _sDataDirectories)
 		{
 			auto path = OS::FindFile(filename, dir);
-			if (!path.empty())
+			if (path.has_value())
 				return path;
 		}
 
-		return "";
+		return std::nullopt;
 	}
 
 	std::string OS::FindAvailableFileName(const std::string& basename,
@@ -131,5 +125,68 @@ namespace GS
 		}
 		
 		return path;
+	}
+
+	std::string OS::GetDirectory(const std::string& filename)
+	{
+		fs::path path(filename);
+		return path.has_parent_path() ? path.parent_path().string() : filename;
+	}
+
+	std::string OS::GetExtension(const std::string& filename)
+	{
+		fs::path path(filename);
+		return path.has_extension() ? path.extension().string() : "";
+	}
+
+	std::string OS::GetFileName(const std::string& filename)
+	{
+		return fs::path(filename).filename().string();
+	}
+
+	std::string OS::GetStemName(const std::string& filename)
+	{
+		return fs::path(filename).stem().string();
+	}
+
+	char OS::GetPreferredSeparator()
+	{
+#ifdef _WIN32
+		return '\\';
+#else
+		return '/';
+#endif
+	}
+
+	std::shared_ptr<std::string> OS::LoadFile(const std::string& filename)
+	{
+		std::ifstream fstream;
+		fstream.open(filename, std::ios::in);
+		if (!fstream.is_open())
+			return 0;
+
+		fstream.seekg(0, std::ios::end);
+		auto data = std::make_shared<std::string>();
+		data->reserve(fstream.tellg());
+
+		fstream.seekg(0, std::ios::beg);
+		data->assign(std::istreambuf_iterator<char>(fstream),
+					 std::istreambuf_iterator<char>());
+		fstream.close();
+
+		return data;
+	}
+
+	size_t OS::SaveFile(const std::string& filename, const void* data, size_t size, bool append)
+	{
+		std::ofstream fstream;
+		fstream.open(filename, append ? std::ios::app : ( std::ios::out | std::ios::trunc));
+		if (!fstream.is_open())
+			return 0;
+
+		fstream.write((const char*)data, size);
+		fstream.close();
+
+		return size;
 	}
 }

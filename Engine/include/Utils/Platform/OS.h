@@ -4,12 +4,11 @@
 #include <vector>
 #include <thread>
 #include <functional>
+#include <optional>
 #include "Framework.h"
 
 namespace GS
 {
-	class Window;
-
 	class GS_API OS
 	{
 	public:
@@ -47,23 +46,32 @@ namespace GS
 			std::string ext;
 		};
 
-		static void SetWindowIcon(const std::string& iconFile, WindowHandle handle);
+		static bool SetWindowIcon(const std::string& iconFile, WindowHandle handle);
 		static int GetDisplayDPI();
 		static float GetDisplayScaleFactor();
 
 		static EMessageBoxButton ShowMessageBox(const std::string& msg, 
 												EMessageBoxType type = EMessageBoxType::Ok);
-		static int FindFiles(std::string filter, std::vector<std::string>* files);
-		static std::string FindFile(const std::string& filename, const std::string& directory);
-		static std::string FindDataFile(const std::string& filename);
-		static bool OpenFileDialog(const std::vector<FileDialogFilter>& filters, std::string* filename);
-		static bool SaveFileDialog(const std::vector<FileDialogFilter>& filters, std::string* filename);
+		static std::shared_ptr<std::vector<std::string>> FindFiles(const std::string& filename,
+																   const std::string& directory,
+																   bool findSubtree = true,
+																   bool includeDir = true,
+																   bool onlyFirst = false);
+		static std::optional<std::string> FindFile(const std::string& filename,
+												   const std::string& directory,
+												   bool findSubtree = true,
+												   bool includeDir = true);
+		static std::optional<std::string> FindDataFile(const std::string& filename);
+		static std::optional<std::string> OpenFileDialog(const std::vector<FileDialogFilter>& filters);
+		static std::optional<std::string> SaveFileDialog(const std::vector<FileDialogFilter>& filters);
 		
 		static bool IsAbsolutePath(const std::string& filename);
 		static bool FileExists(const std::string& filename);
 		static bool DirectoryExists(const std::string& filename);
-		static void StartFileWatcher(const std::string& filename, const std::function<void()>& callback = {});
-		static void StopFileWatcher(const std::string& filename);
+		static void StartDirectoryWatcher(const std::string& dir, 
+										  const std::function<void(const std::string&)>& callback,
+										  bool watchSubtree = true);
+		static void StopDirectoryWatcher(const std::string& dir);
 
 		static bool MakeFile(const std::string& filename);
 		static bool MakeDirectory(const std::string& filename);
@@ -73,9 +81,11 @@ namespace GS
 		static void TerminateProcess(size_t id);
 
 		static std::string GetPWD();
+		static std::string GetExecutableDirectory();
 		static std::string GetExecutableName();
-		static std::string GetTMPFile();
-		static bool ReadEnvironmentVariable(const std::string& name, std::string* value);
+		static std::string GetTMPDirectory();
+		static char GetPreferredSeparator();
+		static std::optional<std::string> EnvironmentVariable(const std::string& name);
 		
 		static const std::vector<std::string>& GetDataDirectories();
 		static void AddDataDirectory(const std::string& directory);
@@ -84,12 +94,13 @@ namespace GS
 		static std::string FindAvailableFileName(const std::string& basename, 
 										         const std::string& ext,
 										         const std::string& directory);
-		static bool IsDebuggerAttached();
+		static bool IsDebuggerPresent();
 		static void DebugBreak();
 		static void DebugOutput(const std::string& msg);
 		static std::string Canonicalize(const std::string& filename);
 		static std::string GetExtension(const std::string& filename);
-		static std::string GetBaseName(const std::string& filename);
+		static std::string GetFileName(const std::string& filename);
+		static std::string GetStemName(const std::string& filename);
 		static std::string GetDirectory(const std::string& filename);
 
 		static std::thread::native_handle_type GetCurrentThread();
@@ -101,8 +112,8 @@ namespace GS
 		static uint64_t GetUsedVirtualMemory();
 		static uint64_t GetProcessUsedVirtualMemory();
 
-		static size_t LoadFile(const std::string& filename, std::vector<unsigned char>* data);
-		static size_t LoadFile(const std::string& filename, std::string* data);
+		static std::shared_ptr<std::string> LoadFile(const std::string& filename);
+		static size_t SaveFile(const std::string& filename, const void* data, size_t size, bool append = false);
 		
 		static SharedLibraryHandle LoadSharedLibrary(const std::string& path);
 		static void FreeSharedLibrary(SharedLibraryHandle handle);
