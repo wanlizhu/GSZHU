@@ -3,8 +3,8 @@
 #include <mutex>
 #include <functional>
 #include "gtest/gtest.h"
-#include "Engine/Common/Signal/Signal.h"
-#include "Engine/Common/Signal/Mutex.h"
+#include "Utils/Signal/Signal.h"
+#include "Utils/Signal/Mutex.h"
 
 #define ZHU_THREAD_SAFE_SIGNALS
 // the value of a comma expression is equivalent to its last(rightmost) operand 
@@ -33,13 +33,13 @@ struct anonymous_output
 };
 
 #if defined(ZHU_THREAD_SAFE_SIGNALS)
-using Observer = ZHU::Observer<ZHU::RecursiveMutex>;
-using Signal_One = ZHU::Signal<void(const char*), ZHU::RecursiveMutex>;
-using Signal_Two = ZHU::Signal<void(const char*, std::size_t), ZHU::RecursiveMutex>;
+using Observer = GS::Observer<GS::RecursiveMutex>;
+using Signal_One = GS::Signal<void(const char*), GS::RecursiveMutex>;
+using Signal_Two = GS::Signal<void(const char*, std::size_t), GS::RecursiveMutex>;
 #else
-using Observer = ZHU::Observer<>;
-using Signal_One = ZHU::Signal<void(const char*)>;
-using Signal_Two = ZHU::Signal<void(const char*, std::size_t)>;
+using Observer = GS::Observer<>;
+using Signal_One = GS::Signal<void(const char*)>;
+using Signal_Two = GS::Signal<void(const char*, std::size_t)>;
 #endif
 
 using Delegate_One = std::function<void(const char*)>;

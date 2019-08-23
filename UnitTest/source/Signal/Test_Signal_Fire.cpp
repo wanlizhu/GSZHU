@@ -106,7 +106,7 @@ TEST_F(Test_Signal_Fire, Test_Overloaded_Virtual_Derived_Member_Fire)
 
 TEST_F(Test_Signal_Fire, Test_Fire_Accumulate)
 {
-    ZHU::Signal<std::size_t(std::size_t)> signal_three;
+    GS::Signal<std::size_t(std::size_t)> signal_three;
     auto slot_three = [&] (std::size_t val) {
         return val * val;
     };

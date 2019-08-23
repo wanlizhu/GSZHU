@@ -85,9 +85,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\Geometry\Algebra\Test_ConvertCoordinates.cpp" />
-    <ClCompile Include="source\Geometry\Algebra\Test_Rotation.cpp" />
-    <ClCompile Include="source\Geometry\Distance\Test_Distance_Point3Circle3.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Signal\Test_Base.cpp" />
     <ClCompile Include="source\Signal\Test_Observer_Destruction.cpp" />
@@ -95,6 +92,7 @@
     <ClCompile Include="source\Signal\Test_Signal_Disconnect.cpp" />
     <ClCompile Include="source\Signal\Test_Signal_Edge_Cases.cpp" />
     <ClCompile Include="source\Signal\Test_Signal_Fire.cpp" />
+    <ClCompile Include="source\UI\Test_Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Signal\Test_Base.hpp" />

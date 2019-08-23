@@ -1,23 +1,41 @@
 #include "Utils/Window.h"
 #include <cassert>
+#ifdef _WIN32
 #define GLFW_EXPOSE_NATIVE_WIN32
+#else
+#define GLFW_EXPOSE_NATIVE_X11
+#endif
 #include "GLFW/glfw3.h"
 #include "GLFW/glfw3native.h"
 
 namespace GS
 {
+	namespace local
+	{
+		class EventTransfer
+		{
+		public:
+			static void OnWindowSize(GLFWwindow* win, int w, int h)
+			{
+				if (w == 0 || h == 0)
+					return;
+
+				Window* window = (Window*)glfwGetWindowUserPointer(win);
+				if (window != nullptr && window->mpCallbacks != nullptr)
+					window->mpCallbacks->OnResize(w, h);
+			}
+
+
+		};
+	} // namespace local
+
 	void Window::Initialize()
 	{
 		static bool _inited = false;
 		if (!_inited)
 		{
 			_inited = true;
-			glfwInit();
-			glfwSetErrorCallback([](int code, const char* str) {
-#if LOG_ENABLED
-				LOG(ERROR) << "Error(" << code << "):" << str;
-#endif
-			});
+			
 		}
 	}
 
@@ -61,34 +79,54 @@ namespace GS
 
 	Window::SharedPtr Window::Create(const Window::Desc& desc, ICallbacks* callbacks)
 	{
-		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+		assert(glfwInit() == GLFW_TRUE);
+
+		glfwSetErrorCallback([](int code, const char* str) {
+#if LOG_ENABLED
+			LOG(ERROR) << "Error(" << code << "):" << str;
+#endif
+		});
+
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		GLFWmonitor* monitor = desc.IsFullScreen ? glfwGetPrimaryMonitor() : nullptr;
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-		GLFWwindow* window = nullptr;
 
-		if (desc.IsFullScreen)
-		{
-			glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-			glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-			glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-			glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+		int width = desc.Size[0] <= 0 ? Window::DefaultSize()[0] : desc.Size[0];
+		int height = desc.Size[1] <= 0 ? Window::DefaultSize()[1] : desc.Size[1];
+		GLFWwindow* window = glfwCreateWindow(width, height, desc.Title.c_str(), monitor, nullptr);
+		assert(window != nullptr);
 
-			window = glfwCreateWindow(mode->width, mode->height, desc.Title.c_str(), monitor, nullptr);
-			assert(window != nullptr);
-		}
-		else
-		{
-			int width = desc.Size[0] <= 0 ? Window::DefaultSize()[0] : desc.Size[0];
-			int height = desc.Size[1] <= 0 ? Window::DefaultSize()[1] : desc.Size[1];
-			window = glfwCreateWindow(width, height, desc.Title.c_str(), nullptr, nullptr);
-			assert(window != nullptr);
-			glfwSetWindowPos(window, desc.Position[0], desc.Position[1]);
-		}
+		glfwSetWindowPos(window, desc.Position[0], desc.Position[1]);
 
 		static int64_t _id = 0;
 		Window::SharedPtr shared(new Window("Window" + std::to_string(_id++)));
 		shared->mpWindow = window;
+		shared->mpCallbacks = callbacks;
+		shared->ComputeMouseScale();
+		glfwSetWindowUserPointer(shared->mpWindow, shared.get());
+
+
+		glfwSetWindowSizeCallback(window, local::EventTransfer::OnWindowSize);
+		glfwSetKeyCallback(window, local::EventTransfer::);
+		glfwSetMouseButtonCallback(window, local::EventTransfer::);
+		glfwSetCursorPosCallback(window, local::EventTransfer::);
+		glfwSetScrollCallback(window, local::EventTransfer::);
+		glfwSetCharCallback(window, local::EventTransfer::);
+		glfwSetDropCallback(window, local::EventTransfer::);
 
 		return shared;
+	}
+
+	void Window::ComputeMouseScale()
+	{
+		assert(mpWindow != nullptr);
+
+		int32_t actualWidth;
+		int32_t actualHeight;
+		glfwGetWindowSize(mpWindow, &actualWidth, &actualHeight);
+
+		mMouseScale[0] = 1.0f / (float)actualWidth;
+		mMouseScale[1] = 1.0f / (float)actualHeight;
 	}
 
 	void Window::SetCallbacks(ICallbacks* callbacks)
@@ -191,6 +229,15 @@ namespace GS
 
 	WindowHandle Window::GetWindowHandle() const
 	{
+#ifdef _WIN32
 		return glfwGetWin32Window(mpWindow);
+#else
+		glfwGetX11Window(pGLFWWindow);
+#endif
+	}
+
+	std::array<float, 2> Window::GetMouseScale() const
+	{
+		return mMouseScale;
 	}
 }

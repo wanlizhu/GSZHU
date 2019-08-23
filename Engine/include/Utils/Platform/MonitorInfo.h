@@ -6,10 +6,10 @@
 namespace GS
 {
 	// A class to extract information about displays
-	class MonitorInfo
+	class GS_API MonitorInfo
 	{
 	public:
-		struct MonitorDesc
+		struct Desc
 		{
 			std::string Identifier;
 			std::array<float, 2> Resolution;
@@ -18,7 +18,7 @@ namespace GS
 			bool IsPrimary;
 		};
 
-		static std::vector<MonitorDesc> GetMinitorDescList();
+		static std::vector<Desc> GetMinitorDescList();
 		static void PrintMonitorInfo();
 	};
 }

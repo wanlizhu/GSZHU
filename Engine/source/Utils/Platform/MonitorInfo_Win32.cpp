@@ -17,10 +17,10 @@
 
 namespace GS
 {
-	namespace internal
+	namespace local
 	{
 		static const GUID GUID_CLASS_MONITOR = { 0x4d36e96e, 0xe325, 0x11ce, 0xbf, 0xc1, 0x08, 0x00, 0x2b, 0xe1, 0x03, 0x18 };
-		static std::vector<GS::MonitorInfo::MonitorDesc> _sMinitorDescList;
+		static std::vector<GS::MonitorInfo::Desc> _sMinitorDescList;
 
 		bool GetMonitorSizeFromEDID(const HKEY hDevRegKey, short& WidthMm, short& HeightMm)
 		{
@@ -160,7 +160,7 @@ namespace GS
 				float hInch = float(HeightMm) / 25.4f;
 				float diag = sqrt(wInch * wInch + hInch * hInch);
 
-				MonitorInfo::MonitorDesc desc;
+				MonitorInfo::Desc desc;
 				desc.Identifier = DeviceID;
 				desc.Resolution = std::array<float, 2>{
 						(float)fabs(info.rcMonitor.left - info.rcMonitor.right),
@@ -179,18 +179,18 @@ namespace GS
 			}
 			return TRUE;  // continue enumerating
 		}
-	} // namespace internal
+	} // namespace local
 
-	std::vector<MonitorInfo::MonitorDesc> MonitorInfo::GetMinitorDescList()
+	std::vector<MonitorInfo::Desc> MonitorInfo::GetMinitorDescList()
 	{
-		internal::_sMinitorDescList.clear();
-		::EnumDisplayMonitors(NULL, NULL, internal::MonitorEnumProc, 0);
-		return internal::_sMinitorDescList;
+		local::_sMinitorDescList.clear();
+		::EnumDisplayMonitors(NULL, NULL, local::MonitorEnumProc, 0);
+		return local::_sMinitorDescList;
 	}
 
 	void MonitorInfo::PrintMonitorInfo()
 	{
-		std::vector<MonitorInfo::MonitorDesc> descList = GetMinitorDescList();
+		std::vector<MonitorInfo::Desc> descList = GetMinitorDescList();
 
 		for (auto& desc : descList)
 		{

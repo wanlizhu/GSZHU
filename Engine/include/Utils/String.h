@@ -86,9 +86,24 @@ namespace GS
 			std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
 			return cvt.from_bytes(str);
 		}
-		static inline std::string ConvertUTF32(const char32_t* wwstr)
+		static inline std::string ConvertUTF16(const uint16_t* wwstr)
 		{
+#ifdef _WIN32
+			// This is a known issue, tracked by Visual Studio Team
+			std::wstring_convert<std::codecvt_utf8<uint16_t>, uint16_t> cvt;
+#else
+			std::wstring_convert<std::codecvt_utf8<char16_t>, char16_t> cvt;
+#endif
+			return cvt.to_bytes(wwstr);
+		}
+		static inline std::string ConvertUTF32(const uint32_t* wwstr)
+		{
+#ifdef _WIN32
+			// This is a known issue, tracked by Visual Studio Team
+			std::wstring_convert<std::codecvt_utf8<uint32_t>, uint32_t> cvt;
+#else
 			std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
+#endif
 			return cvt.to_bytes(wwstr);
 		}
 	};

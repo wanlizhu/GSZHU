@@ -24,8 +24,15 @@
     <ClInclude Include="include\Utils\CPUQuery.h" />
     <ClInclude Include="include\Utils\Platform\MonitorInfo.h" />
     <ClInclude Include="include\Utils\Platform\OS.h" />
+    <ClInclude Include="include\Utils\Platform\IProgressBar.h" />
+    <ClInclude Include="include\Utils\Signal\Function.h" />
+    <ClInclude Include="include\Utils\Signal\Mutex.h" />
+    <ClInclude Include="include\Utils\Signal\Observer.h" />
+    <ClInclude Include="include\Utils\Signal\Signal.h" />
     <ClInclude Include="include\Utils\String.h" />
     <ClInclude Include="include\Utils\Window.h" />
+    <ClInclude Include="source\resource.h" />
+    <ClInclude Include="source\Utils\Platform\ProgressBar_Win32.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\dllmain.cpp" />
@@ -33,11 +40,16 @@
     <ClCompile Include="source\RHI\Formats.cpp" />
     <ClCompile Include="source\Utils\compile_stb_image.cpp" />
     <ClCompile Include="source\Utils\CPUQuery.cpp" />
+    <ClCompile Include="source\Utils\Platform\IProgressBar.cpp" />
     <ClCompile Include="source\Utils\Platform\MonitorInfo_Win32.cpp" />
     <ClCompile Include="source\Utils\Platform\OS_Common.cpp" />
     <ClCompile Include="source\Utils\Platform\OS_Win32.cpp" />
+    <ClCompile Include="source\Utils\Platform\ProgressBar_Win32.cpp" />
     <ClCompile Include="source\Utils\String.cpp" />
     <ClCompile Include="source\Utils\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\resource.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

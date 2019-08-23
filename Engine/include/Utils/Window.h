@@ -54,14 +54,20 @@ namespace GS
 		std::array<int, 2> Position;
 		std::array<int, 2> WheelDelta;
 	};
+
+	namespace local
+	{
+		class EventTransfer;
+	}
 	
     class GS_API Window : public Object,
 		                  public inherit_shared_from_this<Object, Window>
     {
     public:
+		friend class local::EventTransfer;
+		using inherit_shared_from_this<Object, Window>::shared_from_this;
 		using SharedPtr = std::shared_ptr<Window>;
 		using SharedConstPtr = std::shared_ptr<const Window>;
-		using inherit_shared_from_this<Object, Window>::shared_from_this;
 		using MSG_ID = uint32_t;
 		using MSG_FUNC = std::function<void(WindowHandle, uint32_t, uint32_t)>;
 		struct Desc 
@@ -105,14 +111,17 @@ namespace GS
         std::array<int, 2> GetPosition() const;
         std::array<int, 2> GetSize() const;
 		WindowHandle GetWindowHandle() const;
+		std::array<float, 2> GetMouseScale() const;
         
     protected:
         static void Initialize();
 		Window(const std::string& name);
+		void ComputeMouseScale();
 		
     private:
         GLFWwindow* mpWindow = nullptr;
 		ICallbacks* mpCallbacks = nullptr;
+		std::array<float, 2> mMouseScale;
 		std::unordered_map<MSG_ID, MSG_FUNC> mMessageHooks;
     };
       

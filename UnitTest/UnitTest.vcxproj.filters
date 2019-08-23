@@ -12,14 +12,8 @@
     <Filter Include="Source Files\Signal">
       <UniqueIdentifier>{501a56cf-62f3-4ce3-b2b3-f4e96046e11a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Geometry">
-      <UniqueIdentifier>{1a79ad66-efbf-4662-a464-152dec1389cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Geometry\Algebra">
-      <UniqueIdentifier>{f3e17047-5c2b-4571-9c67-b2259e77d694}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Geometry\Distance">
-      <UniqueIdentifier>{f1e0446c-049e-452b-9424-7c4e240e7f48}</UniqueIdentifier>
+    <Filter Include="Source Files\Window">
+      <UniqueIdentifier>{7e3bad5d-4f61-4d27-9ab9-07e21c8e5d25}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -41,17 +35,11 @@
     <ClCompile Include="source\Signal\Test_Signal_Fire.cpp">
       <Filter>Source Files\Signal</Filter>
     </ClCompile>
-    <ClCompile Include="source\Geometry\Algebra\Test_ConvertCoordinates.cpp">
-      <Filter>Source Files\Geometry\Algebra</Filter>
-    </ClCompile>
     <ClCompile Include="source\Signal\Test_Base.cpp">
       <Filter>Source Files\Signal</Filter>
     </ClCompile>
-    <ClCompile Include="source\Geometry\Distance\Test_Distance_Point3Circle3.cpp">
-      <Filter>Source Files\Geometry\Distance</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Geometry\Algebra\Test_Rotation.cpp">
-      <Filter>Source Files\Geometry\Algebra</Filter>
+    <ClCompile Include="source\UI\Test_Window.cpp">
+      <Filter>Source Files\Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

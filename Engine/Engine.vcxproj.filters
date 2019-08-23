@@ -42,6 +42,12 @@
     <Filter Include="Source Files\Utils\Platform">
       <UniqueIdentifier>{38d86324-4b26-463d-bf64-289f65c0aec1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{508adfeb-6d2d-48e2-946d-badf2b58a743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils\Signal">
+      <UniqueIdentifier>{fa50cc43-1c31-4322-a9fe-8f6adf069ebb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ApplicationBase.h">
@@ -89,6 +95,27 @@
     <ClInclude Include="include\Utils\Platform\MonitorInfo.h">
       <Filter>Header Files\Utils\Platform</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utils\Platform\IProgressBar.h">
+      <Filter>Header Files\Utils\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Utils\Platform\ProgressBar_Win32.h">
+      <Filter>Source Files\Utils\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utils\Signal\Function.h">
+      <Filter>Header Files\Utils\Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utils\Signal\Mutex.h">
+      <Filter>Header Files\Utils\Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utils\Signal\Observer.h">
+      <Filter>Header Files\Utils\Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utils\Signal\Signal.h">
+      <Filter>Header Files\Utils\Signal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\RHI\Formats.cpp">
@@ -121,5 +148,16 @@
     <ClCompile Include="source\Utils\Platform\MonitorInfo_Win32.cpp">
       <Filter>Source Files\Utils\Platform</Filter>
     </ClCompile>
+    <ClCompile Include="source\Utils\Platform\IProgressBar.cpp">
+      <Filter>Source Files\Utils\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Utils\Platform\ProgressBar_Win32.cpp">
+      <Filter>Source Files\Utils\Platform</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\resource.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

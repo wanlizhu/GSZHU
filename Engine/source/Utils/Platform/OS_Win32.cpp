@@ -24,7 +24,7 @@ namespace fs = std::filesystem;
 
 namespace GS
 {
-	namespace internal
+	namespace local
 	{
 		static std::unordered_map<std::string, std::pair<std::thread, bool>> _sDirectoryWatcherThreads;
 
@@ -149,7 +149,7 @@ namespace GS
 
 			return s;
 		}
-	} // namespace internal
+	} // namespace local
 
 	OS::EMessageBoxButton OS::ShowMessageBox(const std::string& msg, OS::EMessageBoxType boxtype)
 	{
@@ -317,7 +317,7 @@ namespace GS
 		CHAR chars[512] = { 0 };
 		ZeroMemory(&ofn, sizeof(ofn));
 
-		std::string filtersStr = internal::GetFileDialogFilterString<OPEN>(filters);
+		std::string filtersStr = local::GetFileDialogFilterString<OPEN>(filters);
 
 		ofn.lStructSize = sizeof(OPENFILENAME);
 		ofn.hwndOwner = GetForegroundWindow();
@@ -467,26 +467,26 @@ namespace GS
 						     	   const std::function<void(const std::string&)>& callback,
 						     	   bool watchSubtree)
 	{
-		const auto& it = internal::_sDirectoryWatcherThreads.find(dir);
+		const auto& it = local::_sDirectoryWatcherThreads.find(dir);
 		// Only have one thread waiting on directory modification
-		if (it != internal::_sDirectoryWatcherThreads.end())
+		if (it != local::_sDirectoryWatcherThreads.end())
 		{
 			if (it->second.first.joinable())
 				it->second.first.join();
 		}
 
-		internal::_sDirectoryWatcherThreads[dir].first = std::thread(internal::CheckDirectoryStatus,
+		local::_sDirectoryWatcherThreads[dir].first = std::thread(local::CheckDirectoryStatus,
 																	 dir,
 																	 callback,
 																	 watchSubtree);
-		internal::_sDirectoryWatcherThreads[dir].second = true;
+		local::_sDirectoryWatcherThreads[dir].second = true;
 	}
 
 	void OS::StopDirectoryWatcher(const std::string& dir)
 	{
-		const auto& it = internal::_sDirectoryWatcherThreads.find(dir);
+		const auto& it = local::_sDirectoryWatcherThreads.find(dir);
 		// Only have one thread waiting on directory modification
-		if (it != internal::_sDirectoryWatcherThreads.end())
+		if (it != local::_sDirectoryWatcherThreads.end())
 		{
 			it->second.second = false;
 			it->second.first.detach();
