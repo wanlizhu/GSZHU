@@ -3,14 +3,16 @@
 #include "Framework.h"
 #include <vector>
 #include "RHI/Formats.h"
-#include "Object.h"
+#include "Utils/Object.h"
 
 namespace GS
 {
 	class ITexture;
 
-    class GS_API Bitmap : public inherit_shared_from_this<Object, Bitmap>
+    class GS_API Bitmap : public Object,
+		                  public inherit_shared_from_this<Object, Bitmap>
     {
+		GS_OBJECT
     public:
 		enum class EExportFlags : uint32_t
 		{

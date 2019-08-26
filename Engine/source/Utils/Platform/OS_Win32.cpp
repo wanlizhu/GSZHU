@@ -495,22 +495,20 @@ namespace GS
 
 	std::optional<std::string> OS::FindFile(const std::string& filename,
 											const std::string& directory,
-											bool findSubtree,
-											bool includeDir)
+											bool recursive)
 	{
-		auto vec = OS::FindFiles(filename, directory, findSubtree, includeDir, true);
-		if (!vec || vec->size() == 0)
+		auto files = OS::FindFiles(filename, directory, recursive, false);
+		if (files.empty())
 		{
 			return std::nullopt;
 		}
-		return vec->at(0);
+		return files[0];
 	}
 
-	std::shared_ptr<std::vector<std::string>> OS::FindFiles(const std::string& filename,
-															const std::string& directory,
-															bool findSubtree,
-															bool includeDir,
-															bool onlyFirst)
+	std::vector<std::string> OS::FindFiles(const std::string& filename,
+									       const std::string& directory,
+									       bool recursive,
+									       bool findAll)
 	{
 		WIN32_FIND_DATAA fd{};
 		HANDLE hFind = INVALID_HANDLE_VALUE;
@@ -522,10 +520,10 @@ namespace GS
 		hFind = FindFirstFileA(szFilter, &fd);
 		if (hFind == INVALID_HANDLE_VALUE)
 		{
-			return nullptr;
+			return {};
 		}
 
-		auto vec = std::make_shared<std::vector<std::string>>();
+		std::vector<std::string> files;
 		std::vector<std::string> subdirs;
 		do
 		{
@@ -533,36 +531,32 @@ namespace GS
 				strcmp(fd.cFileName, "..") == 0)
 				continue;
 
-			std::string filepath = OS::Canonicalize(SZ::JoinPath(directory, fd.cFileName));
+			std::string filePath = OS::Canonicalize(SZ::JoinPath(directory, fd.cFileName));
 
 			bool isDir = (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
-			if (isDir && findSubtree)
-				subdirs.push_back(filepath);
+			if (isDir && recursive)
+				subdirs.push_back(filePath);
 
-			if (isDir && !includeDir)
-				continue;
-
-			vec->push_back(filepath);
+			files.push_back(filePath);
 		} while (FindNextFileA(hFind, &fd) != 0);
 
-		if (findSubtree)
+		if (recursive)
 		{
 			for (auto subdir : subdirs)
 			{
-				auto subvec = OS::FindFiles(filename, 
+				auto subFiles = OS::FindFiles(filename, 
 											subdir, 
-											findSubtree,
-											includeDir,
-											onlyFirst);
+											recursive,
+											findAll);
 
-				if (!subvec)
+				if (subFiles.empty())
 					continue;
 
-				vec->insert(vec->end(), subvec->begin(), subvec->end());
+				files.insert(files.end(), subFiles.begin(), subFiles.end());
 			}
 		}
 
-		return vec->empty() ? nullptr : vec;
+		return files;
 	}
 
 	std::thread::native_handle_type OS::GetCurrentThread()

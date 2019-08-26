@@ -62,12 +62,6 @@
     <ClInclude Include="include\Framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\IRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Graphics\Region.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -83,9 +77,6 @@
     <ClInclude Include="include\Utils\Bitmap.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="include\Utils\CPUQuery.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utils\Window.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
@@ -94,12 +85,6 @@
     </ClInclude>
     <ClInclude Include="include\Utils\Platform\MonitorInfo.h">
       <Filter>Header Files\Utils\Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Utils\Platform\IProgressBar.h">
-      <Filter>Header Files\Utils\Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Utils\Platform\ProgressBar_Win32.h">
-      <Filter>Source Files\Utils\Platform</Filter>
     </ClInclude>
     <ClInclude Include="source\resource.h">
       <Filter>Resources</Filter>
@@ -116,6 +101,9 @@
     <ClInclude Include="include\Utils\Signal\Signal.h">
       <Filter>Header Files\Utils\Signal</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utils\Object.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\RHI\Formats.cpp">
@@ -126,9 +114,6 @@
     </ClCompile>
     <ClCompile Include="source\dllmain.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Utils\CPUQuery.cpp">
-      <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="source\Utils\Window.cpp">
       <Filter>Source Files\Utils</Filter>
@@ -142,17 +127,14 @@
     <ClCompile Include="source\Utils\String.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="source\Object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\Utils\Platform\MonitorInfo_Win32.cpp">
       <Filter>Source Files\Utils\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="source\Utils\Platform\IProgressBar.cpp">
-      <Filter>Source Files\Utils\Platform</Filter>
+    <ClCompile Include="source\Utils\Object.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="source\Utils\Platform\ProgressBar_Win32.cpp">
-      <Filter>Source Files\Utils\Platform</Filter>
+    <ClCompile Include="source\ApplicationBase.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

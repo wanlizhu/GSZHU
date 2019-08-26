@@ -12,37 +12,167 @@ namespace GS
 {
 	namespace local
 	{
-		class EventTransfer
+		static void OnWindowSize(GLFWwindow* win, int w, int h)
 		{
-		public:
-			static void OnWindowSize(GLFWwindow* win, int w, int h)
+			if (w == 0 || h == 0)
+				return;
+
+			Window* window = (Window*)glfwGetWindowUserPointer(win);
+			if (window != nullptr && window->GetCallbacks() != nullptr)
+				window->GetCallbacks()->OnResize(w, h);
+		}
+
+		static void OnKey(GLFWwindow* win, int key, int scanCode, int action, int mods)
+		{
+			static auto _GetModsFunc = [](int mask) {
+				InputModifiers mods;
+				mods.Alt = (mask & GLFW_MOD_ALT) != 0;
+				mods.Ctrl = (mask & GLFW_MOD_CONTROL) != 0;
+				mods.Shift = (mask & GLFW_MOD_SHIFT) != 0;
+				return mods;
+			};
+
+			Window* window = (Window*)glfwGetWindowUserPointer(win);
+			if (window != nullptr && window->GetCallbacks() != nullptr)
 			{
-				if (w == 0 || h == 0)
+				if (action == GLFW_REPEAT || key == GLFW_KEY_UNKNOWN)
 					return;
 
-				Window* window = (Window*)glfwGetWindowUserPointer(win);
-				if (window != nullptr && window->mpCallbacks != nullptr)
-					window->mpCallbacks->OnResize(w, h);
+				KeyboardEvent event;
+				event.Key = key;
+				event.Mods = _GetModsFunc(mods);
+				event.Type = (action == GLFW_RELEASE ? KeyboardEvent::EType::Up : KeyboardEvent::EType::Down);
+				window->GetCallbacks()->OnKeyboardEvent(event);
 			}
+		}
 
+		static void OnChar(GLFWwindow* win, uint32_t input)
+		{
+			Window* window = (Window*)glfwGetWindowUserPointer(win);
+			if (window != nullptr && window->GetCallbacks() != nullptr)
+			{
+				KeyboardEvent event;
+				event.Type = KeyboardEvent::EType::Char;
+				event.CodePoint = input;
 
-		};
+				window->GetCallbacks()->OnKeyboardEvent(event);
+			}
+		}
+
+		static void OnMouseMove(GLFWwindow* win, double x, double y)
+		{
+			Window* window = (Window*)glfwGetWindowUserPointer(win);
+			if (window != nullptr && window->GetCallbacks() != nullptr)
+			{
+				MouseEvent event;
+				event.Type = MouseEvent::EType::Move;
+				event.Position = { 
+					(int)(x * window->GetMouseScale()[0]),
+					(int)(y * window->GetMouseScale()[1]) };
+
+				window->GetCallbacks()->OnMouseEvent(event);
+			}
+		}
+
+		static void OnMouseButton(GLFWwindow* win, int button, int action, int mods)
+		{
+			static auto _GetModsFunc = [](int mask) {
+				InputModifiers mods;
+				mods.Alt = (mask & GLFW_MOD_ALT) != 0;
+				mods.Ctrl = (mask & GLFW_MOD_CONTROL) != 0;
+				mods.Shift = (mask & GLFW_MOD_SHIFT) != 0;
+				return mods;
+			};
+
+			Window* window = (Window*)glfwGetWindowUserPointer(win);
+			if (window != nullptr && window->GetCallbacks() != nullptr)
+			{
+				MouseEvent event;
+				switch (button)
+				{
+				case GLFW_MOUSE_BUTTON_LEFT:
+					event.Type = (action == GLFW_PRESS ? MouseEvent::EType::LeftDown : MouseEvent::EType::LeftUp);
+					break;
+
+				case GLFW_MOUSE_BUTTON_MIDDLE:
+					event.Type = (action == GLFW_PRESS ? MouseEvent::EType::MiddleDown : MouseEvent::EType::MiddleUp);
+					break;
+
+				case GLFW_MOUSE_BUTTON_RIGHT:
+					event.Type = (action == GLFW_PRESS ? MouseEvent::EType::RightDown : MouseEvent::EType::RightUp);
+					break;
+				default:
+					break;
+				}
+
+				event.Mods = _GetModsFunc(mods);
+				double x, y;
+				glfwGetCursorPos(win, &x, &y);
+				event.Position = {
+					(int)(x * window->GetMouseScale()[0]),
+					(int)(y * window->GetMouseScale()[1]) };
+
+				window->GetCallbacks()->OnMouseEvent(event);
+			}
+		}
+
+		static void OnMouseWheel(GLFWwindow* win, double x, double y)
+		{
+			Window* window = (Window*)glfwGetWindowUserPointer(win);
+			if (window != nullptr && window->GetCallbacks() != nullptr)
+			{
+				MouseEvent event;
+				event.Type = MouseEvent::EType::Wheel;
+				double x, y;
+				glfwGetCursorPos(win, &x, &y);
+				event.Position = {
+					(int)(x * window->GetMouseScale()[0]),
+					(int)(y * window->GetMouseScale()[1]) };
+				event.WheelDelta = { (int)x, (int)y };
+
+				window->GetCallbacks()->OnMouseEvent(event);
+			}
+		}
+
+		static void OnDropFile(GLFWwindow* win, int count, const char** paths)
+		{
+			Window* window = (Window*)glfwGetWindowUserPointer(win);
+			if (window != nullptr && window->GetCallbacks() != nullptr)
+			{
+				std::vector<std::string> vec;
+				for (int i = 0; i < count; i++)
+					vec.push_back(paths[i]);
+
+				window->GetCallbacks()->OnDropFile(vec);
+			}
+		}
+
 	} // namespace local
 
-	void Window::Initialize()
+	class EmptyCallbacks : public Window::ICallbacks
 	{
-		static bool _inited = false;
-		if (!_inited)
-		{
-			_inited = true;
-			
-		}
-	}
+	public:
+		virtual void OnCreate() override {}
+		virtual void OnDestroy()  override {}
+		virtual void OnResize(int width, int height)  override {}
+		virtual void OnUpdate()  override {}
+		virtual void OnRender()  override {}
 
-	Window::Window(const std::string& name)
+		virtual void OnKeyboardEvent(const KeyboardEvent& event)  override {}
+		virtual void OnMouseEvent(const MouseEvent& event)  override {}
+		virtual void OnDropFile(const std::vector<std::string>& paths)  override {}
+	};
+
+	Window::Window(const std::string& name, Window::ICallbacks* callbacks)
 		: Object(name)
+		, mpCallbacks(callbacks)
 	{
-		Window::Initialize();
+		assert(glfwInit() == GLFW_TRUE);
+		if (mpCallbacks == nullptr)
+		{
+			static EmptyCallbacks _callbacks;
+			mpCallbacks = &_callbacks;
+		}
 	}
 
 	Window::~Window()
@@ -52,7 +182,7 @@ namespace GS
 
 	std::array<int, 2> Window::DefaultPos()
 	{
-		Window::Initialize();
+		assert(glfwInit() == GLFW_TRUE);
 
 		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
@@ -66,7 +196,7 @@ namespace GS
 
 	std::array<int, 2> Window::DefaultSize()
 	{
-		Window::Initialize();
+		assert(glfwInit() == GLFW_TRUE);
 
 		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
@@ -83,13 +213,13 @@ namespace GS
 
 		glfwSetErrorCallback([](int code, const char* str) {
 #if LOG_ENABLED
-			LOG(ERROR) << "Error(" << code << "):" << str;
+			LOG(ERROR) << "Error(" << code << "): " << str;
 #endif
 		});
 
-		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		//glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		GLFWmonitor* monitor = desc.IsFullScreen ? glfwGetPrimaryMonitor() : nullptr;
-		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+		const GLFWvidmode* mode = monitor ? glfwGetVideoMode(monitor) : nullptr;
 
 		int width = desc.Size[0] <= 0 ? Window::DefaultSize()[0] : desc.Size[0];
 		int height = desc.Size[1] <= 0 ? Window::DefaultSize()[1] : desc.Size[1];
@@ -99,20 +229,19 @@ namespace GS
 		glfwSetWindowPos(window, desc.Position[0], desc.Position[1]);
 
 		static int64_t _id = 0;
-		Window::SharedPtr shared(new Window("Window" + std::to_string(_id++)));
+		Window::SharedPtr shared(new Window("Window" + std::to_string(_id++), callbacks));
 		shared->mpWindow = window;
-		shared->mpCallbacks = callbacks;
 		shared->ComputeMouseScale();
 		glfwSetWindowUserPointer(shared->mpWindow, shared.get());
 
 
-		glfwSetWindowSizeCallback(window, local::EventTransfer::OnWindowSize);
-		glfwSetKeyCallback(window, local::EventTransfer::);
-		glfwSetMouseButtonCallback(window, local::EventTransfer::);
-		glfwSetCursorPosCallback(window, local::EventTransfer::);
-		glfwSetScrollCallback(window, local::EventTransfer::);
-		glfwSetCharCallback(window, local::EventTransfer::);
-		glfwSetDropCallback(window, local::EventTransfer::);
+		glfwSetWindowSizeCallback(window, local::OnWindowSize);
+		glfwSetKeyCallback(window, local::OnKey);
+		glfwSetMouseButtonCallback(window, local::OnMouseButton);
+		glfwSetCursorPosCallback(window, local::OnMouseMove);
+		glfwSetScrollCallback(window, local::OnMouseWheel);
+		glfwSetCharCallback(window, local::OnChar);
+		glfwSetDropCallback(window, local::OnDropFile);
 
 		return shared;
 	}
@@ -173,10 +302,21 @@ namespace GS
 
 	void Window::MessageLoop()
 	{
+		// Samples often rely on a size change event as part of initialization
+		// This would have happened from a WM_SIZE message when calling ShowWindow on Win32
+		int w, h;
+		glfwGetWindowSize(mpWindow, &w, &h);
+		mpCallbacks->OnResize(w, h);
+
+		glfwShowWindow(mpWindow);
+		glfwFocusWindow(mpWindow);
+
 		while (!glfwWindowShouldClose(mpWindow))
 		{
-			glfwSwapBuffers(mpWindow);
 			glfwPollEvents();
+			mpCallbacks->OnUpdate();
+			mpCallbacks->OnRender();
+			glfwSwapBuffers(mpWindow);
 		}
 	}
 
@@ -239,5 +379,10 @@ namespace GS
 	std::array<float, 2> Window::GetMouseScale() const
 	{
 		return mMouseScale;
+	}
+
+	Window::ICallbacks* Window::GetCallbacks() const
+	{
+		return mpCallbacks;
 	}
 }

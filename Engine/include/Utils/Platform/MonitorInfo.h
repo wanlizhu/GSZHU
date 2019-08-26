@@ -12,10 +12,10 @@ namespace GS
 		struct Desc
 		{
 			std::string Identifier;
-			std::array<float, 2> Resolution;
-			std::array<float, 2> PhysicalSize;
-			float PPI;
-			bool IsPrimary;
+			std::array<float, 2> Resolution = { 0.0f };
+			std::array<float, 2> PhysicalSize = { 0.0f };
+			float PPI = 1.0f;
+			bool IsPrimary = true;
 		};
 
 		static std::vector<Desc> GetMinitorDescList();

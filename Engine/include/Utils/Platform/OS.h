@@ -46,21 +46,20 @@ namespace GS
 			std::string ext;
 		};
 
-		static bool SetWindowIcon(const std::string& iconFile, WindowHandle handle);
-		static int GetDisplayDPI();
+
+		static  bool SetWindowIcon(const std::string& iconFile, WindowHandle handle);
+		static   int GetDisplayDPI();
 		static float GetDisplayScaleFactor();
 
-		static EMessageBoxButton ShowMessageBox(const std::string& msg, 
-												EMessageBoxType type = EMessageBoxType::Ok);
-		static std::shared_ptr<std::vector<std::string>> FindFiles(const std::string& filename,
-																   const std::string& directory,
-																   bool findSubtree = true,
-																   bool includeDir = true,
-																   bool onlyFirst = false);
+		static EMessageBoxButton ShowMessageBox(const std::string& msg,
+				   		                        EMessageBoxType type = EMessageBoxType::Ok);
+		static std::vector<std::string> FindFiles(const std::string& filename,
+					                              const std::string& directory,
+					                              bool recursive = true,
+					                              bool findAll = true);
 		static std::optional<std::string> FindFile(const std::string& filename,
-												   const std::string& directory,
-												   bool findSubtree = true,
-												   bool includeDir = true);
+					                               const std::string& directory,
+					                               bool recursive = true);
 		static std::optional<std::string> FindDataFile(const std::string& filename);
 		static std::optional<std::string> OpenFileDialog(const std::vector<FileDialogFilter>& filters);
 		static std::optional<std::string> SaveFileDialog(const std::vector<FileDialogFilter>& filters);

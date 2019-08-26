@@ -1,16 +1,14 @@
 #include <iostream>
-#include "Engine/Common/GUI/Window.h"
+#include "Utils/Window.h"
 
-using namespace ZHU;
+using namespace GS;
 
 int main()
 {
-    Window::CreationInfo info;
-    info.title = "Graphics Engine";
-    info.size = Window::DefaultSize();
-    info.pos = Window::DefaultPos();
-    Window window(info);
-    window.MainLoop();
+	Window::Desc desc;
+	desc.Title = "Test Window";
+	auto win = Window::Create(desc, nullptr);
+	win->MessageLoop();
 
     return 0;
 }

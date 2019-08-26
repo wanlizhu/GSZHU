@@ -10,4 +10,5 @@ TEST(Test_Window, Create)
 	Window::Desc desc;
 	desc.Title = "Test Window";
 	auto win = Window::Create(desc, nullptr);
+	win->MessageLoop();
 }

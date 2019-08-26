@@ -2,7 +2,6 @@
 
 
 #include "EngineConfig.h"
-#include "Object.h"
 #ifdef GS_USE_D3D12
 #include "RHI/D3D12/EngineD3D12.h"
 #elif defined(GS_USE_VULKAN)
@@ -25,6 +24,9 @@
 #include <vector>
 #include <unordered_map>
 #include <Eigen/Eigen>
+#ifndef GLOG_NO_ABBREVIATED_SEVERITIES
+#define GLOG_NO_ABBREVIATED_SEVERITIES
+#endif
 #include <glog/logging.h>
 
 #ifndef arraysize

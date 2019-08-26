@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Framework.h"
+#include "Utils/Object.h"
 #include <any>
 #include <memory>
 #include <string>
@@ -55,16 +56,12 @@ namespace GS
 		std::array<int, 2> WheelDelta;
 	};
 
-	namespace local
-	{
-		class EventTransfer;
-	}
-	
+
     class GS_API Window : public Object,
 		                  public inherit_shared_from_this<Object, Window>
     {
+		GS_OBJECT
     public:
-		friend class local::EventTransfer;
 		using inherit_shared_from_this<Object, Window>::shared_from_this;
 		using SharedPtr = std::shared_ptr<Window>;
 		using SharedConstPtr = std::shared_ptr<const Window>;
@@ -85,10 +82,12 @@ namespace GS
 			virtual void OnCreate() = 0;
 			virtual void OnDestroy() = 0;
 			virtual void OnResize(int width, int height) = 0;
+			virtual void OnUpdate() = 0;
 			virtual void OnRender() = 0;
+
 			virtual void OnKeyboardEvent(const KeyboardEvent& event) = 0;
 			virtual void OnMouseEvent(const MouseEvent& event) = 0;
-			virtual void OnDropFile(const std::string& path) = 0;
+			virtual void OnDropFile(const std::vector<std::string>& paths) = 0;
 		};
 
         static std::array<int, 2> DefaultPos();
@@ -112,10 +111,10 @@ namespace GS
         std::array<int, 2> GetSize() const;
 		WindowHandle GetWindowHandle() const;
 		std::array<float, 2> GetMouseScale() const;
+		ICallbacks* GetCallbacks() const;
         
     protected:
-        static void Initialize();
-		Window(const std::string& name);
+		Window(const std::string& name, Window::ICallbacks* callbacks);
 		void ComputeMouseScale();
 		
     private:
