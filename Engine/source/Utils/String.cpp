@@ -102,22 +102,22 @@ namespace GS
 		return res;
 	}
 
-	char SZ::GetPreferredSeparator()
+	std::string SZ::GetPreferredSeparator()
 	{
 		return OS::GetPreferredSeparator();
 	}
 
 	std::string SZ::Canonicalize(const std::string& path)
 	{
-		static const std::string kSeparator = { SZ::GetPreferredSeparator() , '\0' };
+		std::string slashes = GetPreferredSeparator() + GetPreferredSeparator();
 		std::string res = SZ::Replace(path,
-									kSeparator == "\\" ? "/" : "\\",
-									kSeparator);
-		size_t offset = res.find(kSeparator + kSeparator);
+									  GetPreferredSeparator() == "\\" ? "/" : "\\",
+									  GetPreferredSeparator());
+		size_t offset = res.find(slashes);
 		while (offset != std::string::npos)
 		{
-			res = res.replace(offset, 2, kSeparator.c_str());
-			offset = res.find(kSeparator + kSeparator);
+			res = res.replace(offset, 2, GetPreferredSeparator().c_str());
+			offset = res.find(slashes);
 		}
 
 		return res;

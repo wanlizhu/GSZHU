@@ -20,8 +20,6 @@ extern "C"
 	_declspec(dllexport) DWORD NvOptimusEnablement = 1;
 }
 
-namespace fs = std::filesystem;
-
 namespace GS
 {
 	namespace local
@@ -149,6 +147,48 @@ namespace GS
 
 			return s;
 		}
+
+
+		constexpr size_t MakeUInt64(DWORD high, DWORD low)
+		{
+			ULARGE_INTEGER ul{ 0 };
+			ul.HighPart = high;
+			ul.LowPart = low;
+			return size_t(ul.QuadPart);
+		}
+
+		constexpr std::time_t FileTime2TimeT(const FILETIME& ft)
+		{
+			ULARGE_INTEGER ul{ 0 };
+			ul.HighPart = ft.dwHighDateTime;
+			ul.LowPart = ft.dwLowDateTime;
+			return ul.QuadPart / 10000000ULL - 11644473600ULL;
+		}
+
+		template<typename _tpoint>
+		_tpoint FileTime2TimePoint(const FILETIME& ft)
+		{
+			SYSTEMTIME st{ 0 };
+			if (!FileTimeToSystemTime(&ft, &st))
+			{
+#if LOG_ENABLED
+				LOG(ERROR) << "Invalid FILETIME.";
+#endif
+				return _tpoint::min();
+			}
+				
+			ULARGE_INTEGER ul;
+			ul.LowPart = ft.dwLowDateTime;
+			ul.HighPart = ft.dwHighDateTime;
+
+			std::time_t secs = ul.QuadPart / 10000000ULL - 11644473600ULL;
+			std::chrono::milliseconds ms((ull.QuadPart / 10000ULL) % 1000);
+
+			auto tp = std::chrono::system_clock::from_time_t(secs);
+			tp += ms;
+
+			return duration_cast<_tpoint>(tp);
+		}
 	} // namespace local
 
 	OS::EMessageBoxButton OS::ShowMessageBox(const std::string& msg, OS::EMessageBoxType boxtype)
@@ -229,8 +269,8 @@ namespace GS
 
 	bool OS::MakeDirectory(const std::string& directory)
 	{
-		std::string str = OS::Canonicalize(directory);
-		std::vector<std::string> parts = SZ::Split(str, GetPreferredSeparator() + std::string(""));
+		std::string str = SZ::Canonicalize(directory);
+		std::vector<std::string> parts = SZ::Split(str, GetPreferredSeparator());
 
 		std::string path;
 		for (size_t i = 0; i < parts.size(); i++)
@@ -497,66 +537,45 @@ namespace GS
 											const std::string& directory,
 											bool recursive)
 	{
-		auto files = OS::FindFiles(filename, directory, recursive, false);
-		if (files.empty())
-		{
-			return std::nullopt;
-		}
-		return files[0];
+		
 	}
 
-	std::vector<std::string> OS::FindFiles(const std::string& filename,
-									       const std::string& directory,
-									       bool recursive,
-									       bool findAll)
+	int OS::FindFiles(const std::string& filename,
+				      const std::string& directory,
+				      std::vector<fs::path>* paths,
+					  bool recursive)
 	{
+		std::vector<std::string> parts = SZ::Split(SZ::Canonicalize(filename),
+												   SZ::GetPreferredSeparator());
+		if (parts.size() > 1)
+		{
+
+		}
+
 		WIN32_FIND_DATAA fd{};
 		HANDLE hFind = INVALID_HANDLE_VALUE;
 
 		std::string filter = SZ::JoinPath(directory, filename);
-		char szFilter[MAX_PATH] = { 0 };
-		strcpy_s(szFilter, filter.size() + 1, filter.c_str());
-
-		hFind = FindFirstFileA(szFilter, &fd);
+		hFind = FindFirstFileA(filter.c_str(), &fd);
 		if (hFind == INVALID_HANDLE_VALUE)
-		{
-			return {};
-		}
+			return 0;
 
-		std::vector<std::string> files;
-		std::vector<std::string> subdirs;
+		int count = 0;
 		do
 		{
 			if (strcmp(fd.cFileName, ".") == 0 ||
 				strcmp(fd.cFileName, "..") == 0)
 				continue;
 
-			std::string filePath = OS::Canonicalize(SZ::JoinPath(directory, fd.cFileName));
-
-			bool isDir = (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
-			if (isDir && recursive)
-				subdirs.push_back(filePath);
-
-			files.push_back(filePath);
+			FileAttribs& attribs = fileAttribs->emplace_back();
+			attribs.Directory = directory;
+			attribs.Name = fd.cFileName;
+			attribs.IsDirectory = (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+			attribs.SizeInBytes = local::MakeUInt64(fd.nFileSizeHigh, fd.nFileSizeLow);
+			attribs.TimeModified = local::FileTime2TimePoint<time_point_ms>(fd.ftLastWriteTime);
 		} while (FindNextFileA(hFind, &fd) != 0);
 
-		if (recursive)
-		{
-			for (auto subdir : subdirs)
-			{
-				auto subFiles = OS::FindFiles(filename, 
-											subdir, 
-											recursive,
-											findAll);
-
-				if (subFiles.empty())
-					continue;
-
-				files.insert(files.end(), subFiles.begin(), subFiles.end());
-			}
-		}
-
-		return files;
+		return count;
 	}
 
 	std::thread::native_handle_type OS::GetCurrentThread()

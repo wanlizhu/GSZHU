@@ -19,7 +19,7 @@ namespace GS
 		static std::string Trim(const std::string& str);
 		static std::string Replace(const std::string& str, const std::string& src, const std::string& dst);
 		static std::string Canonicalize(const std::string& path);
-		static char GetPreferredSeparator();
+		static std::string GetPreferredSeparator();
 
 		static std::string Join(const std::string& delim, const std::vector<std::string>& strs);
 		template<typename... ARGS>
@@ -33,8 +33,7 @@ namespace GS
 		template<typename... ARGS>
 		static std::string JoinPath(ARGS... args)
 		{
-			static const char kSeparator[2] = { SZ::GetPreferredSeparator(), '\0' };
-			return SZ::Canonicalize(SZ::Join<ARGS...>(kSeparator, std::forward<ARGS>(args)...));
+			return SZ::Canonicalize(SZ::Join<ARGS...>(GetPreferredSeparator(), std::forward<ARGS>(args)...));
 		}
 
 		template<typename T>

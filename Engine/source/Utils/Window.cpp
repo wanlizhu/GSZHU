@@ -7,6 +7,8 @@
 #endif
 #include "GLFW/glfw3.h"
 #include "GLFW/glfw3native.h"
+#include "stb_image.h"
+#include "Utils/Platform/OS.h"
 
 namespace GS
 {
@@ -182,6 +184,7 @@ namespace GS
 
 	std::array<int, 2> Window::DefaultPos()
 	{
+		return{100, 100};
 		assert(glfwInit() == GLFW_TRUE);
 
 		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
@@ -196,6 +199,7 @@ namespace GS
 
 	std::array<int, 2> Window::DefaultSize()
 	{
+		return{1000, 618};
 		assert(glfwInit() == GLFW_TRUE);
 
 		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
@@ -209,15 +213,9 @@ namespace GS
 
 	Window::SharedPtr Window::Create(const Window::Desc& desc, ICallbacks* callbacks)
 	{
-		assert(glfwInit() == GLFW_TRUE);
+		Initialize();
+		SetWindowHints(desc);
 
-		glfwSetErrorCallback([](int code, const char* str) {
-#if LOG_ENABLED
-			LOG(ERROR) << "Error(" << code << "): " << str;
-#endif
-		});
-
-		//glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		GLFWmonitor* monitor = desc.IsFullScreen ? glfwGetPrimaryMonitor() : nullptr;
 		const GLFWvidmode* mode = monitor ? glfwGetVideoMode(monitor) : nullptr;
 
@@ -226,14 +224,30 @@ namespace GS
 		GLFWwindow* window = glfwCreateWindow(width, height, desc.Title.c_str(), monitor, nullptr);
 		assert(window != nullptr);
 
-		glfwSetWindowPos(window, desc.Position[0], desc.Position[1]);
+		int posx = desc.Position[0] <= 0 ? Window::DefaultPos()[0] : desc.Position[0];
+		int posy = desc.Position[1] <= 0 ? Window::DefaultPos()[1] : desc.Position[1];
+		glfwSetWindowPos(window, posx, posy);
+
+		auto iconPath = OS::FindDataFile("icon/logo.ico");
+		if (iconPath.has_value())
+		{
+			GLFWimage icon;
+			icon.pixels = stbi_load(iconPath.value().c_str(),
+									&icon.width,
+									&icon.height,
+									nullptr,
+									STBI_rgb_alpha);
+			glfwSetWindowIcon(window, 1, &icon);
+			stbi_image_free(icon.pixels);
+			icon.pixels = nullptr;
+		}
 
 		static int64_t _id = 0;
 		Window::SharedPtr shared(new Window("Window" + std::to_string(_id++), callbacks));
 		shared->mpWindow = window;
 		shared->ComputeMouseScale();
+		shared->mBackend = desc.Backend;
 		glfwSetWindowUserPointer(shared->mpWindow, shared.get());
-
 
 		glfwSetWindowSizeCallback(window, local::OnWindowSize);
 		glfwSetKeyCallback(window, local::OnKey);
@@ -316,7 +330,8 @@ namespace GS
 			glfwPollEvents();
 			mpCallbacks->OnUpdate();
 			mpCallbacks->OnRender();
-			glfwSwapBuffers(mpWindow);
+			if (mBackend == EBackend::OpenGL)
+				glfwSwapBuffers(mpWindow);
 		}
 	}
 
@@ -372,7 +387,7 @@ namespace GS
 #ifdef _WIN32
 		return glfwGetWin32Window(mpWindow);
 #else
-		glfwGetX11Window(pGLFWWindow);
+		return glfwGetX11Window(pGLFWWindow);
 #endif
 	}
 
@@ -384,5 +399,44 @@ namespace GS
 	Window::ICallbacks* Window::GetCallbacks() const
 	{
 		return mpCallbacks;
+	}
+
+	void Window::Initialize()
+	{
+		if (glfwInit() != GLFW_TRUE)
+		{
+#if LOG_ENABLED
+			LOG(ERROR) << "Failed to initialize GLFW.";
+#endif
+			return;
+		}
+
+		glfwSetErrorCallback([](int code, const char* str) {
+#if LOG_ENABLED
+			LOG(ERROR) << "Error(" << code << "): " << str;
+#endif
+		});
+	}
+
+	void Window::SetWindowHints(const Desc& desc)
+	{
+		glfwDefaultWindowHints();
+		if (desc.Backend == EBackend::OpenGL)
+		{
+			glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS, GLFW_LOSE_CONTEXT_ON_RESET);
+			glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_FLUSH);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+#ifdef _DEBUG
+			glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+#endif
+		}
+		else
+		{
+			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		}
 	}
 }

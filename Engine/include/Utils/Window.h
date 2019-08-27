@@ -40,6 +40,7 @@ namespace GS
 	{
 		enum class EType 
 		{
+			None,
 			LeftDown,
 			LeftUp,
 			MiddleDown,
@@ -50,7 +51,7 @@ namespace GS
 			Wheel,
 		};
 		
-		EType Type;
+		EType Type = EType::None;
 		InputModifiers Mods;
 		std::array<int, 2> Position;
 		std::array<int, 2> WheelDelta;
@@ -67,8 +68,16 @@ namespace GS
 		using SharedConstPtr = std::shared_ptr<const Window>;
 		using MSG_ID = uint32_t;
 		using MSG_FUNC = std::function<void(WindowHandle, uint32_t, uint32_t)>;
+		enum class EBackend 
+		{
+			None,
+			OpenGL,
+			Vulkan,
+			D3D12
+		};
 		struct Desc 
 		{
+			EBackend Backend = EBackend::None;
 			std::string Title = "Untitled";
 			std::array<int, 2> Position = { -1 };
 			std::array<int, 2> Size = { -1 };
@@ -100,11 +109,11 @@ namespace GS
         void SetFullScreen(bool enabled = true) ;
         void SetSize(int width, int height);
         void MoveTo(int x, int y);
-        void MessageLoop();
 		void SetMessageHook(MSG_ID msg, const MSG_FUNC& func);
         void Hide();
         void Show();
         void Destroy();
+		void MessageLoop();
 
         std::string GetTitle() const;
         std::array<int, 2> GetPosition() const;
@@ -114,14 +123,18 @@ namespace GS
 		ICallbacks* GetCallbacks() const;
         
     protected:
+		static void Initialize();
+		static void SetWindowHints(const Desc& desc);
 		Window(const std::string& name, Window::ICallbacks* callbacks);
 		void ComputeMouseScale();
 		
     private:
         GLFWwindow* mpWindow = nullptr;
 		ICallbacks* mpCallbacks = nullptr;
-		std::array<float, 2> mMouseScale;
 		std::unordered_map<MSG_ID, MSG_FUNC> mMessageHooks;
+
+		std::array<float, 2> mMouseScale = { 1.0f, 1.0f };
+		EBackend mBackend = EBackend::None;
     };
       
 }

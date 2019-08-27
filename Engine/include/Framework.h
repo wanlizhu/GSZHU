@@ -22,6 +22,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <filesystem>
+#include <ctime>
 #include <unordered_map>
 #include <Eigen/Eigen>
 #ifndef GLOG_NO_ABBREVIATED_SEVERITIES
@@ -81,6 +84,49 @@
 
 namespace GS
 {
+	using nanoseconds    = std::chrono::nanoseconds;
+	using microseconds   = std::chrono::microseconds;
+	using milliseconds   = std::chrono::milliseconds;
+	using seconds        = std::chrono::seconds;
+	using minutes        = std::chrono::minutes;
+	using hours          = std::chrono::hours;
+	using clock          = std::chrono::high_resolution_clock;
+	template<typename _duration>
+	using time_point     = std::chrono::time_point<clock, _duration>;
+	using time_point_ns  = time_point<nanoseconds>;
+	using time_point_mcs = time_point<microseconds>;
+	using time_point_ms  = time_point<milliseconds>;
+	using time_point_sec = time_point<seconds>;
+	using time_point_min = time_point<minutes>;
+	using time_point_h   = time_point<hours>;
+
+	template<typename _time_point>
+	constexpr std::time_t to_time_t(const _time_point& tp)
+	{
+		using _clock = typename _time_point::clock;
+		return _clock::to_time_t(tp);
+	}
+
+	template<typename _duration1, typename _duration2>
+	constexpr _duration1 duration_cast(const _duration2& du)
+	{
+		return std::chrono::duration_cast<_duration1>(du);
+	}
+
+	template<typename _tpoint1, typename _tpoint2>
+	constexpr _tpoint1 time_point_cast(const _tpoint2& tp)
+	{
+		return std::chrono::time_point_cast<_tpoint1>(tp);
+	}
+
+	template<typename _tpoint>
+	constexpr typename _tpoint::rep epoch_ms(const _tpoint& tp)
+	{
+		return std::chrono::duration_cast<std::chrono::milliseconds>(tp.time_since_epoch()).count();
+	}
+
+	namespace fs = std::filesystem;
+
     enum class EShaderType 
     {
         Unknown = 0,

@@ -92,7 +92,7 @@
     <ClCompile Include="source\Signal\Test_Signal_Disconnect.cpp" />
     <ClCompile Include="source\Signal\Test_Signal_Edge_Cases.cpp" />
     <ClCompile Include="source\Signal\Test_Signal_Fire.cpp" />
-    <ClCompile Include="source\UI\Test_Window.cpp" />
+    <ClCompile Include="source\Utils\Test_OS.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Signal\Test_Base.hpp" />

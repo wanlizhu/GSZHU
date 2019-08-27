@@ -11,9 +11,10 @@ namespace GS
 	static std::vector<std::string> _sDataDirectories =
 	{
 		OS::GetPWD(),
-		OS::Canonicalize(OS::GetPWD() + "/data"),
-		OS::Canonicalize(OS::GetPWD() + "/assets"),
-		OS::Canonicalize(OS::GetPWD() + "/media"),
+		SZ::Canonicalize(OS::GetPWD() + "/data"),
+		SZ::Canonicalize(OS::GetPWD() + "/resource"),
+		SZ::Canonicalize(OS::GetPWD() + "/assets"),
+		SZ::Canonicalize(OS::GetPWD() + "/media"),
 	};
 
 	template<bool OPEN>
@@ -39,11 +40,11 @@ namespace GS
 	{
 		auto it = std::find_if(_sDataDirectories.begin(), _sDataDirectories.end(),
 							   [&](const std::string& str) {
-								   return OS::Canonicalize(directory) == str;
+								   return SZ::Canonicalize(directory) == str;
 							   });
 		if (it == _sDataDirectories.end())
 		{
-			_sDataDirectories.push_back(OS::Canonicalize(directory));
+			_sDataDirectories.push_back(SZ::Canonicalize(directory));
 		}
 	}
 
@@ -51,18 +52,12 @@ namespace GS
 	{
 		auto it = std::find_if(_sDataDirectories.begin(), _sDataDirectories.end(),
 							   [&](const std::string& str) {
-								   return OS::Canonicalize(directory) == str;
+								   return SZ::Canonicalize(directory) == str;
 							   });
 		if (it != _sDataDirectories.end())
 		{
 			_sDataDirectories.erase(it);
 		}
-	}
-
-	std::string OS::Canonicalize(const std::string& filename)
-	{
-		fs::path path(SZ::Canonicalize(filename));
-		return fs::canonical(path).string();
 	}
 
 	bool OS::IsAbsolutePath(const std::string& filename)
@@ -84,8 +79,9 @@ namespace GS
 			}
 		}
 
+		// Check if it's already an absolute path
 		if (OS::FileExists(filename))
-			return OS::Canonicalize(filename);
+			return SZ::Canonicalize(filename);
 
 		for (const auto dir : _sDataDirectories)
 		{
@@ -101,7 +97,7 @@ namespace GS
 					  				      const std::string& ext,
 					  				      const std::string& directory)
 	{
-		std::string path = OS::Canonicalize(directory + "/" + basename + ext);
+		std::string path = SZ::Canonicalize(directory + "/" + basename + ext);
 		if (OS::FileExists(path))
 		{
 			const std::regex rx("");
@@ -112,15 +108,15 @@ namespace GS
 				int id = SZ::GetNumber<int>(suffix);
 				std::string stem = basename.substr(0, basename.size() - suffix.size());
 
-				path = OS::Canonicalize(directory + "/" + stem + " (" + std::to_string(++id) + ")" + ext);
+				path = SZ::Canonicalize(directory + "/" + stem + " (" + std::to_string(++id) + ")" + ext);
 				while (OS::FileExists(path))
 				{
-					path = OS::Canonicalize(directory + "/" + stem + " (" + std::to_string(++id) + ")" + ext);
+					path = SZ::Canonicalize(directory + "/" + stem + " (" + std::to_string(++id) + ")" + ext);
 				}
 			}
 			else
 			{
-				return OS::Canonicalize(directory + "/" + basename + " (1)" + ext);
+				return SZ::Canonicalize(directory + "/" + basename + " (1)" + ext);
 			}
 		}
 		
@@ -149,12 +145,12 @@ namespace GS
 		return fs::path(filename).stem().string();
 	}
 
-	char OS::GetPreferredSeparator()
+	std::string OS::GetPreferredSeparator()
 	{
 #ifdef _WIN32
-		return '\\';
+		return "\\";
 #else
-		return '/';
+		return "/";
 #endif
 	}
 

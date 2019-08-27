@@ -53,16 +53,16 @@ namespace GS
 
 		static EMessageBoxButton ShowMessageBox(const std::string& msg,
 				   		                        EMessageBoxType type = EMessageBoxType::Ok);
-		static std::vector<std::string> FindFiles(const std::string& filename,
-					                              const std::string& directory,
-					                              bool recursive = true,
-					                              bool findAll = true);
-		static std::optional<std::string> FindFile(const std::string& filename,
+		static int FindFiles(const std::string& filename,
+							 const std::string& directory,
+					         std::vector<fs::path>* paths,
+							 bool recursive = true);
+		static std::optional<fs::path> FindFile(const std::string& filename,
 					                               const std::string& directory,
 					                               bool recursive = true);
-		static std::optional<std::string> FindDataFile(const std::string& filename);
-		static std::optional<std::string> OpenFileDialog(const std::vector<FileDialogFilter>& filters);
-		static std::optional<std::string> SaveFileDialog(const std::vector<FileDialogFilter>& filters);
+		static std::optional<fs::path> FindDataFile(const std::string& filename);
+		static std::optional<fs::path> OpenFileDialog(const std::vector<FileDialogFilter>& filters);
+		static std::optional<fs::path> SaveFileDialog(const std::vector<FileDialogFilter>& filters);
 		
 		static bool IsAbsolutePath(const std::string& filename);
 		static bool FileExists(const std::string& filename);
@@ -83,7 +83,7 @@ namespace GS
 		static std::string GetExecutableDirectory();
 		static std::string GetExecutableName();
 		static std::string GetTMPDirectory();
-		static char GetPreferredSeparator();
+		static std::string GetPreferredSeparator();
 		static std::optional<std::string> EnvironmentVariable(const std::string& name);
 		
 		static const std::vector<std::string>& GetDataDirectories();
@@ -96,7 +96,6 @@ namespace GS
 		static bool IsDebuggerPresent();
 		static void DebugBreak();
 		static void DebugOutput(const std::string& msg);
-		static std::string Canonicalize(const std::string& filename);
 		static std::string GetExtension(const std::string& filename);
 		static std::string GetFileName(const std::string& filename);
 		static std::string GetStemName(const std::string& filename);

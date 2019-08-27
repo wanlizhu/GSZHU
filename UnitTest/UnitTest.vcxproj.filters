@@ -12,8 +12,8 @@
     <Filter Include="Source Files\Signal">
       <UniqueIdentifier>{501a56cf-62f3-4ce3-b2b3-f4e96046e11a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Window">
-      <UniqueIdentifier>{7e3bad5d-4f61-4d27-9ab9-07e21c8e5d25}</UniqueIdentifier>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{70844a3c-04b2-4ac9-91a6-8f51dd5e5e54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -38,8 +38,8 @@
     <ClCompile Include="source\Signal\Test_Base.cpp">
       <Filter>Source Files\Signal</Filter>
     </ClCompile>
-    <ClCompile Include="source\UI\Test_Window.cpp">
-      <Filter>Source Files\Window</Filter>
+    <ClCompile Include="source\Utils\Test_OS.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
