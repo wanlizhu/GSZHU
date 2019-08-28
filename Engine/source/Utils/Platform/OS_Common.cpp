@@ -8,7 +8,7 @@ namespace fs = std::filesystem;
 
 namespace GS
 {
-	static std::vector<std::string> _sDataDirectories =
+	static std::vector<std::wstring> _sDataDirectories =
 	{
 		OS::GetPWD(),
 		SZ::Canonicalize(OS::GetPWD() + "/data"),
@@ -18,28 +18,28 @@ namespace GS
 	};
 
 	template<bool OPEN>
-	std::optional<std::string> FileDialog(const std::vector<OS::FileDialogFilter>&);
+	std::optional<std::wstring> FileDialog(const std::vector<OS::FileDialogFilter>&);
 
 
-	std::optional<std::string> OS::OpenFileDialog(const std::vector<OS::FileDialogFilter>& filters)
+	std::optional<std::wstring> OS::OpenFileDialog(const std::vector<OS::FileDialogFilter>& filters)
 	{
 		return FileDialog<true>(filters);
 	}
 
-	std::optional<std::string> OS::SaveFileDialog(const std::vector<OS::FileDialogFilter>& filters)
+	std::optional<std::wstring> OS::SaveFileDialog(const std::vector<OS::FileDialogFilter>& filters)
 	{
 		return FileDialog<false>(filters);
 	}
 
-	const std::vector<std::string>& OS::GetDataDirectories()
+	const std::vector<std::wstring>& OS::GetDataDirectories()
 	{
 		return _sDataDirectories;
 	}
 
-	void OS::AddDataDirectory(const std::string& directory)
+	void OS::AddDataDirectory(const std::wstring& directory)
 	{
 		auto it = std::find_if(_sDataDirectories.begin(), _sDataDirectories.end(),
-							   [&](const std::string& str) {
+							   [&](const std::wstring& str) {
 								   return SZ::Canonicalize(directory) == str;
 							   });
 		if (it == _sDataDirectories.end())
@@ -48,10 +48,10 @@ namespace GS
 		}
 	}
 
-	void OS::RemoveDataDirectory(const std::string& directory)
+	void OS::RemoveDataDirectory(const std::wstring& directory)
 	{
 		auto it = std::find_if(_sDataDirectories.begin(), _sDataDirectories.end(),
-							   [&](const std::string& str) {
+							   [&](const std::wstring& str) {
 								   return SZ::Canonicalize(directory) == str;
 							   });
 		if (it != _sDataDirectories.end())
@@ -60,18 +60,18 @@ namespace GS
 		}
 	}
 
-	bool OS::IsAbsolutePath(const std::string& filename)
+	bool OS::IsAbsolutePath(const std::wstring& filename)
 	{
 		return fs::path(filename).is_absolute();
 	}
 
-	std::optional<std::string> OS::FindDataFile(const std::string& filename)
+	std::optional<std::wstring> OS::FindDataFile(const std::wstring& filename)
 	{
 		static bool _inited = false;
 		if (!_inited)
 		{
 			_inited = true;
-			std::optional<std::string> value;
+			std::optional<std::wstring> value;
 			if (value = OS::EnvironmentVariable("GS_DATA_PATH"))
 			{
 				auto dirs = SZ::Split(value.value(), ";");
@@ -93,20 +93,20 @@ namespace GS
 		return std::nullopt;
 	}
 
-	std::string OS::FindAvailableFileName(const std::string& basename,
-					  				      const std::string& ext,
-					  				      const std::string& directory)
+	std::wstring OS::FindAvailableFileName(const std::wstring& basename,
+					  				      const std::wstring& ext,
+					  				      const std::wstring& directory)
 	{
-		std::string path = SZ::Canonicalize(directory + "/" + basename + ext);
+		std::wstring path = SZ::Canonicalize(directory + "/" + basename + ext);
 		if (OS::FileExists(path))
 		{
 			const std::regex rx("");
 			std::smatch match;
 			if (std::regex_match(basename, match, rx))
 			{
-				std::string suffix = match[match.size() - 1].str();
+				std::wstring suffix = match[match.size() - 1].str();
 				int id = SZ::GetNumber<int>(suffix);
-				std::string stem = basename.substr(0, basename.size() - suffix.size());
+				std::wstring stem = basename.substr(0, basename.size() - suffix.size());
 
 				path = SZ::Canonicalize(directory + "/" + stem + " (" + std::to_string(++id) + ")" + ext);
 				while (OS::FileExists(path))
@@ -123,38 +123,29 @@ namespace GS
 		return path;
 	}
 
-	std::string OS::GetDirectory(const std::string& filename)
+	std::wstring OS::GetDirectory(const std::wstring& filename)
 	{
 		fs::path path(filename);
 		return path.has_parent_path() ? path.parent_path().string() : filename;
 	}
 
-	std::string OS::GetExtension(const std::string& filename)
+	std::wstring OS::GetExtension(const std::wstring& filename)
 	{
 		fs::path path(filename);
 		return path.has_extension() ? path.extension().string() : "";
 	}
 
-	std::string OS::GetFileName(const std::string& filename)
+	std::wstring OS::GetFileName(const std::wstring& filename)
 	{
 		return fs::path(filename).filename().string();
 	}
 
-	std::string OS::GetStemName(const std::string& filename)
+	std::wstring OS::GetStemName(const std::wstring& filename)
 	{
 		return fs::path(filename).stem().string();
 	}
 
-	std::string OS::GetPreferredSeparator()
-	{
-#ifdef _WIN32
-		return "\\";
-#else
-		return "/";
-#endif
-	}
-
-	std::shared_ptr<std::string> OS::LoadFile(const std::string& filename)
+	std::shared_ptr<std::string> OS::LoadFile(const std::wstring& filename)
 	{
 		std::ifstream fstream;
 		fstream.open(filename, std::ios::in);
@@ -173,7 +164,7 @@ namespace GS
 		return data;
 	}
 
-	size_t OS::SaveFile(const std::string& filename, const void* data, size_t size, bool append)
+	size_t OS::SaveFile(const std::wstring& filename, const void* data, size_t size, bool append)
 	{
 		std::ofstream fstream;
 		fstream.open(filename, append ? std::ios::app : ( std::ios::out | std::ios::trunc));

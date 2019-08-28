@@ -42,79 +42,77 @@ namespace GS
 
 		struct FileDialogFilter
 		{
-			std::string desc;
-			std::string ext;
+			std::wstring desc;
+			std::wstring ext;
 		};
 
 
-		static  bool SetWindowIcon(const std::string& iconFile, WindowHandle handle);
+		static  bool SetWindowIcon(const std::wstring& iconFile, WindowHandle handle);
 		static   int GetDisplayDPI();
 		static float GetDisplayScaleFactor();
 
-		static EMessageBoxButton ShowMessageBox(const std::string& msg,
+		static EMessageBoxButton ShowMessageBox(const std::wstring& msg,
 				   		                        EMessageBoxType type = EMessageBoxType::Ok);
-		static int FindFiles(const std::string& filename,
-							 const std::string& directory,
-					         std::vector<fs::path>* paths,
-							 bool recursive = true);
-		static std::optional<fs::path> FindFile(const std::string& filename,
-					                               const std::string& directory,
-					                               bool recursive = true);
-		static std::optional<fs::path> FindDataFile(const std::string& filename);
+		static std::shared_ptr<std::vector<fs::path>> FindFiles(const std::wstring& filename,
+																const std::wstring& directory,
+																bool recursive = true);
+		static std::optional<fs::path> FindFile(const std::wstring& filename,
+					                            const std::wstring& directory,
+					                            bool recursive = true);
+		static std::optional<fs::path> FindDataFile(const std::wstring& filename);
 		static std::optional<fs::path> OpenFileDialog(const std::vector<FileDialogFilter>& filters);
 		static std::optional<fs::path> SaveFileDialog(const std::vector<FileDialogFilter>& filters);
 		
-		static bool IsAbsolutePath(const std::string& filename);
-		static bool FileExists(const std::string& filename);
-		static bool DirectoryExists(const std::string& filename);
-		static void StartDirectoryWatcher(const std::string& dir, 
-										  const std::function<void(const std::string&)>& callback,
+		static bool IsAbsolutePath(const std::wstring& filename);
+		static bool FileExists(const std::wstring& filename);
+		static bool DirectoryExists(const std::wstring& filename);
+		static void StartDirectoryWatcher(const std::wstring& dir, 
+										  const std::function<void(const std::wstring&)>& callback,
 										  bool watchSubtree = true);
-		static void StopDirectoryWatcher(const std::string& dir);
+		static void StopDirectoryWatcher(const std::wstring& dir);
 
-		static bool MakeFile(const std::string& filename);
-		static bool MakeDirectory(const std::string& filename);
+		static bool MakeFile(const std::wstring& filename);
+		static bool MakeDirectory(const std::wstring& filename);
 
-		static size_t ExecuteProcess(const std::string& appname, const std::string& args);
+		static size_t ExecuteProcess(const std::wstring& appname, const std::wstring& args);
 		static bool IsProcessActive(size_t id);
 		static void TerminateProcess(size_t id);
 
-		static std::string GetPWD();
-		static std::string GetExecutableDirectory();
-		static std::string GetExecutableName();
-		static std::string GetTMPDirectory();
-		static std::string GetPreferredSeparator();
-		static std::optional<std::string> EnvironmentVariable(const std::string& name);
+		static std::wstring GetPWD();
+		static std::wstring GetExecutableDirectory();
+		static std::wstring GetExecutableName();
+		static std::wstring GetTMPDirectory();
+		static std::optional<std::wstring> EnvironmentVariable(const std::wstring& name);
 		
-		static const std::vector<std::string>& GetDataDirectories();
-		static void AddDataDirectory(const std::string& directory);
-		static void RemoveDataDirectory(const std::string& directory);
+		static const std::vector<std::wstring>& GetDataDirectories();
+		static void AddDataDirectory(const std::wstring& directory);
+		static void RemoveDataDirectory(const std::wstring& directory);
 
-		static std::string FindAvailableFileName(const std::string& basename, 
-										         const std::string& ext,
-										         const std::string& directory);
+		static std::wstring FindAvailableFileName(const std::wstring& basename, 
+										          const std::wstring& ext,
+										          const std::wstring& directory);
 		static bool IsDebuggerPresent();
 		static void DebugBreak();
-		static void DebugOutput(const std::string& msg);
-		static std::string GetExtension(const std::string& filename);
-		static std::string GetFileName(const std::string& filename);
-		static std::string GetStemName(const std::string& filename);
-		static std::string GetDirectory(const std::string& filename);
+		static void DebugOutput(const std::wstring& msg);
+		static std::wstring GetExtension(const std::wstring& filename);
+		static std::wstring GetFileName(const std::wstring& filename);
+		static std::wstring GetStemName(const std::wstring& filename);
+		static std::wstring GetDirectory(const std::wstring& filename);
 
-		static std::thread::native_handle_type GetCurrentThread();
-		static void SetThreadAffinity(std::thread::native_handle_type thread, uint32_t mask);
-		static time_t GetFileModifiedTime(const std::string& filename);
-		static void SetThreadPriority(std::thread::native_handle_type thread, EThreadPriority priority);
+		static ThreadHandle GetCurrentThread();
+		static void SetThreadAffinity(ThreadHandle thread, uint32_t mask);
+		static time_t GetFileModifiedTime(const std::wstring& filename);
+		static void SetThreadPriority(ThreadHandle thread, EThreadPriority priority);
 		
 		static uint64_t GetTotalVirtualMemory();
 		static uint64_t GetUsedVirtualMemory();
 		static uint64_t GetProcessUsedVirtualMemory();
 
-		static std::shared_ptr<std::string> LoadFile(const std::string& filename);
-		static size_t SaveFile(const std::string& filename, const void* data, size_t size, bool append = false);
+		static std::shared_ptr<std::wstring> LoadFile(const std::wstring& filename);
+		static size_t SaveFile(const std::wstring& filename, const void* data, size_t size, bool append = false);
 		
-		static SharedLibraryHandle LoadSharedLibrary(const std::string& path);
+		static SharedLibraryHandle LoadSharedLibrary(const std::wstring& path);
 		static void FreeSharedLibrary(SharedLibraryHandle handle);
-		static void* GetProcAddress(SharedLibraryHandle handle, const std::string& func);
+		static void* GetProcAddress(SharedLibraryHandle handle, const std::wstring& func);
 	};
 }

@@ -78,7 +78,7 @@ namespace GS
 		struct Desc 
 		{
 			EBackend Backend = EBackend::None;
-			std::string Title = "Untitled";
+			std::wstring Title = L"Untitled";
 			std::array<int, 2> Position = { -1 };
 			std::array<int, 2> Size = { -1 };
 			bool IsFullScreen = false;
@@ -96,7 +96,7 @@ namespace GS
 
 			virtual void OnKeyboardEvent(const KeyboardEvent& event) = 0;
 			virtual void OnMouseEvent(const MouseEvent& event) = 0;
-			virtual void OnDropFile(const std::vector<std::string>& paths) = 0;
+			virtual void OnDropFile(const std::vector<std::wstring>& paths) = 0;
 		};
 
         static std::array<int, 2> DefaultPos();
@@ -105,7 +105,7 @@ namespace GS
 
 		virtual ~Window();
 		void SetCallbacks(ICallbacks* callbacks);
-        void SetTitle(const std::string& title);
+        void SetTitle(const std::wstring& title);
         void SetFullScreen(bool enabled = true) ;
         void SetSize(int width, int height);
         void MoveTo(int x, int y);
@@ -115,7 +115,7 @@ namespace GS
         void Destroy();
 		void MessageLoop();
 
-        std::string GetTitle() const;
+        std::wstring GetTitle() const;
         std::array<int, 2> GetPosition() const;
         std::array<int, 2> GetSize() const;
 		WindowHandle GetWindowHandle() const;
@@ -125,7 +125,7 @@ namespace GS
     protected:
 		static void Initialize();
 		static void SetWindowHints(const Desc& desc);
-		Window(const std::string& name, Window::ICallbacks* callbacks);
+		Window(const std::wstring& name, Window::ICallbacks* callbacks);
 		void ComputeMouseScale();
 		
     private:

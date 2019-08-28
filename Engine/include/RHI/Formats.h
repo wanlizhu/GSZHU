@@ -129,7 +129,7 @@ namespace GS
 	{
 		// The order of members is IMPORTANT
 		EResourceFormat Format = EResourceFormat::Unknown;
-		std::string Name;
+		std::wstring Name;
 		uint32_t BytesPerBlock = 0;
 		uint32_t ChannelCount = 0;
 		EFormatType FormatType = EFormatType::Unknown;
@@ -308,13 +308,13 @@ namespace GS
 	// This is defined in D3D/Vulkan/OpenGL folder respectively
 	EResourceBindFlags GetFormatBindFlags(EResourceFormat format);
 
-	inline const std::string& to_string(EResourceFormat format)
+	inline const std::wstring& to_string(EResourceFormat format)
 	{
 		assert(kFormatDescArray[(uint32_t)format].Format == format);
 		return kFormatDescArray[(uint32_t)format].Name;
 	}
 
-	inline const std::string to_string(EFormatType type)
+	inline const std::wstring to_string(EFormatType type)
 	{
 		switch (type)
 		{

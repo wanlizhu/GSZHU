@@ -11,7 +11,7 @@ namespace GS
 	public:
 		struct Desc
 		{
-			std::string Identifier;
+			std::wstring Identifier;
 			std::array<float, 2> Resolution = { 0.0f };
 			std::array<float, 2> PhysicalSize = { 0.0f };
 			float PPI = 1.0f;

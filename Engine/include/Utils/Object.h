@@ -26,23 +26,23 @@ namespace GS
 		
 		virtual ~Object();
 
-        bool SetObjectName(const std::string& name);
-        const std::string& GetObjectName() const;
+        bool SetObjectName(const std::wstring& name);
+        const std::wstring& GetObjectName() const;
 
-        void SetObjectProperty(const std::string& key, const std::string& value);
-        bool GetObjectProperty(const std::string& key, std::string* value) const;
+        void SetObjectProperty(const std::wstring& key, const std::wstring& value);
+        bool GetObjectProperty(const std::wstring& key, std::wstring* value) const;
 
-        static SharedPtr FindObject(const std::string& name);
+        static SharedPtr FindObject(const std::wstring& name);
         static void ForEachObject(const std::function<void(SharedPtr)>& func);
         
 	protected:
-		Object(const std::string& name);
+		Object(const std::wstring& name);
 		
     private:
-        std::string mObjectName;
-        std::unordered_map<std::string, std::string> mObjectProperties;
+        std::wstring mObjectName;
+        std::unordered_map<std::wstring, std::wstring> mObjectProperties;
 
-        static std::unordered_map<std::string, std::weak_ptr<Object>> smObjects;
+        static std::unordered_map<std::wstring, std::weak_ptr<Object>> smObjects;
     };
 
 

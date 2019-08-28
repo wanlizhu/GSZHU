@@ -32,12 +32,12 @@ namespace GS
 
 			for (LONG i = 0, retValue = ERROR_SUCCESS; retValue != ERROR_NO_MORE_ITEMS; ++i)
 			{
-				retValue = RegEnumValueA(hDevRegKey, i, &valueName[0],
-										&AcutalValueNameLength, NULL, &dwType,
+				retValue = RegEnumValue(hDevRegKey, i, &valueName[0],
+									    &AcutalValueNameLength, NULL, &dwType,
 										EDIDdata, // buffer
 										&edidsize); // buffer size
 
-				if (retValue != ERROR_SUCCESS || 0 != strcmp(valueName, "EDID"))
+				if (retValue != ERROR_SUCCESS || 0 != wcscmp(valueName, L"EDID"))
 					continue;
 
 				WidthMm = ((EDIDdata[68] & 0xF0) << 4) + EDIDdata[66];
@@ -49,17 +49,16 @@ namespace GS
 			return false; // EDID not found
 		}
 
-		bool GetSizeForDevID(const std::string& TargetDevID, short& WidthMm, short& HeightMm)
+		bool GetSizeForDevID(const std::wstring& TargetDevID, short& WidthMm, short& HeightMm)
 		{
 			HDEVINFO devInfo = SetupDiGetClassDevsEx(
-				&GUID_CLASS_MONITOR, //class GUID
-				NULL, //enumerator
-				NULL, //HWND
-				DIGCF_PRESENT, // Flags //DIGCF_ALLCLASSES|
-				NULL, // device info, create a new one.
-				NULL, // machine name, local machine
-				NULL);// reserved
-
+									&GUID_CLASS_MONITOR, //class GUID
+									NULL, //enumerator
+									NULL, //HWND
+									DIGCF_PRESENT, // Flags //DIGCF_ALLCLASSES|
+									NULL, // device info, create a new one.
+									NULL, // machine name, local machine
+									NULL);// reserved
 			if (NULL == devInfo)
 				return false;
 
@@ -76,9 +75,9 @@ namespace GS
 					TCHAR Instance[MAX_DEVICE_ID_LEN];
 					SetupDiGetDeviceInstanceId(devInfo, &devInfoData, Instance, MAX_DEVICE_ID_LEN, NULL);
 
-					std::string sInstance(Instance);
+					std::wstring sInstance(Instance);
 
-					if (sInstance.find(TargetDevID) == std::string::npos) {
+					if (sInstance.find(TargetDevID) == std::wstring::npos) {
 						continue;
 					}
 
@@ -108,10 +107,10 @@ namespace GS
 			DWORD devIdx = 0; // device index
 
 			bool bFoundDevice = false;
-			while (EnumDisplayDevicesA(0, devIdx, &dd, 0))
+			while (EnumDisplayDevices(0, devIdx, &dd, 0))
 			{
 				devIdx++;
-				if (0 != strcmp(dd.DeviceName, mi.szDevice))
+				if (0 != wcscmp(dd.DeviceName, mi.szDevice))
 					continue;
 
 				DISPLAY_DEVICE ddMon;
@@ -149,7 +148,7 @@ namespace GS
 				DISPLAY_DEVICE dev;
 				DisplayDeviceFromHMonitor(hMonitor, dev);
 
-				std::string DeviceID(dev.DeviceID);
+				std::wstring DeviceID(dev.DeviceID);
 				DeviceID = DeviceID.substr(8, DeviceID.find('\\', 9) - 8);
 
 				short WidthMm, HeightMm;
@@ -194,7 +193,7 @@ namespace GS
 
 		for (auto& desc : descList)
 		{
-			printf("%s%s: %0.0f x %0.0f pix, %0.1f x %0.1f in, %0.2f ppi\n",
+			wprintf(L"%s%s: %0.0f x %0.0f pix, %0.1f x %0.1f in, %0.2f ppi\n",
 				   desc.Identifier.c_str(),
 				   desc.IsPrimary ? " (Primary) " : " ",
 				   desc.Resolution[0], desc.Resolution[1],

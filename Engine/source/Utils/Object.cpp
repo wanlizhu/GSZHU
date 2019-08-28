@@ -2,17 +2,17 @@
 
 namespace GS
 {
-	std::unordered_map<std::string, std::weak_ptr<Object>> Object::smObjects;
+	std::unordered_map<std::wstring, std::weak_ptr<Object>> Object::smObjects;
 
-	Object::Object(const std::string& name)
+	Object::Object(const std::wstring& name)
 		: mObjectName(name)
 	{
 		static uint64_t _id = 0;
 		if (mObjectName.empty())
 		{
-			mObjectName = "Object" + std::to_string(_id++);
+			mObjectName = L"Object" + std::to_wstring(_id++);
 		}
-
+		
 		//assert(!weak_from_this().expired());
 		assert(smObjects.find(mObjectName) == smObjects.end());
 
@@ -26,7 +26,7 @@ namespace GS
 			smObjects.erase(it);
 	}
 
-	bool Object::SetObjectName(const std::string& name)
+	bool Object::SetObjectName(const std::wstring& name)
 	{
 		if (name == mObjectName)
 			return true;
@@ -42,17 +42,17 @@ namespace GS
 		return true;
 	}
 
-	const std::string& Object::GetObjectName() const
+	const std::wstring& Object::GetObjectName() const
 	{
 		return mObjectName;
 	}
 
-	void Object::SetObjectProperty(const std::string& key, const std::string& value)
+	void Object::SetObjectProperty(const std::wstring& key, const std::wstring& value)
 	{
 		mObjectProperties[key] = value;
 	}
 
-	bool Object::GetObjectProperty(const std::string& key, std::string* value) const
+	bool Object::GetObjectProperty(const std::wstring& key, std::wstring* value) const
 	{
 		auto it = mObjectProperties.find(key);
 		if (it == mObjectProperties.end())
@@ -62,7 +62,7 @@ namespace GS
 		return true;
 	}
 
-	Object::SharedPtr Object::FindObject(const std::string& name)
+	Object::SharedPtr Object::FindObject(const std::wstring& name)
 	{
 		auto it = smObjects.find(name);
 		if (it == smObjects.end())

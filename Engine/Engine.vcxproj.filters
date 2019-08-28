@@ -124,9 +124,6 @@
     <ClCompile Include="source\Utils\Platform\OS_Common.cpp">
       <Filter>Source Files\Utils\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="source\Utils\String.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="source\Utils\Platform\MonitorInfo_Win32.cpp">
       <Filter>Source Files\Utils\Platform</Filter>
     </ClCompile>

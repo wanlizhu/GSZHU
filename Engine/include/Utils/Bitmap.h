@@ -39,16 +39,16 @@ namespace GS
         virtual ~Bitmap();
 
 		// If isFlipOver is true, the top-left pixel is the first pixel in the buffer
-		static UniqueConstPtr Create(const std::string& filename);
+		static UniqueConstPtr Create(const std::wstring& filename);
 		static UniqueConstPtr Create(uint32_t width, 
 									 uint32_t height,
 									 EResourceFormat format,
 									 const void* data = nullptr);
-		static void Save(const std::string& filename, 
+		static void Save(const std::wstring& filename, 
 						 EFileFormat fileFormat,
 						 EExportFlags flags,
 						 UniqueConstPtr bitmap);
-		static void Save(const std::string& filename, 
+		static void Save(const std::wstring& filename, 
 						 uint32_t width, 
 						 uint32_t height,
 						 EFileFormat fileFormat,

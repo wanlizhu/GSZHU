@@ -39,6 +39,18 @@
 #define offsetof(s, m) (size_t)( (ptrdiff_t)&reinterpret_cast<const volatile char&>((((s *)0)->m)) )
 #endif
 
+#ifdef _UNICODE
+#define KCSTR(str) L#str
+#else
+#define KCSTR(str) str
+#endif
+
+#ifdef _WIN32
+#define PATH_SLASH '\\'
+#else
+#define PATH_SLASH '/'
+#endif
+
 #ifdef _DEBUG
 #define ASSERT(a)\
     if (!(a)) {\
@@ -51,7 +63,7 @@
 #else
 
 #ifdef AUTOTEST 
-#define ASSERT(a) if (!(a)) throw std::exception("Assertion Failed(" + std::string(#a) + ")\n")
+#define ASSERT(a) if (!(a)) throw std::exception("Assertion Failed(" + std::wstring(#a) + ")\n")
 #else
 #define ASSERT(a) ((void)(a))
 #endif
@@ -212,67 +224,67 @@ namespace GS
     };
 
 
-    inline std::string to_string(EShaderType type) 
+    inline std::wstring to_string(EShaderType type) 
     {
         switch(type)
         {
         case EShaderType::Vertex:
-            return "Vertex";
+            return L"Vertex";
         case EShaderType::Pixel:
-            return "Pixel";
+            return L"Pixel";
         case EShaderType::Geometry:
-            return "Geometry";
+            return L"Geometry";
         case EShaderType::Hull:
-            return "Hull";
+            return L"Hull";
         case EShaderType::Domain:
-            return "Domain";
+            return L"Domain";
         case EShaderType::Compute:
-            return "Compute";
+            return L"Compute";
 #ifdef GS_USE_D3D12
         case EShaderType::RayGeneration:
-            return "RayGeneration";
+            return L"RayGeneration";
         case EShaderType::Intersection:
-            return "Intersection";
+            return L"Intersection";
         case EShaderType::AnyHit:
-            return "AnyHit";
+            return L"AnyHit";
         case EShaderType::ClosestHit:
-            return "ClosestHit";
+            return L"ClosestHit";
         case EShaderType::Miss:
-            return "Miss";
+            return L"Miss";
         case EShaderType::Callable:
-            return "Callable";
+            return L"Callable";
 #endif
         default:
             SHOULD_NOT_GET_HERE();
-            return "";
+            return L"";
         }
     }
 
-    inline std::string to_string(EComparisonFunc func)
+    inline std::wstring to_string(EComparisonFunc func)
     {
         switch(func)
         {
         case EComparisonFunc::Disabled:
-            return "Disabled";
+            return L"Disabled";
         case EComparisonFunc::Always:
-            return "Always";
+            return L"Always";
         case EComparisonFunc::Never:
-            return "Never";
+            return L"Never";
         case EComparisonFunc::Less:
-            return "Less";
+            return L"Less";
         case EComparisonFunc::Equal:
-            return "Equal";
+            return L"Equal";
         case EComparisonFunc::NotEqual:
-            return "NotEqual";
+            return L"NotEqual";
         case EComparisonFunc::LessEqual:
-            return "LessEqual";
+            return L"LessEqual";
         case EComparisonFunc::Greater:
-            return "Greater";
+            return L"Greater";
         case EComparisonFunc::GreaterEqual:
-            return "GreaterEqual";
+            return L"GreaterEqual";
         default:
             SHOULD_NOT_GET_HERE();
-			return "";
+			return L"";
         }
     }
 }

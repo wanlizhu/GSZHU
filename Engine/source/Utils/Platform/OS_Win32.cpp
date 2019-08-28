@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <stdint.h>
 #include <string>
+#include <strsafe.h>
 
 #pragma comment(lib, "Shcore.lib")
 
@@ -24,13 +25,13 @@ namespace GS
 {
 	namespace local
 	{
-		static std::unordered_map<std::string, std::pair<std::thread, bool>> _sDirectoryWatcherThreads;
+		static std::unordered_map<std::wstring, std::pair<std::thread, bool>> _sDirectoryWatcherThreads;
 
-		static void CheckDirectoryStatus(const std::string& dir,
-									     const std::function<void(const std::string&)>& callback,
+		static void CheckDirectoryStatus(const std::wstring& dir,
+									     const std::function<void(const std::wstring&)>& callback,
 									     bool watchSubtree)
 		{
-			HANDLE hFile = CreateFileA(dir.c_str(), 
+			HANDLE hFile = CreateFile(dir.c_str(), 
 									   GENERIC_READ | FILE_LIST_DIRECTORY,
 									   FILE_SHARE_READ | FILE_SHARE_WRITE,
 									   nullptr,
@@ -84,19 +85,11 @@ namespace GS
 
 				while (offset < buffer.size())
 				{
-					_FILE_NOTIFY_INFORMATION* pNotifyInfo = reinterpret_cast<_FILE_NOTIFY_INFORMATION*>(buffer.data());
-					std::string currentFilename;
-					size_t convertedSize = 0;
-					currentFilename.resize(pNotifyInfo->FileNameLength, '\0');
-					wcstombs_s(&convertedSize,
-							   &currentFilename.front(),
-							   currentFilename.size(),
-							   pNotifyInfo->FileName, 
-							   pNotifyInfo->FileNameLength);
+					FILE_NOTIFY_INFORMATION* pNotifyInfo = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(buffer.data());
 					
 					if (pNotifyInfo->Action == FILE_ACTION_MODIFIED)
 					{
-						callback(currentFilename);
+						callback(pNotifyInfo->FileName);
 						break;
 					}
 
@@ -112,10 +105,10 @@ namespace GS
 
 
 		template<bool OPEN>
-		std::string GetFileDialogFilterString(const std::vector<OS::FileDialogFilter>& filters)
+		std::wstring GetFileDialogFilterString(const std::vector<OS::FileDialogFilter>& filters)
 		{
-			std::string s;
-			std::string d;
+			std::wstring s;
+			std::wstring d;
 			bool appendForOpen = OPEN && filters.size() > 1;
 			if (appendForOpen)
 				s.append(1, 0);
@@ -126,7 +119,7 @@ namespace GS
 				if (appendForOpen)
 				{
 					bool last = i == (filters.size() - 1);
-					std::string e = "*." + f.ext;
+					std::wstring e = "*." + f.ext;
 					if (last == false) e += ';';
 					d += e;
 					s += e;
@@ -189,9 +182,48 @@ namespace GS
 
 			return duration_cast<_tpoint>(tp);
 		}
+
+		void CheckLastError(const char* funcName, bool showBox = false)
+		{
+			LPVOID message = nullptr;
+			LPVOID display = nullptr;
+			DWORD err = ::GetLastError();
+
+			::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+							FORMAT_MESSAGE_FROM_SYSTEM |
+							FORMAT_MESSAGE_IGNORE_INSERTS, 
+							NULL,
+							err,
+							MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+							(LPTSTR)&message,
+							0,
+							NULL);
+			display = (LPVOID)::LocalAlloc(LMEM_ZEROINIT,
+										   (lstrlen((LPCTSTR)message) + lstrlen((LPCTSTR)funcName) + 40) * sizeof(TCHAR));
+
+			StringCchPrintf((LPTSTR)display,
+							::LocalSize(display) / sizeof(TCHAR),
+							TEXT("%s failed with error %d: %s"),
+							funcName,
+							err,
+							message);
+			if (showBox)
+				MessageBox(NULL, (LPCTSTR)display, TEXT("Error"), MB_OK);
+
+#if LOG_ENABLED
+			std::string str;
+			if constexpr (std::is_same_v<TCHAR, char>)
+				str = SZ<char>::WStr2Str((LPCWSTR)display);
+			else
+				str = std::string((LPCSTR)display);
+			LOG(ERROR) << str;
+#endif
+			LocalFree(message);
+			LocalFree(display);
+		}
 	} // namespace local
 
-	OS::EMessageBoxButton OS::ShowMessageBox(const std::string& msg, OS::EMessageBoxType boxtype)
+	OS::EMessageBoxButton OS::ShowMessageBox(const std::wstring& msg, OS::EMessageBoxType boxtype)
 	{
 		UINT type = MB_OK;
 		switch (boxtype)
@@ -212,7 +244,7 @@ namespace GS
 			assert(false);
 		}
 
-		int value = MessageBoxA(nullptr, msg.c_str(), "Message Box", type | MB_TOPMOST);
+		int value = MessageBox(nullptr, msg.c_str(), L"Message Box", type | MB_TOPMOST);
 
 		switch (value)
 		{
@@ -232,53 +264,53 @@ namespace GS
 		}
 	}
 
-	bool OS::FileExists(const std::string& filename)
+	bool OS::FileExists(const std::wstring& filename)
 	{
-		DWORD attr = GetFileAttributesA(filename.c_str());
+		DWORD attr = GetFileAttributes(filename.c_str());
 		return (attr != INVALID_FILE_ATTRIBUTES)
 			&& !(attr & FILE_ATTRIBUTE_DIRECTORY);
 	}
 
-	bool OS::DirectoryExists(const std::string& filename)
+	bool OS::DirectoryExists(const std::wstring& filename)
 	{
-		DWORD attr = GetFileAttributesA(filename.c_str());
+		DWORD attr = GetFileAttributes(filename.c_str());
 		return (attr != INVALID_FILE_ATTRIBUTES)
 			&& (attr & FILE_ATTRIBUTE_DIRECTORY);
 	}
 
-	bool OS::MakeFile(const std::string& filename)
+	bool OS::MakeFile(const std::wstring& filename)
 	{
 		fs::path path(filename);
 		auto parent = path.parent_path();
-		if (!OS::DirectoryExists(parent.string()))
+		if (!OS::DirectoryExists(parent.wstring()))
 		{
-			if (!OS::MakeDirectory(parent.string()))
+			if (!OS::MakeDirectory(parent.wstring()))
 				return false;
 		}
 
-		HANDLE hFile = CreateFileA(path.string().c_str(),
-					               GENERIC_ALL,
-					               0,
-					               NULL,
-					               CREATE_NEW, // return false if file already exists
-					               FILE_ATTRIBUTE_NORMAL,
-					               NULL);
+		HANDLE hFile = CreateFile(path.wstring().c_str(),
+					              GENERIC_ALL,
+					              0,
+					              NULL,
+					              CREATE_NEW, // return false if file already exists
+					              FILE_ATTRIBUTE_NORMAL,
+					              NULL);
 		CloseHandle(hFile);
 		return hFile != INVALID_HANDLE_VALUE;
 	}
 
-	bool OS::MakeDirectory(const std::string& directory)
+	bool OS::MakeDirectory(const std::wstring& directory)
 	{
-		std::string str = SZ::Canonicalize(directory);
-		std::vector<std::string> parts = SZ::Split(str, GetPreferredSeparator());
+		std::wstring str = SZ<wchar_t>::Canonicalize(directory);
+		std::vector<std::wstring> parts = SZ<wchar_t>::Split(str, (wchar_t)PATH_SLASH);
 
-		std::string path;
+		std::wstring path;
 		for (size_t i = 0; i < parts.size(); i++)
 		{
-			path = SZ::JoinPath(path, parts[i]);
+			path = SZ<wchar_t>::JoinPath(path, parts[i]);
 			if (!OS::DirectoryExists(path))
 			{
-				BOOL res = CreateDirectoryA(path.c_str(), NULL);
+				BOOL res = CreateDirectory(path.c_str(), NULL);
 				if (res == FALSE)
 					return false;
 			}
@@ -287,90 +319,90 @@ namespace GS
 		return true;
 	}
 
-	std::string OS::GetTMPDirectory()
+	std::wstring OS::GetTMPDirectory()
 	{
-		return fs::temp_directory_path().string();
+		return fs::temp_directory_path().wstring();
 	}
 
-	std::string OS::GetExecutableDirectory()
+	std::wstring OS::GetExecutableDirectory()
 	{
-		static char _exepath[MAX_PATH] = { 0 };
+		static wchar_t _exePath[MAX_PATH] = { 0 };
 
-		if (_exepath[0] == 0)
+		if (_exePath[0] == 0)
 		{
-			GetModuleFileNameA(nullptr, _exepath, MAX_PATH);
-			int pos = (int)strlen(_exepath);
+			GetModuleFileName(nullptr, _exePath, MAX_PATH);
+			int pos = (int)wcslen(_exePath);
 			while (pos--)
 			{
-				if (_exepath[pos] == '\\' || _exepath[pos] == '/')
+				if (_exePath[pos] == L'\\' || _exePath[pos] == L'/')
 					break;
 			}
 		}
 
-		return _exepath;
+		return _exePath;
 	}
 
-	std::string OS::GetPWD()
+	std::wstring OS::GetPWD()
 	{
-		char curdir[MAX_PATH] = { 0 };
-		GetCurrentDirectoryA(MAX_PATH, curdir);
-		return curdir;
+		wchar_t _curdir[MAX_PATH] = { 0 };
+		GetCurrentDirectory(MAX_PATH, _curdir);
+		return _curdir;
 	}
 
-	std::string OS::GetExecutableName()
+	std::wstring OS::GetExecutableName()
 	{
-		static char _exepath[MAX_PATH] = { 0 };
-		static const char* _exename = _exepath;
+		static wchar_t _exePath[MAX_PATH] = { 0 };
+		static const wchar_t* _exeName = _exePath;
 
-		if (_exename == nullptr)
+		if (_exeName == nullptr)
 		{
-			GetModuleFileNameA(nullptr, _exepath, MAX_PATH);
-			int pos = (int)strlen(_exepath);
+			GetModuleFileName(nullptr, _exePath, MAX_PATH);
+			int pos = (int)wcslen(_exePath);
 			while (pos--)
 			{
-				if (_exepath[pos] == '\\' || _exepath[pos] == '/')
+				if (_exePath[pos] == '\\' || _exePath[pos] == '/')
 				{
-					_exename = _exepath + pos + 1;
+					_exeName = _exePath + pos + 1;
 					break;
 				}
 			}
 		}
 
-		return _exename;
+		return _exeName;
 	}
 
-	std::optional<std::string> OS::EnvironmentVariable(const std::string& name)
+	std::optional<std::wstring> OS::EnvironmentVariable(const std::wstring& name)
 	{
-		static char _buffer[4096] = { 0 };
-		int size = GetEnvironmentVariableA(name.c_str(), _buffer, arraysize(_buffer));
+		static wchar_t _buffer[4096] = { 0 };
+		int size = GetEnvironmentVariable(name.c_str(), _buffer, arraysize(_buffer));
 		assert(size < arraysize(_buffer));
 		if (size == 0)
 			return std::nullopt;
 
-		return std::string(_buffer);
+		return std::wstring(_buffer);
 	}
 
 	template<bool OPEN>
-	std::optional<std::string> FileDialog(const std::vector<OS::FileDialogFilter>& filters)
+	std::optional<std::wstring> FileDialog(const std::vector<OS::FileDialogFilter>& filters)
 	{
-		OPENFILENAMEA ofn;
-		CHAR chars[512] = { 0 };
+		OPENFILENAME ofn;
+		TCHAR chars[512] = { 0 };
 		ZeroMemory(&ofn, sizeof(ofn));
 
-		std::string filtersStr = local::GetFileDialogFilterString<OPEN>(filters);
+		std::wstring filtersStr = local::GetFileDialogFilterString<OPEN>(filters);
 
 		ofn.lStructSize = sizeof(OPENFILENAME);
 		ofn.hwndOwner = GetForegroundWindow();
-		ofn.lpstrFile = (LPSTR)filtersStr.c_str();
+		ofn.lpstrFile = (LPWSTR)filtersStr.c_str();
 		ofn.lpstrFile = chars;
 		ofn.nMaxFile = arraysize(chars);
 		ofn.Flags = OFN_NOCHANGEDIR | (OPEN ? OFN_FILEMUSTEXIST : 0);
-		ofn.lpstrDefExt = "";
+		ofn.lpstrDefExt = L"";
 
-		BOOL result = OPEN ? GetOpenFileNameA(&ofn) : GetSaveFileNameA(&ofn);
+		BOOL result = OPEN ? GetOpenFileName(&ofn) : GetSaveFileName(&ofn);
 		if (result)
 		{
-			std::string str(chars);
+			std::wstring str(chars);
 			return str;
 		}
 
@@ -378,19 +410,19 @@ namespace GS
 	}
 
 	template
-	std::optional<std::string> FileDialog<true>(const std::vector<OS::FileDialogFilter>&);
+	std::optional<std::wstring> FileDialog<true>(const std::vector<OS::FileDialogFilter>&);
 	template
-	std::optional<std::string> FileDialog<false>(const std::vector<OS::FileDialogFilter>&);
+	std::optional<std::wstring> FileDialog<false>(const std::vector<OS::FileDialogFilter>&);
 
-	bool OS::SetWindowIcon(const std::string& iconFile, WindowHandle handle)
+	bool OS::SetWindowIcon(const std::wstring& iconFile, WindowHandle handle)
 	{
 		auto path = OS::FindDataFile(iconFile);
 		if (path.has_value())
 			return false;
 
-		HANDLE hIcon = LoadImageA(GetModuleHandle(NULL), path.value().c_str(), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+		HANDLE hIcon = LoadImage(GetModuleHandle(NULL), path.value().c_str(), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 		HWND hwnd = handle ? handle : GetActiveWindow();
-		SendMessageA(hwnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+		SendMessage(hwnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
 
 		return true;
 	}
@@ -451,9 +483,9 @@ namespace GS
 #endif
 	}
 
-	void OS::DebugOutput(const std::string& msg)
+	void OS::DebugOutput(const std::wstring& msg)
 	{
-		OutputDebugStringA(msg.c_str());
+		OutputDebugString(msg.c_str());
 	}
 
 	void OS::DebugBreak()
@@ -461,25 +493,25 @@ namespace GS
 		__debugbreak();
 	}
 
-	size_t OS::ExecuteProcess(const std::string& appname, const std::string& args)
+	size_t OS::ExecuteProcess(const std::wstring& appname, const std::wstring& args)
 	{
-		std::string commandLine = appname + " " + args;
-		STARTUPINFOA startup{};
+		std::wstring commandLine = appname + L" " + args;
+		STARTUPINFO startup{};
 		PROCESS_INFORMATION info{};
 		
-		if (!CreateProcessA(nullptr,
-			                (LPSTR)commandLine.c_str(),
-							nullptr,
-							nullptr,
-							TRUE,
-							NORMAL_PRIORITY_CLASS,
-							nullptr,
-							nullptr,
-							&startup,
-							&info))
+		if (!CreateProcess(nullptr,
+			               (LPWSTR)commandLine.c_str(),
+						   nullptr,
+						   nullptr,
+						   TRUE,
+						   NORMAL_PRIORITY_CLASS,
+						   nullptr,
+						   nullptr,
+						   &startup,
+						   &info))
 		{
 #if LOG_ENABLED
-			LOG(ERROR) << "Unable to start a process.";
+			LOG(ERROR) << L"Unable to start a process.";
 			return 0;
 #endif
 		}
@@ -503,8 +535,8 @@ namespace GS
 		CloseHandle((HANDLE)id);
 	}
 
-	void OS::StartDirectoryWatcher(const std::string& dir,
-						     	   const std::function<void(const std::string&)>& callback,
+	void OS::StartDirectoryWatcher(const std::wstring& dir,
+						     	   const std::function<void(const std::wstring&)>& callback,
 						     	   bool watchSubtree)
 	{
 		const auto& it = local::_sDirectoryWatcherThreads.find(dir);
@@ -522,7 +554,7 @@ namespace GS
 		local::_sDirectoryWatcherThreads[dir].second = true;
 	}
 
-	void OS::StopDirectoryWatcher(const std::string& dir)
+	void OS::StopDirectoryWatcher(const std::wstring& dir)
 	{
 		const auto& it = local::_sDirectoryWatcherThreads.find(dir);
 		// Only have one thread waiting on directory modification
@@ -533,78 +565,88 @@ namespace GS
 		}
 	}
 
-	std::optional<std::string> OS::FindFile(const std::string& filename,
-											const std::string& directory,
-											bool recursive)
+	std::optional<fs::path> OS::FindFile(const std::wstring& filename,
+										 const std::wstring& directory,
+										 bool recursive)
 	{
 		
 	}
 
-	int OS::FindFiles(const std::string& filename,
-				      const std::string& directory,
-				      std::vector<fs::path>* paths,
-					  bool recursive)
+	std::shared_ptr<std::vector<fs::path>> OS::FindFiles(const std::wstring& filename,
+													     const std::wstring& directory,
+													     bool recursive)
 	{
-		std::vector<std::string> parts = SZ::Split(SZ::Canonicalize(filename),
-												   SZ::GetPreferredSeparator());
-		if (parts.size() > 1)
+		static auto _QueryDirectoryFunc = [](const std::wstring& dir, 
+											 const std::wstring& name,
+											 std::shared_ptr<std::vector<fs::path>> paths,
+											 bool recursive)->int {
+			std::wstring filter = SZ<wchar_t>::JoinPath(dir, name);
+			WIN32_FIND_DATA fd{};
+			HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
+			if (hFind == INVALID_HANDLE_VALUE) {
+				local::CheckLastError("FindFirstFile");
+				return 0;
+			}
+
+			int count = 0;
+			do
+			{
+				if (wcscmp(fd.cFileName, L".") == 0 ||
+					wcscmp(fd.cFileName, L"..") == 0)
+					continue;
+
+				paths->emplace_back(SZ<wchar_t>::JoinPath(dir, fd.cFileName));
+			} while (FindNextFile(hFind, &fd) != 0);
+
+			return count;
+		};
+
+		auto parts = SZ<wchar_t>::Split(SZ<wchar_t>::Canonicalize(filename),
+										(wchar_t)PATH_SLASH);
+		if (parts.empty())
+			return nullptr;
+
+		std::wstring realName = parts[parts.size() - 1];
+		auto paths = std::make_shared<std::vector<fs::path>>();
+		
+		_QueryDirectoryFunc(directory, realName, paths, recursive);
+		if (paths->size() == 0)
+			return nullptr;
+		else if (paths->size() == 1)
 		{
 
 		}
 
-		WIN32_FIND_DATAA fd{};
-		HANDLE hFind = INVALID_HANDLE_VALUE;
-
-		std::string filter = SZ::JoinPath(directory, filename);
-		hFind = FindFirstFileA(filter.c_str(), &fd);
-		if (hFind == INVALID_HANDLE_VALUE)
-			return 0;
-
-		int count = 0;
-		do
-		{
-			if (strcmp(fd.cFileName, ".") == 0 ||
-				strcmp(fd.cFileName, "..") == 0)
-				continue;
-
-			FileAttribs& attribs = fileAttribs->emplace_back();
-			attribs.Directory = directory;
-			attribs.Name = fd.cFileName;
-			attribs.IsDirectory = (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
-			attribs.SizeInBytes = local::MakeUInt64(fd.nFileSizeHigh, fd.nFileSizeLow);
-			attribs.TimeModified = local::FileTime2TimePoint<time_point_ms>(fd.ftLastWriteTime);
-		} while (FindNextFileA(hFind, &fd) != 0);
-
-		return count;
+		return paths;
 	}
 
-	std::thread::native_handle_type OS::GetCurrentThread()
+	ThreadHandle OS::GetCurrentThread()
 	{
 		return ::GetCurrentThread();
 	}
 
-	void OS::SetThreadAffinity(std::thread::native_handle_type thread, uint32_t mask)
+	void OS::SetThreadAffinity(ThreadHandle thread, uint32_t mask)
 	{
 		::SetThreadAffinityMask(thread, mask);
 		if (DWORD error = GetLastError() != 0)
 		{
 #if LOG_ENABLED
 			LPVOID buffer;
-			FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 						  NULL, 
 						  error,
 						  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 						  (LPTSTR)&buffer,
 						  0,
 						  NULL);
-			std::string errorMessage((LPTSTR)buffer);
+			std::wstring errorMessage((LPTSTR)buffer);
 			LOG(ERROR) << "SetThreadAffinity() failed: " << errorMessage;
 			LocalFree(buffer);
 #endif
 		}
 	}
 
-	void OS::SetThreadPriority(std::thread::native_handle_type thread, OS::EThreadPriority priority)
+	void OS::SetThreadPriority(ThreadHandle thread, OS::EThreadPriority priority)
 	{
 		if (priority >= EThreadPriority::Lowest)
 			::SetThreadPriority(thread, THREAD_BASE_PRIORITY_MIN + (int32_t)priority);
@@ -619,21 +661,21 @@ namespace GS
 		{
 #if LOG_ENABLED
 			LPVOID buffer;
-			FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 						  NULL,
 						  error,
 						  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 						  (LPTSTR)&buffer,
 						  0,
 						  NULL);
-			std::string errorMessage((LPTSTR)buffer);
+			std::wstring errorMessage((LPTSTR)buffer);
 			LOG(ERROR) << "SetThreadPriority() failed: " << errorMessage;
 			LocalFree(buffer);
 #endif
 		}
 	}
 
-	time_t OS::GetFileModifiedTime(const std::string& filename)
+	time_t OS::GetFileModifiedTime(const std::wstring& filename)
 	{
 		struct stat s;
 		if (stat(filename.c_str(), &s) != 0)
@@ -677,9 +719,9 @@ namespace GS
 		return virtualMemUsedByMe;
 	}
 
-	SharedLibraryHandle OS::LoadSharedLibrary(const std::string& path)
+	SharedLibraryHandle OS::LoadSharedLibrary(const std::wstring& path)
 	{
-		return ::LoadLibraryA(path.c_str());
+		return ::LoadLibrary(path.c_str());
 	}
 
 	void OS::FreeSharedLibrary(SharedLibraryHandle handle)
@@ -687,7 +729,7 @@ namespace GS
 		::FreeLibrary(handle);
 	}
 
-	void* OS::GetProcAddress(SharedLibraryHandle handle, const std::string& func)
+	void* OS::GetProcAddress(SharedLibraryHandle handle, const std::wstring& func)
 	{
 		return ::GetProcAddress(handle, func.c_str());
 	}

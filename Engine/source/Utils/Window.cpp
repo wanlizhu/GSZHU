@@ -9,6 +9,7 @@
 #include "GLFW/glfw3native.h"
 #include "stb_image.h"
 #include "Utils/Platform/OS.h"
+#include "Utils/String.h"
 
 namespace GS
 {
@@ -141,9 +142,9 @@ namespace GS
 			Window* window = (Window*)glfwGetWindowUserPointer(win);
 			if (window != nullptr && window->GetCallbacks() != nullptr)
 			{
-				std::vector<std::string> vec;
+				std::vector<std::wstring> vec;
 				for (int i = 0; i < count; i++)
-					vec.push_back(paths[i]);
+					vec.push_back(SZ::Str2WStr(paths[i]));
 
 				window->GetCallbacks()->OnDropFile(vec);
 			}
@@ -162,10 +163,10 @@ namespace GS
 
 		virtual void OnKeyboardEvent(const KeyboardEvent& event)  override {}
 		virtual void OnMouseEvent(const MouseEvent& event)  override {}
-		virtual void OnDropFile(const std::vector<std::string>& paths)  override {}
+		virtual void OnDropFile(const std::vector<std::wstring>& paths)  override {}
 	};
 
-	Window::Window(const std::string& name, Window::ICallbacks* callbacks)
+	Window::Window(const std::wstring& name, Window::ICallbacks* callbacks)
 		: Object(name)
 		, mpCallbacks(callbacks)
 	{
@@ -221,18 +222,18 @@ namespace GS
 
 		int width = desc.Size[0] <= 0 ? Window::DefaultSize()[0] : desc.Size[0];
 		int height = desc.Size[1] <= 0 ? Window::DefaultSize()[1] : desc.Size[1];
-		GLFWwindow* window = glfwCreateWindow(width, height, desc.Title.c_str(), monitor, nullptr);
+		GLFWwindow* window = glfwCreateWindow(width, height, SZ::WStr2Str(desc.Title).c_str(), monitor, nullptr);
 		assert(window != nullptr);
 
 		int posx = desc.Position[0] <= 0 ? Window::DefaultPos()[0] : desc.Position[0];
 		int posy = desc.Position[1] <= 0 ? Window::DefaultPos()[1] : desc.Position[1];
 		glfwSetWindowPos(window, posx, posy);
 
-		auto iconPath = OS::FindDataFile("icon/logo.ico");
+		auto iconPath = OS::FindDataFile(L"icon/logo.ico");
 		if (iconPath.has_value())
 		{
 			GLFWimage icon;
-			icon.pixels = stbi_load(iconPath.value().c_str(),
+			icon.pixels = stbi_load(iconPath.value().string().c_str(),
 									&icon.width,
 									&icon.height,
 									nullptr,
@@ -243,7 +244,7 @@ namespace GS
 		}
 
 		static int64_t _id = 0;
-		Window::SharedPtr shared(new Window("Window" + std::to_string(_id++), callbacks));
+		Window::SharedPtr shared(new Window(L"Window" + std::to_wstring(_id++), callbacks));
 		shared->mpWindow = window;
 		shared->ComputeMouseScale();
 		shared->mBackend = desc.Backend;
@@ -277,9 +278,9 @@ namespace GS
 		mpCallbacks = callbacks;
 	}
 
-	void Window::SetTitle(const std::string& title)
+	void Window::SetTitle(const std::wstring& title)
 	{
-		glfwSetWindowTitle(mpWindow, title.c_str());
+		glfwSetWindowTitle(mpWindow, SZ::WStr2Str(title).c_str());
 	}
 
 	void Window::SetFullScreen(bool enabled)
@@ -360,11 +361,11 @@ namespace GS
 	}
 
 
-	std::string Window::GetTitle() const
+	std::wstring Window::GetTitle() const
 	{
-		static char _title[MAX_PATH] = { 0 };
+		static wchar_t _title[MAX_PATH] = { 0 };
 		HWND hwnd = glfwGetWin32Window(mpWindow);
-		GetWindowTextA(hwnd, _title, MAX_PATH);
+		GetWindowText(hwnd, _title, MAX_PATH);
 		return _title;
 	}
 

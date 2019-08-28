@@ -8,6 +8,7 @@
 #include <dxgiformat.h>
 #include <memory>
 #include <string>
+#include <thread>
 #include <vector>
 #include "EngineConfig.h"
 #include "RHI/Formats.h"
@@ -63,6 +64,7 @@ namespace GS
 	using HeapGPUHandle = D3D12_GPU_DESCRIPTOR_HANDLE;
 
 	using WindowHandle = HWND;
+	using ThreadHandle = std::thread::native_handle_type;
 	using SharedLibraryHandle = HMODULE;
 	using DeviceHandle = ID3D12DevicePtr;
 	using CommandListHandle = ID3D12GraphicsCommandListPtr;
@@ -110,7 +112,7 @@ namespace GS
 
 
 	D3D_FEATURE_LEVEL GetD3DFeatureLevel(uint32_t majorVersion, uint32_t minorVersion);
-	void D3DTranceHResult(HRESULT hr, const char* file, uint32_t line);
+	void D3DTranceHResult(HRESULT hr, const wchar_t* file, uint32_t line);
 
 	struct DXGIFormatDesc
 	{
@@ -144,31 +146,31 @@ namespace GS
 		}
 	}
 
-	inline std::string to_string(D3D_FEATURE_LEVEL featureLevel)
+	inline std::wstring to_string(D3D_FEATURE_LEVEL featureLevel)
 	{
 		switch (featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_9_1:
-			return "D3D_FEATURE_LEVEL_9_1";
+			return L"D3D_FEATURE_LEVEL_9_1";
 		case D3D_FEATURE_LEVEL_9_2:
-			return "D3D_FEATURE_LEVEL_9_2";
+			return L"D3D_FEATURE_LEVEL_9_2";
 		case D3D_FEATURE_LEVEL_9_3:
-			return "D3D_FEATURE_LEVEL_9_3";
+			return L"D3D_FEATURE_LEVEL_9_3";
 		case D3D_FEATURE_LEVEL_10_0:
-			return "D3D_FEATURE_LEVEL_10_0";
+			return L"D3D_FEATURE_LEVEL_10_0";
 		case D3D_FEATURE_LEVEL_10_1:
-			return "D3D_FEATURE_LEVEL_10_1";
+			return L"D3D_FEATURE_LEVEL_10_1";
 		case D3D_FEATURE_LEVEL_11_0:
-			return "D3D_FEATURE_LEVEL_11_0";
+			return L"D3D_FEATURE_LEVEL_11_0";
 		case D3D_FEATURE_LEVEL_11_1:
-			return "D3D_FEATURE_LEVEL_11_1";
+			return L"D3D_FEATURE_LEVEL_11_1";
 		case D3D_FEATURE_LEVEL_12_0:
-			return "D3D_FEATURE_LEVEL_12_0";
+			return L"D3D_FEATURE_LEVEL_12_0";
 		case D3D_FEATURE_LEVEL_12_1:
-			return "D3D_FEATURE_LEVEL_12_1";
+			return L"D3D_FEATURE_LEVEL_12_1";
 		default:
 			assert(false); 
-			return "";
+			return L"";
 		}
 	}
 
@@ -184,27 +186,27 @@ namespace GS
 	};
 	ENUM_CLASS_OPERATORS(ERTBuildFlags);
 
-	inline std::string to_string(ERTBuildFlags flags)
+	inline std::wstring to_string(ERTBuildFlags flags)
 	{
 		switch (flags)
 		{
 		case ERTBuildFlags::None:
-			return "None";
+			return L"None";
 		case ERTBuildFlags::AllowUpdate:
-			return "AllowUpdate";
+			return L"AllowUpdate";
 		case ERTBuildFlags::AllowCompaction:
-			return "AllowCompaction";
+			return L"AllowCompaction";
 		case ERTBuildFlags::FastTrace:
-			return "FastTrace";
+			return L"FastTrace";
 		case ERTBuildFlags::FastBuild:
-			return "FastBuild";
+			return L"FastBuild";
 		case ERTBuildFlags::MinimizeMemory:
-			return "MinimizeMemory";
+			return L"MinimizeMemory";
 		case ERTBuildFlags::PerformUpdate:
-			return "PerformUpdate";
+			return L"PerformUpdate";
 		default:
 			assert(false);
-			return "";
+			return L"";
 		}
 	}
 
