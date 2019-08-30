@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <codecvt>
 #include <optional>
+#include <map>
 #include <type_traits>
 #include "Framework.h"
 
@@ -58,36 +59,39 @@ namespace GS
 
 		static std::vector<STR> Split(const STR& str, CH ch)
 		{
-			std::vector<STR> vec;
-			size_t begPos = 0;
-			size_t endPos = str.find(ch, begPos);
+			using _ISS = std::basic_istringstream<CH, std::char_traits<CH>, std::allocator<CH>>;
 
-			while (begPos != STR::npos)
-			{
-				vec.emplace_back(str, begPos, endPos);
-				
-				begPos = str.find(ch, endPos == str.end() ? endPos : (endPos + 1));
-				endPos = str.find(ch, begPos == str.end() ? begPos : (begPos + 1));
+			std::vector<STR> tokens;
+			STR token;
+			_ISS tokenss(str);
+			while (std::getline(tokenss, token, ch)) {
+				tokens.push_back(token);
 			}
 
-			return vec;
+			return tokens;
 		}
 
 		static std::vector<STR> Split(const STR& str, const STR& delims)
 		{
-			std::vector<STR> vec;
-			size_t begPos = 0;
-			size_t endPos = str.find_first_of(delims, begPos);
+			std::vector<STR> tokens;
+			auto first = std::cbegin(str);
 
-			while (begPos != STR::npos)
+			while (first != std::cend(str))
 			{
-				vec.emplace_back(str, begPos, endPos);
+				const auto second = std::find_first_of(first,
+													   std::cend(str),
+													   std::cbegin(delims),
+													   std::cend(delims));
+				if (first != second)
+					tokens.emplace_back(first, second);
 
-				begPos = str.find_first_of(delims, endPos == STR::npos ? endPos : (endPos + 1));
-				endPos = str.find_first_of(delims, begPos == STR::npos ? begPos : (begPos + 1));
+				if (second == std::cend(str))
+					break;
+
+				first = std::next(second);
 			}
 
-			return vec;
+			return tokens;
 		}
 
 		static STR Trim(const STR& str)
@@ -144,7 +148,7 @@ namespace GS
 			};
 			static const STR _k2Slashes(2, (CH)PATH_SLASH);
 
-			STR res = Replace(path, (CH)_kUndesiredSlash[(int)PATH_SLASH], (CH)PATH_SLASH);
+			STR res = Replace(path, (CH)_kUndesiredSlash.at((int)PATH_SLASH), (CH)PATH_SLASH);
 
 			size_t offset = res.find(_k2Slashes);
 			while (offset != STR::npos)
@@ -180,7 +184,7 @@ namespace GS
 		template<typename... ARGS>
 		static STR JoinPath(ARGS... args)
 		{
-			return SZ::Canonicalize(Join<ARGS...>(STR(1, (CH)PATH_SLASH),
+			return SZ<wchar_t>::Canonicalize(Join<ARGS...>(STR(1, (CH)PATH_SLASH),
 												  std::forward<ARGS>(args)...));
 		}
 
@@ -188,7 +192,7 @@ namespace GS
 		static std::optional<T> GetNumber(const STR& str, CH** endPos = nullptr)
 		{
 			const CH* _kChars = static_cast<const CH*>(std::is_same_v<CH, wchar_t>
-													   ? L"+-0123456789" : "+-0123456789");
+													   ? (const void*)L"+-0123456789" : (const void*)"+-0123456789");
 			size_t offset = str.find_first_of(_kChars);
 			
 			if (offset == STR::npos)
@@ -198,10 +202,20 @@ namespace GS
 				return std::nullopt;
 			}
 
-			if constexpr (std::is_floating_point_v<T>)
-				return std::strtod(str.c_str() + offset, endPos);
+			if constexpr (std::is_same_v<CH, wchar_t>)
+			{
+				if constexpr (std::is_floating_point_v<T>)
+					return std::wcstod((const wchar_t*)str.c_str() + offset, (wchar_t**)endPos);
+				else
+					return std::wcstol((const wchar_t*)str.c_str() + offset, (wchar_t**)endPos, 0);
+			}
 			else
-				return std::strtol(str.c_str() + offset, endPos, 0);
+			{
+				if constexpr (std::is_floating_point_v<T>)
+					return std::strtod((const char*)str.c_str() + offset, (char**)endPos);
+				else
+					return std::strtol((const char*)str.c_str() + offset, (char**)endPos, 0);
+			}
 		}
 
 		template<typename T>
@@ -223,13 +237,13 @@ namespace GS
 		
 		static inline std::string WStr2Str(const std::wstring& wstr) 
 		{
-			std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
+			static std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
 			return cvt.to_bytes(wstr);
 		}
 
 		static inline std::wstring Str2WStr(const std::string& str)
 		{
-			std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
+			static std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt;
 			return cvt.from_bytes(str);
 		}
 
@@ -237,9 +251,9 @@ namespace GS
 		{
 #ifdef _WIN32
 			// This is a known issue, tracked by Visual Studio Team
-			std::wstring_convert<std::codecvt_utf8<uint16_t>, uint16_t> cvt;
+			static std::wstring_convert<std::codecvt_utf8<uint16_t>, uint16_t> cvt;
 #else
-			std::wstring_convert<std::codecvt_utf8<char16_t>, char16_t> cvt;
+			static std::wstring_convert<std::codecvt_utf8<char16_t>, char16_t> cvt;
 #endif
 			return cvt.to_bytes(wwstr);
 		}
@@ -248,9 +262,9 @@ namespace GS
 		{
 #ifdef _WIN32
 			// This is a known issue, tracked by Visual Studio Team
-			std::wstring_convert<std::codecvt_utf8<uint32_t>, uint32_t> cvt;
+			static std::wstring_convert<std::codecvt_utf8<uint32_t>, uint32_t> cvt;
 #else
-			std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
+			static std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
 #endif
 			return cvt.to_bytes(wwstr);
 		}

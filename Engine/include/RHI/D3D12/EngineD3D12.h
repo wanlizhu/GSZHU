@@ -112,7 +112,6 @@ namespace GS
 
 
 	D3D_FEATURE_LEVEL GetD3DFeatureLevel(uint32_t majorVersion, uint32_t minorVersion);
-	void D3DTranceHResult(HRESULT hr, const wchar_t* file, uint32_t line);
 
 	struct DXGIFormatDesc
 	{

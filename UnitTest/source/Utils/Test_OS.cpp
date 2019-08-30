@@ -5,6 +5,6 @@ using namespace GS;
 
 TEST(Test_OS, Test_FindFiles)
 {
-	auto vec = OS::FindFiles("logo.ico", "d:/GraphicsEngine/Engine/resource/icon");
-
+	auto path = OS::FindDataFile(L"logo-256.ico");
+	int iii = 0;
 }

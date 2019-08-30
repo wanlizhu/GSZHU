@@ -8,6 +8,10 @@
 #include "glog/logging.h"
 #include <Windows.h>
 
+#ifndef _UNICODE
+#error !!! You Have To Use Unicode Character Set To Build !!!
+#endif
+
 BOOL APIENTRY DllMain(HMODULE hModule,
                       DWORD   reason,
                       LPVOID  reserved)

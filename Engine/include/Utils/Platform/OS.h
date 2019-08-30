@@ -108,11 +108,11 @@ namespace GS
 		static uint64_t GetUsedVirtualMemory();
 		static uint64_t GetProcessUsedVirtualMemory();
 
-		static std::shared_ptr<std::wstring> LoadFile(const std::wstring& filename);
+		static std::shared_ptr<std::string> LoadFile(const std::wstring& filename);
 		static size_t SaveFile(const std::wstring& filename, const void* data, size_t size, bool append = false);
 		
 		static SharedLibraryHandle LoadSharedLibrary(const std::wstring& path);
 		static void FreeSharedLibrary(SharedLibraryHandle handle);
-		static void* GetProcAddress(SharedLibraryHandle handle, const std::wstring& func);
+		static void* GetProcAddress(SharedLibraryHandle handle, const std::string& func);
 	};
 }

@@ -319,22 +319,22 @@ namespace GS
 		switch (type)
 		{
 		case EFormatType::Unknown:
-			return "Unknown";
+			return L"Unknown";
 		case EFormatType::Float:
-			return "Float";
+			return L"Float";
 		case EFormatType::Unorm:
-			return "Unorm";
+			return L"Unorm";
 		case EFormatType::UnormSrgb:
-			return "UnormSrgb";
+			return L"UnormSrgb";
 		case EFormatType::Snorm:
-			return "Snorm";
+			return L"Snorm";
 		case EFormatType::Uint:
-			return "Uint";
+			return L"Uint";
 		case EFormatType::Sint:
-			return "Sint";
+			return L"Sint";
 		default:
 			assert(false);
-			return "";
+			return L"";
 		}
 	}
 }

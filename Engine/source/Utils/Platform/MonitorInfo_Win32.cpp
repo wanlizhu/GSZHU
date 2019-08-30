@@ -195,7 +195,7 @@ namespace GS
 		{
 			wprintf(L"%s%s: %0.0f x %0.0f pix, %0.1f x %0.1f in, %0.2f ppi\n",
 				   desc.Identifier.c_str(),
-				   desc.IsPrimary ? " (Primary) " : " ",
+				   desc.IsPrimary ? L" (Primary) " : L" ",
 				   desc.Resolution[0], desc.Resolution[1],
 				   desc.PhysicalSize[0], desc.PhysicalSize[1],
 				   desc.PPI);

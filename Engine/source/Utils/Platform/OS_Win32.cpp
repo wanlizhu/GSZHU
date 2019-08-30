@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <string>
 #include <strsafe.h>
+#include <queue>
 
 #pragma comment(lib, "Shcore.lib")
 
@@ -119,22 +120,22 @@ namespace GS
 				if (appendForOpen)
 				{
 					bool last = i == (filters.size() - 1);
-					std::wstring e = "*." + f.ext;
-					if (last == false) e += ';';
+					std::wstring e = L"*." + f.ext;
+					if (last == false) e += L";";
 					d += e;
 					s += e;
 				}
 				else
 				{
-					s += f.desc.empty() ? f.ext + " files" : f.desc + " (*." + f.ext + ')';
+					s += f.desc.empty() ? f.ext + L" files" : f.desc + L" (*." + f.ext + L")";
 					s.append(1, 0);
-					s += "*." + f.ext + ';';
+					s += L"*." + f.ext + L";";
 					s.append(1, 0);
 				}
 			}
 
 			if (appendForOpen)
-				s = "Supported Formats (" + d + ')' + s;
+				s = L"Supported Formats (" + d + L")" + s;
 
 			s.append(appendForOpen ? 2 : 1, 0);
 
@@ -175,7 +176,7 @@ namespace GS
 			ul.HighPart = ft.dwHighDateTime;
 
 			std::time_t secs = ul.QuadPart / 10000000ULL - 11644473600ULL;
-			std::chrono::milliseconds ms((ull.QuadPart / 10000ULL) % 1000);
+			std::chrono::milliseconds ms((ul.QuadPart / 10000ULL) % 1000);
 
 			auto tp = std::chrono::system_clock::from_time_t(secs);
 			tp += ms;
@@ -183,7 +184,7 @@ namespace GS
 			return duration_cast<_tpoint>(tp);
 		}
 
-		void CheckLastError(const char* funcName, bool showBox = false)
+		void CheckLastError(const wchar_t* funcName, bool showBox = false)
 		{
 			LPVOID message = nullptr;
 			LPVOID display = nullptr;
@@ -569,10 +570,14 @@ namespace GS
 										 const std::wstring& directory,
 										 bool recursive)
 	{
-		
+		auto paths = OS::FindFiles(filename, directory, recursive);
+		if (paths == nullptr)
+			return std::nullopt;
+		else
+			return paths->at(0);
 	}
 
-	std::shared_ptr<std::vector<fs::path>> OS::FindFiles(const std::wstring& filename,
+	std::shared_ptr<std::vector<fs::path>> OS::FindFiles(const std::wstring& filename_,
 													     const std::wstring& directory,
 													     bool recursive)
 	{
@@ -580,29 +585,41 @@ namespace GS
 											 const std::wstring& name,
 											 std::shared_ptr<std::vector<fs::path>> paths,
 											 bool recursive)->int {
-			std::wstring filter = SZ<wchar_t>::JoinPath(dir, name);
-			WIN32_FIND_DATA fd{};
-			HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
-			if (hFind == INVALID_HANDLE_VALUE) {
-				local::CheckLastError("FindFirstFile");
-				return 0;
-			}
-
 			int count = 0;
-			do
-			{
-				if (wcscmp(fd.cFileName, L".") == 0 ||
-					wcscmp(fd.cFileName, L"..") == 0)
-					continue;
+			std::queue<fs::path> subPaths;
+			subPaths.push(dir);
 
-				paths->emplace_back(SZ<wchar_t>::JoinPath(dir, fd.cFileName));
-			} while (FindNextFile(hFind, &fd) != 0);
+			while (!subPaths.empty())
+			{
+				std::wstring currentDir = subPaths.front();
+				subPaths.pop();
+				std::wstring filter = SZ<wchar_t>::JoinPath(currentDir, recursive ? L"*" : name);
+				WIN32_FIND_DATA fd{};
+				HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
+				if (hFind == INVALID_HANDLE_VALUE) 
+					break;
+				do
+				{
+					if (wcscmp(fd.cFileName, L".") == 0 ||
+						wcscmp(fd.cFileName, L"..") == 0)
+						continue;
+
+					if (wcscmp(fd.cFileName, name.c_str()) == 0)
+					{
+						paths->emplace_back(SZ<wchar_t>::JoinPath(currentDir, fd.cFileName));
+						count++;
+					}
+					
+					if (recursive && (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+						subPaths.push(SZ<wchar_t>::JoinPath(dir, fd.cFileName));
+				} while (FindNextFile(hFind, &fd) != 0);
+			}
 
 			return count;
 		};
 
-		auto parts = SZ<wchar_t>::Split(SZ<wchar_t>::Canonicalize(filename),
-										(wchar_t)PATH_SLASH);
+		std::wstring filename = SZ<wchar_t>::Canonicalize(filename_);
+		auto parts = SZ<wchar_t>::Split(filename, (wchar_t)PATH_SLASH);
 		if (parts.empty())
 			return nullptr;
 
@@ -612,9 +629,13 @@ namespace GS
 		_QueryDirectoryFunc(directory, realName, paths, recursive);
 		if (paths->size() == 0)
 			return nullptr;
-		else if (paths->size() == 1)
+		else 
 		{
-
+			for (auto it = paths->begin(); it != paths->end(); )
+				if (!SZ<wchar_t>::EndsWith(it->wstring(), filename))
+					it = paths->erase(it);
+				else
+					it++;
 		}
 
 		return paths;
@@ -629,21 +650,7 @@ namespace GS
 	{
 		::SetThreadAffinityMask(thread, mask);
 		if (DWORD error = GetLastError() != 0)
-		{
-#if LOG_ENABLED
-			LPVOID buffer;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-						  NULL, 
-						  error,
-						  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-						  (LPTSTR)&buffer,
-						  0,
-						  NULL);
-			std::wstring errorMessage((LPTSTR)buffer);
-			LOG(ERROR) << "SetThreadAffinity() failed: " << errorMessage;
-			LocalFree(buffer);
-#endif
-		}
+			local::CheckLastError(L"SetThreadAffinityMask");
 	}
 
 	void OS::SetThreadPriority(ThreadHandle thread, OS::EThreadPriority priority)
@@ -658,30 +665,16 @@ namespace GS
 			assert(false);
 
 		if (DWORD error = GetLastError() != 0)
-		{
-#if LOG_ENABLED
-			LPVOID buffer;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-						  NULL,
-						  error,
-						  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-						  (LPTSTR)&buffer,
-						  0,
-						  NULL);
-			std::wstring errorMessage((LPTSTR)buffer);
-			LOG(ERROR) << "SetThreadPriority() failed: " << errorMessage;
-			LocalFree(buffer);
-#endif
-		}
+			local::CheckLastError(L"SetThreadPriority");
 	}
 
 	time_t OS::GetFileModifiedTime(const std::wstring& filename)
 	{
 		struct stat s;
-		if (stat(filename.c_str(), &s) != 0)
+		if (stat(SZ<char>::WStr2Str(filename).c_str(), &s) != 0)
 		{
 #if LOG_ENABLED
-			LOG(ERROR) << "Can't get file time for '" << filename << "'";
+			LOG(ERROR) << "Can't get file time for '" << SZ<char>::WStr2Str(filename) << "'";
 #endif
 			return 0;
 		}
@@ -729,7 +722,7 @@ namespace GS
 		::FreeLibrary(handle);
 	}
 
-	void* OS::GetProcAddress(SharedLibraryHandle handle, const std::wstring& func)
+	void* OS::GetProcAddress(SharedLibraryHandle handle, const std::string& func)
 	{
 		return ::GetProcAddress(handle, func.c_str());
 	}

@@ -5,4 +5,4 @@ if "%VC_OUTDIR%"=="" (
     exit
 )
 
-::xcopy /e/y "external\vld\bin\dbghelp.dll" "%VC_OUTDIR%"
+xcopy /e/y "resource\*" "%VC_OUTDIR%resource\"

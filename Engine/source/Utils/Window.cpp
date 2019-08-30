@@ -144,7 +144,7 @@ namespace GS
 			{
 				std::vector<std::wstring> vec;
 				for (int i = 0; i < count; i++)
-					vec.push_back(SZ::Str2WStr(paths[i]));
+					vec.push_back(SZ<wchar_t>::Str2WStr(paths[i]));
 
 				window->GetCallbacks()->OnDropFile(vec);
 			}
@@ -222,7 +222,7 @@ namespace GS
 
 		int width = desc.Size[0] <= 0 ? Window::DefaultSize()[0] : desc.Size[0];
 		int height = desc.Size[1] <= 0 ? Window::DefaultSize()[1] : desc.Size[1];
-		GLFWwindow* window = glfwCreateWindow(width, height, SZ::WStr2Str(desc.Title).c_str(), monitor, nullptr);
+		GLFWwindow* window = glfwCreateWindow(width, height, SZ<wchar_t>::WStr2Str(desc.Title).c_str(), monitor, nullptr);
 		assert(window != nullptr);
 
 		int posx = desc.Position[0] <= 0 ? Window::DefaultPos()[0] : desc.Position[0];
@@ -280,7 +280,7 @@ namespace GS
 
 	void Window::SetTitle(const std::wstring& title)
 	{
-		glfwSetWindowTitle(mpWindow, SZ::WStr2Str(title).c_str());
+		glfwSetWindowTitle(mpWindow, SZ<char>::WStr2Str(title).c_str());
 	}
 
 	void Window::SetFullScreen(bool enabled)
