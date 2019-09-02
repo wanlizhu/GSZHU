@@ -6,7 +6,7 @@ using namespace GS;
 int main()
 {
 	Window::Desc desc;
-	desc.Title = "Test Window";
+	desc.Title = L"Test Window";
 	desc.Backend = Window::EBackend::OpenGL;
 	auto win = Window::Create(desc, nullptr);
 	win->MessageLoop();

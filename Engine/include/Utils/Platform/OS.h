@@ -9,7 +9,7 @@
 
 namespace GS
 {
-	class GS_API OS
+	class GS_API OS//todo
 	{
 	public:
 		enum class EMessageBoxType
@@ -46,6 +46,12 @@ namespace GS
 			std::wstring ext;
 		};
 
+		class GS_API FileIterator
+		{
+		public:
+			//todo
+		};
+
 
 		static  bool SetWindowIcon(const std::wstring& iconFile, WindowHandle handle);
 		static   int GetDisplayDPI();
@@ -53,13 +59,13 @@ namespace GS
 
 		static EMessageBoxButton ShowMessageBox(const std::wstring& msg,
 				   		                        EMessageBoxType type = EMessageBoxType::Ok);
+		static FileIterator CreateFileIterator(const std::wstring& filename,
+											   const std::wstring& directory,
+											   bool recursive = true);
 		static std::shared_ptr<std::vector<fs::path>> FindFiles(const std::wstring& filename,
 																const std::wstring& directory,
 																bool recursive = true);
-		static std::optional<fs::path> FindFile(const std::wstring& filename,
-					                            const std::wstring& directory,
-					                            bool recursive = true);
-		static std::optional<fs::path> FindDataFile(const std::wstring& filename);
+		static std::shared_ptr<std::vector<fs::path>> FindDataFiles(const std::wstring& filename);
 		static std::optional<fs::path> OpenFileDialog(const std::vector<FileDialogFilter>& filters);
 		static std::optional<fs::path> SaveFileDialog(const std::vector<FileDialogFilter>& filters);
 		

@@ -108,6 +108,7 @@ namespace GS
         void SetTitle(const std::wstring& title);
         void SetFullScreen(bool enabled = true) ;
         void SetSize(int width, int height);
+		void SetIcon(const std::wstring& path);
         void MoveTo(int x, int y);
 		void SetMessageHook(MSG_ID msg, const MSG_FUNC& func);
         void Hide();

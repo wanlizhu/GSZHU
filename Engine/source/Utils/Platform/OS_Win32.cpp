@@ -631,11 +631,18 @@ namespace GS
 			return nullptr;
 		else 
 		{
-			for (auto it = paths->begin(); it != paths->end(); )
-				if (!SZ<wchar_t>::EndsWith(it->wstring(), filename))
-					it = paths->erase(it);
-				else
-					it++;
+			if (realName.find_first_of(L"*?") == std::wstring::npos)
+			{
+				for (auto it = paths->begin(); it != paths->end(); )
+					if (!SZ<wchar_t>::EndsWith(it->wstring(), filename))
+						it = paths->erase(it);
+					else
+						it++;
+			}
+			else
+			{
+				//todo
+			}
 		}
 
 		return paths;

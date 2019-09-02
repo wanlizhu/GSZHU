@@ -8,7 +8,7 @@
 namespace GS
 {
 	class ITexture;
-
+	//todo
     class GS_API Bitmap : public Object,
 		                  public inherit_shared_from_this<Object, Bitmap>
     {

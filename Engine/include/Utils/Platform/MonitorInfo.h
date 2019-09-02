@@ -6,7 +6,7 @@
 namespace GS
 {
 	// A class to extract information about displays
-	class GS_API MonitorInfo
+	class GS_API MonitorInfo//todo
 	{
 	public:
 		struct Desc

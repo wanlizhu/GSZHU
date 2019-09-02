@@ -229,25 +229,12 @@ namespace GS
 		int posy = desc.Position[1] <= 0 ? Window::DefaultPos()[1] : desc.Position[1];
 		glfwSetWindowPos(window, posx, posy);
 
-		auto iconPath = OS::FindDataFile(L"icon/logo.ico");
-		if (iconPath.has_value())
-		{
-			GLFWimage icon;
-			icon.pixels = stbi_load(iconPath.value().string().c_str(),
-									&icon.width,
-									&icon.height,
-									nullptr,
-									STBI_rgb_alpha);
-			glfwSetWindowIcon(window, 1, &icon);
-			stbi_image_free(icon.pixels);
-			icon.pixels = nullptr;
-		}
-
 		static int64_t _id = 0;
 		Window::SharedPtr shared(new Window(L"Window" + std::to_wstring(_id++), callbacks));
 		shared->mpWindow = window;
 		shared->ComputeMouseScale();
 		shared->mBackend = desc.Backend;
+		shared->SetIcon(L"icon/logo*.png");
 		glfwSetWindowUserPointer(shared->mpWindow, shared.get());
 
 		glfwSetWindowSizeCallback(window, local::OnWindowSize);
@@ -308,6 +295,11 @@ namespace GS
 	void Window::SetSize(int width, int height)
 	{
 		glfwSetWindowSize(mpWindow, width, height);
+	}
+
+	void Window::SetIcon(const std::wstring& path)
+	{
+		auto paths = OS::FindDataFile(path);
 	}
 
 	void Window::MoveTo(int x, int y)
@@ -430,7 +422,7 @@ namespace GS
 			glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS, GLFW_LOSE_CONTEXT_ON_RESET);
 			glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_FLUSH);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 #ifdef _DEBUG
 			glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
