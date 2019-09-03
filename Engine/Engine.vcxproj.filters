@@ -33,17 +33,8 @@
     <Filter Include="Header Files\RHI">
       <UniqueIdentifier>{df7fd9ea-6e01-48bc-bcfe-6c8be680b7a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utils\Platform">
-      <UniqueIdentifier>{036d5417-7cbd-44cb-aab8-432d37907c0d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\RHI\D3D12">
       <UniqueIdentifier>{2d5a95ff-5e9c-4f49-8eaa-b9b83c1f5368}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utils\Platform">
-      <UniqueIdentifier>{38d86324-4b26-463d-bf64-289f65c0aec1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{508adfeb-6d2d-48e2-946d-badf2b58a743}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Utils\Signal">
       <UniqueIdentifier>{fa50cc43-1c31-4322-a9fe-8f6adf069ebb}</UniqueIdentifier>
@@ -68,9 +59,6 @@
     <ClInclude Include="include\RHI\Formats.h">
       <Filter>Header Files\RHI</Filter>
     </ClInclude>
-    <ClInclude Include="include\Utils\Platform\OS.h">
-      <Filter>Header Files\Utils\Platform</Filter>
-    </ClInclude>
     <ClInclude Include="include\RHI\D3D12\EngineD3D12.h">
       <Filter>Header Files\RHI\D3D12</Filter>
     </ClInclude>
@@ -79,15 +67,6 @@
     </ClInclude>
     <ClInclude Include="include\Utils\Window.h">
       <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Utils\String.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Utils\Platform\MonitorInfo.h">
-      <Filter>Header Files\Utils\Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource.h">
-      <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="include\Utils\Signal\Function.h">
       <Filter>Header Files\Utils\Signal</Filter>
@@ -104,6 +83,12 @@
     <ClInclude Include="include\Utils\Object.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="source\Utils\String.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Utils\System.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\RHI\Formats.cpp">
@@ -118,25 +103,14 @@
     <ClCompile Include="source\Utils\Window.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="source\Utils\Platform\OS_Win32.cpp">
-      <Filter>Source Files\Utils\Platform</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Utils\Platform\OS_Common.cpp">
-      <Filter>Source Files\Utils\Platform</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Utils\Platform\MonitorInfo_Win32.cpp">
-      <Filter>Source Files\Utils\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="source\Utils\Object.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="source\ApplicationBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="source\resource.rc">
-      <Filter>Resources</Filter>
-    </ResourceCompile>
+    <ClCompile Include="source\Utils\System_Win32.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

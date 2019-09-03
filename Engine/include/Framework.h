@@ -40,9 +40,17 @@
 #endif
 
 #ifdef _WIN32
-#define PATH_SLASH '\\'
+#define SLASH     '\\'
+#define SLASH_INV '/'
+#define SLASHDB   "\\\\"
 #else
-#define PATH_SLASH '/'
+#define SLASH     '/'
+#define SLASH_INV '\\'
+#define SLASHDB   "//"
+#endif
+
+#ifndef TEXT
+#define TEXT(str) L##str
 #endif
 
 #ifdef _DEBUG

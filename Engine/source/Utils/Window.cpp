@@ -8,7 +8,7 @@
 #include "GLFW/glfw3.h"
 #include "GLFW/glfw3native.h"
 #include "stb_image.h"
-#include "Utils/Platform/OS.h"
+#include "Utils/System.h"
 #include "Utils/String.h"
 
 namespace GS
@@ -144,7 +144,7 @@ namespace GS
 			{
 				std::vector<std::wstring> vec;
 				for (int i = 0; i < count; i++)
-					vec.push_back(SZ<wchar_t>::Str2WStr(paths[i]));
+					vec.push_back(Str2WStr(paths[i]));
 
 				window->GetCallbacks()->OnDropFile(vec);
 			}
@@ -222,7 +222,7 @@ namespace GS
 
 		int width = desc.Size[0] <= 0 ? Window::DefaultSize()[0] : desc.Size[0];
 		int height = desc.Size[1] <= 0 ? Window::DefaultSize()[1] : desc.Size[1];
-		GLFWwindow* window = glfwCreateWindow(width, height, SZ<wchar_t>::WStr2Str(desc.Title).c_str(), monitor, nullptr);
+		GLFWwindow* window = glfwCreateWindow(width, height, WStr2Str(desc.Title).c_str(), monitor, nullptr);
 		assert(window != nullptr);
 
 		int posx = desc.Position[0] <= 0 ? Window::DefaultPos()[0] : desc.Position[0];
@@ -267,7 +267,7 @@ namespace GS
 
 	void Window::SetTitle(const std::wstring& title)
 	{
-		glfwSetWindowTitle(mpWindow, SZ<char>::WStr2Str(title).c_str());
+		glfwSetWindowTitle(mpWindow, WStr2Str(title).c_str());
 	}
 
 	void Window::SetFullScreen(bool enabled)
@@ -299,7 +299,8 @@ namespace GS
 
 	void Window::SetIcon(const std::wstring& path)
 	{
-		auto paths = OS::FindDataFile(path);
+		auto paths = FindDataFiles(path, false);
+
 	}
 
 	void Window::MoveTo(int x, int y)

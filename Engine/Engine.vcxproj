@@ -20,15 +20,13 @@
     <ClInclude Include="include\RHI\Formats.h" />
     <ClInclude Include="include\Utils\Bitmap.h" />
     <ClInclude Include="include\Utils\Object.h" />
-    <ClInclude Include="include\Utils\Platform\MonitorInfo.h" />
-    <ClInclude Include="include\Utils\Platform\OS.h" />
     <ClInclude Include="include\Utils\Signal\Function.h" />
     <ClInclude Include="include\Utils\Signal\Mutex.h" />
     <ClInclude Include="include\Utils\Signal\Observer.h" />
     <ClInclude Include="include\Utils\Signal\Signal.h" />
-    <ClInclude Include="include\Utils\String.h" />
     <ClInclude Include="include\Utils\Window.h" />
-    <ClInclude Include="source\resource.h" />
+    <ClInclude Include="source\Utils\String.h" />
+    <ClInclude Include="source\Utils\System.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationBase.cpp" />
@@ -36,13 +34,8 @@
     <ClCompile Include="source\RHI\Formats.cpp" />
     <ClCompile Include="source\Utils\compile_stb_image.cpp" />
     <ClCompile Include="source\Utils\Object.cpp" />
-    <ClCompile Include="source\Utils\Platform\MonitorInfo_Win32.cpp" />
-    <ClCompile Include="source\Utils\Platform\OS_Common.cpp" />
-    <ClCompile Include="source\Utils\Platform\OS_Win32.cpp" />
+    <ClCompile Include="source\Utils\System_Win32.cpp" />
     <ClCompile Include="source\Utils\Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="source\resource.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

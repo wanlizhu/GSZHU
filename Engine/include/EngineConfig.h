@@ -27,7 +27,8 @@
 #endif
 
 #ifdef BUILD_SHARED_LIBS
-#define GS_API DLL_EXPORT
+#define GS_API     DLL_EXPORT
+#define GS_DEV_API DLL_EXPORT
 #elif BUILD_STATIC_LIBS
 #define GS_API
 #else
