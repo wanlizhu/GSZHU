@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Config.h"
 #include <vector>
 #include <memory>
 
@@ -48,9 +49,8 @@ namespace ZHU
 			, mpResource(res)
 			, mViewInfo(info)
 		{}
-		virtual ~IResourceView() { Destroy(); }
+		virtual ~IResourceView() = 0;
 
-		virtual void Destroy() = 0;
 		const Handle& GetHandle() const { return mHandle; }
 		const ResourceViewInfo& GetViewInfo() const { return mViewInfo; }
 		Resource* GetResource() const { return mpResource.lock().get(); }
