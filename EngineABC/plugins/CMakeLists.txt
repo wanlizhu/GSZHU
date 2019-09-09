@@ -1,3 +1,3 @@
 cmake_minimum_required(VERSION 2.8.11)
 
-add_subdirectory(RHI)
+add_subdirectory(RHI2019)

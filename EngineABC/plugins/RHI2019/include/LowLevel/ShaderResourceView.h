@@ -1,0 +1,12 @@
+#pragma once
+
+#include "IResourceView.h"
+
+namespace ZHU
+{
+	class ShaderResourceView : public IResourceView<>
+	{
+	public:
+
+	};
+}
