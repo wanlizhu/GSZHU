@@ -15,5 +15,5 @@ zhu_add_shared_library(EngineABC)
                        External::GLFW
                        External::GLOG
                        External::STB)
-    zhu_copy_to_bin("../data")
+    zhu_add_resources("../data")
 zhu_end_shared_library()

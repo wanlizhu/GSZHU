@@ -11,5 +11,5 @@ zhu_add_executable(EngineABC_UnitTest)
 
     zhu_link_libraries(EngineABC
                        External::GTEST)
-    zhu_copy_to_bin("data")
+    zhu_add_resources("data")
 zhu_end_executable()

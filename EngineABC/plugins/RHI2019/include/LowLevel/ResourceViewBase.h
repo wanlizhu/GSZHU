@@ -36,28 +36,38 @@ namespace ZHU
 		}
 	};
 
-	template<typename HANDLE>
-	class IResourceView
+	template<typename _NativeHandle>
+	class ResourceViewBase
 	{
 	public:
 		static const uint32_t kMax = -1;
-		using Handle = HANDLE;
+		using NativeHandle = _NativeHandle;
+		using SharedPtr = std::shared_ptr<ResourceViewBase>;
+		using SharedConstPtr = std::shared_ptr<const ResourceViewBase>;
 
-		IResourceView() = default;
-		IResourceView(ResourceWeakPtr& res, Handle handle, const ResourceViewInfo& info)
-			: mHandle(handle)
-			, mpResource(res)
-			, mViewInfo(info)
-		{}
-		virtual ~IResourceView() = 0;
+		virtual ~ResourceViewBase() { static_assert(false, "ResourceViewBase missing destructor specialization"); }
 
-		const Handle& GetHandle() const { return mHandle; }
+		const NativeHandle& GetNativeHandle() const { return mNativeHandle; }
 		const ResourceViewInfo& GetViewInfo() const { return mViewInfo; }
 		Resource* GetResource() const { return mpResource.lock().get(); }
 
 	protected:
-		Handle mHandle;
+		ResourceViewBase() = default;
+		ResourceViewBase(ResourceWeakPtr& res, NativeHandle handle, const ResourceViewInfo& info)
+			: mHandle(handle)
+			, mpResource(res)
+			, mViewInfo(info)
+		{}
+
+	protected:
+		NativeHandle mNativeHandle;
 		ResourceViewInfo mViewInfo;
 		ResourceWeakPtr mpResource;
 	};
+
+	template<> ResourceViewBase<SRVHandle>::~ResourceViewBase();
+	template<> ResourceViewBase<DSVHandle>::~ResourceViewBase();
+	template<> ResourceViewBase<UAVHandle>::~ResourceViewBase();
+	template<> ResourceViewBase<RTVHandle>::~ResourceViewBase();
+	template<> ResourceViewBase<CBVHandle>::~ResourceViewBase();
 }

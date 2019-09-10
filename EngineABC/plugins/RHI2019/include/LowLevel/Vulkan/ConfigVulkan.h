@@ -26,24 +26,23 @@
 
 #include "VkHandle.h"
 #include "VkResource.h"
-#include "VkDeviceData.h"
+#include "VkRenderDevice.h"
 #include "VkFBO.h"
 #include "VkRootSignature.h"
 
 namespace ZHU
 {
 	using WindowHandle = void*;
-	using DeviceHandle = VkDeviceData::SharedPtr;
+	using DeviceHandle = VkRenderDevice::SharedPtr;
 	using DeviceObjectHandle = VkHandleBase::SharedPtr;
 
 	using HeapGPUHandle = void*;
 	using HeapCPUHandle = void*;
-	using CommandListHandle = VkCommandBuffer;
-	using CommandQueueHandle = VkQueue;
-	using CommandQueueType = uint32_t;
+	using CommandListHandle = VkHandle<VkCommandBuffer>::SharedPtr;
+	using CommandQueueHandle = VkHandle<VkQueue>::SharedPtr;
 	using CommandAllocatorHandle = VkHandle<VkCommandPool>::SharedPtr;
 	using CommandSignatureHandle = void*;
-	using FenceHandle = VkSemaphore;
+	using FenceHandle = VkHandle<VkSemaphore>::SharedPtr;
 	using ResourceHandle = VkResource<VkBuffer, VkImage>::SharedPtr;
 	using RTVHandle = VkResource<VkBufferView, VkImageView>::SharedPtr;
 	using DSVHandle = VkResource<VkBufferView, VkImageView>::SharedPtr;
@@ -53,7 +52,7 @@ namespace ZHU
 	using FBOHandle = VkFBO::SharedPtr;
 	using SamplerHandle = VkHandle<VkSampler>::SharedPtr;
 	using GPUAddress = size_t;
-	using DescriptorSetHandle = VkDescriptorSet;
+	using DescriptorSetHandle = VkHandle<VkDescriptorSet>::SharedPtr;
 	using QueryHeapHandle = VkHandle<VkQueryPool>::SharedPtr;
 
 	using GraphicsStateHandle = VkHandle<VkPipeline>::SharedPtr;

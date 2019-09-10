@@ -200,7 +200,7 @@ macro(zhu_add_source_files)
         set(_temp)
         get_filename_component(_absolutePath ${_fileEntry} ABSOLUTE)
 
-        if (EXISTS ${_absolutePath})
+        if(EXISTS ${_absolutePath})
             if(IS_DIRECTORY "${_absolutePath}")
                 file(GLOB_RECURSE _temp "${_absolutePath}" "*.cpp" "*.c" "*.asm" "*.h")
             else()
@@ -235,35 +235,45 @@ endmacro()
 
 
 
-
 macro(zhu_add_shared_library _target)
     message(STATUS "Generate shared library: " ${_target})
 
     zhu_reset_current_target(${_target})
-    
     add_library(${__CurrentTargetName__} SHARED "dummy.cpp")
+    zhu_set_output_directories()
 endmacro()
 
 macro(zhu_add_static_library _target)
     message(STATUS "Generate static library: " ${_target})
 
     zhu_reset_current_target(${_target})
-
     add_library(${__CurrentTargetName__} STATIC "dummy.cpp")
+    zhu_set_output_directories()
 endmacro()
 
 macro(zhu_add_executable _target)
     message(STATUS "Generate executable app: " ${_target})
 
     zhu_reset_current_target(${_target})
-
     if (ZHU_IS_TARGET_PLATFORM_IOS)
         add_executable(${__CurrentTargetName__} MACOSX_BUNDLE "dummy.cpp")
         set(MACOSX_BUNDLE_GUI_IDENTIFIER ${__CurrentTargetName__})
     else()
         add_executable(${__CurrentTargetName__} "dummy.cpp")
     endif()
+    zhu_set_output_directories()
 endmacro()
+
+
+
+
+
+
+
+
+
+
+
 
 macro(zhu_end_shared_library)
     # Replace sources property with current source information    
@@ -274,7 +284,6 @@ macro(zhu_end_shared_library)
     zhu_apply_general_build_settings()
     zhu_apply_shared_library_build_settings()
     zhu_apply_link_flags()
-    
 endmacro()
 
 macro(zhu_end_static_library)

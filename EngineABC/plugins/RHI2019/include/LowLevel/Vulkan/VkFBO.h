@@ -5,7 +5,7 @@
 namespace ZHU
 {
 	class VkFBO : public VkHandleBase
-		                , public inherit_shared_from_this<VkHandleBase, VkFBO>
+		        , public inherit_shared_from_this<VkHandleBase, VkFBO>
 	{
 	public:
 		class SharedPtr : public std::shared_ptr<VkFBO>

@@ -13,35 +13,50 @@ namespace ZHU
 		virtual ~VkHandleBase() = default;
 	};
 
-	template<typename HANDLE>
+	template<typename _NativeHandle>
 	class VkHandle : public VkHandleBase
-		           , public inherit_shared_from_this<VkHandleBase, VkHandle<HANDLE>>
+		           , public inherit_shared_from_this<VkHandleBase, VkHandle<_NativeHandle>>
 	{
 	public:
-		class SharedPtr : public std::shared_ptr<VkHandle<HANDLE>>
+		using NativeHandle = _NativeHandle;
+		class SharedPtr : public std::shared_ptr<VkHandle<NativeHandle>>
 		{
 		public:
 			SharedPtr = default;
-			SharedPtr(VkHandle<HANDLE>* handle) : std::shared_ptr<VkHandle<HANDLE>>(handle) {}
+			SharedPtr(VkHandle<NativeHandle>* handle) 
+				: std::shared_ptr<VkHandle<NativeHandle>>(handle)
+			{}
 
-			static SharedPtr Create(HANDLE handle) { return SharedPtr(new VkHandle<HANDLE>(handle)); }
-			operator HANDLE() const { return get()->mHandle; }
+			static SharedPtr Create(NativeHandle handle)
+			{
+				return SharedPtr(new VkHandle<NativeHandle>(handle));
+			}
+			operator NativeHandle() const 
+			{
+				return get()->mNativeHandle;
+			}
 		};
 		friend class SharedPtr;
 
 		virtual ~VkHandle() { static_assert(false, "VkHandle missing destructor specialization"); }
 
-	private:
-		VkHandle(const HANDLE& handle) : mHandle(handle) {}
+	protected:
+		VkHandle(const NativeHandle& handle) 
+			: mNativeHandle(handle)
+		{}
 
-	private:
-		HANDLE mHandle;
+	protected:
+		NativeHandle mNativeHandle;
 	};
 
+	// Force template instantiation
 	template<> VkHandle<VkSwapchainKHR>::~VkHandle();
+	template<> VkHandle<VkCommandBuffer>::~VkHandle();
 	template<> VkHandle<VkCommandPool>::~VkHandle();
+	template<> VkHandle<VkQueue>::~VkHandle();
 	template<> VkHandle<VkSemaphore>::~VkHandle();
-	template<> VkHandle<VkSampler>::~VkHandle();
+	template<> VkHandle<VkSampler>::~VkHandle(); 
+	template<> VkHandle<VkDescriptorSet>::~VkHandle();
 	template<> VkHandle<VkDescriptorSetLayout>::~VkHandle();
 	template<> VkHandle<VkPipeline>::~VkHandle();
 	template<> VkHandle<VkShaderModule>::~VkHandle();

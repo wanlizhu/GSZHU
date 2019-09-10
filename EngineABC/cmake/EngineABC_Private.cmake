@@ -117,6 +117,18 @@ macro(zhu_reset_current_target _target)
     set(__CurrentTargetOutputName__ ${_target})
 endmacro()
 
+macro(zhu_set_output_directories)
+    set_target_properties(${__CurrentTargetName__} PROPERTIES 
+                          ARCHIVE_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+                          ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+                          LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+                          LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+                          RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+                          RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+                          PDB_OUTPUT_DIRECTORY_DEBUG       ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+                          PDB_OUTPUT_DIRECTORY_RELEASE     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+endmacro()
+
 macro(zhu_apply_general_build_settings)
     string(COMPARE EQUAL "${__CurrentTargetOutputName__}" "" _emptyName)
     if (NOT _emptyName)
@@ -198,9 +210,28 @@ endmacro()
 
 macro(zhu_apply_copy_resources)
     if(__CurrentResources__)
+        get_target_property(_binDir ${__CurrentTargetName__} RUNTIME_OUTPUT_DIRECTORY)
+        set(_filesToCopy)
+        set(_dirsToCopy)
+
         foreach(_res ${__CurrentResources__})
-            if(EXIST )
+            if(EXISTS ${_res})
+                if(IS_DIRECTORY ${_res})
+                    list(APPEND _dirsToCopy ${_res})
+                else()
+                    list(APPEND _filesToCopy ${_res})
+                endif()
+            endif()
         endforeach()
+
+        if(_filesToCopy)
+            add_custom_command(TARGET ${__CurrentTargetName__} POST_BUILD
+                               COMMAND ${CMAKE_COMMAND} -E copy_files ${_filesToCopy} ${_binDir})
+        endif()
+        if(_dirsToCopy)
+            add_custom_command(TARGET ${__CurrentTargetName__} POST_BUILD
+                               COMMAND ${CMAKE_COMMAND} -E copy_directory ${_dirsToCopy} ${_binDir})
+        endif()
     endif()
 endmacro()
 
