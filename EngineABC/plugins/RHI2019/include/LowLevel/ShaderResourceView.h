@@ -4,7 +4,7 @@
 
 namespace ZHU
 {
-	class ShaderResourceView : public IResourceView<>
+	class ShaderResourceView : public IResourceView<SRVHandle>
 	{
 	public:
 

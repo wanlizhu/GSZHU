@@ -199,20 +199,23 @@ macro(zhu_add_source_files)
     foreach(_fileEntry ${ARGV})
         set(_temp)
         get_filename_component(_absolutePath ${_fileEntry} ABSOLUTE)
-        if(IS_DIRECTORY "${_absolutePath}")
-            file(GLOB_RECURSE _temp "${_absolutePath}" "*.cpp" "*.c" "*.asm" "*.h")
-        else()
-            set(_temp "${_absolutePath}")
-        endif()
 
-        # Recognize .cpp/.h
-        foreach(_item ${_temp})
-            if (${_item} MATCHES "(.*\\.h$)|(.*\\.hpp$)")
-                list(APPEND _headerFileList ${_item})
+        if (EXISTS ${_absolutePath})
+            if(IS_DIRECTORY "${_absolutePath}")
+                file(GLOB_RECURSE _temp "${_absolutePath}" "*.cpp" "*.c" "*.asm" "*.h")
             else()
-                list(APPEND _sourceFileList ${_item})
+                set(_temp "${_absolutePath}")
             endif()
-        endforeach()
+
+            # Recognize .cpp/.h
+            foreach(_item ${_temp})
+                if (${_item} MATCHES "(.*\\.h$)|(.*\\.hpp$)")
+                    list(APPEND _headerFileList ${_item})
+                else()
+                    list(APPEND _sourceFileList ${_item})
+                endif()
+            endforeach()
+        endif()
     endforeach()
 
     # Add to __CurrentSourceFiles__
@@ -229,12 +232,16 @@ endmacro()
 
 
 
+
+
+
+
 macro(zhu_add_shared_library _target)
     message(STATUS "Generate shared library: " ${_target})
 
     zhu_reset_current_target(${_target})
-
-    add_library(${__CurrentTargetName__} SHARED "${CMAKE_CURRENT_LIST_DIR}/dummy.cpp")
+    
+    add_library(${__CurrentTargetName__} SHARED "dummy.cpp")
 endmacro()
 
 macro(zhu_add_static_library _target)
@@ -242,7 +249,7 @@ macro(zhu_add_static_library _target)
 
     zhu_reset_current_target(${_target})
 
-    add_library(${__CurrentTargetName__} STATIC "${CMAKE_CURRENT_LIST_DIR}/dummy.cpp")
+    add_library(${__CurrentTargetName__} STATIC "dummy.cpp")
 endmacro()
 
 macro(zhu_add_executable _target)
@@ -251,10 +258,10 @@ macro(zhu_add_executable _target)
     zhu_reset_current_target(${_target})
 
     if (ZHU_IS_TARGET_PLATFORM_IOS)
-        add_executable(${__CurrentTargetName__} MACOSX_BUNDLE "${CMAKE_CURRENT_LIST_DIR}/dummy.cpp")
+        add_executable(${__CurrentTargetName__} MACOSX_BUNDLE "dummy.cpp")
         set(MACOSX_BUNDLE_GUI_IDENTIFIER ${__CurrentTargetName__})
     else()
-        add_executable(${__CurrentTargetName__} "${CMAKE_CURRENT_LIST_DIR}/dummy.cpp")
+        add_executable(${__CurrentTargetName__} "dummy.cpp")
     endif()
 endmacro()
 
