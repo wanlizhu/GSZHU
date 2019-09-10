@@ -107,6 +107,7 @@ macro(zhu_reset_current_target _target)
     set(__CurrentDirectory__ ${CMAKE_CURRENT_SOURCE_DIR})
     set(__CurrentGroup__)
     set(__CurrentSourceFiles__)
+    set(__CurrentResources__)
 
     set(__CurrentLinkFlags__)
     set(__CurrentLinkFlagsRelease__)
@@ -192,6 +193,14 @@ macro(zhu_apply_link_flags)
 
         set_target_properties(${__CurrentTargetName__} PROPERTIES 
                               LINK_FLAGS_DEBUG "${ZHU_LINK_FLAGS_DEBUG} ${__CurrentLinkFlagsDebug__}")
+    endif()
+endmacro()
+
+macro(zhu_apply_copy_resources)
+    if(__CurrentResources__)
+        foreach(_res ${__CurrentResources__})
+            if(EXIST )
+        endforeach()
     endif()
 endmacro()
 

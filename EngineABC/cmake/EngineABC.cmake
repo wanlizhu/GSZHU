@@ -33,6 +33,12 @@ macro(zhu_set_output_name _name)
     set(__CurrentTargetOutputName__ ${_name})
 endmacro()
 
+macro(zhu_add_resources)
+    foreach(_res ${ARGV})
+        list(APPEND __CurrentResources__ ${_res})
+    endforeach()
+endmacro()
+
 macro(zhu_compile_definitions)
     foreach(_def ${ARGV})
         target_compile_definitions(${__CurrentTargetName__} PRIVATE ${_def})
@@ -166,20 +172,6 @@ macro(zhu_add_command _type _command)
                        COMMAND ${_command})
 endmacro()
 
-macro(zhu_copy_to_bin)
-    get_target_property(_dst ${__CurrentTargetName__} RUNTIME_OUTPUT_DIRECTORY)
-
-    foreach(_src ${ARGV})
-        if (IS_DIRECTORY ${_src})
-            add_custom_command(TARGET ${__CurrentTargetName__} POST_BUILD
-                               COMMAND ${CMAKE_COMMAND} -E copy_directory "${_src}" "${_dst}")
-        else()
-            add_custom_command(TARGET ${__CurrentTargetName__} POST_BUILD
-                               COMMAND ${CMAKE_COMMAND} -E copy_files "${_src}" "${_dst}")
-        endif()
-    endforeach()
-endmacro()
-
 macro(zhu_auto_group)
     foreach(_file ${ARGV})
         if (IS_ABSOLUTE "${_file}")
@@ -275,6 +267,7 @@ macro(zhu_end_shared_library)
     zhu_apply_general_build_settings()
     zhu_apply_shared_library_build_settings()
     zhu_apply_link_flags()
+    
 endmacro()
 
 macro(zhu_end_static_library)
