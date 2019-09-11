@@ -26,9 +26,6 @@
 
 #include "VkHandle.h"
 #include "VkResource.h"
-#include "VkRenderDevice.h"
-#include "VkFBO.h"
-#include "VkRootSignature.h"
 
 namespace ZHU
 {

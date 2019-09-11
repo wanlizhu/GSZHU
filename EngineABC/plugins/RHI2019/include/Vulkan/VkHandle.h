@@ -2,7 +2,6 @@
 
 #include <type_traits>
 #include <vulkan/vulkan.h>
-#include "LowLevel/Utils.h"
 
 namespace ZHU
 {
