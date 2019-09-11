@@ -14,7 +14,7 @@ zhu_set_cxx_standard(17)
 zhu_add_source_files("source/dllmain.cpp" "source/OpenGL" "include" "interface")
 zhu_include_directories("source/OpenGL" "include")
 zhu_include_directories_public("interface")
-zhu_compile_definitions(RHI_USE_OPENGL)
+zhu_compile_definitions(RHI_USE_OPENGL RHI_BUILD_SHARED_LIBS)
 
 find_package(OpenGL REQUIRED)
 zhu_link_libraries(OpenGL
@@ -38,7 +38,7 @@ if (RHI_ENABLE_VULKAN)
     zhu_add_source_files("source/dllmain.cpp" "source/Vulkan" "include" "interface")
     zhu_include_directories("source/Vulkan" "include")
     zhu_include_directories_public("interface")
-    zhu_compile_definitions(RHI_USE_VULKAN)
+    zhu_compile_definitions(RHI_USE_VULKAN RHI_BUILD_SHARED_LIBS)
 
     zhu_link_libraries(Vulkan::Vulkan
                        External::EIGEN
@@ -59,7 +59,7 @@ if (RHI_ENABLE_D3D12)
     zhu_add_source_files("source/dllmain.cpp" "source/D3D12" "include" "interface")
     zhu_include_directories("source/D3D12" "include")
     zhu_include_directories_public("interface")
-    zhu_compile_definitions(RHI_USE_D3D12)
+    zhu_compile_definitions(RHI_USE_D3D12 RHI_BUILD_SHARED_LIBS)
 
     zhu_link_libraries(External::EIGEN
                        External::GLFW

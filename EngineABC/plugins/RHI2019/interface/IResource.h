@@ -8,12 +8,26 @@ namespace ZHU
 {
 	enum class EResourceType
 	{
-		Buffer,       // Can be bound to all shader - stages
-		Texture1D,    // Can be bound as render-target, shader-resource and UAV
-		Texture2D,    // ditto
-		Texture3D,    // ditto
-		TextureCube,  // ditto
-		Texture2DMS,  // (2D multi-sampled texture) ditto
+		Undefined,
+		Buffer,       
+		Texture,
+	};
+
+	enum class EResourceUsage
+	{
+		Undefined,
+		Default, // GPU can read/write, but CPU has no access
+		Immutable,
+		Dynamic,
+		Stading,
+	};
+
+	enum class EAccessFlags
+	{
+		None,
+		Read,
+		Write,
+		ReadWrite,
 	};
 
 	enum class EResourceState
@@ -54,7 +68,7 @@ namespace ZHU
 		UnorderedAccess = 0x20, 
 		RenderTarget = 0x40,    
 		DepthStencil = 0x80,    
-		IndirectArg = 0x100,    
+		IndirectArgument = 0x100,    
 #ifdef RHI_USE_D3D12
 		AccelerationStructure = 0x80000000, 
 #endif
@@ -65,7 +79,10 @@ namespace ZHU
 	public:
 		virtual ~IResource() = 0;
 		virtual EResourceType GetType() const = 0;
+		virtual EResourceUsage GetUsage() const = 0;
+		virtual EAccessFlags GetCPUAccess() const = 0;
 		virtual EResourceBindFlags GetBindFlags() const = 0;
+
 		virtual bool IsStateGlobal() const = 0;
 		virtual EResourceState GetGlobalState() const = 0;
 		virtual EResourceState GetSubresourceState(uint32_t slice, uint32_t mip) const = 0;
