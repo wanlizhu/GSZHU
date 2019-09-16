@@ -1,5 +1,10 @@
-cmake_minimum_required(VERSION 2.8.11)
-project(CAD4FUN)
+cmake_minimum_required(VERSION 3.1)
 
-add_subdirectory(EngineABC)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
+include(fabric)
+
+project(GraphicsEngine)
+zhu_setup_project(GraphicsEngine)
+
+add_subdirectory(Engine)
 add_subdirectory(Launcher)
