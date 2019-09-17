@@ -1,3 +1,25 @@
+
+# Current Development Status
+
+* Implement **plugins/FabricGML**
+    - Computational Geometry Math Library.
+    - Make boost an optional dependency of CGAL by excluding codes using boost from compiling.
+
+* Implement **plugins/FabricRHI**
+    - Rendering Hardware Interface.
+    - OpenGL is the default rendering backend, Vulkan and D3D12 is optional (can be loaded dynamically).
+    - Platform specified window creation can be handled by user application or leave it to this engine as well.
+
+* Implement **Python GUI layer**
+    - Use Python(tkinter) as the GUI layer, no need to add a dependency to Qt or equivalent.
+    - This engine will also export APIs for Python, **(Python call C++)**
+    - **(Abeyant)** Use Lua as the extension of C++,  **(C++ call Lua)**
+
+---
+
+
+# Jottings
+
 * **I wouldn't advise distributing a static library, however, since it's generally tied to a specific version of the compiler**
 
 
