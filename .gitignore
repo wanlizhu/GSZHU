@@ -7,6 +7,5 @@
 /Solutions/*
 /.vscode/*
 /.vs/*
-__pycache__/*
-__cache__/
-Engine/external/GLFW/build
+/__pycache__/*
+/__cache__/
