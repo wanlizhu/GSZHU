@@ -11,6 +11,6 @@ zhu_add_shared_library(FabricGML)
     zhu_include_directories_public("include")
     zhu_compile_definitions_if(GML_USE_CGAL)
     
-    find_package(CGAL REQUIRED)
-    include(${CGAL_USE_FILE})
+    #find_package(CGAL REQUIRED)
+    #zhu_link_libraries(CGAL)
 zhu_end_shared_library()

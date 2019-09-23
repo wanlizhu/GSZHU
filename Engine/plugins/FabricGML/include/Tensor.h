@@ -90,23 +90,4 @@ namespace GML
 		auto _push_back = [&](const T& num) { mArray[index++] = num; };
 		(_push_back(args), ...);
 	}
-
-
-
-
-#define GML_COMPONENT_WISE_OPERATORS(T) \
-static_assert(std::is_base_of_v<TensorBase, T>, "");\
-inline T  operator- (const T& tensor)                              { return OP_NEG<T>  (tensor);   }\
-inline T  operator+ (const T& lhs, const T& rhs)                   { return OP_PLUS<T> (lhs, rhs); }\
-inline T  operator- (const T& lhs, const T& rhs)                   { return OP_MINUS<T>(lhs, rhs); }\
-inline T  operator* (const T& lhs, const T& rhs)                   { return OP_MUL<T>  (lhs, rhs); }\
-inline T  operator/ (const T& lhs, const T& rhs)                   { return OP_DIV<T>  (lhs, rhs); }\
-inline T  operator* (const T& lhs, const typename T::Element& num) { return OP_MUL<T>  (lhs, num); }\
-inline T  operator* (const typename T::Element& num, const T& rhs) { return OP_MUL<T>  (num, rhs); }\
-inline T& operator+=(T& lhs, const T& rhs)                   { lhs = operator+(lhs, rhs); return lhs; }\
-inline T& operator-=(T& lhs, const T& rhs)                   { lhs = operator-(lhs, rhs); return lhs; }\
-inline T& operator*=(T& lhs, const T& rhs)                   { lhs = operator*(lhs, rhs); return lhs; }\
-inline T& operator/=(T& lhs, const T& rhs)                   { lhs = operator/(lhs, rhs); return lhs; }\
-inline T& operator*=(T& lhs, const typename T::Element& num) { lhs = operator*(lhs, num); return lhs; }
-
 }

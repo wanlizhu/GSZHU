@@ -6,5 +6,6 @@
 # Temporary directories.
 /.vscode/*
 /.vs/*
-__pycache__/*
-__cache__/
+/__pycache__/*
+/CMake/__pycache__/*
+/__cache__/
