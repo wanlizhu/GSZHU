@@ -3,7 +3,7 @@ import sys
 import datetime
 import shutil
 import subprocess as subproc
-from regenutils import *
+from helpers import *
 
 check_vcpkg()
 
