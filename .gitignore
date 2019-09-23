@@ -4,9 +4,7 @@
 /[Ll]ib/
 
 # Temporary directories.
-/Solutions/*
 /.vscode/*
 /.vs/*
 __pycache__/*
 __cache__/
-Engine/external/GLFW/build
