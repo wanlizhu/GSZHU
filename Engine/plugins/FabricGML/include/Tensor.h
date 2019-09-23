@@ -19,7 +19,7 @@ namespace GML
 	typedef struct _RowIndex {} *RowIndex;
 
     template<typename T, int H, int W>
-    class GML_API Tensor : public TensorBase
+    class Tensor : public TensorBase
     {
     public:
 		using Element = T;
@@ -45,6 +45,9 @@ namespace GML
 		inline const T* cbegin() const { return mArray; }
 		inline       T* end()          { return mArray + (H * W); }
 		inline const T* cend()   const { return mArray + (H * W); }
+
+		inline bool operator==(const Tensor& other) const { return OP_EQ<T, kLength>(mArray, other.mArray);  }
+		inline bool operator!=(const Tensor& other) const { return !operator==(other);   }
 
 	protected:
 		T mArray[H * W] = { (T)0 };

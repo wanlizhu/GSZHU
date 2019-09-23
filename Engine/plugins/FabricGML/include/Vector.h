@@ -11,7 +11,7 @@ namespace GML
 #endif
 
 	template<typename T, int N>
-	class GML_API Vector : public VECTOR_BASE
+	class Vector : public VECTOR_BASE
 	{
 	public:
 		using Base = VECTOR_BASE;
@@ -34,9 +34,13 @@ namespace GML
 		inline       T& w()       { return mArray[3]; }
 		inline const T& w() const { return mArray[3]; }
 
-		inline Vector<T, N>& make_zero();
-		inline Vector<T, N>& make_one();
-		inline Vector<T, N>& make_unit(int index);
+		inline Vector& make_zero();
+		inline Vector& make_one();
+		inline Vector& make_unit(int index);
+
+		inline static Vector zero()          { return Vector().make_zero(); }
+		inline static Vector one()           { return Vector().make_one(); }
+		inline static Vector unit(int index) { return Vector().make_unit(index); }
 	};
 
 	template<typename T>
@@ -50,6 +54,66 @@ namespace GML
 
 
 
+
+	template<typename T, int N>
+	Vector<T, N> dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
+	{
+
+	}
+
+	template<typename T>
+	Vector<T, 3> cross(const Vector<T, 3> & lhs, const Vector<T, 3> & rhs)
+	{
+
+	}
+
+	template<typename T, int N>
+	Vector<T, N>& normalize(Vector<T, N>& vec, bool robust = false)
+	{
+
+	}
+
+	template<typename T, int N>
+	T length(const Vector<T, N>& vec)
+	{
+
+	}
+
+	template<typename T, int N>
+	T orthonormalize(int num, Vector<T, N>* vecs, bool robust = false)
+	{
+
+	}
+
+	template<typename T, int N>
+	bool compute_bounds(int num, const Vector<T, N>* vecs,
+						Vector<T, N>* vmin, Vector<T, N>* vmax)
+	{
+
+	}
+
+	template<typename T>
+	bool compute_barycentrics(const Vector<T, 3> & p,
+							  const Vector<T, 3> & v0,
+							  const Vector<T, 3> & v1,
+							  const Vector<T, 3> & v2,
+							  T bary[4],
+							  T epsilon = std::numeric_limits<T>::epsilon())
+	{
+
+	}
+
+	// Compute the hypercross product using the formal determinant:
+	//   hcross = det{{e0,e1,e2,e3},{x0,x1,x2,x3},{y0,y1,y2,y3},{z0,z1,z2,z3}}
+	//   where e0 = (1,0,0,0), e1 = (0,1,0,0), e2 = (0,0,1,0), e3 = (0,0,0,1),
+	//   v0 = (x0,x1,x2,x3), v1 = (y0,y1,y2,y3), and v2 = (z0,z1,z2,z3).
+	template<typename T, int N>
+	Vector<T, 4> hyper_cross(const Vector<T, 4> & v0,
+							 const Vector<T, 4> & v1,
+							 const Vector<T, 4> & v2)
+	{
+
+	}
 
 	//////////////////////////////////////////////////
 	///
@@ -132,65 +196,5 @@ namespace GML
 	{
 		lhs = OP_MUL(lhs, num);
 		return lhs;
-	}
-
-	template<typename T, int N>
-	Vector<T, N> dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
-	{
-
-	}
-
-	template<typename T>
-	Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
-	{
-
-	}
-
-	template<typename T, int N>
-	Vector<T, N>& normalize(Vector<T, N>& vec, bool robust = false)
-	{
-
-	}
-
-	template<typename T, int N>
-	T length(const Vector<T, N>& vec)
-	{
-
-	}
-
-	template<typename T, int N>
-	T orthonormalize(int num, Vector<T, N>* vecs, bool robust = false) 
-	{
-	
-	}
-
-	template<typename T, int N>
-	bool compute_bounds(int num, const Vector<T, N>* vecs,
-						Vector<T, N>* vmin, Vector<T, N>* vmax)
-	{
-
-	}
-
-	template<typename T>
-	bool compute_barycentrics(const Vector<T, 3> & p,
-							  const Vector<T, 3> & v0,
-							  const Vector<T, 3> & v1,
-							  const Vector<T, 3> & v2,
-							  T bary[4],
-							  T epsilon = std::numeric_limits<T>::epsilon())
-	{
-
-	}
-
-	// Compute the hypercross product using the formal determinant:
-	//   hcross = det{{e0,e1,e2,e3},{x0,x1,x2,x3},{y0,y1,y2,y3},{z0,z1,z2,z3}}
-	//   where e0 = (1,0,0,0), e1 = (0,1,0,0), e2 = (0,0,1,0), e3 = (0,0,0,1),
-	//   v0 = (x0,x1,x2,x3), v1 = (y0,y1,y2,y3), and v2 = (z0,z1,z2,z3).
-	template<typename T, int N>
-	Vector<T, 4> hyper_cross(const Vector<T, 4> & v0,
-							 const Vector<T, 4> & v1,
-							 const Vector<T, 4> & v2)
-	{
-
 	}
 }

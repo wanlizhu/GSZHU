@@ -8,7 +8,7 @@ namespace GML
 #define ROWIDX(i) (reinterpret_cast<RowIndex>   (i))
 	
 	template<typename T, int H, int W>
-	class GML_API Matrix : public Tensor<T, H, W>
+	class Matrix : public Tensor<T, H, W>
 	{
 	public:
 		using Base   = Tensor<T, H, W>;
@@ -29,6 +29,10 @@ namespace GML
 		inline Matrix& make_zero();
 		inline Matrix& make_identity();
 		inline Matrix& make_unit(int r, int c);
+
+		inline static Matrix zero()             { return Matrix().make_zero(); }
+		inline static Matrix unit(int r, int c) { return Matrix().make_unit(r, c); }
+		inline static Matrix identity()         { return Matrix().make_identity(); }
 	};
 
 
@@ -112,89 +116,6 @@ namespace GML
 
 
 
-	//////////////////////////////////////////////////
-	///
-	/// Matrix operators as free function
-	///
-	//////////////////////////////////////////////////
-
-	template<typename T, int H, int W> 
-	inline Matrix<T, H, W> operator-(const Matrix<T, H, W>& mat) 
-	{
-		return OP_NEG(mat);
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W> operator+(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
-	{
-		return OP_PLUS(lhs, rhs);
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W> operator-(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
-	{
-		return OP_MINUS(lhs, rhs);
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W> operator*(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
-	{
-		return OP_MUL(lhs, rhs);
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W> operator/(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
-	{
-		return OP_DIV(lhs, rhs);
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W> operator*(const Matrix<T, H, W>& lhs, const T& num)
-	{
-		return OP_MUL(lhs, num);
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W> operator*(const T& num, const Matrix<T, H, W>& rhs)
-	{
-		return OP_MUL(num, rhs);
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W>& operator+=(Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
-	{
-		lhs = OP_PLUS(lhs, rhs);
-		return lhs;
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W>& operator-=(Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
-	{
-		lhs = OP_MINUS(lhs, rhs);
-		return lhs;
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W>& operator*=(Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
-	{
-		lhs = OP_MUL(lhs, rhs);
-		return lhs;
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W>& operator/=(Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
-	{
-		lhs = OP_DIV(lhs, rhs);
-		return lhs;
-	}
-
-	template<typename T, int H, int W>
-	inline Matrix<T, H, W>& operator*=(Matrix<T, H, W>& lhs, const T& num)
-	{
-		lhs = OP_MUL(lhs, num);
-		return lhs;
-	}
-
 	template<typename T, int H, int W>
 	Vector<T, H> apply(const Matrix<T, H, W>& mat, const Vector<T, W>& vec)
 	{
@@ -232,9 +153,6 @@ namespace GML
 	{
 
 	}
-
-
-
 
 	//////////////////////////////////////////////////
 	///
@@ -279,7 +197,7 @@ namespace GML
 	// Get the angle (radians) from a rotation matrix.  The caller is
 	// responsible for ensuring the matrix is a rotation.
 	template<typename T>
-	T get_rotation(const Matrix2<T>& mat)
+	T get_angle(const Matrix2<T>& mat)
 	{
 
 	}
@@ -343,11 +261,11 @@ namespace GML
 	{
 
 	}
-	
+
 	template<typename T>
 	Matrix4<T> make_lookat(const Vector3<T>& eye, const Vector3<T>& target, const Vector3<T>& up)
 	{
-		
+
 	}
 
 	template<typename T>
@@ -373,5 +291,94 @@ namespace GML
 	Matrix4<T> make_reflection(const Vector3<T>& point, const Vector3<T>& normal)
 	{
 
+	}
+
+	//////////////////////////////////////////////////
+	///
+	/// Matrix operators as free function
+	///
+	//////////////////////////////////////////////////
+
+	template<typename T, int H, int W> 
+	inline Matrix<T, H, W> operator-(const Matrix<T, H, W>& mat) 
+	{
+		return OP_NEG(mat);
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W> operator+(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
+	{
+		return OP_PLUS(lhs, rhs);
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W> operator-(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
+	{
+		return OP_MINUS(lhs, rhs);
+	}
+
+	template<typename T, int H, int C, int W>
+	inline Matrix<T, H, W> operator*(const Matrix<T, H, C>& lhs, const Matrix<T, C, W>& rhs)
+	{
+		return mul(lhs, rhs);
+	}
+
+	template<typename T, int H, int W>
+	inline Vector<T, H> operator*(const Matrix<T, H, W>& mat, const Vector<T, W>& vec)
+	{
+		return mul(mat, vec);
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W> operator/(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
+	{
+		return OP_DIV(lhs, rhs);
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W> operator*(const Matrix<T, H, W>& lhs, const T& num)
+	{
+		return OP_MUL(lhs, num);
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W> operator*(const T& num, const Matrix<T, H, W>& rhs)
+	{
+		return OP_MUL(num, rhs);
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W>& operator+=(Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
+	{
+		lhs = OP_PLUS(lhs, rhs);
+		return lhs;
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W>& operator-=(Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
+	{
+		lhs = OP_MINUS(lhs, rhs);
+		return lhs;
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W>& operator*=(Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
+	{
+		lhs = OP_MUL(lhs, rhs);
+		return lhs;
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W>& operator/=(Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs)
+	{
+		lhs = OP_DIV(lhs, rhs);
+		return lhs;
+	}
+
+	template<typename T, int H, int W>
+	inline Matrix<T, H, W>& operator*=(Matrix<T, H, W>& lhs, const T& num)
+	{
+		lhs = OP_MUL(lhs, num);
+		return lhs;
 	}
 }

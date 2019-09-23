@@ -4,14 +4,26 @@
 
 namespace GML
 {
-	// Factorization into Euler angles is not necessarily unique. Let the
-	// integer indices for the axes be (N0,N1,N2), which must be in the set
-	//   {(0,1,2),(0,2,1),(1,0,2),(1,2,0),(2,0,1),(2,1,0),
-	//    (0,1,0),(0,2,0),(1,0,1),(1,2,1),(2,0,2),(2,1,2)}
-	// Let the corresponding angles be (angleN0,angleN1,angleN2). If the
-	// result is unique, then the multiple solutions occur because
-	// angleN2+angleN0 is constant.  If the result is not unique diff, then
-	// the multiple solutions occur because angleN2-angleN0 is constant. In
-	// either type of nonuniqueness, the function returns angleN0=0.
+	template <typename T>
+	class EulerAngles
+	{
+	public:
+		EulerAngles() = default;
+		EulerAngles(T x, T y, T z) : mAngles{ x, y, z } {}
 
+		inline const T& operator[](int i) const { return mAngles[i]; }
+		inline       T& operator[](int i)       { return mAngles[i]; }
+        inline const T& x()               const { return mAngles[0]; };
+		inline 	     T& x()                     { return mAngles[0]; };
+	    inline const T& y()               const { return mAngles[1]; };
+		inline 	     T& y()                     { return mAngles[1]; };
+		inline const T& z()               const { return mAngles[2]; };
+		inline       T& z()                     { return mAngles[2]; };
+
+		inline bool operator==(const EulerAngles& other) const { return OP_EQ<T, 3>(mAngles.data(), other.mAngles.data()); }
+		inline bool operator!=(const EulerAngles& other) const { return !operator==(other); }
+
+	private:
+		std::array<T, 3> mAngles = { T(0) };
+	};
 }
