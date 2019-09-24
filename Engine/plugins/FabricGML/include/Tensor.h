@@ -18,15 +18,15 @@ namespace GML
 	typedef struct _ColumnIndex {} *ColumnIndex;
 	typedef struct _RowIndex {} *RowIndex;
 
-    template<typename T, int H, int W>
+    template<typename T, int NumRows, int NumCols>
     class Tensor : public TensorBase
     {
     public:
 		using Element = T;
-		static const int  kNumRows    = H;
-		static const int  kNumColumns = W;
-		static const bool kSquared    = (H == W);
-		static const int  kLength     = H * W;
+		static const int  kNumRows    = NumRows;
+		static const int  kNumColumns = NumCols;
+		static const bool kSquared    = (NumRows == NumCols);
+		static const int  kLength     = NumRows * NumCols;
 
         Tensor() = default;
 		template<typename U>       explicit Tensor(const U& uni);
@@ -43,38 +43,38 @@ namespace GML
 
 		inline       T* begin()        { return mArray; }
 		inline const T* cbegin() const { return mArray; }
-		inline       T* end()          { return mArray + (H * W); }
-		inline const T* cend()   const { return mArray + (H * W); }
+		inline       T* end()          { return mArray + (NumRows * NumCols); }
+		inline const T* cend()   const { return mArray + (NumRows * NumCols); }
 
 		inline bool operator==(const Tensor& other) const { return OP_EQ<T, kLength>(mArray, other.mArray);  }
 		inline bool operator!=(const Tensor& other) const { return !operator==(other);   }
 
 	protected:
-		T mArray[H * W] = { (T)0 };
+		T mArray[NumRows * NumCols] = { (T)0 };
 	};
 
 
 
 
-	template<typename T, int H, int W>
+	template<typename T, int NumRows, int NumCols>
 	template<typename U>
-	Tensor<T, H, W>::Tensor(const U& uni) 
+	Tensor<T, NumRows, NumCols>::Tensor(const U& uni) 
 	{
 		static_assert(kNumRows >= 1 && kNumColumns >= 1, "");
 		std::for_each(begin(), end(), [&uni](T* it) { *it = uni; });
 	}
 
-	template<typename T, int H, int W>
+	template<typename T, int NumRows, int NumCols>
 	template<typename U>
-	Tensor<T, H, W>::Tensor(const U* buffer)
+	Tensor<T, NumRows, NumCols>::Tensor(const U* buffer)
 	{
 		static_assert(kNumRows >= 1 && kNumColumns >= 1, "");
 		std::for_each(begin(), end(), [&](T* it) { *it = buffer[it - mArray]; });
 	}
 
-	template<typename T, int H, int W>
+	template<typename T, int NumRows, int NumCols>
 	template<typename U>
-	Tensor<T, H, W>::Tensor(const std::initializer_list<U>& list)
+	Tensor<T, NumRows, NumCols>::Tensor(const std::initializer_list<U>& list)
 	{
 		static_assert(kNumRows >= 1 && kNumColumns >= 1, "");
 		assert(list.size() >= (kNumRows * kNumColumns));
@@ -82,9 +82,9 @@ namespace GML
 		std::for_each(begin(), end(), [&](T* it) { *it = *list_it; ++list_it; });
 	}
 
-	template<typename T, int H, int W>
+	template<typename T, int NumRows, int NumCols>
 	template<typename... ARGS>
-	Tensor<T, H, W>::Tensor(const ARGS& ... args)
+	Tensor<T, NumRows, NumCols>::Tensor(const ARGS& ... args)
 	{
 		static_assert((!std::is_base_of_v<TensorBase, const ARGS&> && ...));
 		static_assert((std::is_constructible_v<T, const ARGS&> && ...));

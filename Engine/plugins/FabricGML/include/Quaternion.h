@@ -116,10 +116,7 @@ namespace GML
 			Quaternion<T> inv = conjugate(q) / sqrLen;
 			return inv;
 		}
-		else
-		{
-			return Quaternion<T>::zero();
-		}
+		else return Quaternion<T>::zero();
 	}
 
 	// The conjugate of q = (x,y,z,w) is conj(q) = (-x,-y,-z,w).
@@ -166,9 +163,7 @@ namespace GML
 		T cosA = dot(q0, q1);
 		T sign;
 		if (cosA >= (T)0)
-		{
 			sign = (T)1;
-		}
 		else
 		{
 			cosA = -cosA;
