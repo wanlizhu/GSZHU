@@ -3,6 +3,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 // The input matrix M must be NxN.  The storage convention for element lookup
 // is determined by GML_USE_ROW_MAJOR, whichever is active.  
@@ -29,4 +30,22 @@ namespace GML
 		// Copy source to target or to set target to zero if source is nullptr.
 		void set(int numElements, const T* source, T* target) const;
 	};
+
+
+
+
+    template<typename T>
+    bool GaussianElimination<T>::operator()(int numRows,
+                                            const T* M, T* inverseM, T& detM,
+                                            const T* B, T* X,
+                                            const T* C, int numCols, T* Y) const
+    {
+        return true;
+    }
+
+    template<typename T>
+    void GaussianElimination<T>::set(int numElements, const T* source, T* target) const
+    {
+
+    }
 }

@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.1)
 
-option(RHI_ENABLE_VULKAN "Enable Vulkan backend" ON)
-option(RHI_ENABLE_D3D12  "Enable D3D12 backend"  ON)
+option(RHI_ENABLE_VULKAN "Enable Vulkan backend" OFF)
+option(RHI_ENABLE_D3D12  "Enable D3D12 backend"  OFF)
 
-find_package(glog REQUIRED)
+find_package(GLOG REQUIRED)
 
 zhu_add_shared_library(FabricRHI_OpenGL)
     zhu_set_target_folder("Plugins")
@@ -16,8 +16,8 @@ zhu_add_shared_library(FabricRHI_OpenGL)
     zhu_include_directories_public("interface")
     zhu_compile_definitions(RHI_USE_OPENGL RHI_BUILD_SHARED_LIBS)
 
-    find_package(opengl REQUIRED)
-    zhu_link_libraries(FabricGML opengl glog)
+    find_package(OpenGL REQUIRED)
+    zhu_link_libraries(FabricGML OpenGL GLOG)
 zhu_end_shared_library()
 
 
@@ -34,7 +34,7 @@ if (RHI_ENABLE_VULKAN)
         zhu_compile_definitions(RHI_USE_VULKAN RHI_BUILD_SHARED_LIBS)
 
         find_package(vulkan REQUIRED)
-        zhu_link_libraries(FabricGML vulkan glog)
+        zhu_link_libraries(FabricGML Vulkan GLOG)
     zhu_end_shared_library()
 endif()
 
@@ -50,6 +50,6 @@ if (RHI_ENABLE_D3D12)
         zhu_include_directories_public("interface")
         zhu_compile_definitions(RHI_USE_D3D12 RHI_BUILD_SHARED_LIBS)
 
-        zhu_link_libraries(FabricGML glog)
+        zhu_link_libraries(FabricGML GLOG)
     zhu_end_shared_library()
 endif()
