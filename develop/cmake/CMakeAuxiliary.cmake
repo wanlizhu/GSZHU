@@ -9,6 +9,10 @@ include(UsePackages)
 macro(cm_setup_project _proj)
     cmake_policy(SET CMP0079 NEW)    # allows the target_link_libraries() to run on targets created in other directories.
 
+    if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
+        set(CMAKE_BUILD_TYPE "Debug")
+    endif()
+
     if(MSVC OR (CMAKE_GENERATOR STREQUAL "Xcode"))
         # disable subfolder("/Debug";"/Release") in output directory
         set(CMAKE_CONFIGURATION_TYPES "Debug")

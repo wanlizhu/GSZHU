@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Matrix.h"
 #include "AxisAngle.h"
 #include "EulerAngle.h"
-#include "Quaternion.h"
 #include <variant>
 #include <type_traits>
 
@@ -17,10 +15,10 @@ namespace GML
 		Quaternion = 3,
 	};
 
-	template<typename T, int N,
-		     typename = std::enable_if_t<N == 3 || N == 4>>
+	template<typename T, int N>
 	class Rotation
 	{
+        static_assert(N == 3 || N == 4);
 	public:
 		using MAT  = Matrix<T, N, N>;
 		using QUAT = Quaternion<T>;
@@ -32,10 +30,15 @@ namespace GML
 		Rotation(const EA& euler);
 		Rotation(const QUAT& quat);
 
-		operator MAT()  const;
-		operator AA()   const;
-		operator EA()   const;
-		operator QUAT() const;
+		operator MAT& ();
+		operator AA&  ();
+		operator EA&  ();
+		operator QUAT&();
+
+        operator const MAT& () const;
+        operator const AA&  () const;
+        operator const EA&  () const;
+        operator const QUAT&() const;
 
 	private:
 		static void ToMatrix(const QUAT& quat, MAT* mat);
@@ -56,10 +59,11 @@ namespace GML
 
 	private:
 		ERotationType mRotationType = ERotationType::Matrix;
-		mutable Matrix<T, N, N> mMatrix;
-		mutable AxisAngle<T, N> mAxisAngle;
-		mutable EulerAngles<T>  mEulerAngles;
-		mutable Quaternion<T>   mQuaternion;
+        bool          mIsComputed[4] = { false };
+		mutable MAT   mMatrix;
+		mutable AA    mAxisAngle;
+		mutable EA    mEulerAngles;
+		mutable QUAT  mQuaternion;
 	};
 
 

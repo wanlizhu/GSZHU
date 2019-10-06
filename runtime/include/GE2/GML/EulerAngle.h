@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector.h"
+#include "BasicTypes.h"
 
 namespace GML
 {
@@ -9,7 +9,9 @@ namespace GML
 	{
 	public:
 		EulerAngles() = default;
-		EulerAngles(T x, T y, T z) : mAngles{ x, y, z } {}
+		EulerAngles(T x, T y, T z) 
+            : mAngles{ x, y, z }
+        {}
 
 		inline const T& operator[](int i) const { return mAngles[i]; }
 		inline       T& operator[](int i)       { return mAngles[i]; }
