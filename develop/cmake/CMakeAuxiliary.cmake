@@ -3,7 +3,6 @@ set(CMAKE_DEBUG_POSTFIX "")
 
 include(CMakeParseArguments)
 include(GNUInstallDirs)
-include(UsePackages)
 
 # One-time initialization of the build system. 
 macro(cm_setup_project _proj)
