@@ -2,13 +2,12 @@
 
 #include "BasicTypes.h"
 
-// Axis-angle representation for N = 3 or N = 4.  When N = 4, the axis
-// must be a vector of the form (x,y,z,0) [affine representation of the
-// 3-tuple direction].
-
 namespace GML
 {
-	template <typename T, int N>
+    // Axis-angle representation for N = 3 or N = 4.  When N = 4, the axis
+    // must be a vector of the form (x,y,z,0) [affine representation of the
+    // 3-tuple direction].
+	template<typename T, int N>
 	class AxisAngle
 	{
         static_assert(N == 3 || N == 4);

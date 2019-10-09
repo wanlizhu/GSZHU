@@ -1,6 +1,9 @@
 #pragma once
 
 #include <Eigen/Eigen>
+#include <type_traits>
+
+#define ENUM2INT(value) (static_cast<std::underlying_type_t<decltype(value)>>(value))
 
 namespace GML
 {

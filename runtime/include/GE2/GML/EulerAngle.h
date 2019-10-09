@@ -4,7 +4,7 @@
 
 namespace GML
 {
-	template <typename T>
+	template<typename T>
 	class EulerAngles
 	{
 	public:

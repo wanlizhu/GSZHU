@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.11)
 
 cm_add_shared_library(GE2)
 cm_set_output_name(DEBUG GE2d RELEASE GE2)
