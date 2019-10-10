@@ -1,3 +1,4 @@
 #pragma once
 
-#include "internal/BasicTypes.h"
+#include "DCPQuery.h"
+#include "internal/Distance3D_LineToAlignedBox.h"

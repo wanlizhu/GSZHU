@@ -8,31 +8,28 @@ namespace CGA
     class LineT
     {
     public:
-        using VECTOR = Vector<T, DIM>;
-        using POINT  = Vector<T, DIM>;
-
         LineT() = default;
-        LineT(const POINT& origin, const VECTOR& direction)
+        LineT(const Point& origin, const Vector& direction)
             : mOrigin(origin)
             , mDirection(direction.stableNormalized())
         {}
 
-        POINT&  GetOrigin()        { return mOrigin; }
-        VECTOR& GetDirection()     { return mDirection; }
-        POINT   PointAt(T t) const { return mOrigin + (mDirection * t); }
+        Point&  GetOrigin()        { return mOrigin; }
+        Vector& GetDirection()     { return mDirection; }
+        Point   PointAt(T t) const { return mOrigin + (mDirection * t); }
 
-        const POINT&  GetOrigin()    const { return mOrigin; }
-        const VECTOR& GetDirection() const { return mDirection; }
+        const Point&  GetOrigin()    const { return mOrigin; }
+        const Vector& GetDirection() const { return mDirection; }
 
-        operator bool()                    const { return !mDirection.isApprox(VECTOR::Zero()); }
+        operator bool()                    const { return !mDirection.isApprox(Vector::Zero()); }
         bool operator==(const LineT& line) const { return mOrigin == line.mOrigin && mDirection == line.mDirection; }
         bool operator!=(const LineT& line) const { return !operator==(line); }
 
     private:
-        POINT  mOrigin;
-        VECTOR mDirection;
+        Point  mOrigin;
+        Vector mDirection;
     };
 
-    using Line   = LineT<float, 3>;
-    using Line2D = LineT<float, 2>;
+    using Line   = LineT<double, 3>;
+    using Line2D = LineT<double, 2>;
 }

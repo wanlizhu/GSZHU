@@ -6,7 +6,6 @@ include(CMakeAuxiliary)
 include(GraphicsEngineAuxiliary)
 
 # User customized settings
-set(GE_CONFIG         "DEBUG"   CACHE STRING "")
 set(GE_LINKAGE        "SHARED"  CACHE STRING "")
 set(GE_ISET           "X64"     CACHE STRING "")
 set(GE_PLATFORM       "WINDOWS" CACHE STRING "")
@@ -24,7 +23,9 @@ cm_setup_project(GraphicsEngine)
 
 # Add subdirectory
 add_subdirectory(runtime)
-add_subdirectory(samples)
+if (GE_BUILD_SAMPLES)
+    add_subdirectory(samples)
+endif()
 if (GE_BUILD_TEST)
     add_subdirectory(tests)
 endif()

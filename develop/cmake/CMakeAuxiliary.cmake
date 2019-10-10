@@ -202,21 +202,6 @@ macro(cm_setup_link_options)
         set(_currentLinkFlagsR "")
     endif()
 
-    if(MSVC)
-         list(APPEND _currentLinkFlags "/CLRIMAGETYPE:IJW") # CLRImageType = ForceIJWImage
-         list(APPEND _currentLinkFlags "/CLRTHREADATTRIBUTE:STA") # CLRThreadAttribute = STAThreadingAttribute
-         list(APPEND _currentLinkFlags "/OPT:REF") # OptimizeReferences = true
-         list(APPEND _currentLinkFlags "/CLRUNMANAGEDCODECHECK") # CLRUnmanagedCodeCheck = true
-         list(APPEND _currentLinkFlags "/INCREMENTAL:NO")
-         # We use declspec(dllexport) to export functions and data from dlls on Win and UWP platforms. 
-         # We do not use declspec(dllimport) to import functions but we do use it for data. 
-         list(APPEND _currentLinkFlags "/IGNORE:4049,4217")
-
-         list(APPEND _currentLinkFlags "/NXCOMPAT") # DataExecutionPrevention=true
-         list(APPEND _currentLinkFlags "/OPT:ICF")  # EnableCOMDATFolding = true
-         list(APPEND _currentLinkFlagsR "/LTCG")
-     endif()
-
      set_target_properties(${__CurrentTargetName__} PROPERTIES LINK_FLAGS "${_currentLinkFlags}")
      set_target_properties(${__CurrentTargetName__} PROPERTIES LINK_FLAGS_DEBUG "${_currentLinkFlagsD}")
      set_target_properties(${__CurrentTargetName__} PROPERTIES LINK_FLAGS_RELEASE "${_currentLinkFlagsR}")
@@ -465,6 +450,25 @@ macro(cm_include_directories)
     endforeach()
     foreach(_inc ${_ARGS_INTERFACE})
         target_include_directories(${__CurrentTargetName__} INTERFACE ${_inc})
+    endforeach()
+endmacro()
+
+# cm_additional_library_directories(dir... [PUBLIC dir...] [INTERFACE dir...])
+# PRIVATE and PUBLIC items will populate the LINK_DIRECTORIES property of <target> 
+# PUBLIC  and INTERFACE items will populate the INTERFACE_LINK_DIRECTORIES property of <target> 
+# IMPORTED targets only support INTERFACE items
+macro(cm_additional_library_directories)
+    set(_multiValueArgs PUBLIC INTERFACE)
+    cmake_parse_arguments(_ARGS "" "" "${_multiValueArgs}" ${ARGN})
+
+    foreach(_inc ${_ARGS_UNPARSED_ARGUMENTS})
+        target_link_directories(${__CurrentTargetName__} BEFORE PRIVATE ${_inc})
+    endforeach()
+    foreach(_inc ${_ARGS_PUBLIC})
+        target_link_directories(${__CurrentTargetName__} BEFORE PUBLIC ${_inc})
+    endforeach()
+    foreach(_inc ${_ARGS_INTERFACE})
+        target_link_directories(${__CurrentTargetName__} BEFORE INTERFACE ${_inc})
     endforeach()
 endmacro()
 
