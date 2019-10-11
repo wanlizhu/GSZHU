@@ -1,36 +1,46 @@
-#include "GE2/CGA/internal/Distance3D_LineToAlignedBox.h"
+#include "GE2/CGA/internal/DCPQuery_3D_LineToAlignedBox.h"
 
 namespace CGA
 {
     void Face(int i0, int i1, int i2, 
               Point& linePoint, const Vector& lineVec, 
               const Vector& PmE, const Vector& boxExtent,
-              LineToAlignedBox* result);
+              DCPQuery<Line, AlignedBox>::ComputeResult* result);
 
     void CaseNoZero(Point& linePoint, const Vector& lineVec, 
                     const Vector& boxExtent,
-                    LineToAlignedBox* result);
+                    DCPQuery<Line, AlignedBox>::ComputeResult* result);
 
     void Case0(int i0, int i1, int i2,
                Point& linePoint, const Vector& lineVec, 
                const Vector& boxExtent,
-               LineToAlignedBox* result);
+               DCPQuery<Line, AlignedBox>::ComputeResult* result);
 
     void Case00(int i0, int i1, int i2,
                 Point& linePoint, const Vector& lineVec, 
                 const Vector& boxExtent,
-                LineToAlignedBox* result);
+                DCPQuery<Line, AlignedBox>::ComputeResult* result);
 
     void Case000(Point& linePoint,
                  const Vector& boxExtent,
-                 LineToAlignedBox* result);
+                 DCPQuery<Line, AlignedBox>::ComputeResult* result);
 
-    void ComputeDistance3D(const Line& line, const AlignedBox& box, LineToAlignedBox* result)
+    DCPQuery<Line, AlignedBox>::ComputeResult 
+        DCPQuery<Line, AlignedBox>::operator()(const Line& line, const AlignedBox& box)
+    {
+        ComputeResult result;
+        ComputeDistance3D(line, box, &result);
+        return result;
+    }
+
+    void DCPQuery<Line, AlignedBox>::ComputeDistance3D(const Line& line, 
+                                                       const AlignedBox& box, 
+                                                       DCPQuery<Line, AlignedBox>::ComputeResult* result)
     {
         // Translate the line and box so that the box has center at the origin of coordinate system.
-        Vector boxCenter = (box.max() + box.min()) * 0.5;
+        Point  boxCenter = (box.max() + box.min()) * 0.5;
         Vector boxExtent = (box.max() - box.min()) * 0.5;
-        Vector linePoint = line.GetOrigin() - boxCenter;
+        Point  linePoint = line.GetOrigin() - boxCenter;
         Vector lineVec   = line.GetDirection();
 
         result->distance = 0.0;
@@ -99,7 +109,7 @@ namespace CGA
     void Face(int i0, int i1, int i2,
               Point& linePoint, const Vector& lineVec,
               const Vector& PmE, const Vector& boxExtent,
-              LineToAlignedBox* result)
+              DCPQuery<Line, AlignedBox>::ComputeResult* result)
     {
         Vector PpE;
         double lenSqr, inv, tmp, param, t, delta;
@@ -287,7 +297,7 @@ namespace CGA
 
     void CaseNoZero(Point& linePoint, const Vector& lineVec,
                     const Vector& boxExtent,
-                    LineToAlignedBox* result)
+                    DCPQuery<Line, AlignedBox>::ComputeResult* result)
     {
         Vector PmE = linePoint - boxExtent;
         double prodDxPy = lineVec[0] * PmE[1];
@@ -329,7 +339,7 @@ namespace CGA
     void Case0(int i0, int i1, int i2,
                Point& linePoint, const Vector& lineVec,
                const Vector& boxExtent,
-               LineToAlignedBox* result)
+               DCPQuery<Line, AlignedBox>::ComputeResult* result)
     {
         double PmE0 = linePoint[i0] - boxExtent[i0];
         double PmE1 = linePoint[i1] - boxExtent[i1];
@@ -397,7 +407,7 @@ namespace CGA
     void Case00(int i0, int i1, int i2,
                 Point& linePoint, const Vector& lineVec,
                 const Vector& boxExtent,
-                LineToAlignedBox* result)
+                DCPQuery<Line, AlignedBox>::ComputeResult* result)
     {
         double delta;
 
@@ -434,7 +444,7 @@ namespace CGA
 
     void Case000(Point& linePoint,
                  const Vector& boxExtent,
-                 LineToAlignedBox* result)
+                 DCPQuery<Line, AlignedBox>::ComputeResult* result)
     {
         double delta;
 
