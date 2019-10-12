@@ -1,8 +1,10 @@
 #pragma once
 
+#include <Eigen/Eigen>
 #include <type_traits>
 #include <limits>
 #include <numeric>
+#include <algorithm>
 #include <array>
 #include <set>
 #include "Config.h"

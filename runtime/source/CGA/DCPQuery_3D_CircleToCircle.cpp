@@ -1,5 +1,5 @@
-#include "GE2/CGA/internal/DCPQuery_3D_CircleToCircle.h"
-#include "GE2/CGA/internal/Polynomial.h"
+#include "GE2/CGA/details/DCPQuery_3D_CircleToCircle.h"
+#include "GE2/CGA/details/Polynomial.h"
 
 namespace CGA
 {
@@ -257,8 +257,7 @@ namespace CGA
         Vector normProj = N0dD * circle0.GetNormal();
         Vector compProj = D - normProj;
         Vector U = compProj;
-        double d = U.norm();
-        U.normalize();
+        double d = Normalize(U);
 
         // The configuration is determined by the relative location of the
         // intervals of projection of the circles on to the D-line.  Circle0

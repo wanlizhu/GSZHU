@@ -4,7 +4,7 @@
 
 namespace CGA
 {
-    template<typename T, int DIM>
+    template<int DIM>
     class LineT
     {
     public:
@@ -30,6 +30,6 @@ namespace CGA
         Vector mDirection;
     };
 
-    using Line   = LineT<double, 3>;
-    using Line2D = LineT<double, 2>;
+    using Line   = LineT<3>;
+    using Line2D = LineT<2>;
 }

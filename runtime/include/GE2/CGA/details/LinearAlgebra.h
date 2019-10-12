@@ -4,6 +4,9 @@
 
 namespace CGA
 {
+    // Normalize given vector and return its length
+    CGA_API double Normalize(Vector& v, bool robust = true);
+
     // Gram-Schmidt Orthonormalization
     //
     // Gram-Schmidt orthonormalization to generate orthonormal vectors from the
@@ -13,8 +16,7 @@ namespace CGA
     // numerical round-off errors).  On input, 1 <= numElements <= N and v[0]
     // through v[numElements-1] must be initialized.  On output, the vectors
     // v[0] through v[numElements-1] form an orthonormal set.
-    CGA_API double Orthonormalize(int numInputs, Vector*   vs, bool robust = true);
-    CGA_API double Orthonormalize(int numInputs, Vector2D* vs, bool robust = true);
+    CGA_API double Orthonormalize(int numInputs, Vector* vs, bool robust = true);
 
     // Construct a single vector orthogonal to the nonzero input vector.  If the
     // maximum absolute component occurs at index i, then the orthogonal vector
@@ -31,7 +33,7 @@ namespace CGA
     // numerical round-off errors).  On input, numInputs must be 1 or 2 and
     // v[0] through v[numInputs-1] must be initialized.  On output, the
     // vectors v[0] through v[2] form an orthonormal set.
-    CGA_API double ComputeOrthogonalComplement(int numInputs, VectorT<double, 2> * vs, bool robust = true);
+    CGA_API double ComputeOrthogonalComplement(int numInputs, Vector* vs, bool robust = true);
 
     // In 2D space, locate a point using 3 known points
     //

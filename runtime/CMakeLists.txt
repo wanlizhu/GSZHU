@@ -9,6 +9,8 @@ cm_set_cxx_standard(17)
 cm_add_source_files("source" "include")
 cm_include_directories(PUBLIC "include" PRIVATE "source")
 
+cm_compile_definitions("GE_BUILD_SHARED_LIBS")
+
 cm_use_eigen3()
 cm_use_nlohmann_json()
 cm_use_tinygltf()
