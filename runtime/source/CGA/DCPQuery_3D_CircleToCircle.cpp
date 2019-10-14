@@ -1,5 +1,6 @@
 #include "GE2/CGA/details/DCPQuery_3D_CircleToCircle.h"
 #include "GE2/CGA/details/Polynomial.h"
+#include "GE2/CGA/details/RootsPolynomial.h"
 
 namespace CGA
 {

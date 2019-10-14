@@ -16,7 +16,7 @@ namespace CGA
 
         Point& GetOrigin() { return mOrigin; }
         Vector& GetDirection() { return mDirection; }
-        Point   PointAt(T t) const { return mOrigin + (mDirection * t); }
+        Point   PointAt(double t) const { return mOrigin + (mDirection * t); }
 
         const Point& GetOrigin()    const { return mOrigin; }
         const Vector& GetDirection() const { return mDirection; }

@@ -61,6 +61,12 @@ macro(cm_setup_output_directories)
         PDB_OUTPUT_DIRECTORY_RELEASE     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endmacro()
 
+# cm_disable_specific_warnings(item...)
+macro(cm_disable_specific_warnings)
+    foreach(_item ${ARGV})
+        target_compile_definitions(${__CurrentTargetName__} PRIVATE /wd${_item})
+    endforeach()
+endmacro()
 
 # cm_setup_compile_options()
 macro(cm_setup_compile_options)
@@ -93,6 +99,7 @@ macro(cm_setup_compile_options)
         target_compile_definitions(${__CurrentTargetName__} PRIVATE -D__cdecl=)
     endif()
 
+    # compile definitions
     if(MSVC)
         target_compile_definitions(${__CurrentTargetName__} PRIVATE -DWIN32)
         target_compile_definitions(${__CurrentTargetName__} PRIVATE -D_WINDOWS)
@@ -102,6 +109,7 @@ macro(cm_setup_compile_options)
         target_compile_definitions(${__CurrentTargetName__} PRIVATE -D_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS)
     endif()
 
+    # compile options
     if (MSVC)
         target_compile_options(${__CurrentTargetName__} PRIVATE /openmp-)       # OpenMPSupport = false   
         target_compile_options(${__CurrentTargetName__} PRIVATE /fp:except-)    # FloatingPointExceptions = false
@@ -119,8 +127,6 @@ macro(cm_setup_compile_options)
         target_compile_options(${__CurrentTargetName__} PRIVATE $<$<CONFIG:Debug>:/RTCc>)    # enable runtime check
         target_compile_options(${__CurrentTargetName__} PRIVATE $<$<CONFIG:Release>:/GL>)    # enable whole program optimization for Release
         target_compile_options(${__CurrentTargetName__} PRIVATE /EHsc)                       # Enable C++ exceptions
-        target_compile_options(${__CurrentTargetName__} PRIVATE /w34370)
-        target_compile_options(${__CurrentTargetName__} PRIVATE /w34701)
         target_compile_options(${__CurrentTargetName__} PRIVATE /Qfast_transcendentals)
         target_compile_options(${__CurrentTargetName__} PRIVATE /Zc:inline)
         target_compile_options(${__CurrentTargetName__} PRIVATE /Zc:throwingNew)
@@ -453,6 +459,32 @@ macro(cm_include_directories)
     endforeach()
 endmacro()
 
+# cm_link_libraries([PUBLIC item...] [INTERFACE item...] ...)
+# Each <item> may be:
+#     A library target name
+#     A full path to a library file
+#     A plain library name
+#     A generator expression
+#
+# PUBLIC: will be linked to, and are made part of the link interface. 
+# PRIVATE: will be linked to, but are not made part of the link interface. 
+# INTERFACE: will be appended to the link interface and are NOT used for linking <target>.
+# the default mode is PRIVATE
+macro(cm_link_libraries)
+    set(_multiValueArgs PUBLIC INTERFACE)
+    cmake_parse_arguments(_ARGS "" "" "${_multiValueArgs}" ${ARGN})
+
+    foreach(_lib ${_ARGS_UNPARSED_ARGUMENTS})
+        target_link_libraries(${__CurrentTargetName__} PRIVATE ${_lib})
+    endforeach()
+    foreach(_lib ${_ARGS_PUBLIC})
+        target_link_libraries(${__CurrentTargetName__} PUBLIC ${_lib})
+    endforeach()
+    foreach(_lib ${_ARGS_INTERFACE})
+        target_link_libraries(${__CurrentTargetName__} INTERFACE ${_lib})
+    endforeach()
+endmacro()
+
 # cm_additional_library_directories(dir... [PUBLIC dir...] [INTERFACE dir...])
 # PRIVATE and PUBLIC items will populate the LINK_DIRECTORIES property of <target> 
 # PUBLIC  and INTERFACE items will populate the INTERFACE_LINK_DIRECTORIES property of <target> 
@@ -480,7 +512,7 @@ endmacro()
 # IMPORTED targets only support INTERFACE items 
 # PRIVATE is the default scope
 macro(cm_link_libraries)
-    sset(_multiValueArgs PUBLIC INTERFACE)
+    set(_multiValueArgs PUBLIC INTERFACE)
     cmake_parse_arguments(_ARGS "" "" "${_multiValueArgs}" ${ARGN})
 
     foreach(_lib ${_ARGS_UNPARSED_ARGUMENTS})

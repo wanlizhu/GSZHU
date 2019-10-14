@@ -13,7 +13,7 @@ set(GE_BUILD_SAMPLES  TRUE      CACHE BOOL   "")
 set(GE_BUILD_TEST     TRUE      CACHE BOOL   "")
 
 # Construct the default packages directory
-set(_triplets "${GE_ISET}-${GE_PLATFORM}-static")
+set(_triplets "${GE_ISET}-${GE_PLATFORM}")
 string(TOLOWER "${_triplets}" _triplets)
 set(GE_PACKAGES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/packages/${_triplets}" CACHE STRING "")
 

@@ -61,6 +61,40 @@ namespace CGA
 
         // If you know that p(tmin) * p(tmax) <= 0, then there must be at least one root in [tmin, tmax].  
         // Compute it using bisection.
-        static bool Find(int degree, const double* c, double tmin, double tmax, unsigned int maxIterations, double& root);
+        static bool Find(int degree, const double* c, double tmin, double tmax, 
+                         unsigned int maxIterations, double& root);
+    
+    private:
+        // Support for the Solve* functions.
+        static void SolveDepressedQuadratic(double const& c0,
+                                            std::map<double, int>& rmMap);
+
+        static void SolveDepressedCubic(double const& c0, double const& c1,
+                                        std::map<double, int>& rmMap);
+
+        static void SolveDepressedQuartic(double const& c0, double const& c1,
+                                          double const& c2, std::map<double, int>& rmMap);
+
+        static void SolveBiquadratic(double const& c0, double const& c2,
+                                     std::map<double, int>& rmMap);
+
+        // Support for the GetNumRoots* functions.
+        static void GetRootInfoDepressedQuadratic(double const& c0,
+                                                  std::vector<int>& info);
+
+        static void GetRootInfoDepressedCubic(double const& c0,
+                                              double const& c1, std::vector<int>& info);
+
+        static void GetRootInfoDepressedQuartic(double const& c0,
+                                                double const& c1, double const& c2, std::vector<int>& info);
+
+        static void GetRootInfoBiquadratic(double const& c0,
+                                           double const& c2, std::vector<int>& info);
+
+        // Support for the Find functions.
+        static int FindRecursive(int degree, double const* c, double tmin, double tmax,
+                                 unsigned int maxIterations, double* roots);
+
+        static double Evaluate(int degree, double const* c, double t);
     };
 }
