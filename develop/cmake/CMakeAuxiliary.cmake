@@ -64,7 +64,7 @@ endmacro()
 # cm_disable_specific_warnings(item...)
 macro(cm_disable_specific_warnings)
     foreach(_item ${ARGV})
-        target_compile_definitions(${__CurrentTargetName__} PRIVATE /wd${_item})
+        target_compile_options(${__CurrentTargetName__} PRIVATE /wd${_item})
     endforeach()
 endmacro()
 
