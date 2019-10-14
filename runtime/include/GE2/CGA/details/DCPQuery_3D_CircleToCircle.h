@@ -17,10 +17,10 @@ namespace CGA
             double distance = 0.0;
             double squaredDistance = 0.0;
             
-            bool equidistant = false;
             int  numClosestPoints = 0;
             Point circle0Closest[2];
             Point circle1Closest[2];
+            bool equidistant = false;
         };
 
         ComputeResult operator()(const Circle& circle0, const Circle& circle1);
