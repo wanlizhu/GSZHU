@@ -504,6 +504,76 @@ macro(cm_additional_library_directories)
     endforeach()
 endmacro()
 
+# cm_is_imported_target(_target _result _locationD _locationR)
+# _result is true if _target is an imported target
+# _locationD is the IMPORTED_LOCATION_DEBUG property of _target
+# _locationR is the IMPORTED_LOCATION_RELEASE property of _target
+macro(cm_is_imported_target _target _result _locationD _locationR)
+    set(_result)
+    set(_locationD)
+    set(_locationR)
+    set(_importedLocation)
+    set(_importedLocationD)
+    set(_importedLocationR)
+
+    get_target_property(_importedLocation  ${_target} IMPORTED_LOCATION)
+    get_target_property(_importedLocationD ${_target} IMPORTED_LOCATION_DEBUG)
+    get_target_property(_importedLocationR ${_target} IMPORTED_LOCATION_RELEASE)
+    
+    if (_importedLocation OR _importedLocationD OR _importedLocationR)
+        set(${_result} TRUE)
+        set(${_locationD} ${_importedLocationD})
+        set(${_locationR} ${_importedLocationR})
+    else()
+        set(${_result} FALSE)
+    endif()
+endmacro()
+
+# cm_copy_linked_binaries(lib...)
+macro(cm_copy_linked_binaries)
+    foreach(_item ${ARGV})
+        set(_isImported)
+        set(_locationD)
+        set(_locationR)
+        set(_outpathD)
+        set(_outpathR)
+
+        cm_is_imported_target(${_item} _isImported _locationD _locationR)
+        if (${_isImported})
+            cm_post_build_copy(DEBUG "${_locationD}" RELEASE "${_locationR}")
+        else()
+            get_target_property(_outdirD  ${_item} LIBRARY_OUTPUT_DIRECTORY_DEBUG)
+            get_target_property(_outnameD ${_item} LIBRARY_OUTPUT_NAME_DEBUG)
+            get_filename_component(_outpathD "${_outnameD}" ABSOLUTE  BASE_DIR "${_outdirD}")
+
+            get_target_property(_outdirR  ${_item} LIBRARY_OUTPUT_DIRECTORY_RELEASE)
+            get_target_property(_outnameR ${_item} LIBRARY_OUTPUT_NAME_RELEASE)
+            get_filename_component(_outpathR "${_outnameR}" ABSOLUTE  BASE_DIR "${_outdirR}")
+
+            cm_post_build_copy(DEBUG "${_outpathD}" RELEASE "${_outpathR}")
+        endif()
+    endforeach()
+endmacro()
+
+# cm_post_build_copy([DEBUG file...] [RELEASE file...])
+macro(cm_post_build_copy)
+    set(_multiValueArgs DEBUG RELEASE)
+    cmake_parse_arguments(_ARGS "" "" "${_multiValueArgs}" ${ARGN})
+
+    foreach(_file ${_ARGS_UNPARSED_ARGUMENTS})
+        message(cm_post_build_copy "    *" ${_file})
+        cm_add_command(POST_BUILD "")
+    endforeach()
+    foreach(_file ${_ARGS_DEBUG})
+        message(cm_post_build_copy "    D" ${_file})
+        cm_add_command(POST_BUILD "")
+    endforeach()
+    foreach(_file ${_ARGS_RELEASE})
+        message(cm_post_build_copy "    R" ${_file})
+        cm_add_command(POST_BUILD "")
+    endforeach()
+endmacro()
+
 # CMP0079:
 # CMP0079(CMake 3.13) now allows the target_link_libraries() command to be called from any directory 
 # to add link dependencies and link interface libraries to targets created in other directories. 

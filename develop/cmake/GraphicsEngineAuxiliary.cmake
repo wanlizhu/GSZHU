@@ -51,6 +51,7 @@ function(cm_use_glfw3)
     endif()
 
     target_link_libraries(${__CurrentTargetName__} PRIVATE glfw)
+    cm_copy_linked_binaries(glfw)
 endfunction()
 
 # cm_use_imgui()
@@ -102,4 +103,5 @@ function(cm_use_gtest)
     endif()
 
     target_link_libraries(${__CurrentTargetName__} PRIVATE GTest::gtest GTest::gmock)
+    cm_copy_linked_binaries(GTest::gtest GTest::gmock)
 endfunction()
