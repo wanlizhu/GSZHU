@@ -50,10 +50,6 @@
 
 namespace CGA
 {
-    using INT2 = std::array<int, 2>;
-    using INT3 = std::array<int, 3>;
-    using INT4 = std::array<int, 4>;
-
     using Vec2     = Eigen::Vector2d;
     using Vec3     = Eigen::Vector3d;
     using Vec4     = Eigen::Vector4d;
