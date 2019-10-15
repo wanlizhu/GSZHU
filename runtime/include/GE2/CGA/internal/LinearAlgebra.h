@@ -7,6 +7,9 @@ namespace CGA
     // Normalize given vector and return its length
     CGA_API double Normalize(Vector& v, bool robust = true);
 
+    // Compute the cross product and normalize it
+    CGA_API Vector UnitCross(const Vector& v0, const Vector& v1, bool robust = true);
+
     // Gram-Schmidt Orthonormalization
     //
     // Gram-Schmidt orthonormalization to generate orthonormal vectors from the

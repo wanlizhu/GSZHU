@@ -1,4 +1,4 @@
-#include "GE2/CGA/details/LinearAlgebra.h"
+#include "GE2/CGA/internal/LinearAlgebra.h"
 
 namespace CGA
 {
@@ -22,6 +22,13 @@ namespace CGA
             v.normalize();
         }
         return length;
+    }
+
+    Vector UnitCross(const Vector& v0, const Vector& v1, bool robust)
+    {
+        Vector unitCross = v0.cross(v1);
+        Normalize(unitCross, robust);
+        return unitCross;
     }
 
     double Orthonormalize(int numInputs, Vector* vs, bool robust)

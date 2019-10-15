@@ -27,7 +27,7 @@ namespace CGA
             double distance = 0.0;
             double squaredDistance = 0.0;
 
-            int   numClosestPoints = 0;
+            int   numClosestPairs = 0;
             Point lineClosest[2];
             Point circleClosest[2];
             bool  equidistant = false;

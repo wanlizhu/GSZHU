@@ -1,4 +1,4 @@
-#include "GE2/CGA/details/RootsPolynomial.h"
+#include "GE2/CGA/internal/RootsPolynomial.h"
 
 namespace CGA
 {

@@ -1,4 +1,4 @@
-#include "GE2/CGA/details/DCPQuery_3D_LineToAlignedBox.h"
+#include "GE2/CGA/internal/DCPQuery_3D_LineToAlignedBox.h"
 
 namespace CGA
 {

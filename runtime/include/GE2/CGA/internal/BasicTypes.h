@@ -6,6 +6,7 @@
 #include <numeric>
 #include <algorithm>
 #include <array>
+#include <functional>
 #include <set>
 #include "Config.h"
 
@@ -77,6 +78,9 @@ namespace CGA
     using ParametrizedLine   = Eigen::ParametrizedLine<double, 3>;
     using ParametrizedLine2D = Eigen::ParametrizedLine<double, 2>;
 
-    template<typename T, int DIM>
-    using VectorT = Eigen::Matrix<T, DIM, 1>;
+    template<int N>
+    using PointT = Eigen::Matrix<double, N, 1>;
+
+    template<int N>
+    using VectorT = Eigen::Matrix<double, N, 1>;
 }

@@ -12,7 +12,7 @@ cm_compile_definitions("_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS")
 
 cm_link_libraries(GE2)
 
-cm_additional_library_directories("${GE_PACKAGES_DIR}")
 cm_use_gtest()
+cm_additional_library_directories("${GE_PACKAGES_DIR}")
 
 cm_end_executable()

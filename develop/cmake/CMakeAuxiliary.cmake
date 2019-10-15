@@ -11,16 +11,12 @@ macro(cm_setup_project _proj)
     if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
         set(CMAKE_BUILD_TYPE "Debug")
     endif()
+    message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
     if(MSVC OR (CMAKE_GENERATOR STREQUAL "Xcode"))
         # disable subfolder("/Debug";"/Release") in output directory
-        set(CMAKE_CONFIGURATION_TYPES "Debug")
-        if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "")
-            set(CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}")
-        endif()
+        set(CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}")
         message(STATUS "CMAKE_CONFIGURATION_TYPES: ${CMAKE_CONFIGURATION_TYPES}")
-    else()
-        message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
     endif()
 
     set_property(GLOBAL PROPERTY USE_FOLDERS ON) # To allow making project folders in IDEs
@@ -49,14 +45,21 @@ macro(cm_reset_current_target _target)
 endmacro()
 
 # cm_setup_output_directories()
+# A runtime output artifact of a buildsystem target may be:
+#   1. The executable file (e.g. .exe) of an executable target created by the add_executable() command.
+#   2. On DLL platforms: the executable file (e.g. .dll) of a shared library target created by the add_library() command with the SHARED option.
 macro(cm_setup_output_directories)
     set_target_properties(${__CurrentTargetName__} PROPERTIES 
+        ARCHIVE_OUTPUT_DIRECTORY         ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
         ARCHIVE_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
         ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+        LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
         LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
         LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+        RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        PDB_OUTPUT_DIRECTORY             ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         PDB_OUTPUT_DIRECTORY_DEBUG       ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         PDB_OUTPUT_DIRECTORY_RELEASE     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endmacro()
@@ -228,9 +231,6 @@ endmacro()
 # This macro should be called after project() command.
 # Otherwise, CMAKE_SYSTEM_NAME and CMAKE_HOST_SYSTEM_NAME not initialized.
 macro(cm_setup_system_variables)
-    set(BIN_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-    set(LIB_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
-
     if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
         set(IS_TARGET_PLATFORM_WINDOWS TRUE)
     else()
@@ -297,21 +297,6 @@ macro(cm_setup_system_variables)
     else()
         set(IS_TARGET_ISET_ARM FALSE)
         set(IS_TARGET_ISET_INTEL TRUE)
-    endif()
-
-    if (IS_TARGET_PLATFORM_IOS)
-        if ("${METAL}" EQUAL "1")
-            set(ENABLE_METAL TRUE)
-        endif()
-
-        # iOS output directories are overrided by xctools somehow, so CMake doesn't know target location.
-        # Specify output directory explicitly here to let CMake esepcially CPack know the location
-        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_CURRENT_BINARY_DIR}/Debug-${CMAKE_OSX_SYSROOT}")
-        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_CURRENT_BINARY_DIR}/Debug-${CMAKE_OSX_SYSROOT}")
-        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_CURRENT_BINARY_DIR}/Debug-${CMAKE_OSX_SYSROOT}")
-        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}/Release-${CMAKE_OSX_SYSROOT}")
-        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}/Release-${CMAKE_OSX_SYSROOT}")
-        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}/Release-${CMAKE_OSX_SYSROOT}")
     endif()
 endmacro()
 
@@ -459,32 +444,6 @@ macro(cm_include_directories)
     endforeach()
 endmacro()
 
-# cm_link_libraries([PUBLIC item...] [INTERFACE item...] ...)
-# Each <item> may be:
-#     A library target name
-#     A full path to a library file
-#     A plain library name
-#     A generator expression
-#
-# PUBLIC: will be linked to, and are made part of the link interface. 
-# PRIVATE: will be linked to, but are not made part of the link interface. 
-# INTERFACE: will be appended to the link interface and are NOT used for linking <target>.
-# the default mode is PRIVATE
-macro(cm_link_libraries)
-    set(_multiValueArgs PUBLIC INTERFACE)
-    cmake_parse_arguments(_ARGS "" "" "${_multiValueArgs}" ${ARGN})
-
-    foreach(_lib ${_ARGS_UNPARSED_ARGUMENTS})
-        target_link_libraries(${__CurrentTargetName__} PRIVATE ${_lib})
-    endforeach()
-    foreach(_lib ${_ARGS_PUBLIC})
-        target_link_libraries(${__CurrentTargetName__} PUBLIC ${_lib})
-    endforeach()
-    foreach(_lib ${_ARGS_INTERFACE})
-        target_link_libraries(${__CurrentTargetName__} INTERFACE ${_lib})
-    endforeach()
-endmacro()
-
 # cm_additional_library_directories(dir... [PUBLIC dir...] [INTERFACE dir...])
 # PRIVATE and PUBLIC items will populate the LINK_DIRECTORIES property of <target> 
 # PUBLIC  and INTERFACE items will populate the INTERFACE_LINK_DIRECTORIES property of <target> 
@@ -504,53 +463,85 @@ macro(cm_additional_library_directories)
     endforeach()
 endmacro()
 
+# cm_link_libraries([PUBLIC item...] [INTERFACE item...] ...)
+# Each <item> may be:
+#     A library target name
+#     A full path to a library file
+#     A plain library name
+#     A generator expression
+#
+# PUBLIC: will be linked to, and are made part of the link interface. 
+# PRIVATE: will be linked to, but are not made part of the link interface. 
+# INTERFACE: will be appended to the link interface and are NOT used for linking <target>.
+# the default mode is PRIVATE
+macro(cm_link_libraries)
+    set(_multiValueArgs PUBLIC INTERFACE)
+    cmake_parse_arguments(_ARGS "" "" "${_multiValueArgs}" ${ARGN})
+
+    foreach(_lib ${_ARGS_UNPARSED_ARGUMENTS})
+        target_link_libraries(${__CurrentTargetName__} PRIVATE ${_lib})
+        cm_copy_linked_binaries(${_lib})
+    endforeach()
+    foreach(_lib ${_ARGS_PUBLIC})
+        target_link_libraries(${__CurrentTargetName__} PUBLIC ${_lib})
+        cm_copy_linked_binaries(${_lib})
+    endforeach()
+    foreach(_lib ${_ARGS_INTERFACE})
+        target_link_libraries(${__CurrentTargetName__} INTERFACE ${_lib})
+        cm_copy_linked_binaries(${_lib})
+    endforeach()
+endmacro()
+
 # cm_is_imported_target(_target _result _locationD _locationR)
 # _result is true if _target is an imported target
 # _locationD is the IMPORTED_LOCATION_DEBUG property of _target
 # _locationR is the IMPORTED_LOCATION_RELEASE property of _target
-macro(cm_is_imported_target _target _result _locationD _locationR)
-    set(_result)
-    set(_locationD)
-    set(_locationR)
-    set(_importedLocation)
-    set(_importedLocationD)
-    set(_importedLocationR)
+macro(cm_get_imported_location _target _isImported _locationD _locationR)
+    set(${_isImported} FALSE)
+    set(${_locationD})
+    set(${_locationR})
 
-    get_target_property(_importedLocation  ${_target} IMPORTED_LOCATION)
-    get_target_property(_importedLocationD ${_target} IMPORTED_LOCATION_DEBUG)
-    get_target_property(_importedLocationR ${_target} IMPORTED_LOCATION_RELEASE)
-    
-    if (_importedLocation OR _importedLocationD OR _importedLocationR)
-        set(${_result} TRUE)
-        set(${_locationD} ${_importedLocationD})
-        set(${_locationR} ${_importedLocationR})
-    else()
-        set(${_result} FALSE)
+    get_target_property(_targetType ${_target} TYPE)
+    if (NOT "${_targetType}" STREQUAL "INTERFACE_LIBRARY")
+        get_target_property(${_locationD} ${_target} IMPORTED_LOCATION_DEBUG)
+        get_target_property(${_locationR} ${_target} IMPORTED_LOCATION_RELEASE)
+
+        if ((NOT ${_locationD} MATCHES ".*NOTFOUND$") OR
+            (NOT ${_locationR} MATCHES ".*NOTFOUND$"))
+            set(${_isImported} TRUE)
+        endif()
     endif()
 endmacro()
 
 # cm_copy_linked_binaries(lib...)
 macro(cm_copy_linked_binaries)
     foreach(_item ${ARGV})
+        set(_targetType)
         set(_isImported)
         set(_locationD)
         set(_locationR)
         set(_outpathD)
         set(_outpathR)
 
-        cm_is_imported_target(${_item} _isImported _locationD _locationR)
-        if (${_isImported})
-            cm_post_build_copy(DEBUG "${_locationD}" RELEASE "${_locationR}")
-        else()
-            get_target_property(_outdirD  ${_item} LIBRARY_OUTPUT_DIRECTORY_DEBUG)
-            get_target_property(_outnameD ${_item} LIBRARY_OUTPUT_NAME_DEBUG)
-            get_filename_component(_outpathD "${_outnameD}" ABSOLUTE  BASE_DIR "${_outdirD}")
+        get_target_property(_targetType ${_item} TYPE)
+        if ((NOT "${_targetType}" STREQUAL "INTERFACE_LIBRARY") AND
+            (NOT "${_targetType}" STREQUAL "STATIC_LIBRARY"))
 
-            get_target_property(_outdirR  ${_item} LIBRARY_OUTPUT_DIRECTORY_RELEASE)
-            get_target_property(_outnameR ${_item} LIBRARY_OUTPUT_NAME_RELEASE)
-            get_filename_component(_outpathR "${_outnameR}" ABSOLUTE  BASE_DIR "${_outdirR}")
+            cm_get_imported_location(${_item} _isImported _locationD _locationR)
+ 
+            if (${_isImported})
+                cm_post_build_copy(DEBUG "${_locationD}" RELEASE "${_locationR}")
+            else()
+                get_target_property(_outdirD  ${_item} RUNTIME_OUTPUT_DIRECTORY_DEBUG)
+                get_target_property(_outnameD ${_item} OUTPUT_NAME_DEBUG)
+                get_filename_component(_outpathD "${_outnameD}" ABSOLUTE  BASE_DIR "${_outdirD}")
 
-            cm_post_build_copy(DEBUG "${_outpathD}" RELEASE "${_outpathR}")
+                get_target_property(_outdirR  ${_item} RUNTIME_OUTPUT_DIRECTORY_RELEASE)
+                get_target_property(_outnameR ${_item} OUTPUT_NAME_RELEASE)
+                get_filename_component(_outpathR "${_outnameR}" ABSOLUTE  BASE_DIR "${_outdirR}")
+
+                cm_post_build_copy(DEBUG "${_outpathD}" RELEASE "${_outpathR}")
+            endif()
         endif()
     endforeach()
 endmacro()
@@ -560,40 +551,41 @@ macro(cm_post_build_copy)
     set(_multiValueArgs DEBUG RELEASE)
     cmake_parse_arguments(_ARGS "" "" "${_multiValueArgs}" ${ARGN})
 
-    foreach(_file ${_ARGS_UNPARSED_ARGUMENTS})
-        message(cm_post_build_copy "    *" ${_file})
-        cm_add_command(POST_BUILD "")
-    endforeach()
-    foreach(_file ${_ARGS_DEBUG})
-        message(cm_post_build_copy "    D" ${_file})
-        cm_add_command(POST_BUILD "")
-    endforeach()
-    foreach(_file ${_ARGS_RELEASE})
-        message(cm_post_build_copy "    R" ${_file})
-        cm_add_command(POST_BUILD "")
-    endforeach()
-endmacro()
+    # get destination directory
+    get_target_property(_outdirD ${__CurrentTargetName__} RUNTIME_OUTPUT_DIRECTORY_DEBUG)
+    get_target_property(_outdirR ${__CurrentTargetName__} RUNTIME_OUTPUT_DIRECTORY_RELEASE)
 
-# CMP0079:
-# CMP0079(CMake 3.13) now allows the target_link_libraries() command to be called from any directory 
-# to add link dependencies and link interface libraries to targets created in other directories. 
-#
-# Arguments to target_link_libraries may use "generator expressions"
-# IMPORTED targets only support INTERFACE items 
-# PRIVATE is the default scope
-macro(cm_link_libraries)
-    set(_multiValueArgs PUBLIC INTERFACE)
-    cmake_parse_arguments(_ARGS "" "" "${_multiValueArgs}" ${ARGN})
+    # collect files to copy according to CMAKE_BUILD_TYPE
+    set(_filesToCopy "${_ARGS_UNPARSED_ARGUMENTS}")
+    string(TOLOWER "${CMAKE_BUILD_TYPE}" _CMAKE_BUILD_TYPE)
+    if ("${_CMAKE_BUILD_TYPE}" STREQUAL "debug")
+        set(_filesToCopy "${_filesToCopy}" "${_ARGS_DEBUG}")
+        set(_dstdir "${_outdirD}")
+    elseif("${_CMAKE_BUILD_TYPE}" STREQUAL "release")
+        set(_filesToCopy "${_filesToCopy}" "${_ARGS_RELEASE}")
+        set(_dstdir "${_outdirR}")
+    else()
+        message(FATAL_ERROR "!!! CMAKE_BUILD_TYPE must be either Debug or Release !!!")
+    endif()
 
-    foreach(_lib ${_ARGS_UNPARSED_ARGUMENTS})
-        target_link_libraries(${__CurrentTargetName__} PRIVATE ${_lib})
+    
+
+    # remove from files-to-copy if it already at the destination directory
+    set(_filesToCopySanitized)
+    foreach(_file ${_filesToCopy})
+        get_filename_component(_path ${_file} ABSOLUTE)
+        get_filename_component(_path ${_path} DIRECTORY)
+        if (NOT "${_path}" STREQUAL "${_dstdir}")
+            list(APPEND _filesToCopySanitized "${_file}")
+        endif()
     endforeach()
-    foreach(_lib ${_ARGS_PUBLIC})
-        target_link_libraries(${__CurrentTargetName__} PUBLIC ${_lib})
-    endforeach()
-    foreach(_lib ${_ARGS_INTERFACE})
-        target_link_libraries(${__CurrentTargetName__} INTERFACE ${_lib})
-    endforeach()
+
+    #message("Files to copy: " ${_filesToCopySanitized})
+    
+    # final step, make the copy command
+    if (NOT "${_filesToCopySanitized}" STREQUAL "")
+        cm_add_command(POST_BUILD "${CMAKE_COMMAND}" -E copy "${_filesToCopySanitized}" "${_dstdir}")
+    endif()
 endmacro()
 
 # cm_set_imported_location(loc [DEBUG locD] [RELEASE locR])
@@ -728,9 +720,9 @@ macro(cm_set_target_folder _folder)
 endmacro()
 
 # cm_add_command(<PRE_BUILD|PRE_LINK|POST_BUILD> ...)
-macro(cm_add_command _type _command)
+macro(cm_add_command _type)
     add_custom_command(TARGET ${__CurrentTargetName__} ${_type}
-                       COMMAND ${_command})
+                       COMMAND ${ARGN})
 endmacro()
 
 # cm_use_package([REQUIRED item...] [OPTIONAL item...])
