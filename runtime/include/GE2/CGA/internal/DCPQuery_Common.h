@@ -1,10 +1,10 @@
 #pragma once
 
-#include "BasicTypes.h"
+#include "GE2/Utilities.h"
 #include "BasicShapes.h"
 #include "LinearAlgebra.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     template<typename SHAPE0, typename SHAPE1>
     class DCPQuery

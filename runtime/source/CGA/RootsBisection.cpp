@@ -1,6 +1,6 @@
 #include "GE2/CGA/internal/RootsBisection.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     unsigned int RootsBisection::Find(const std::function<double(double)>& F,
                                       double t0, double t1,

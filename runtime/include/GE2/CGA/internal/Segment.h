@@ -1,8 +1,8 @@
 #pragma once
 
-#include "BasicTypes.h"
+#include "GE2/Utilities.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     template<int N>
     class SegmentT

@@ -15,9 +15,9 @@
 //   2..maxIterations:  the number of bisections plus one
 //   maxIterations+1:  the loop executed without a break (no convergence)
 
-namespace CGA
+namespace GE2::CGA
 {
-    class CGA_API RootsBisection final
+    class GE2_IMPEXP RootsBisection final
     {
     public:
         // Use this function when F(t0) and F(t1) are not already known.

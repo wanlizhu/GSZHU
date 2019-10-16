@@ -1,8 +1,8 @@
 #pragma once
 
-#include "BasicTypes.h"
+#include "GE2/Utilities.h"
 
-namespace RHI
+namespace GE2::RHI
 {
     enum class EKeyEventType
     {
@@ -35,7 +35,7 @@ namespace RHI
     struct KeyEvent
     {
         EKeyEventType type = EKeyEventType::None;
-        char key = 0;
+        int key = 0;
         InputModifiers mods;
         uint32_t codepoint = 0;
     };

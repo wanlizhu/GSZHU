@@ -4,10 +4,10 @@
 
 // The 3D circle-circle distance algorithm is described in "runtime/doc/Distance to Circles in 3D.pdf"
 
-namespace CGA
+namespace GE2::CGA
 {
     template<>
-    class CGA_API DCPQuery<Circle, Circle>
+    class GE2_IMPEXP DCPQuery<Circle, Circle>
     {
         class SCPolynomial;
         struct ClosestInfo;

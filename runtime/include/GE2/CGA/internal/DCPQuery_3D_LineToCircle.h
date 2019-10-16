@@ -6,10 +6,10 @@
 // "runtime/doc/Distance To Circle3.pdf"
 // The notation used in the code matches that of the document.
 
-namespace CGA
+namespace GE2::CGA
 {
     template<>
-    class CGA_API DCPQuery<Line, Circle>
+    class GE2_IMPEXP DCPQuery<Line, Circle>
     {
         struct ClosestInfo;
     public:

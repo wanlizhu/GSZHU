@@ -1,6 +1,6 @@
 #include "GE2/CGA/internal/DCPQuery_3D_LineToSegment.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     DCPQuery<Line, Segment>::ComputeResult 
         DCPQuery<Line, Segment>::operator()(const Line& line, const Segment& segment)

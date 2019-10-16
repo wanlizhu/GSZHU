@@ -1,6 +1,6 @@
 #include "GE2/CGA/internal/RootsPolynomial.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     // Support for the Solve* functions.
     void RootsPolynomial::SolveDepressedQuadratic(const double& c0,

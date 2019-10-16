@@ -2,7 +2,7 @@
 
 #include "GE2/RHI/BasicTypes.h"
 
-namespace RHI
+namespace GE2::RHI
 {
 
 }

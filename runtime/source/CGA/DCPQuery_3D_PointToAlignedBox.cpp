@@ -1,6 +1,6 @@
 #include "GE2/CGA/internal/DCPQuery_3D_PointToAlignedBox.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     DCPQuery<Point, AlignedBox>::ComputeResult 
         DCPQuery<Point, AlignedBox>::operator()(const Point& point, const AlignedBox& box)

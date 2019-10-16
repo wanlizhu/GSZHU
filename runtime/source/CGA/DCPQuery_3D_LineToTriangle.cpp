@@ -1,6 +1,6 @@
 #include "GE2/CGA/internal/DCPQuery_3D_LineToTriangle.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     DCPQuery<Line, Triangle>::ComputeResult 
         DCPQuery<Line, Triangle>::operator()(const Line& line, const Triangle& triangle)

@@ -2,7 +2,7 @@
 #include "GE2/CGA/internal/Polynomial.h"
 #include "GE2/CGA/internal/RootsPolynomial.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     class DCPQuery<Circle, Circle>::SCPolynomial
     {

@@ -1,6 +1,6 @@
 #include "GE2/CGA/internal/LinearAlgebra.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     inline Vector2D Perp(const Vector2D& v)
     {

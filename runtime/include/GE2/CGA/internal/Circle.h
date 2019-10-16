@@ -1,12 +1,12 @@
 #pragma once
 
-#include "BasicTypes.h"
+#include "GE2/Utilities.h"
 
 // The circle is the intersection of the sphere |X-C|^2 = r^2 and the
 // plane Dot(N,X-C) = 0, where C is the circle center, r is the radius,
 // and N is a unit-length plane normal.
 
-namespace CGA
+namespace GE2::CGA
 {
     template<int N>
     class CircleT

@@ -2,10 +2,10 @@
 
 #include "DCPQuery_Common.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     template<>
-    class CGA_API DCPQuery<Line, Segment>
+    class GE2_IMPEXP DCPQuery<Line, Segment>
     {
     public:
         struct ComputeResult

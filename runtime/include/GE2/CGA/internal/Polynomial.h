@@ -3,11 +3,11 @@
 #include <algorithm>
 #include <initializer_list>
 #include <vector>
-#include "BasicTypes.h"
+#include "GE2/Utilities.h"
 
-namespace CGA
+namespace GE2::CGA
 {
-    class CGA_API Polynomial final
+    class GE2_IMPEXP Polynomial final
     {
     public:
         // Construction and destruction.  The first constructor creates a
@@ -91,33 +91,33 @@ namespace CGA
     // Compute the greatest common divisor of two polynomials.  The returned
     // polynomial has leading coefficient 1 (except when zero-valued
     // polynomials are passed to the function.
-    CGA_API Polynomial GreatestCommonDivisor(const Polynomial& p0, const Polynomial& p1);
+    GE2_IMPEXP Polynomial GreatestCommonDivisor(const Polynomial& p0, const Polynomial& p1);
 
     // Factor f = factor[0]*factor[1]^2*factor[2]^3*...*factor[n-1]^n
     // according to the square-free factorization algorithm
     // https://en.wikipedia.org/wiki/Square-free_polynomial
-    CGA_API void SquareFreeFactorization(const Polynomial& f, std::vector<Polynomial>& factors);
+    GE2_IMPEXP void SquareFreeFactorization(const Polynomial& f, std::vector<Polynomial>& factors);
 
 
 
 
-    CGA_API Polynomial  operator- (const Polynomial& p);
-    CGA_API Polynomial  operator+ (const Polynomial& p0, const Polynomial& p1);
-    CGA_API Polynomial  operator- (const Polynomial& p0, const Polynomial& p1);
-    CGA_API Polynomial  operator* (const Polynomial& p0, const Polynomial& p1);
-    CGA_API Polynomial  operator+ (const Polynomial& p,  double scalar);
-    CGA_API Polynomial  operator+ (double scalar,        const Polynomial& p);
-    CGA_API Polynomial  operator- (const Polynomial& p,  double scalar);
-    CGA_API Polynomial  operator- (double scalar,        const Polynomial& p);
-    CGA_API Polynomial  operator* (const Polynomial& p,  double scalar);
-    CGA_API Polynomial  operator* (double scalar,        const Polynomial& p);
-    CGA_API Polynomial  operator/ (const Polynomial& p,  double scalar);
+    GE2_IMPEXP Polynomial  operator- (const Polynomial& p);
+    GE2_IMPEXP Polynomial  operator+ (const Polynomial& p0, const Polynomial& p1);
+    GE2_IMPEXP Polynomial  operator- (const Polynomial& p0, const Polynomial& p1);
+    GE2_IMPEXP Polynomial  operator* (const Polynomial& p0, const Polynomial& p1);
+    GE2_IMPEXP Polynomial  operator+ (const Polynomial& p,  double scalar);
+    GE2_IMPEXP Polynomial  operator+ (double scalar,        const Polynomial& p);
+    GE2_IMPEXP Polynomial  operator- (const Polynomial& p,  double scalar);
+    GE2_IMPEXP Polynomial  operator- (double scalar,        const Polynomial& p);
+    GE2_IMPEXP Polynomial  operator* (const Polynomial& p,  double scalar);
+    GE2_IMPEXP Polynomial  operator* (double scalar,        const Polynomial& p);
+    GE2_IMPEXP Polynomial  operator/ (const Polynomial& p,  double scalar);
 
-    CGA_API Polynomial& operator+=(Polynomial& p0, const Polynomial& p1);
-    CGA_API Polynomial& operator-=(Polynomial& p0, const Polynomial& p1);
-    CGA_API Polynomial& operator*=(Polynomial& p0, const Polynomial& p1);
-    CGA_API Polynomial& operator+=(Polynomial& p,  double scalar);
-    CGA_API Polynomial& operator-=(Polynomial& p,  double scalar);
-    CGA_API Polynomial& operator*=(Polynomial& p,  double scalar);
-    CGA_API Polynomial& operator/=(Polynomial& p,  double scalar);
+    GE2_IMPEXP Polynomial& operator+=(Polynomial& p0, const Polynomial& p1);
+    GE2_IMPEXP Polynomial& operator-=(Polynomial& p0, const Polynomial& p1);
+    GE2_IMPEXP Polynomial& operator*=(Polynomial& p0, const Polynomial& p1);
+    GE2_IMPEXP Polynomial& operator+=(Polynomial& p,  double scalar);
+    GE2_IMPEXP Polynomial& operator-=(Polynomial& p,  double scalar);
+    GE2_IMPEXP Polynomial& operator*=(Polynomial& p,  double scalar);
+    GE2_IMPEXP Polynomial& operator/=(Polynomial& p,  double scalar);
 }

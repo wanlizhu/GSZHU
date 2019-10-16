@@ -1,6 +1,6 @@
 #include "GE2/CGA/internal/DCPQuery_3D_LineToAlignedBox.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     void Face(int i0, int i1, int i2, 
               Point& linePoint, const Vector& lineVec, 

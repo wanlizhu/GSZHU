@@ -1,6 +1,6 @@
 #include "GE2/CGA/internal/Polynomial.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     Polynomial::Polynomial(unsigned int degree)
         : mCoefficient(degree + 1, 0.0)

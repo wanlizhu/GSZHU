@@ -2,7 +2,7 @@
 #include "GE2/CGA/internal/RootsPolynomial.h"
 #include "GE2/CGA/internal/RootsBisection.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     struct DCPQuery<Line, Circle>::ClosestInfo
     {

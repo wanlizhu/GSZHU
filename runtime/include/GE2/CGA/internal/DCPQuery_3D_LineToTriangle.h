@@ -3,10 +3,10 @@
 #include "DCPQuery_Common.h"
 #include "DCPQuery_3D_LineToSegment.h"
 
-namespace CGA
+namespace GE2::CGA
 {
     template<>
-    class CGA_API DCPQuery<Line, Triangle>
+    class GE2_IMPEXP DCPQuery<Line, Triangle>
     {
     public:
         struct ComputeResult

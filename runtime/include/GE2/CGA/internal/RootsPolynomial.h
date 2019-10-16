@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BasicTypes.h"
+#include "GE2/Utilities.h"
 
 // The Find functions return the number of roots, if any, and this number
 // of elements of the outputs are valid.  If the polynomial is identically
@@ -29,9 +29,9 @@
 // Moreover, a Sturm sequence allows you to compute the number of real-valued
 // roots on a specified interval.
 
-namespace CGA
+namespace GE2::CGA
 {
-    class CGA_API RootsPolynomial final
+    class GE2_IMPEXP RootsPolynomial final
     {
     public:
         // Low-degree root finders
