@@ -12,8 +12,10 @@
 
 namespace GE2
 {
+    using CSTR    = const char*;
     using STRLIST = std::vector<std::string>;
     using STRMAP  = std::unordered_map<std::string, std::string>;
+    using HANDLE  = void*;
 
     using INT2 = std::array<int, 2>;
     using INT3 = std::array<int, 3>;
