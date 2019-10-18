@@ -19,6 +19,7 @@ cm_use_tinygltf()
 cm_use_glfw3()
 cm_use_imgui()
 cm_use_tinyobjloader()
+cm_use_vulkan()
 cm_additional_library_directories("${GE_PACKAGES_DIR}")
 
 cm_end_shared_library()

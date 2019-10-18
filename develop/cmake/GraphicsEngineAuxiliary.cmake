@@ -1,3 +1,9 @@
+#cm_use_vulkan()
+function(cm_use_vulkan)
+    find_package(Vulkan REQUIRED)
+    cm_link_libraries(Vulkan::Vulkan)
+endfunction()
+
 # cm_use_eigen3()
 # Eigen3 is a header-only library
 function(cm_use_eigen3)

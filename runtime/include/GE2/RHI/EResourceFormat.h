@@ -21,9 +21,7 @@ namespace GE2::RHI
         IndirectArg = 0x100,    ///< The resource will be bound as an indirect argument buffer
         AccelerationStructure = 0x80000000,  ///< The resource will be bound as an acceleration structure
     };
-
-    GE2_IMPEXP EResourceBindFlags GetFormatBindFlags(EResourceFormat format); // defined in D3D12/Vulkan subdirectory
-
+   
     enum class EResourceFormat : uint32_t
     {
         Unknown,
@@ -112,6 +110,8 @@ namespace GE2::RHI
 
         Count
     };
+
+    GE2_IMPEXP EResourceBindFlags GetFormatBindFlags(EResourceFormat format); // defined in D3D12/Vulkan subdirectory
 
     enum class EFormatType
     {

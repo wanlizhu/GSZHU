@@ -8,6 +8,8 @@
 #include <array>
 #include <functional>
 #include <set>
+#include <exception>
+#include <stdexcept>
 #include "Config.h"
 
 namespace GE2

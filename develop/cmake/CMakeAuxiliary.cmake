@@ -575,7 +575,11 @@ macro(cm_post_build_copy)
     foreach(_file ${_filesToCopy})
         get_filename_component(_path ${_file} ABSOLUTE)
         get_filename_component(_path ${_path} DIRECTORY)
-        if (NOT "${_path}" STREQUAL "${_dstdir}")
+
+        string(FIND "${_path}" "NOTFOUND" _isNotFound)
+
+        if ((NOT "${_path}" STREQUAL "${_dstdir}") AND 
+            ("${_isNotFound}" STREQUAL "-1"))
             list(APPEND _filesToCopySanitized "${_file}")
         endif()
     endforeach()
