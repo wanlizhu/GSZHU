@@ -5,7 +5,7 @@
 
 namespace GE2::RHI
 {
-    class GE2_IMPEXP IFramebuffer : public IDeviceObject
+    class GE2_IMPEXP IRenderPass : public IDeviceObject
     {
     public:
 

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IComputeContext.h"
+#include "CopyContext.h"
 
 namespace GE2::RHI
 {
-    class GE2_IMPEXP IDrawContext : public IComputeContext
+    class GE2_IMPEXP DrawContext : public CopyContext
     {
     public:
 

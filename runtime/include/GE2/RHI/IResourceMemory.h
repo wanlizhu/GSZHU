@@ -1,11 +1,11 @@
 #pragma once
 
-#include "GE2/Utilities.h"
 #include "IDeviceObject.h"
+#include "IResource.h"
 
 namespace GE2::RHI
 {
-    class GE2_IMPEXP IPipelineState : public IDeviceObject
+    class GE2_IMPEXP IResourceMemory : public IDeviceObject
     {
     public:
 

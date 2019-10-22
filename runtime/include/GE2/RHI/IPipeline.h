@@ -5,7 +5,7 @@
 
 namespace GE2::RHI
 {
-    class GE2_IMPEXP IPipelineState : public IDeviceObject
+    class GE2_IMPEXP IPipeline : public IDeviceObject
     {
     public:
 

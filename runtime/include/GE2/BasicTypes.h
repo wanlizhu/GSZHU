@@ -56,4 +56,22 @@ namespace GE2
 
     template<int N>
     using VectorT = Eigen::Matrix<double, N, 1>;
+
+    struct Offset2D
+    {
+        int32_t x = 0;
+        int32_t y = 0;
+    };
+
+    struct Extent2D
+    {
+        uint32_t width = 0;
+        uint32_t height = 0;
+    };
+
+    struct RECT2D
+    {
+        Offset2D offset;
+        Extent2D extent;
+    };
 }

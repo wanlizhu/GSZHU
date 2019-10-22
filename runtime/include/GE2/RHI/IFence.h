@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IDeviceResource.h"
+#include "IDeviceObject.h"
 
 namespace GE2::RHI
 {

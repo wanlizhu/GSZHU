@@ -1,11 +1,11 @@
 #pragma once
 
-#include "GE2/Utilities.h"
 #include "IDeviceObject.h"
+#include "EResourceFormat.h"
 
 namespace GE2::RHI
 {
-    class GE2_IMPEXP IFramebuffer : public IDeviceObject
+    class GE2_IMPEXP IResourceView : public IDeviceObject
     {
     public:
 

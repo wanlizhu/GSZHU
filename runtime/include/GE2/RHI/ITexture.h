@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IDeviceResource.h"
+#include "IResource.h"
 
 namespace GE2::RHI
 {
-    class GE2_IMPEXP ITexture : public IDeviceResource
+    class GE2_IMPEXP ITexture : public IResource
     {
     public:
 
