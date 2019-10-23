@@ -2,40 +2,42 @@
 
 #include "GE2/BasicTypes.h"
 #include "GE2/Utilities.h"
+#include "IDeviceObject.h"
+#include "EDeviceFeature.h"
 
 namespace GE2::RHI
 {
     enum class EDeviceType
     {
-        Default,
         D3D12,
         Vulkan,
     };
 
-    struct InitializeData 
-    {
-        STRLIST instanceExtensions;
-        STRLIST enableLayers;
-        STRLIST deviceExtensions;
-    };
-
-    class GE2_IMPEXP IDevice : public std::enable_shared_from_this<IDevice>
+    class GE2_IMPEXP IDevice : public IDeviceObject
     {
     public:
-        using SharedPtr = std::shared_ptr<IDevice>;
-        using WeakPtr = std::weak_ptr<IDevice>;
+        struct InitializeData : public IDeviceObject::InitializeData
+        {
+            STRLIST              instanceLayers;
+            STRLIST              instanceExtensions;
 
-        IDevice() = default;
+            STRLIST              deviceExtensions;
+            LIST<EDeviceFeature> deviceFeatures;
+        };
+
+        IDevice() = default; // for std::make_shared<>() to call
         IDevice(const IDevice&) = delete;
         IDevice(IDevice&&) = delete;
         IDevice& operator=(const IDevice&) = delete;
         IDevice& operator=(IDevice&&) = delete;
-
         virtual ~IDevice() {};
-        virtual bool Initialize(const InitializeData& data) = 0;
-        virtual void Destroy() = 0;
 
+        // IDeviceObject's abstract virtual methods
+        virtual bool   Initialize(const InitializeData& data) = 0;
+        virtual void   Destroy() = 0;
+        virtual CSTR   GetName() const = 0;
+        virtual HANDLE GetHandle() const = 0;
     };
 
-    IDevice::SharedPtr CreateDevice();
+    GE2_IMPEXP SPTR<IDevice> CreateDevice();
 }

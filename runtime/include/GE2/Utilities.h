@@ -40,7 +40,12 @@
 #define ENUM2INT(value) (static_cast<std::underlying_type_t<std::remove_reference_t<decltype(value)>>>(value))
 #define EBIT_TEST(value, sample) (ENUM2INT(value & sample) != 0)
 #define BIT_TEST(value, sample) ((value & sample) != 0)
-#define FLOAT_EQ(a, b) (std::abs(a - b) <= std::numeric_limits<decltype(a)>::epsilon())
+#define UINT_SETBIT(n)  ((uint32_t)1 << n)
+#define FLOAT_EQ(a, b)  (std::abs(a - b) <= std::numeric_limits<decltype(a)>::epsilon())
+
+#define ALL_TRUE(vec)   (std::all_of(vec.begin(), vec.end(), [](bool e){ return e; }))
+#define ALL_FALSE(vec)  (std::all_of(vec.begin(), vec.end(), [](bool e){ return !e; }))
+#define ONE_TRUE(vec)   (std::any_of(vec.begin(), vec.end(), [](bool e){ return e; }))
 
 // enum class helpers
 #define DEFINE_ENUM_OPS(EnumClass)  \
@@ -52,3 +57,8 @@
         EnumClass& operator|=(EnumClass& e0, EnumClass e1)  { e0 = (EnumClass)(ENUM2INT(e0) | ENUM2INT(e1)); return e0; }\
         EnumClass& operator^=(EnumClass& e0, EnumClass e1)  { e0 = (EnumClass)(ENUM2INT(e0) ^ ENUM2INT(e1)); return e0; }
         
+
+namespace GE2
+{
+    GE2_IMPEXP UPTR<CSTR> Unpack(const STRLIST& list);
+}

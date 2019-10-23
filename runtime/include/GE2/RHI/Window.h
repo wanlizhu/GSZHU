@@ -34,10 +34,11 @@ namespace GE2::RHI
         void SetTitle(const char* title) const;
         void SetUserPointer(void* pointer) const;
 
-        INT2  GetSize() const;
-        INT2  GetPos() const; 
-        void* GetHandle() const;
-        void* GetUserPointer() const;
+        INT2    GetSize() const;
+        INT2    GetPos() const; 
+        void*   GetHandle() const;
+        void*   GetUserPointer() const;
+        STRLIST GetRequiredExtensions() const;
 
         void  SendEvent(uint32_t event, void* data);
         void  InstallEventFilter(uint32_t event, const EventHandler& handler);
@@ -52,6 +53,6 @@ namespace GE2::RHI
 
     private:
         GLFWwindow* mpWindow = nullptr;  
-        std::unordered_map<uint32_t, EventHandler> mEventFilters;
+        MAP<uint32_t, EventHandler> mEventFilters;
     };
 }

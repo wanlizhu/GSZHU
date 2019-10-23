@@ -138,13 +138,15 @@ namespace GE2::RHI
 
     bool Window::Create(const char* title, int w, int h, EWindowFlags flags)
     {
-        glfwSetErrorCallback(ErrorCallback);
-
         if (glfwInit() == GLFW_FALSE)
         {
-            printf("error @ GLFW :failed to initialize");
+            printf("error @GLFW :failed to initialize");
             return false;
         }
+        
+        glfwSetErrorCallback(ErrorCallback);
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
         GLFWmonitor* monitor = EBIT_TEST(flags, EWindowFlags::Fullscreen) ? glfwGetPrimaryMonitor() : nullptr;
         GLFWwindow* window = glfwCreateWindow(w, h, title, monitor, NULL);
@@ -223,6 +225,17 @@ namespace GE2::RHI
     void* Window::GetUserPointer() const
     {
         return glfwGetWindowUserPointer(mpWindow);
+    }
+
+    STRLIST Window::GetRequiredExtensions() const
+    {
+        uint32_t count = 0;
+        const char** names = glfwGetRequiredInstanceExtensions(&count);
+        
+        STRLIST extensions;
+        for (int i = 0; i < count; i++)
+            extensions.emplace_back(names[i]);
+        return extensions;
     }
 
     void  Window::SendEvent(uint32_t event, void* data)

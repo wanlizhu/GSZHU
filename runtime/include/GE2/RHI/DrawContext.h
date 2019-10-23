@@ -4,7 +4,7 @@
 
 namespace GE2::RHI
 {
-    class GE2_IMPEXP DrawContext : public CopyContext
+    class GE2_IMPEXP DrawContext 
     {
     public:
 

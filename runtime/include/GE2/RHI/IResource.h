@@ -44,20 +44,17 @@ namespace GE2::RHI
     class GE2_IMPEXP IResource : public IDeviceObject
     {
     public:
-        using SharedPtr = std::shared_ptr<IResource>;
-        using WeakPtr   = std::weak_ptr<IResource>;
         static const uint32_t kMaxPossible = (uint32_t)-1;
 
         IResource() = default;
 
-        // Abstract virtual methods inherited from IDeviceObject
+        // IDeviceObject's abstract virtual methods
         virtual ~IResource() = 0;
         virtual bool   Initialize() = 0;
         virtual void   Destroy() = 0;
         virtual CSTR   GetName() const = 0;
         virtual HANDLE GetHandle() const = 0;
 
-        // New abstract virtual methods
         virtual EResourceType      GetType()        const = 0;
         virtual EResourceBindFlags GetBindFlags()   const = 0;
         virtual bool               IsGlobalState()  const = 0;

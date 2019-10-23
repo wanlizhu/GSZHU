@@ -14,7 +14,20 @@
 
 namespace GE2
 {
+    template<typename T>
+    using LIST    = std::vector<T>;
+    template<typename K, typename V>
+    using MAP     = std::unordered_map<K, V>;
+    template<typename T>
+    using WPTR    = std::weak_ptr<T>;
+    template<typename T>
+    using SPTR    = std::shared_ptr<T>;
+    template<typename T>
+    using UPTR    = std::unique_ptr<T>;
+
     using CSTR    = const char*;
+    using CSTRS   = const char* const*;
+    using STR     = std::string;
     using STRLIST = std::vector<std::string>;
     using STRMAP  = std::unordered_map<std::string, std::string>;
     using HANDLE  = void*;
@@ -57,21 +70,21 @@ namespace GE2
     template<int N>
     using VectorT = Eigen::Matrix<double, N, 1>;
 
-    struct Offset2D
+    struct OFFSET
     {
         int32_t x = 0;
         int32_t y = 0;
     };
 
-    struct Extent2D
+    struct EXTENT
     {
         uint32_t width = 0;
         uint32_t height = 0;
     };
 
-    struct RECT2D
+    struct RECT
     {
-        Offset2D offset;
-        Extent2D extent;
+        OFFSET offset;
+        EXTENT extent;
     };
 }

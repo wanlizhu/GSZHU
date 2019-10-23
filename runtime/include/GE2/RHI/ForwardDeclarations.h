@@ -44,4 +44,6 @@ namespace GS2::RHI
     class IFramebufferAttachment;
     class ISurface;
     class ISwapchain;
+    class IQueryPool;
+    class IEvent;
 }

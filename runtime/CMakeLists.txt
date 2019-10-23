@@ -11,6 +11,7 @@ cm_include_directories(PUBLIC "include" PRIVATE "source")
 
 cm_compile_definitions("GE_BUILD_SHARED_LIBS")
 cm_compile_definitions("_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS")
+cm_compile_definitions("_CRT_SECURE_NO_WARNINGS")
 cm_disable_specific_warnings(4251)
 
 cm_use_eigen3()

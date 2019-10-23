@@ -23,6 +23,6 @@ namespace GE2::RHI
     {
         // mark specified states as dynamic, 
         // so that user can set them without changing the pipeline
-        std::vector<EDynamicState> states;
+        LIST<EDynamicState> states;
     };
 }

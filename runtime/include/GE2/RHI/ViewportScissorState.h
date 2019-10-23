@@ -5,7 +5,7 @@
 
 namespace GE2::RHI
 {
-    struct GE2_IMPEXP Viewport
+    struct Viewport
     {
         float x = 0.f;
         float y = 0.f;
@@ -17,7 +17,7 @@ namespace GE2::RHI
 
     struct GE2_IMPEXP ViewportScissorState
     {
-        std::vector<Viewport> viewports; // will be empty if it's dynamic state
-        std::vector<Rect2D>   scissors;  // will be empty if it's dynamic state
+        LIST<Viewport> viewports; // will be empty if it's dynamic state
+        LIST<RECT>     scissors;  // will be empty if it's dynamic state
     };
 }

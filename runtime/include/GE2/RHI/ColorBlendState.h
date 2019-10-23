@@ -14,7 +14,6 @@ namespace GE2::RHI
         Min,                
         Max
     };
-    DEFINE_ENUM_OPS(EBlendOp)
 
     enum class EBlendFactor
     {
@@ -36,7 +35,6 @@ namespace GE2::RHI
         Src1Alpha,              
         OneMinusSrc1Alpha       
     };
-    DEFINE_ENUM_OPS(EBlendFactor)
 
     enum class ELogicOp
     {
@@ -57,9 +55,8 @@ namespace GE2::RHI
         NotAnd,
         Set,
     };
-    DEFINE_ENUM_OPS(ELogicOp)
 
-    struct GE2_IMPEXP ColorWriteMask
+    struct ColorWriteMask
     {
         bool writeRed   = true;
         bool writeGreen = true;
@@ -84,7 +81,7 @@ namespace GE2::RHI
             EBlendFactor dstAlphaBlendFactor = EBlendFactor::Zero;
         };
 
-        std::vector<AttachmentState> attachmentStateList;
+        LIST<AttachmentState> attachmentStates;
         bool                         logicOpEnable = false;
         ELogicOp                     logicOp = ELogicOp::NoOp;
         std::array<float, 4>         blendConstants = { 1.f };

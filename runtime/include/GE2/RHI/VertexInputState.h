@@ -12,14 +12,14 @@ namespace GE2::RHI
         PerInstance,
     };
 
-    struct GE2_IMPEXP VertexInputBinding
+    struct VertexInputBinding
     {
         uint32_t         binding = 0;
         uint32_t         stride = 0;
         EVertexInputRate inputRate = EVertexInputRate::PerVertex;
     };
 
-    struct GE2_IMPEXP VertexInputAttribute
+    struct VertexInputAttribute
     {
         uint32_t        location = 0;
         uint32_t        binding = 0;
@@ -29,7 +29,7 @@ namespace GE2::RHI
 
     struct GE2_IMPEXP VertexInputState
     {
-        std::vector<VertexInputBinding>   vertexBindings;
-        std::vector<VertexInputAttribute> vertexAttributes;
+        LIST<VertexInputBinding>   vertexBindings;
+        LIST<VertexInputAttribute> vertexAttributes;
     };
 }

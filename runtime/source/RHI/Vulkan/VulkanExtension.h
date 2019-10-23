@@ -1,10 +1,10 @@
 #pragma once
 
-#include "CopyContext.h"
+#include "VulkanCommon.h"
 
 namespace GE2::RHI
 {
-    class GE2_IMPEXP ComputeContext 
+    class VulkanExtension
     {
     public:
 
