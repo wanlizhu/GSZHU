@@ -5,11 +5,24 @@
 
 namespace GE2::RHI
 {
-    enum class EQueueFamily
+    struct QueueFamilies
     {
-        Graphics = 0,
-        Compute = 1,
-        Transfer = 2,
+        LIST<VkQueueFamilyProperties> __queueFamilyProperties;
+        std::optional<uint32_t> graphicsFamilyIndex;
+        std::optional<uint32_t> computeFamilyIndex;
+        std::optional<uint32_t> transferFamilyIndex;
+
+        inline bool empty() const noexcept
+        {
+            return graphicsFamilyIndex.has_value() ||
+                   computeFamilyIndex.has_value()  ||
+                   transferFamilyIndex.has_value();
+        }
+
+        inline bool isCapable() const 
+        {
+            return graphicsFamilyIndex.has_value();
+        }
     };
 
     class VulkanDevice final : public IDevice
@@ -22,6 +35,7 @@ namespace GE2::RHI
         virtual bool   Initialize(const InitializeData& data) override;
         bool           Initialize(VkInstance existedInstance, 
                                   VkPhysicalDevice physicalDevice,
+                                  QueueFamilies queueFamilies,
                                   const InitializeData& data);
         virtual void   Destroy() override;
         virtual CSTR   GetName() const override;
@@ -31,11 +45,15 @@ namespace GE2::RHI
 
 
     private:
-        STR                               mName = "Unnamed";
-        VkInstance                        mVkInstance = VK_NULL_HANDLE;
-        VkDebugUtilsMessengerEXT          mVkDebugUtilsMessengerHandle = VK_NULL_HANDLE;
-        VkPhysicalDevice                  mVkPhysicalDevice = VK_NULL_HANDLE; // will be implicitly destroyed when the VkInstance is destroyed
-        MAP<EQueueFamily, LIST<VkQueue>>  mQueues;
-        VkDevice                          mVkDevice = VK_NULL_HANDLE;
+        bool                      mIsExternalInstance = false;
+        VkInstance                mVkInstance = VK_NULL_HANDLE;
+        VkDebugUtilsMessengerEXT  mVkDebugUtilsMessengerHandle = VK_NULL_HANDLE;
+        VkPhysicalDevice          mVkPhysicalDevice = VK_NULL_HANDLE; 
+
+        STR                       mName = "Unnamed";
+        VkDevice                  mVkDevice = VK_NULL_HANDLE;
+        LIST<VkQueue>             mVkGraphicsQueues;
+        LIST<VkQueue>             mVkComputeQueues;
+        LIST<VkQueue>             mVkTransferQueues;
     };
 }

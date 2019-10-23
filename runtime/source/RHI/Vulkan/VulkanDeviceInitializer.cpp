@@ -43,15 +43,13 @@ namespace GE2::RHI
         return result;
     }
 
-    std::pair<VkInstance, VkDebugUtilsMessengerEXT> 
-    CreateInstance(const STRLIST& extensions, 
-                   const STRLIST& layers,
-                   bool enableValidationLayers)
+    VkInstance CreateInstance(const STRLIST& extensions,
+                              const STRLIST& layers,
+                              bool enableValidationLayers,
+                              VkDebugUtilsMessengerEXT* messenger)
     {
-        using ResultType = std::pair<VkInstance, VkDebugUtilsMessengerEXT>;
-        
-        UPTR<CSTR> extensions_cstrs = Unpack(extensions);
-        UPTR<CSTR> layers_cstrs = Unpack(layers);
+        UPTR<CSTR> extensions_cstrs = GE2::Unpack(extensions);
+        UPTR<CSTR> layers_cstrs = GE2::Unpack(layers);
         VkDebugUtilsMessengerCreateInfoEXT messengerInfo = {};
 
         VkApplicationInfo appInfo = {};
@@ -76,7 +74,7 @@ namespace GE2::RHI
             if (!ALL_TRUE(CheckValidationLayerSupport(layers)))
             {
                 printf("error @VkInstance :validation layers requested, but not available");
-                return ResultType();
+                return VK_NULL_HANDLE;
             }
 
             createInfo.enabledLayerCount = static_cast<uint32_t>(layers.size());
@@ -87,30 +85,52 @@ namespace GE2::RHI
         }
 
         VkInstance instance = VK_NULL_HANDLE;
-        VkDebugUtilsMessengerEXT debugMessenger = VK_NULL_HANDLE;
 
         if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
         {
             printf("error @Vulkan :failed to create instance");
-            return ResultType();
+            return VK_NULL_HANDLE;
         }
-        
+
         if (enableValidationLayers)
         {
-            if (!INSTANCE_PROC(instance, vkCreateDebugUtilsMessengerEXT)(instance, &messengerInfo, nullptr, &debugMessenger))
+            if (!INSTANCE_PROC(instance, vkCreateDebugUtilsMessengerEXT)
+                (instance, &messengerInfo, nullptr, messenger))
             {
                 printf("error @Vulkan :failed to set up debug messenger");
-                return std::pair<VkInstance, VkDebugUtilsMessengerEXT>();
+                return VK_NULL_HANDLE;
             }
         }
 
-        return std::make_pair(instance, debugMessenger);
+        return instance;
     }
 
-    VkPhysicalDevice SelectPhysicalDevice(VkInstance instance,
-                                          VkPhysicalDeviceFeatures features)
+    VkPhysicalDevice FindPhysicalDevice(VkInstance instance,
+                                        VkPhysicalDeviceFeatures features,
+                                        QueueFamilies* queueFamilies)
+    {
+        return VK_NULL_HANDLE;
+    }
+
+    void FindQueueFamilies(VkPhysicalDevice physicalDevice,
+                           QueueFamilies* queueFamilies)
     {
 
+    }
+
+    VkDevice CreateLogicalDevice(VkPhysicalDevice physicalDevice,
+                                 const QueueFamilies& queueFamilies,
+                                 LIST<VkQueue>* graphicsQueues,
+                                 LIST<VkQueue>* computeQueues,
+                                 LIST<VkQueue>* transferQueues)
+    {
+        return VK_NULL_HANDLE;
+    }
+
+    // The higher rank the better GPU, the negative rank stands for incapable
+    int RankPhysicalDeviceCapability(VkPhysicalDevice physicalDevice)
+    {
+        return -1;
     }
 
     VkPhysicalDeviceFeatures Unpack(const LIST<EDeviceFeature>& features)
@@ -175,7 +195,7 @@ namespace GE2::RHI
             case EDeviceFeature::SparseResidencyAliased: result.sparseResidencyAliased = true; break;
             case EDeviceFeature::VariableMultisampleRate: result.variableMultisampleRate = true; break;
             case EDeviceFeature::InheritedQueries: result.inheritedQueries = true; break;
-            default:
+            default: break;
             }
         }
         return result;

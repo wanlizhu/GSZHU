@@ -32,7 +32,6 @@ namespace GS2::RHI
     class ITexture;
     class ITextureView;
     class ICommandBuffer;
-    class ICommandQueue;
     class IDescriptorPool;
     class IDescriptorSet;
     class IDescriptorSetLayout;

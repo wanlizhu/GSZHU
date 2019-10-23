@@ -10,6 +10,7 @@
 #include <set>
 #include <exception>
 #include <stdexcept>
+#include <optional>
 #include "Config.h"
 
 namespace GE2

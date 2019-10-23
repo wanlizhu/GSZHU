@@ -23,7 +23,8 @@ namespace std
         // delete an array of c-str
         void operator()(GE2::CSTR* ptr) const noexcept
         { 
-            _sizeHint = (_sizeHint == 0 ? (sizeof(ptr)/sizeof(ptr[0])) : _sizeHint);
+            _sizeHint = (_sizeHint == 0 ? (sizeof(ptr)/sizeof(ptr[0])) 
+                                        : _sizeHint);
             for (int i = 0; i < _sizeHint; i++)
                 if (ptr[i] != nullptr)
                     delete[] ptr[i];

@@ -17,15 +17,19 @@ namespace GE2::RHI
 
         inline operator bool() const noexcept
         {
-            return mFuncPtr != nullptr && mInstance != VK_NULL_HANDLE;
+            return mFuncPtr != nullptr;
         }
 
         template<typename... ARGS>
         VkResult operator()(ARGS&& ... args)
         {
-            if (mFuncPtr == nullptr)
-                return VK_ERROR_EXTENSION_NOT_PRESENT;
+            return call<VkResult>(std::forward<ARGS>(args)...);
+        }
 
+        template<typename RT, typename... ARGS>
+        RT call(ARGS&& ... args)
+        {
+            assert(mFuncPtr != nullptr);
             return mFuncPtr(std::forward<ARGS>(args)...);
         }
 
