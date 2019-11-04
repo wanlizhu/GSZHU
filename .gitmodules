@@ -1,0 +1,6 @@
+[submodule "externals/Eigen"]
+	path = externals/Eigen
+	url = https://github.com/eigenteam/eigen-git-mirror.git
+[submodule "externals/GLFW"]
+	path = externals/GLFW
+	url = https://github.com/glfw/glfw.git

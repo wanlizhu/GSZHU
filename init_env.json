@@ -1,0 +1,8 @@
+{
+    "HWGS_PATH": "${PWD}",
+    "PACKAGES_PATH": "${PWD}/externals",
+    "TOOLCHAIN_PATH" : "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin/amd64",
+    "SCRIPTS_PATH": "$ENV{HWGS_PATH}/develop/scripts",
+    "CMAKE_MODULES_PATH": "$ENV{HWGS_PATH}/develop/cmake",
+    "PATH": "$ENV{PATH};$ENV{TOOLCHAIN_PATH};$ENV{HWGS_PATH};$ENV{HWGS_PATH}/build/bin"
+}

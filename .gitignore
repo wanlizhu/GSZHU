@@ -4,7 +4,8 @@
 /[Ll]ib/
 
 # Temporary directories.
-/.vscode/*
-/.vs/*
-/__pycache__/*
-/__cache__/
+.vscode/*
+.vs/*
+__pycache__/
+__cache__/
+/externals/
