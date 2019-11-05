@@ -4,7 +4,7 @@
 #include <vector>
 #include <optional>
 
-namespace GS2
+namespace GS2::GI
 {
     enum class EResourceFormat : uint32_t
     {

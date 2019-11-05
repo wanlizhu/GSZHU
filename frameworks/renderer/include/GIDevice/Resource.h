@@ -3,7 +3,7 @@
 #include "DeviceObject.h"
 #include "EResourceState.h"
 
-namespace GS2
+namespace GS2::GI
 {
     class Resource : public DeviceObject
     {

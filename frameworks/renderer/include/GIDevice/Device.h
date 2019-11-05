@@ -3,7 +3,7 @@
 #include "Common.h"
 #include "EDeviceFeature.h"
 
-namespace GS2
+namespace GS2::GI
 {
     class DeviceObject;
     class ResourcePool;
