@@ -88,7 +88,22 @@ namespace GS2::GI
 
     enum class ELogicOp
     {
-        Copy,
+		Clear,
+		And,
+		AndReverse,
+		Copy,
+		AndInverted,
+		NoOp,
+		Xor,
+		Or,
+		Nor,
+		Equivalent,
+		Invert,
+		OrReverse,
+		CopyInverted,
+		OrInverted,
+		Nand,
+		Set,
     };
 
     class StateBase : public DeviceObject
