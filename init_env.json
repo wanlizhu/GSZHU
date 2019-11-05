@@ -1,8 +1,7 @@
 {
-    "ENGINE_PATH": "${PWD}",
-	"ENGINE_BUILD_PATH": "${PWD}/build",
-    "PACKAGES_PATH": "${PWD}/packages",
-    "SCRIPTS_PATH": "$ENV{ENGINE_PATH}/develop/scripts",
-    "CMAKE_MODULES_PATH": "$ENV{ENGINE_PATH}/develop/cmake",
-    "PATH": "$ENV{PATH};$ENV{ENGINE_PATH}"
+    "ENGINE_DIR": "${PWD}",
+	"ENGINE_BUILD_DIR": "${PWD}/build",
+    "SCRIPTS_DIR": "$ENV{ENGINE_DIR}/develop/scripts",
+    "CMAKE_MODULES_DIR": "$ENV{ENGINE_DIR}/develop/cmake",
+    "PATH": "$ENV{PATH};$ENV{ENGINE_DIR}"
 }

@@ -34,12 +34,16 @@ def cmd_amake(argsList):
     
 def cmd_amake_gen(argsMap):
     print('gen')
+    return 0
     
 def cmd_amake_build(argsMap):
     print('build')
+    return 0
     
 def cmd_amake_ide(argsMap):
     print('ide')
+    return 0
     
 def cmd_amake_clean(argsMap):
     print('clean')
+    return 0
