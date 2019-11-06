@@ -2,7 +2,7 @@
 
 #include "Device.h"
 
-namespace GS2
+namespace GS2::GI
 {
     class DeviceObject : public std::enable_shared_from_this<DeviceObject>
     {
