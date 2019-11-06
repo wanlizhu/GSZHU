@@ -89,7 +89,10 @@ def dispatchCommand(cmdName, cmdArgs):
     if not shouldQuit:
         cmdFunc = findCommand(cmdName, os.environ['SCRIPTS_DIR'])
         if cmdFunc is not None:
-            cmdFunc(cmdArgs)
+            try:
+                cmdFunc(cmdArgs)
+            except Exception as error:
+                print(redText(str(error)))
         else: # fallback to run it as system command
             print(yellowText('[forward to system command]'))
             os.system(cmdName + ' ' + ' '.join(cmdArgs))
