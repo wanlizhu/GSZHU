@@ -1,7 +1,0 @@
-{
-    "ENGINE_DIR": "${PWD}",
-	"ENGINE_BUILD_DIR": "${PWD}/build",
-    "SCRIPTS_DIR": "$ENV{ENGINE_DIR}/develop/scripts",
-    "CMAKE_MODULES_DIR": "$ENV{ENGINE_DIR}/develop/cmake",
-    "PATH": "$ENV{PATH};$ENV{ENGINE_DIR}"
-}
