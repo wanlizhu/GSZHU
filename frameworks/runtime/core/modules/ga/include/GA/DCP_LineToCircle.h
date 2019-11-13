@@ -4,7 +4,7 @@
 #include "Circle.h"
 #include "DCPQuery.h"
 
-namespace GA2
+namespace GA
 {
     // The possible number of closest line-circle pairs is 1, 2 or all circle
     // points.  If 1 or 2, numClosestPairs is set to this number and

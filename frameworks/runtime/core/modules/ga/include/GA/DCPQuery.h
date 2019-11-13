@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-namespace GA2
+namespace GA
 {
     template<typename _ShapeA_, typename _ShapeB_>
     class DCPQuery

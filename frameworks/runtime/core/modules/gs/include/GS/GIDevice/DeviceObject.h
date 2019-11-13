@@ -2,34 +2,32 @@
 
 #include "Device.h"
 
-namespace GS2::GI
+namespace GS::GI
 {
     class DeviceObject : public std::enable_shared_from_this<DeviceObject>
     {
     public:
-        using SharedPtr = std::shared_ptr<DeviceObject>;
-        using WeakPtr   = std::weak_ptr<DeviceObject>;
-        using UniquePtr = std::unique_ptr<DeviceObject>;
+        using Ptr = std::shared_ptr<DeviceObject>;
 
         DeviceObject() = delete;
-        virtual ~DeviceObject() { destroy(); }
+        virtual ~DeviceObject() { Destroy(); }
 
-        virtual void init() = 0;
-        virtual void destroy() = 0;
+        virtual void Init() = 0;
+        virtual void Destroy() = 0;
         virtual operator bool() const;
 
-        const char* getName() const;
-        void* getHandle() const;
-        Device::SharedPtr getDevice() const;
+        const char* GetName() const;
+        void* GetHandle() const;
+        Device::Ptr GetDevice() const;
 
-        void setName(const char* name);
-
-    protected:
-        DeviceObject(const char* name, Device::SharedPtr device);
+        void SetName(const char* name);
 
     protected:
-        std::string _name;
-        void* _handle = nullptr;
-        Device::SharedPtr _device; // must release resource before device
+        DeviceObject(const char* name, Device::Ptr device);
+
+    protected:
+        std::string mName;
+        void* mHandle = nullptr;
+        Device::Ptr mDevice; // must release resource before device
     };
 }

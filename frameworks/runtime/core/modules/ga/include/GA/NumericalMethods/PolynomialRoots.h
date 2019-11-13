@@ -8,7 +8,7 @@
 #include <type_traits>
 #include <optional>
 
-namespace GA2
+namespace GA
 {
     template<typename T>
     class PolynomialRoots

@@ -1,11 +1,13 @@
 #pragma once
 
-#include "Resource.h"
+#include "Command.h"
+#include "DeviceMemory.h"
 
-namespace GS2::GI
+namespace GS::GI
 {
     class ResourcePool
     {
-
+    public:
+        using Ptr = std::shared_ptr<ResourcePool>;
     };
 }

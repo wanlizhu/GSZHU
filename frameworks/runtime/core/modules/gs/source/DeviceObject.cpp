@@ -1,35 +1,35 @@
-#include "HWGI/DeviceObject.h"
+#include "GS/GIDevice/DeviceObject.h"
 
-namespace GS2
+namespace GS::GI
 {
     DeviceObject::operator bool() const
     {
-        return _handle != nullptr && _device;
+        return mHandle != nullptr && mDevice;
     }
 
-    const char* DeviceObject::getName() const
+    const char* DeviceObject::GetName() const
     {
-        return _name.c_str();
+        return mName.c_str();
     }
 
-    void* DeviceObject::getHandle() const
+    void* DeviceObject::GetHandle() const
     {
-        return _handle;
+        return mHandle;
     }
 
-    Device::SharedPtr DeviceObject::getDevice() const
+    Device::Ptr DeviceObject::GetDevice() const
     {
-        return _device;
+        return mDevice;
     }
 
-    void DeviceObject::setName(const char* name)
+    void DeviceObject::SetName(const char* name)
     {
-        _name = name;
+        mName = name;
     }
 
-    DeviceObject::DeviceObject(const char* name, Device::SharedPtr device)
-        : _name(name)
-        , _handle(nullptr)
-        , _device(device)
+    DeviceObject::DeviceObject(const char* name, Device::Ptr device)
+        : mName(name)
+        , mHandle(nullptr)
+        , mDevice(device)
     {}
 }

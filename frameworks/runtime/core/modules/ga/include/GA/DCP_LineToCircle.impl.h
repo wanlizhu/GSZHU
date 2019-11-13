@@ -2,7 +2,7 @@
 
 #include "DCP_LineToCircle.h"
 
-namespace GA2
+namespace GA
 {
     
 }

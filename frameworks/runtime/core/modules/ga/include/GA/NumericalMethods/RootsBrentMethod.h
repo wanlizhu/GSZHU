@@ -8,7 +8,7 @@
 #include <type_traits>
 #include <optional>
 
-namespace GA2
+namespace GA
 {
     // This is an implementation of Brent's Method for computing a root of a
     // function on an interval [t0,t1] for which F(t0)*F(t1) < 0.  The method
@@ -42,6 +42,7 @@ namespace GA2
     class RootsBrentsMethod
     {
     public:
+        using Scalar = T;
         struct Tolerance
         {
             std::optional<Scalar> negFTolerance;

@@ -8,9 +8,57 @@
 #include <functional>
 #include <memory>
 #include <type_traits>
+#include <cassert>
 
-namespace GS2::GI
+namespace GS::GI
 {
+    struct Range
+    {
+        size_t begin = 0;
+        size_t end = 0;
+        
+        Range() = default;
+        Range(size_t _begin, size_t _end)
+            : begin(_begin)
+            , end(_end)
+        {}
+
+        static Range MakeBySize(size_t begin, size_t size) {
+            return Range(begin, begin + size);
+        }
+
+        inline size_t GetSize() const { 
+            end - begin;
+        }
+        inline bool   IsEmpty() const {
+            return begin < end;
+        }
+        inline bool   IsOverlapped(const Range& other) const {
+            return !(*this & other).IsEmpty();
+        }
+
+        inline bool   operator==(const Range& other) const {
+            return begin == other.begin && end == other.end;
+        }
+        inline bool   operator!=(const Range& other) const {
+            return !operator==(other);
+        }
+        inline Range  operator|(const Range& other) const {
+            return Range(std::min(begin, other.begin), std::max(end, other.end));
+        }
+        inline Range  operator&(const Range& other) const {
+            return Range(std::max(begin, other.begin), std::min(end, other.end));
+        }
+        inline Range& operator|=(const Range& other) {
+            *this = *this | other;
+            return *this;
+        }
+        inline Range& operator&=(const Range& other) {
+            *this = *this & other;
+            return *this;
+        }
+    };
+
     struct Size
     {
         int width = 0;
@@ -99,10 +147,10 @@ namespace GS2::GI
 
         }
 
-        inline bool empty() const {
+        inline bool IsEmpty() const {
             return size.width <= 0 || size.height <= 0;
         }
-        inline Point endPoint() const {
+        inline Point EndPoint() const {
             return origin + size;
         }
     };

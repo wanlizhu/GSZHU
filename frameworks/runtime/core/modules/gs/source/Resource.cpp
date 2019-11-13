@@ -1,20 +1,20 @@
-#include "HWGI/Resource.h"
+#include "GS/GIDevice/Resource.h"
 
-namespace GS2
+namespace GS::GI
 {
-    void Resource::init() 
+    void Resource::Init() 
     {}
 
-    void Resource::destroy() 
+    void Resource::Destroy() 
     {}
 
     Resource::operator bool() const 
     {
-        return DeviceObject::operator bool() && _type != EType::Undefined;
+        return DeviceObject::operator bool() && mType != EType::Undefined;
     }
         
-    Resource::Resource(const char* name, Device::SharedPtr device, EType type)
+    Resource::Resource(const char* name, Device::Ptr device, EType type)
         : DeviceObject(name, device)
-        , _type(type)
+        , mType(type)
     {}
 }

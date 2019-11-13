@@ -3,7 +3,7 @@
 #include "DeviceObject.h"
 #include <array>
 
-namespace GS2::GI
+namespace GS::GI
 {
     enum class EStateType
     {
@@ -109,39 +109,39 @@ namespace GS2::GI
     class StateBase : public DeviceObject
     {
     public:
-        using SharedPtr = std::shared_ptr<StateBase>;
+        using Ptr = std::shared_ptr<StateBase>;
 
-        StateBase(const char* name, Device::SharedPtr device, EStateType type)
+        StateBase(const char* name, Device::Ptr device, EStateType type)
             : DeviceObject(name, device)
-            , _type(type)
+            , mType(type)
         {}
 
-        virtual void flush() = 0;
+        virtual void Flush() = 0;
 
-        inline void setDirty() { _stateDirty = true; }
-        inline void setDynamic(bool enabled = true) { _isDynamic = enabled; }
-        inline bool isDirty() const { return _stateDirty; }
-        inline bool isDynamic() const { return _isDynamic; }
+        inline void SetDirty() { mStateDirty = true; }
+        inline void SetDynamic(bool enabled = true) { mDynamicState = enabled; }
+        inline bool IsDirty() const { return mStateDirty; }
+        inline bool IsDynamic() const { return mDynamicState; }
 
     protected:
-        EStateType _type;
-        bool _stateDirty = false;
-        bool _isDynamic = false;
+        EStateType mType;
+        bool mStateDirty = false;
+        bool mDynamicState = false;
     };
 
     class ViewportState final : public StateBase
     {
     public:
-        using SharedPtr = std::shared_ptr<ViewportState>;
+        using Ptr = std::shared_ptr<ViewportState>;
 
-        ViewportState(const char* name, Device::SharedPtr device)
+        ViewportState(const char* name, Device::Ptr device)
             : StateBase(name, device, EStateType::Viewport)
         {}
 
-        virtual void init() override;
-        virtual void destroy() override;
-        virtual void flush() override;
-        bool fullview() const;
+        virtual void Init() override;
+        virtual void Destroy() override;
+        virtual void Flush() override;
+        bool IsFullframe() const;
 
     public:
         Region region;
@@ -152,16 +152,16 @@ namespace GS2::GI
     class ScissorState final : public StateBase
     {
     public:
-        using SharedPtr = std::shared_ptr<ScissorState>;
+        using Ptr = std::shared_ptr<ScissorState>;
 
-        ScissorState(const char* name, Device::SharedPtr device)
+        ScissorState(const char* name, Device::Ptr device)
             : StateBase(name, device, EStateType::Scissor)
         {}
 
-        virtual void init() override;
-        virtual void destroy() override;
-        virtual void flush() override;
-        bool fullview() const;
+        virtual void Init() override;
+        virtual void Destroy() override;
+        virtual void Flush() override;
+        bool IsFullframe() const;
 
     public:
         Region region;
@@ -170,15 +170,15 @@ namespace GS2::GI
     class RasterizationState final : public StateBase
     {
     public:
-        using SharedPtr = std::shared_ptr<RasterizationState>;
+        using Ptr = std::shared_ptr<RasterizationState>;
 
-        RasterizationState(const char* name, Device::SharedPtr device)
+        RasterizationState(const char* name, Device::Ptr device)
             : StateBase(name, device, EStateType::Scissor)
         {}
 
-        virtual void init() override;
-        virtual void destroy() override;
-        virtual void flush() override;
+        virtual void Init() override;
+        virtual void Destroy() override;
+        virtual void Flush() override;
 
     public:
         bool         depthClampEnable = false;
@@ -196,29 +196,29 @@ namespace GS2::GI
     class MultisampleState final : public StateBase
     {
     public:
-        using SharedPtr = std::shared_ptr<MultisampleState>;
+        using Ptr = std::shared_ptr<MultisampleState>;
 
-        MultisampleState(const char* name, Device::SharedPtr device)
+        MultisampleState(const char* name, Device::Ptr device)
             : StateBase(name, device, EStateType::Multisample)
         {}
 
-        virtual void init() override;
-        virtual void destroy() override;
-        virtual void flush() override;
+        virtual void Init() override;
+        virtual void Destroy() override;
+        virtual void Flush() override;
 
     public:
-        bool     _sampleShadingEnable = false;
-        int      _rasterizationSamples = 1;
-        float    _minSampleShading = 1.0f;
-        uint32_t _sampleMask = 0;
-        bool     _alphaToCoverageEnable = false;
-        bool     _alphaToOneEnable = false;
+        bool     sampleShadingEnable = false;
+        int      rasterizationSamples = 1;
+        float    minSampleShading = 1.0f;
+        uint32_t sampleMask = 0;
+        bool     alphaToCoverageEnable = false;
+        bool     alphaToOneEnable = false;
     };
 
     class DepthStencilState final : public StateBase
     {
     public:
-        using SharedPtr = std::shared_ptr<DepthStencilState>;
+        using Ptr = std::shared_ptr<DepthStencilState>;
         struct StencilDesc
         {
             EStencilOp failOp = EStencilOp::Keep;
@@ -230,13 +230,13 @@ namespace GS2::GI
             uint32_t reference = 0;
         };
 
-        DepthStencilState(const char* name, Device::SharedPtr device)
+        DepthStencilState(const char* name, Device::Ptr device)
             : StateBase(name, device, EStateType::DepthStencil)
         {}
 
-        virtual void init() override;
-        virtual void destroy() override;
-        virtual void flush() override;
+        virtual void Init() override;
+        virtual void Destroy() override;
+        virtual void Flush() override;
 
     public:
         bool        depthTestEnable = false;
@@ -267,15 +267,15 @@ namespace GS2::GI
     class ColorBlendState final : public StateBase
     {
     public:
-        using SharedPtr = std::shared_ptr<ColorBlendState>;
+        using Ptr = std::shared_ptr<ColorBlendState>;
 
-        ColorBlendState(const char* name, Device::SharedPtr device)
+        ColorBlendState(const char* name, Device::Ptr device)
             : StateBase(name, device, EStateType::ColorBlend)
         {}
 
-        virtual void init() override;
-        virtual void destroy() override;
-        virtual void flush() override;
+        virtual void Init() override;
+        virtual void Destroy() override;
+        virtual void Flush() override;
 
     public:
         bool                 logicOpEnable = false;

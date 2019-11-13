@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-namespace GS2::GI
+namespace GS::GI
 {
     enum class EDeviceFeature : uint64_t
     {

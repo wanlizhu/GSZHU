@@ -46,7 +46,7 @@
     inline bool operator>=(const type& other) const { return !operator<(other); }\
     inline bool operator<=(const type& other) const { return operator<(other) || operator==(other); }
 
-namespace GA2
+namespace GA
 {
     template<typename T>
     using LIST    = std::vector<T>;

@@ -4,7 +4,7 @@
 #include <vector>
 #include <optional>
 
-namespace GS2::GI
+namespace GS::GI
 {
     enum class EResourceFormat : uint32_t
     {
@@ -111,15 +111,22 @@ namespace GS2::GI
         uint32_t bytes = 0;
         uint32_t channels = 0;
         EComponentType componentType = EComponentType::Unknown;
-        struct { bool isDepth, isStencil, isCompressed; };
-        struct { uint32_t width, height; } compressionRatio;
+        struct {
+            bool isDepth; 
+            bool isStencil;
+            bool isCompressed;
+        };
+        struct { 
+            uint32_t width; 
+            uint32_t height;
+        } compressionRatio;
 
-        static std::optional<ResourceFormatInfo> find(EResourceFormat format);
-        static std::optional<ResourceFormatInfo> find(const char* name);
+        static std::optional<ResourceFormatInfo> Find(EResourceFormat format);
+        static std::optional<ResourceFormatInfo> Find(const char* name);
 
-        static EResourceFormat srgbToLinearFormat(EResourceFormat format);
-        static EResourceFormat linearToSrgbFormat(EResourceFormat format);
+        static EResourceFormat SrgbToLinearFormat(EResourceFormat format);
+        static EResourceFormat LinearToSrgbFormat(EResourceFormat format);
         
-        static bool hasAlpha(EResourceFormat format);
+        static bool HasAlpha(EResourceFormat format);
     };
 }

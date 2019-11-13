@@ -1,6 +1,7 @@
 #pragma once
 
 #include <nlohmann/json.hpp>
+#include <any>
 
 namespace DM
 {
@@ -14,8 +15,8 @@ namespace DM
     // Boolean logic: people[* rating >= 3 & starred = true]
     // Deep queries: grouped_people[**][*country=NZ] (Search through multiple levels of Objects/Arrays using [**])
     // Inner queries: comments_lookup[{page.id}] (page is in the same json with comments_loopup)
-    // Query params: ('people[country=?]', 'NZ')
-    // Predicate: ('?(people)', func) 
+    // Query params: ('people[country=%s]', 'NZ')
+    // Predicate: ('%?(people)', func) 
     class JsonQuery
     {
     public:
@@ -26,7 +27,7 @@ namespace DM
         JsonQuery(const Json& json);
 
         Json operator()(const std::string& path) const;
-        Json operator()(const std::string& path, ...) const; // QueryParams or Predicate
+        Json operator()(const std::string& path, const std::vector<std::any>& params) const;
 
     private:
         Json _json;

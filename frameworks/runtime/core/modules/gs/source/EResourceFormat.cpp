@@ -1,8 +1,8 @@
-#include "HWGI/EResourceFormat.h"
+#include "GS/GIDevice/EResourceFormat.h"
 #include <algorithm>
 #include <vector>
 
-namespace GS2
+namespace GS::GI
 {
     const std::vector<ResourceFormatInfo> kResourceFormatInfoList = 
     {
@@ -90,7 +90,7 @@ namespace GS2
         { EResourceFormat::BC7UnormSrgb,     "BC7UnormSrgb",    16,             4,      EComponentType::UnormSrgb,  { false,  false, true, },            {4, 4}},
     };
 
-    std::optional<ResourceFormatInfo> ResourceFormatInfo::find(EResourceFormat format)
+    std::optional<ResourceFormatInfo> ResourceFormatInfo::Find(EResourceFormat format)
     {
         auto it = std::find_if(kResourceFormatInfoList.begin(), kResourceFormatInfoList.end(), 
                             [&](const ResourceFormatInfo& info) {
@@ -102,7 +102,7 @@ namespace GS2
             return *it;    
     }
 
-    std::optional<ResourceFormatInfo> ResourceFormatInfo::find(const char* name)
+    std::optional<ResourceFormatInfo> ResourceFormatInfo::Find(const char* name)
     {
         auto it = std::find_if(kResourceFormatInfoList.begin(), kResourceFormatInfoList.end(), 
                             [&](const ResourceFormatInfo& info) {
@@ -114,10 +114,9 @@ namespace GS2
             return *it;  
     }
 
-    EResourceFormat ResourceFormatInfo::srgbToLinearFormat(EResourceFormat format)
+    EResourceFormat ResourceFormatInfo::SrgbToLinearFormat(EResourceFormat format)
     {
-        switch (format)
-		{
+        switch (format) {
 		case EResourceFormat::BC1UnormSrgb:
 			return EResourceFormat::BC1Unorm;
 		case EResourceFormat::BC2UnormSrgb:
@@ -137,10 +136,9 @@ namespace GS2
 		}
     }
 
-    EResourceFormat ResourceFormatInfo::linearToSrgbFormat(EResourceFormat format)
+    EResourceFormat ResourceFormatInfo::LinearToSrgbFormat(EResourceFormat format)
     {
-        switch (format)
-        {
+        switch (format) {
         case EResourceFormat::BC1Unorm:
             return EResourceFormat::BC1UnormSrgb;
         case EResourceFormat::BC2Unorm:
@@ -160,16 +158,14 @@ namespace GS2
         }
     }
 
-    bool ResourceFormatInfo::hasAlpha(EResourceFormat format)
+    bool ResourceFormatInfo::HasAlpha(EResourceFormat format)
     {
-        auto info = find(format);
+        auto info = Find(format);
         if (!info.has_value())
             return false;
 
-        if (info.value().channels == 4)
-        {
-            switch (format)
-            {
+        if (info.value().channels == 4) {
+            switch (format) {
             case EResourceFormat::BGRX8Unorm:
             case EResourceFormat::BGRX8UnormSrgb:
                 return false;
@@ -178,8 +174,7 @@ namespace GS2
             }
         }
 
-        switch (format)
-        {
+        switch (format) {
         case EResourceFormat::Alpha32Float:
         case EResourceFormat::Alpha8Unorm:
             return true;

@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-namespace GA2
+namespace GA
 {
     template<typename T, int N>
     class Segment
@@ -20,8 +20,7 @@ namespace GA2
         Segment(const std::array<VEC, 2>& list)
             : mPoints(list)
         {}
-        Segment(const VEC& center, const VEC& direction, T extent)
-        {
+        Segment(const VEC& center, const VEC& direction, T extent) {
             SetCenteredForm(center, direction, extent);
         }
 
@@ -39,14 +38,12 @@ namespace GA2
             return mPoints[0] < other.mPoints[0];
         }
 
-        void SetCenteredForm(const VEC& center, const VEC& direction, T extent)
-        {
+        void SetCenteredForm(const VEC& center, const VEC& direction, T extent) {
             mPoints[0] = center - (extent * direction);
             mPoints[1] = center + (extent * direction);
         }
 
-        void GetCenteredForm(VEC* center, VEC* direction, T* extent)
-        {
+        void GetCenteredForm(VEC* center, VEC* direction, T* extent) {
             *center = T(0.5) * (mPoints[0] + mPoints[1]);
             *direction = mPoints[1] - mPoints[0];
             *extent = T(0.5) * Normalize(*direction);

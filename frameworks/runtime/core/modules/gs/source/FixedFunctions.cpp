@@ -1,6 +1,6 @@
-#include "GIDevice/FixedFunctions.h"
+#include "GS/GIDevice/FixedFunctions.h"
 
-namespace GS2::GI
+namespace GS::GI
 {
-    bool isFull
+    
 }

@@ -1,4 +1,5 @@
 #include "DM/JsonQuery.h"
+#include <cstdarg>
 
 namespace DM
 {
@@ -11,8 +12,10 @@ namespace DM
         return Json();
     }
 
-    JsonQuery::Json JsonQuery::operator()(const std::string& path, ...) const
+    JsonQuery::Json JsonQuery::operator()(const std::string& path, 
+                                          const std::vector<std::any>& params) const
     {
+        
         return Json();
     }
 }

@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-namespace GA2
+namespace GA
 {
     template<typename T, int N>
     class Triangle

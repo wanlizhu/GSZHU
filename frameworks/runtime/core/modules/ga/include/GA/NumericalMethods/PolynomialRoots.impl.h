@@ -2,7 +2,7 @@
 
 #include "PolynomialRoots.h"
 
-namespace GA2
+namespace GA
 {
     namespace internal
     {
@@ -1203,4 +1203,4 @@ namespace GA2
             return result;
         }
     } // internal
-} // GA2
+} // GA
