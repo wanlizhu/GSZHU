@@ -1,5 +1,5 @@
 add_subdirectory(modules/dm)
-add_subdirectory(modules/ga)
+add_subdirectory(modules/cgal)
 add_subdirectory(modules/gs)
 
 add_library(WanlixCore STATIC "${RSD}/dummy.cpp")
@@ -24,9 +24,9 @@ source_group(TREE "${CSD}/source"   PREFIX "Source Files" FILES ${_sources_})
 target_sources(WanlixCore PRIVATE ${_headers_} ${_sources_})
 
 target_include_directories(WanlixCore PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
-target_link_libraries(WanlixCore PRIVATE DM)
-target_link_libraries(WanlixCore PRIVATE GA)
-target_link_libraries(WanlixCore PRIVATE GS)
+target_link_libraries(WanlixCore PRIVATE WanlixCoreDM)
+target_link_libraries(WanlixCore PRIVATE WanlixCoreCGAL)
+target_link_libraries(WanlixCore PRIVATE WanlixCoreGS)
 
 get_target_property(_outdir_ WanlixCore LIBRARY_OUTPUT_DIRECTORY)
 message(STATUS "Target: WanlixCore -> ${_outdir_}" )

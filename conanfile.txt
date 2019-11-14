@@ -1,5 +1,6 @@
 [requires]
 jsonformoderncpp/3.7.0@vthiery/stable
+Assimp/4.1.0@jacmoe/stable
 glfw/3.3@bincrafters/stable
 imgui/1.73@bincrafters/stable
 stb/20190512@conan/stable
@@ -11,6 +12,9 @@ gtest/1.8.1@bincrafters/stable
 cmake
 
 [options]
+Assimp:shared=True
+Assimp:double_precision=False
+Assimp:no_export=False
 glfw:shared=True
 imgui:shared=True
 sqlite3:enable_column_metadata=True

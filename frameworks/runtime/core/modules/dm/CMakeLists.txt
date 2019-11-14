@@ -20,6 +20,7 @@ source_group(TREE "${CSD}/source"   PREFIX "Source Files" FILES ${_sources_})
 target_sources(WanlixCoreDM PRIVATE ${_headers_} ${_sources_})
 
 target_include_directories(WanlixCoreDM PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
+target_link_libraries(WanlixCoreDM PRIVATE CONAN_PKG::Assimp)
 target_link_libraries(WanlixCoreDM PRIVATE CONAN_PKG::jsonformoderncpp)
 target_link_libraries(WanlixCoreDM PRIVATE CONAN_PKG::sqlite3)
 target_link_libraries(WanlixCoreDM PRIVATE CONAN_PKG::stb)
