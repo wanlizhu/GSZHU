@@ -7,6 +7,7 @@ stb/20190512@conan/stable
 eigen/3.3.7@conan/stable
 sqlite3/3.29.0@bincrafters/stable
 gtest/1.8.1@bincrafters/stable
+boost/1.71.0@conan/stable
 
 [generators]
 cmake
@@ -23,6 +24,7 @@ sqlite3:enable_fts5=True
 sqlite3:enable_rtree=True
 sqlite3:threadsafe=2
 sqlite3:shared=True
+boost:header_only=True
 
 [imports]
 bin, *.dll -> ./bin
