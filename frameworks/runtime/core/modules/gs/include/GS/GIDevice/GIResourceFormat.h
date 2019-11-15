@@ -4,9 +4,9 @@
 #include <vector>
 #include <optional>
 
-namespace GS::GI
+namespace GS
 {
-    enum class EResourceFormat : uint32_t
+    enum class GIResourceFormat : uint32_t
     {
         Unknown = 0,
         R8Unorm,
@@ -93,7 +93,7 @@ namespace GS::GI
         BC7UnormSrgb,
     };
 
-    enum class EComponentType
+    enum class GIComponentType
     {
         Unknown,        // Unknown format Type
         Float,          // Floating-point formats
@@ -104,13 +104,13 @@ namespace GS::GI
         Sint            // Signed integer formats
     };
 
-    struct ResourceFormatInfo
+    struct GIResourceFormatInfo
     {
-        EResourceFormat format = EResourceFormat::Unknown;
+        GIResourceFormat format = GIResourceFormat::Unknown;
         const char* name = "";
         uint32_t bytes = 0;
         uint32_t channels = 0;
-        EComponentType componentType = EComponentType::Unknown;
+        GIComponentType componentType = GIComponentType::Unknown;
         struct {
             bool isDepth; 
             bool isStencil;
@@ -121,12 +121,12 @@ namespace GS::GI
             uint32_t height;
         } compressionRatio;
 
-        static std::optional<ResourceFormatInfo> Find(EResourceFormat format);
-        static std::optional<ResourceFormatInfo> Find(const char* name);
+        static std::optional<GIResourceFormatInfo> Find(GIResourceFormat format);
+        static std::optional<GIResourceFormatInfo> Find(const std::string& name);
 
-        static EResourceFormat SrgbToLinearFormat(EResourceFormat format);
-        static EResourceFormat LinearToSrgbFormat(EResourceFormat format);
+        static GIResourceFormat SrgbToLinearFormat(GIResourceFormat format);
+        static GIResourceFormat LinearToSrgbFormat(GIResourceFormat format);
         
-        static bool HasAlpha(EResourceFormat format);
+        static bool HasAlpha(GIResourceFormat format);
     };
 }

@@ -7,7 +7,7 @@ namespace GS::GI
         return mHandle != nullptr && mDevice;
     }
 
-    const char* DeviceObject::GetName() const
+    const std::string& DeviceObject::GetName() const
     {
         return mName.c_str();
     }
@@ -17,17 +17,17 @@ namespace GS::GI
         return mHandle;
     }
 
-    Device::Ptr DeviceObject::GetDevice() const
+    GIDevice::Ptr DeviceObject::GetDevice() const
     {
         return mDevice;
     }
 
-    void DeviceObject::SetName(const char* name)
+    void DeviceObject::SetName(const std::string& name)
     {
         mName = name;
     }
 
-    DeviceObject::DeviceObject(const char* name, Device::Ptr device)
+    DeviceObject::DeviceObject(const std::string& name, GIDevice::Ptr device)
         : mName(name)
         , mHandle(nullptr)
         , mDevice(device)

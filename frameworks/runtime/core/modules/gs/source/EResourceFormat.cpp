@@ -102,7 +102,7 @@ namespace GS::GI
             return *it;    
     }
 
-    std::optional<ResourceFormatInfo> ResourceFormatInfo::Find(const char* name)
+    std::optional<ResourceFormatInfo> ResourceFormatInfo::Find(const std::string& name)
     {
         auto it = std::find_if(kResourceFormatInfoList.begin(), kResourceFormatInfoList.end(), 
                             [&](const ResourceFormatInfo& info) {

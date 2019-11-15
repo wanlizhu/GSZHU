@@ -13,7 +13,7 @@ namespace GS::GI
         return DeviceObject::operator bool() && mType != EType::Undefined;
     }
         
-    Resource::Resource(const char* name, Device::Ptr device, EType type)
+    Resource::Resource(const std::string& name, GIDevice::Ptr device, EType type)
         : DeviceObject(name, device)
         , mType(type)
     {}

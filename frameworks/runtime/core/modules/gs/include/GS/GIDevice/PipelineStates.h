@@ -111,7 +111,7 @@ namespace GS::GI
     public:
         using Ptr = std::shared_ptr<StateBase>;
 
-        StateBase(const char* name, Device::Ptr device, EStateType type)
+        StateBase(const std::string& name, GIDevice::Ptr device, EStateType type)
             : DeviceObject(name, device)
             , mType(type)
         {}
@@ -134,7 +134,7 @@ namespace GS::GI
     public:
         using Ptr = std::shared_ptr<ViewportState>;
 
-        ViewportState(const char* name, Device::Ptr device)
+        ViewportState(const std::string& name, GIDevice::Ptr device)
             : StateBase(name, device, EStateType::Viewport)
         {}
 
@@ -154,7 +154,7 @@ namespace GS::GI
     public:
         using Ptr = std::shared_ptr<ScissorState>;
 
-        ScissorState(const char* name, Device::Ptr device)
+        ScissorState(const std::string& name, GIDevice::Ptr device)
             : StateBase(name, device, EStateType::Scissor)
         {}
 
@@ -172,7 +172,7 @@ namespace GS::GI
     public:
         using Ptr = std::shared_ptr<RasterizationState>;
 
-        RasterizationState(const char* name, Device::Ptr device)
+        RasterizationState(const std::string& name, GIDevice::Ptr device)
             : StateBase(name, device, EStateType::Scissor)
         {}
 
@@ -198,7 +198,7 @@ namespace GS::GI
     public:
         using Ptr = std::shared_ptr<MultisampleState>;
 
-        MultisampleState(const char* name, Device::Ptr device)
+        MultisampleState(const std::string& name, GIDevice::Ptr device)
             : StateBase(name, device, EStateType::Multisample)
         {}
 
@@ -230,7 +230,7 @@ namespace GS::GI
             uint32_t reference = 0;
         };
 
-        DepthStencilState(const char* name, Device::Ptr device)
+        DepthStencilState(const std::string& name, GIDevice::Ptr device)
             : StateBase(name, device, EStateType::DepthStencil)
         {}
 
@@ -269,7 +269,7 @@ namespace GS::GI
     public:
         using Ptr = std::shared_ptr<ColorBlendState>;
 
-        ColorBlendState(const char* name, Device::Ptr device)
+        ColorBlendState(const std::string& name, GIDevice::Ptr device)
             : StateBase(name, device, EStateType::ColorBlend)
         {}
 
