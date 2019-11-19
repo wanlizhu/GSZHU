@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GIDeviceObject.h"
+#include "GS/Signal.h"
 
 namespace GS
 {
@@ -8,6 +9,7 @@ namespace GS
     {
     public:
         using Ptr = std::shared_ptr<GICommandBuffer>;
+        using ConstPtr = std::shared_ptr<const GICommandBuffer>;
 
         static Ptr Create(const std::string& name, GIDevice::Ptr device);
 
@@ -32,6 +34,6 @@ namespace GS
         bool IsOpen() const;
 
     public:
-        Signal<void(void*)> onCompleted;
+        Signal<void(Handle)> onCompleted;
     };
 }

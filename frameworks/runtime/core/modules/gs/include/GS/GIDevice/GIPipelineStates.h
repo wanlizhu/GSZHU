@@ -3,7 +3,7 @@
 #include "DeviceObject.h"
 #include <array>
 
-namespace GS::GI
+namespace GS
 {
     enum class EStateType
     {

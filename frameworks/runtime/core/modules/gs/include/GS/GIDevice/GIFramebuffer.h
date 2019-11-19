@@ -4,5 +4,9 @@
 
 namespace GS
 {
-    
+    class GIFramebuffer : public GIDeviceObject
+    {
+    public:
+
+    };
 }

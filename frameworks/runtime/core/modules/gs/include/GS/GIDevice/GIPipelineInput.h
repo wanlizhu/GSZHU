@@ -18,7 +18,7 @@ namespace GS
         GIBuffer::Ptr vertexBuffer;
     };
 
-    class GIPipelineInput : public std::enable_shared_ptr<GIPipelineInput>
+    class GIPipelineInput
     {
     public:
 

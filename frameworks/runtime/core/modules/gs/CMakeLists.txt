@@ -19,7 +19,9 @@ source_group(TREE "${CSD}/include"  PREFIX "Header Files" FILES ${_headers_})
 source_group(TREE "${CSD}/source"   PREFIX "Source Files" FILES ${_sources_})
 target_sources(WanlixCoreGS PRIVATE ${_headers_} ${_sources_})
 
-target_include_directories(WanlixCoreGS PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
+target_include_directories(WanlixCoreGS PUBLIC "${CSD}/include")
+target_include_directories(WanlixCoreGS PRIVATE "${CSD}/source")
+target_include_directories(WanlixCoreGS PRIVATE "${CSD}")
 target_link_libraries(WanlixCoreGS PRIVATE CONAN_PKG::glfw)
 target_link_libraries(WanlixCoreGS PRIVATE CONAN_PKG::imgui)
 
