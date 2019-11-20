@@ -1,0 +1,5 @@
+add_subdirectory(utility)
+add_subdirectory(plugins/CGAL)
+add_subdirectory(plugins/GIH_Vulkan)
+add_subdirectory(render)
+add_subdirectory(core)

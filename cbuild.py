@@ -42,6 +42,10 @@ class CBuild:
     source_dir = os.path.dirname(__file__)
     binary_dir = os.path.join(source_dir, 'build')
 
+    @staticmethod
+    def alias():
+        return 'cb'
+
     def __init__(self):
         pass
 
@@ -86,6 +90,9 @@ class CBuild:
         os.system(' '.join(conan_args))
 
     def gen(self, args):
+        if not os.path.exists(CBuild.binary_dir):
+            self.init_packages([])
+            
         iswindows = platform.system().startswith('Win')
         parser = ArgumentParserNoInterrupt()
         parser.add_argument('-p', '--platform', 
@@ -122,6 +129,10 @@ class CBuild:
 
     def ide(self, args):
         os.system('cmake --open "%s"' % (CBuild.binary_dir))
+        return 0
+        
+    def clean(self, args):
+        os.system('cmake -E remove_directory "%s"' % (CBuild.binary_dir))
         return 0
 
     def build(self, args):
@@ -160,7 +171,8 @@ def await_input():
     return cmd, subcmd, args
 
 if __name__=='__main__':
-    classes = [info[0] for info in inspect.getmembers(sys.modules[__name__], 
+    thismodule = sys.modules[__name__]
+    classes = [info[0] for info in inspect.getmembers(thismodule, 
                                                       lambda member: inspect.isclass(member) and 
                                                                      member.__module__==__name__)]
     cbuild = CBuild()
@@ -171,9 +183,11 @@ if __name__=='__main__':
         cmd, subcmd, args = await_input()
         instance = None
         for name in classes:
+            thisclass = getattr(thismodule, name)
             if not cmd==name.lower():
-                continue
-            instance = getattr(sys.modules[__name__], name)()
+                if (not hasattr(thisclass, 'alias')) or (not cmd==thisclass.alias()):
+                    continue
+            instance = thisclass()
             instance.run_command(subcmd, args)
             break
         if not instance:
