@@ -29,7 +29,7 @@ set(GE_VERSION "${GE_VERSION_MAJOR}.${GE_VERSION_MINOR}.${GE_VERSION_PATCH}")
 set(RSD "${CMAKE_CURRENT_SOURCE_DIR}")
 set(RBD "${CMAKE_CURRENT_BINARY_DIR}")
 
-add_subdirectory(frameworks)
+add_subdirectory(runtime)
 
 add_library(Wanlix SHARED dummy.cpp)
 if (NOT GE_OUTPUT_WITH_CONFIG_SUBDIR)
@@ -56,8 +56,7 @@ target_sources(Wanlix PRIVATE ${_interfaces_} ${_headers_} ${_sources_})
 set_target_properties(Wanlix PROPERTIES VERSION ${GE_VERSION})
 
 target_include_directories(Wanlix PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
-target_link_libraries(Wanlix PRIVATE WanlixCore)
-target_link_libraries(Wanlix PRIVATE $<$<BOOL:GE_BUILD_EDITOR>:WanlixEditor>)
+target_link_libraries(Wanlix PRIVATE Core)
 
 get_target_property(_outdir_ Wanlix RUNTIME_OUTPUT_DIRECTORY)
 message(STATUS "Target: Wanlix -> ${_outdir_}" )
