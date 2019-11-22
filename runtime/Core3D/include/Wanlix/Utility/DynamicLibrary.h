@@ -5,7 +5,7 @@
 #include <optional>
 #include <memory>
 
-namespace UT
+namespace Wanlix
 {
     class DynamicLibrary final
     {

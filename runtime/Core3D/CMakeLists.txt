@@ -20,7 +20,7 @@ source_group(TREE "${CSD}/source"   PREFIX "Source Files" FILES ${_sources_})
 target_sources(Core3D PRIVATE ${_headers_} ${_sources_})
 target_link_libraries(Core3D PRIVATE CONAN_PKG::Assimp)
 target_link_libraries(Core3D PRIVATE CONAN_PKG::glfw)
-target_link_libraries(Core3D PRIVATE CONAN_PKG::Eigen)
+target_link_libraries(Core3D PRIVATE CONAN_PKG::Eigen3)
 
 target_include_directories(Core3D PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
 

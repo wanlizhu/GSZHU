@@ -7,7 +7,7 @@
 
 #define NASIZE ((size_t)-1)
 
-namespace UT
+namespace Wanlix
 {
     std::wstring ToWString(const std::string& source);
 

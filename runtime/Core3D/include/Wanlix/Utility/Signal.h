@@ -8,7 +8,7 @@
 #include <memory>
 #include <type_traits>
 
-namespace UT
+namespace Wanlix
 {
     template<typename RT, typename... ARGS>
     class Signal

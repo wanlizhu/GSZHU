@@ -1,7 +1,7 @@
-#include "Wanlix/Strings.h"
+#include "Wanlix/Utility/Strings.h"
 #include <codecvt>
 
-namespace UT
+namespace Wanlix
 {
     std::wstring ToWString(const std::string& source)
     {
@@ -68,7 +68,7 @@ namespace UT
             if (pos == start) {
                 start = pos + 1; // Do nothing
             }
-            else if (pos == BasicString<T>::npos || (maxSplits && numSplits == maxSplits)) {
+            else if (pos == _String_::npos || (maxSplits && numSplits == maxSplits)) {
                 ret.push_back(str.substr(start)); // Copy the rest of the string
                 break;
             }
@@ -80,7 +80,7 @@ namespace UT
             start = str.find_first_not_of(delims, start);
             ++numSplits;
 
-        } while (pos != BasicString<T>::npos);
+        } while (pos != _String_::npos);
 
         return ret;
     }

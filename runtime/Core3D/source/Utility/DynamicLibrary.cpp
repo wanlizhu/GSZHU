@@ -1,4 +1,5 @@
-#include "Wanlix/DynamicLibrary.h"
+#include "Wanlix/Utility/DynamicLibrary.h"
+
 #define WIN32_LEAN_AND_MEAN
 #if !defined(NOMINMAX) && defined(_MSC_VER)
     #define NOMINMAX // required to stop windows.h messing up std::min
@@ -22,7 +23,7 @@
     #define UNLOAD_LIB(lib) dlclose(lib)
 #endif
 
-namespace UT
+namespace Wanlix
 {
     DynamicLibrary::DynamicLibrary(const std::string& name)
         : mName(name)

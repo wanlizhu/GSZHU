@@ -1,6 +1,6 @@
-#include "Wanlix/ThreadPool.h"
+#include "Wanlix/Utility/ThreadPool.h"
 
-namespace UT
+namespace Wanlix
 {
     std::vector<std::thread> ThreadPool::smThreads;
     std::queue<std::function<void()>> ThreadPool::smTaskQueue;

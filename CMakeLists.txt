@@ -18,7 +18,7 @@ conan_basic_setup(TARGETS)
 
 set(GE_OUTPUT_WITH_CONFIG_SUBDIR OFF CACHE BOOL "")
 set(BUILD_SHARED_LIBS ON  CACHE BOOL "")
-set(GE_BUILD_EDITOR   OFF CACHE BOOL "")
+set(GE_BUILD_EDITOR   ON  CACHE BOOL "")
 set(GE_BUILD_TEST     ON  CACHE BOOL "")
 set(GE_ENABLE_VULKAN  ON  CACHE BOOL "")
 set(GE_ENABLE_DX12    ON  CACHE BOOL "")
@@ -61,15 +61,13 @@ target_link_libraries(Wanlix PRIVATE Core3D)
 
 if (GE_BUILD_EDITOR)
     add_subdirectory(editor)
-    target_link_libraries(Wanlix PRIVATE Editor)
 endif()
-
-add_custom_command(
-    TARGET Wanlix 
-    POST_BUILD
-    COMMAND copy_directory "${CSD}/data" "${COD}/data"
-    WORKING_DIRECTORY "${CSD}"
-)
 
 get_target_property(_outdir_ Wanlix RUNTIME_OUTPUT_DIRECTORY)
 message(STATUS "Target: Wanlix -> ${_outdir_}" )
+add_custom_command(
+    TARGET Wanlix 
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CSD}/data" "${_outdir_}/data"
+    WORKING_DIRECTORY "${CSD}"
+)

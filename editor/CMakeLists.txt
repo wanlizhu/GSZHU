@@ -18,12 +18,12 @@ file(GLOB_RECURSE _sources_    "${CSD}/source/*.c"  "${CSD}/source/*.cpp")
 source_group(TREE "${CSD}/include"  PREFIX "Header Files" FILES ${_headers_})
 source_group(TREE "${CSD}/source"   PREFIX "Source Files" FILES ${_sources_})
 target_sources(Editor PRIVATE ${_headers_} ${_sources_})
-target_link_libraries(Editor PRIVATE Render)
 
 target_include_directories(Editor PRIVATE "${CSD}/include")
 target_include_directories(Editor PRIVATE "${CSD}/source")
 target_include_directories(Editor PRIVATE "${CSD}")
-target_link_libraries(Editor PRIVATE Core3D)
+target_link_libraries(Editor PRIVATE Wanlix)
+target_link_libraries(Editor PRIVATE Core3D) # for debug only
 
 get_target_property(_outdir_ Editor RUNTIME_OUTPUT_DIRECTORY)
 message(STATUS "Target: Editor -> ${_outdir_}" )
