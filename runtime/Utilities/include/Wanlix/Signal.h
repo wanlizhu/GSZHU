@@ -8,7 +8,7 @@
 #include <memory>
 #include <type_traits>
 
-namespace GS
+namespace UT
 {
     template<typename RT, typename... ARGS>
     class Signal

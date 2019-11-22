@@ -1,6 +1,6 @@
 add_subdirectory(utility)
 add_subdirectory(plugins/CGAL)
-add_subdirectory(plugins/GIH_Vulkan)
+add_subdirectory(plugins/RHI_Vulkan)
 add_subdirectory(render)
 add_subdirectory(core)
 if (GE_BUILD_EDITOR)
