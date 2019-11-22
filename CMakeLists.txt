@@ -46,6 +46,7 @@ if (NOT GE_OUTPUT_WITH_CONFIG_SUBDIR)
 endif()
 
 set(CSD "${CMAKE_CURRENT_SOURCE_DIR}")
+set(COD "${CMAKE_CURRENT_BINARY_DIR}")
 file(GLOB_RECURSE _interfaces_ "${CSD}/include/*.h" "${CSD}/include/*.hpp")
 file(GLOB_RECURSE _headers_    "${CSD}/source/*.h"  "${CSD}/source/*.hpp")
 file(GLOB_RECURSE _sources_    "${CSD}/source/*.c"  "${CSD}/source/*.cpp")
@@ -56,7 +57,19 @@ target_sources(Wanlix PRIVATE ${_interfaces_} ${_headers_} ${_sources_})
 set_target_properties(Wanlix PROPERTIES VERSION ${GE_VERSION})
 
 target_include_directories(Wanlix PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
-target_link_libraries(Wanlix PRIVATE Core)
+target_link_libraries(Wanlix PRIVATE Core3D)
+
+if (GE_BUILD_EDITOR)
+    add_subdirectory(editor)
+    target_link_libraries(Wanlix PRIVATE Editor)
+endif()
+
+add_custom_command(
+    TARGET Wanlix 
+    POST_BUILD
+    COMMAND copy_directory "${CSD}/data" "${COD}/data"
+    WORKING_DIRECTORY "${CSD}"
+)
 
 get_target_property(_outdir_ Wanlix RUNTIME_OUTPUT_DIRECTORY)
 message(STATUS "Target: Wanlix -> ${_outdir_}" )
