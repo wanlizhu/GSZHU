@@ -49,7 +49,7 @@ namespace Wanlix
 
                     task();
                 } // while (true)
-                                   });
+            }); // emplace_back()
             smThreadNameMap[names[i]] = smThreads.back().get_id();
         }
     }

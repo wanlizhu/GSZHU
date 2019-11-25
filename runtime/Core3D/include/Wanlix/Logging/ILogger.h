@@ -15,6 +15,9 @@ namespace Wanlix
     {
     public:
         virtual ~ILogger() = default;
-        virtual void Log(LogType type, const std::string& msg) const = 0;
+        virtual void Log(
+            LogType type,
+            const std::string& msg
+        ) const = 0;
     };
 }

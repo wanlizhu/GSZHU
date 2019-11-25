@@ -1,6 +1,7 @@
 #include "Wanlix/Logging/ConsoleLogger.h"
 #include <iostream>
 #include <unordered_map>
+#include <functional>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -8,8 +9,7 @@
 
 namespace Wanlix
 {
-    typedef void(ConsoleLogger::* ColorPrintFunc)(const char*) const;
-    static std::unordered_map<LogType, ColorPrintFunc> _colorPrintFuncs;
+    static std::unordered_map<LogType, std::function<void(const char*)>> _colorPrintFuncs;
 
     ConsoleLogger::ConsoleLogger() 
     {
@@ -17,12 +17,15 @@ namespace Wanlix
             return;
         }
 
-        _colorPrintFuncs[LogType::LogInfo] = &ConsoleLogger::LogCyan;
-        _colorPrintFuncs[LogType::LogWarning] = &ConsoleLogger::LogYellow;
-        _colorPrintFuncs[LogType::LogError] = &ConsoleLogger::LogRed;
+        _colorPrintFuncs[LogType::LogInfo] = [this](const char* msg) { LogCyan(msg); };
+        _colorPrintFuncs[LogType::LogWarning] = [this](const char* msg) { LogYellow(msg); };
+        _colorPrintFuncs[LogType::LogError] = [this](const char* msg) { LogRed(msg); };
     }
 
-    void ConsoleLogger::Log(LogType type, const std::string& msg) const
+    void ConsoleLogger::Log(
+        LogType type,
+        const std::string& msg
+    ) const
     {
         const std::string prefix = (type == LogInfo) ? "Info:"
             : (type == LogWarning) ? "Warning:"
@@ -34,7 +37,7 @@ namespace Wanlix
             return;
         }
 
-        std::invoke(_colorPrintFuncs[type], this, text.c_str());
+        _colorPrintFuncs[type](text.c_str());
     }
 
     void ConsoleLogger::LogNoColor(const char* msg) const

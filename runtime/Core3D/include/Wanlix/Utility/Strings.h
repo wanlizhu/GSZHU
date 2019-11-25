@@ -38,12 +38,30 @@ namespace Wanlix
         using RangeList = std::vector<Range>;
 
         // Removes any whitespace characters from beginning or end of the string
-        static void Trim(std::string& str, bool left = true, bool right = true);
-        static void Trim(std::wstring& str, bool left = true, bool right = true);
+        static void Trim(
+            std::string& str,
+            bool left = true,
+            bool right = true
+        );
+        static void Trim(
+            std::wstring& str,
+            bool left = true,
+            bool right = true
+        );
 
         // Removes specified characters from beginning or end of the string
-        static void Trim(std::string& str, const std::string& delims, bool left = true, bool right = true);
-        static void Trim(std::wstring& str, const std::wstring& delims, bool left = true, bool right = true);
+        static void Trim(
+            std::string& str,
+            const std::string& delims,
+            bool left = true,
+            bool right = true
+        );
+        static void Trim(
+            std::wstring& str,
+            const std::wstring& delims,
+            bool left = true,
+            bool right = true
+        );
     
         /**
          * Returns a vector of strings containing all the substrings delimited by the provided delimiter characters.
@@ -54,8 +72,16 @@ namespace Wanlix
          * @param[in]	maxSplits	(optional) The maximum number of splits to perform (0 for unlimited splits). If this
          *							parameters is > 0, the splitting process will stop after this many splits, left to right.
          */
-        static StringList Split(const std::string& str, const std::string& delims = "\t\n ", uint32_t maxSplits = 0);
-        static WStringList Split(const std::wstring& str, const std::wstring& delims = L"\t\n ", uint32_t maxSplits = 0);
+        static StringList Split(
+            const std::string& str,
+            const std::string& delims = "\t\n ",
+            uint32_t maxSplits = 0
+        );
+        static WStringList Split(
+            const std::wstring& str,
+            const std::wstring& delims = L"\t\n ",
+            uint32_t maxSplits = 0
+        );
 
         /**
          * Returns a vector of strings containing all the substrings delimited by the provided delimiter characters, or the
@@ -70,14 +96,18 @@ namespace Wanlix
          *								If this parameters is > 0, the splitting process will stop after this many splits,
          *								left to right.
          */
-        static StringList Tokenize(const std::string& str, 
-                                   const std::string& delims = "\t\n ",
-                                   const std::string& doubleDelims = "\"", 
-                                   unsigned int maxSplits = 0);
-        static WStringList Tokenize(const std::wstring& str, 
-                                    const std::wstring& delims = L"\t\n ",
-                                    const std::wstring& doubleDelims = L"\"", 
-                                    unsigned int maxSplits = 0);
+        static StringList Tokenize(
+            const std::string& str, 
+            const std::string& delims = "\t\n ",
+            const std::string& doubleDelims = "\"", 
+            unsigned int maxSplits = 0
+        );
+        static WStringList Tokenize(
+            const std::wstring& str, 
+            const std::wstring& delims = L"\t\n ",
+            const std::wstring& doubleDelims = L"\"", 
+            unsigned int maxSplits = 0
+        );
 
         static void ToLower(std::string& str);
         static void ToLower(std::wstring& str);
@@ -92,8 +122,16 @@ namespace Wanlix
          * @param[in]	pattern		    Pattern to compare with.
          * @param[in]	caseSensitive	(optional) Should the match be case sensitive or not.
          */
-        static bool StartsWith(const std::string& str, const std::string& pattern, bool caseSensitive = true);
-        static bool StartsWith(const std::wstring& str, const std::wstring& pattern, bool caseSensitive = true);
+        static bool StartsWith(
+            const std::string& str,
+            const std::string& pattern,
+            bool caseSensitive = true
+        );
+        static bool StartsWith(
+            const std::wstring& str,
+            const std::wstring& pattern,
+            bool caseSensitive = true
+        );
 
         /**
          * Returns whether the string end with the pattern passed in.
@@ -102,8 +140,16 @@ namespace Wanlix
          * @param[in]	pattern		    Pattern to compare with.
          * @param[in]	caseSensitive	(optional) Should the match be case sensitive or not.
          */
-        static bool EndsWith(const std::string& str, const std::string& pattern, bool caseSensitive = true);
-        static bool EndsWith(const std::wstring& str, const std::wstring& pattern, bool caseSensitive = true);
+        static bool EndsWith(
+            const std::string& str,
+            const std::string& pattern,
+            bool caseSensitive = true
+        );
+        static bool EndsWith(
+            const std::wstring& str,
+            const std::wstring& pattern,
+            bool caseSensitive = true
+        );
 
         /**
          * Returns true if the string matches the provided pattern. Pattern may use a "*" wildcard for matching any
@@ -113,8 +159,16 @@ namespace Wanlix
          * @param[in]	pattern		 	Patterns to look for.
          * @param[in]	caseSensitive	(optional) Should the match be case sensitive or not.
          */
-        static bool Match(const std::string& str, const std::string& pattern, bool caseSensitive = true);
-        static bool Match(const std::wstring& str, const std::wstring& pattern, bool caseSensitive = true);
+        static bool Match(
+            const std::string& str,
+            const std::string& pattern,
+            bool caseSensitive = true
+        );
+        static bool Match(
+            const std::wstring& str,
+            const std::wstring& pattern, 
+            bool caseSensitive = true
+        );
 
         /**
          * Replace all instances of a substring with a another substring.
@@ -125,11 +179,15 @@ namespace Wanlix
          *
          * @return	An updated string with the substrings replaced.
          */
-        static std::string ReplaceAll(const std::string& str,
-                                      const std::string& replaceWhat,
-                                      const std::string& replaceWithWhat);
-        static std::wstring ReplaceAll(const std::wstring& str,
-                                       const std::wstring& replaceWhat,
-                                       const std::wstring& replaceWithWhat);
+        static std::string ReplaceAll(
+            const std::string& str,
+            const std::string& replaceWhat,
+            const std::string& replaceWithWhat
+        );
+        static std::wstring ReplaceAll(
+            const std::wstring& str,
+            const std::wstring& replaceWhat,
+            const std::wstring& replaceWithWhat
+        );
     };
 }

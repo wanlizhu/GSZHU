@@ -16,19 +16,32 @@ namespace Wanlix
         return conv.to_bytes(source);
     }
 
-    void StringUtil::Trim(std::string& str, bool left, bool right)
+    void StringUtil::Trim(
+        std::string& str, 
+        bool left,
+        bool right
+    )
     {
         static const std::string delims = " \t\r\n";
         return StringUtil::Trim(str, delims, left, right);
     }
 
-    void StringUtil::Trim(std::wstring& str, bool left, bool right)
+    void StringUtil::Trim(
+        std::wstring& str,
+        bool left,
+        bool right
+    )
     {
         static const std::wstring delims = L" \t\r\n";
         return StringUtil::Trim(str, delims, left, right);
     }
 
-    void StringUtil::Trim(std::string& str, const std::string& delims, bool left, bool right)
+    void StringUtil::Trim(
+        std::string& str,
+        const std::string& delims,
+        bool left,
+        bool right
+    )
     {
         if (right) {
             str.erase(str.find_last_not_of(delims) + 1);
@@ -38,7 +51,12 @@ namespace Wanlix
         }
     }
 
-    void StringUtil::Trim(std::wstring& str, const std::wstring& delims, bool left, bool right)
+    void StringUtil::Trim(
+        std::wstring& str,
+        const std::wstring& delims,
+        bool left,
+        bool right
+    )
     {
         if (right) {
             str.erase(str.find_last_not_of(delims) + 1);
@@ -49,9 +67,11 @@ namespace Wanlix
     }
 
     template<typename _String_>
-    static std::vector<_String_> SplitInternal(const _String_& str, 
-                                               const _String_& delims,
-                                               uint32_t maxSplits)
+    static std::vector<_String_> SplitInternal(
+        const _String_& str, 
+        const _String_& delims,
+        uint32_t maxSplits
+    )
     {
         std::vector<_String_> ret;
         // Pre-allocate some space for performance
@@ -85,21 +105,31 @@ namespace Wanlix
         return ret;
     }
 
-    StringUtil::StringList StringUtil::Split(const std::string& str, const std::string& delims, uint32_t maxSplits)
+    StringUtil::StringList StringUtil::Split(
+        const std::string& str,
+        const std::string& delims,
+        uint32_t maxSplits
+    )
     {
         return SplitInternal(str, delims, maxSplits);
     }
 
-    StringUtil::WStringList StringUtil::Split(const std::wstring& str, const std::wstring& delims, uint32_t maxSplits)
+    StringUtil::WStringList StringUtil::Split(
+        const std::wstring& str,
+        const std::wstring& delims,
+        uint32_t maxSplits
+    )
     {
         return SplitInternal(str, delims, maxSplits);
     }
 
     template<typename _String_>
-    static std::vector<_String_> TokenizeInternal(const _String_& str, 
-                                                  const _String_& singleDelims,
-                                                  const _String_& doubleDelims,
-                                                  unsigned int maxSplits)
+    static std::vector<_String_> TokenizeInternal(
+        const _String_& str, 
+        const _String_& singleDelims,
+        const _String_& doubleDelims,
+        unsigned int maxSplits
+    )
     {
         std::vector<_String_> ret;
         // Pre-allocate some space for performance
@@ -158,18 +188,22 @@ namespace Wanlix
         return ret;
     }
 
-    StringUtil::StringList StringUtil::Tokenize(const std::string& str,
-                                                const std::string& delims ,
-                                                const std::string& doubleDelims,
-                                                unsigned int maxSplits)
+    StringUtil::StringList StringUtil::Tokenize(
+        const std::string& str,
+        const std::string& delims,
+        const std::string& doubleDelims,
+        unsigned int maxSplits
+    )
     {
         return TokenizeInternal(str, delims, doubleDelims, maxSplits);
     }
 
-    StringUtil::WStringList StringUtil::Tokenize(const std::wstring& str,
-                                                 const std::wstring& delims,
-                                                 const std::wstring& doubleDelims,
-                                                 unsigned int maxSplits)
+    StringUtil::WStringList StringUtil::Tokenize(
+        const std::wstring& str,
+        const std::wstring& delims,
+        const std::wstring& doubleDelims,
+        unsigned int maxSplits
+    )
     {
         return TokenizeInternal(str, delims, doubleDelims, maxSplits);
     }
@@ -195,7 +229,11 @@ namespace Wanlix
     }
 
     template<typename _String_>
-    static bool StartsWithInternal(const _String_& str, const _String_& pattern, bool caseSensitive)
+    static bool StartsWithInternal(
+        const _String_& str,
+        const _String_& pattern,
+        bool caseSensitive
+    )
     {
         size_t thisLen = str.length();
         size_t patternLen = pattern.length();
@@ -213,18 +251,30 @@ namespace Wanlix
         return startOfThis == pattern;
     }
 
-    bool StringUtil::StartsWith(const std::string& str, const std::string& pattern, bool caseSensitive)
+    bool StringUtil::StartsWith(
+        const std::string& str,
+        const std::string& pattern,
+        bool caseSensitive
+    )
     {
         return StartsWithInternal(str, pattern, caseSensitive);
     }
 
-    bool StringUtil::StartsWith(const std::wstring& str, const std::wstring& pattern, bool caseSensitive)
+    bool StringUtil::StartsWith(
+        const std::wstring& str,
+        const std::wstring& pattern,
+        bool caseSensitive
+    )
     {
         return StartsWithInternal(str, pattern, caseSensitive);
     }
 
     template<typename _String_>
-    static bool EndsWithInternal(const _String_& str, const _String_& pattern, bool caseSensitive)
+    static bool EndsWithInternal(
+        const _String_& str,
+        const _String_& pattern,
+        bool caseSensitive
+    )
     {
         size_t thisLen = str.length();
         size_t patternLen = pattern.length();
@@ -242,18 +292,30 @@ namespace Wanlix
         return endOfThis == pattern;
     }
 
-    bool StringUtil::EndsWith(const std::string& str, const std::string& pattern, bool caseSensitive)
+    bool StringUtil::EndsWith(
+        const std::string& str,
+        const std::string& pattern,
+        bool caseSensitive
+    )
     {
         return EndsWithInternal(str, pattern, caseSensitive);
     }
 
-    bool StringUtil::EndsWith(const std::wstring& str, const std::wstring& pattern, bool caseSensitive)
+    bool StringUtil::EndsWith(
+        const std::wstring& str,
+        const std::wstring& pattern,
+        bool caseSensitive
+    )
     {
         return EndsWithInternal(str, pattern, caseSensitive);
     }
 
     template<typename _String_>
-    static bool MatchInternal(const _String_& str, const _String_& pattern, bool caseSensitive)
+    static bool MatchInternal(
+        const _String_& str,
+        const _String_& pattern,
+        bool caseSensitive
+    )
     {
         _String_ tmpStr = str;
         _String_ tmpPattern = pattern;
@@ -306,20 +368,30 @@ namespace Wanlix
         return (patIt == tmpPattern.end() && strIt == tmpStr.end());
     }
 
-    bool StringUtil::Match(const std::string& str, const std::string& pattern, bool caseSensitive)
+    bool StringUtil::Match(
+        const std::string& str,
+        const std::string& pattern,
+        bool caseSensitive
+    )
     {
         return MatchInternal(str, pattern, caseSensitive);
     }
 
-    bool StringUtil::Match(const std::wstring& str, const std::wstring& pattern, bool caseSensitive)
+    bool StringUtil::Match(
+        const std::wstring& str, 
+        const std::wstring& pattern, 
+        bool caseSensitive
+    )
     {
         return MatchInternal(str, pattern, caseSensitive);
     }
 
     template<typename _String_>
-    static _String_ ReplaceAllInternal(const _String_& source,
-                                       const _String_& replaceWhat, 
-                                       const _String_& replaceWithWhat)
+    static _String_ ReplaceAllInternal(
+        const _String_& source,
+        const _String_& replaceWhat, 
+        const _String_& replaceWithWhat
+    )
     {
         _String_ result = source;
         typename _String_::size_type pos = 0;
@@ -333,16 +405,20 @@ namespace Wanlix
         return result;
     }
 
-    std::string StringUtil::ReplaceAll(const std::string& str, 
-                                       const std::string& replaceWhat,
-                                       const std::string& replaceWithWhat)
+    std::string StringUtil::ReplaceAll(
+        const std::string& str, 
+        const std::string& replaceWhat,
+        const std::string& replaceWithWhat
+    )
     {
         return ReplaceAllInternal(str, replaceWhat, replaceWithWhat);
     }
 
-    std::wstring StringUtil::ReplaceAll(const std::wstring& str, 
-                                        const std::wstring& replaceWhat,
-                                        const std::wstring& replaceWithWhat)
+    std::wstring StringUtil::ReplaceAll(
+        const std::wstring& str, 
+        const std::wstring& replaceWhat,
+        const std::wstring& replaceWithWhat
+    )
     {
         return ReplaceAllInternal(str, replaceWhat, replaceWithWhat);
     }

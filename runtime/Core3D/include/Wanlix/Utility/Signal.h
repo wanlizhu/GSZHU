@@ -11,11 +11,12 @@
 namespace Wanlix
 {
     template<typename RT, typename... ARGS>
-    class Signal
+    class Signal;
+
+    template<typename RT, typename... ARGS>
+    class Signal<RT(ARGS...)>
     {
     public:
-        using Function = std::function<RT(ARGS...)>;
-
         // bind free function or static method
         template<auto _FuncPtr_>
         uint64_t Connect() {
@@ -59,16 +60,16 @@ namespace Wanlix
         template<typename... Uref>
         void operator()(Uref&& ... args) {
             for (auto& [id, func] : mSlotMap) {
-                func(std::forward<Uref>(args)...);
+                func(std::forward<Uref&&>(args)...);
             }
         }
 
 
     private:
         static uint64_t _idx;
-        std::unordered_map<uint64_t, Function> mSlotMap;
+        std::unordered_map<uint64_t, std::function<RT(ARGS...)>> mSlotMap;
     };
 
     template<typename RT, typename... ARGS>
-    uint64_t Signal<RT, ARGS...>::_idx = 0;
+    uint64_t Signal<RT(ARGS...)>::_idx = 0;
 }

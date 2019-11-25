@@ -11,7 +11,10 @@ namespace Wanlix
         ConsoleLogger();
         virtual ~ConsoleLogger() {}
 
-        virtual void Log(LogType type, const std::string& msg) const override;
+        virtual void Log(
+            LogType type, 
+            const std::string& msg
+        ) const override;
 
     private:
         void LogCyan(const char* msg) const;
