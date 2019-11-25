@@ -28,7 +28,7 @@ namespace Wanlix
         void SetDescriptor(const WindowDescriptor& desc) override;
 
         bool GetNativeHandle(void* handle, size_t handleSize) const override;
-        Extent GetSize() const override;
+        Extent GetContentSize() const override;
         Extent GetSize(bool clientArea) const override;
         Offset GetPosition() const override;
         std::wstring GetTitle() const override;

@@ -215,7 +215,7 @@ namespace Wanlix
         ::SetWindowPos(mHwnd, HWND_TOP, 0, 0, cx, cy, (SWP_NOMOVE | SWP_NOZORDER));
     }
 
-    Extent Win32Window::GetSize() const
+    Extent Win32Window::GetContentSize() const
     {
         return GetSize(true);
     }

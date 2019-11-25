@@ -20,6 +20,10 @@ namespace Wanlix
         static std::vector<UniquePtr> List();
         // Instantiates an interface for the primary display.
         static UniquePtr Primary();
+		// Shows or hides the cursor for the running application from all displays.
+		static void ShowCursor();
+		static void HideCursor();
+		static bool IsCursorVisible();
 
         virtual bool IsPrimary() const = 0;
         virtual std::string GetDeviceName() const = 0;

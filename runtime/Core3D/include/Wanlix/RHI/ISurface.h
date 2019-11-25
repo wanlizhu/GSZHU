@@ -24,7 +24,7 @@ namespace Wanlix
         ) const = 0;
 
         // Returns the size of the surface context (or rather the drawing area).
-        virtual Extent GetSize() const = 0;
+        virtual Extent GetContentSize() const = 0;
 
         // Adapts the surface to fits the needs for the specified video mode descriptor.
         virtual bool AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) = 0;

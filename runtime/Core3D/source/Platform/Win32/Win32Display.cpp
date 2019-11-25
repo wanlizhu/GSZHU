@@ -35,6 +35,32 @@ namespace Wanlix
         auto monitor = MonitorFromPoint({}, MONITOR_DEFAULTTOPRIMARY);
         return Win32Display::Create(monitor);
     }
+	
+    void IDisplay::ShowCursor()
+    {
+        if (!IsCursorVisible()) {
+            ::ShowCursor(TRUE);
+        }
+    }
+		
+    void IDisplay::HideCursor()
+    {
+		if (IsCursorVisible()) {
+            ::ShowCursor(FALSE);
+        }
+    }
+		
+    bool IDisplay::IsCursorVisible()
+	{
+        CURSORINFO info;
+        info.cbSize = sizeof(CURSORINFO);
+        if (::GetCursorInfo(&info))
+        {
+            bool visible = ((info.flags & CURSOR_SHOWING) != 0);
+            return visible;
+        }
+        return false;
+    }
 
     Win32Display::UniquePtr Win32Display::Create(HMONITOR monitor)
     {

@@ -1,7 +1,6 @@
 [requires]
 jsonformoderncpp/3.7.0@vthiery/stable
 Assimp/4.1.0@jacmoe/stable
-glfw/3.3@bincrafters/stable
 imgui/1.73@bincrafters/stable
 stb/20190512@conan/stable
 eigen/3.3.7@conan/stable
@@ -13,7 +12,6 @@ cmake
 Assimp:shared=True
 Assimp:double_precision=False
 Assimp:no_export=False
-glfw:shared=True
 imgui:shared=True
 
 [imports]
