@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Wanlix/Core/EngineConfig.h"
-#include "Wanlix/Core/Types.h"
+#include "Wanlix/Core3D/Config.h"
+#include "Wanlix/Core3D/Types.h"
 #include "RenderContextDescriptor.h"
-#include "Wanlix/Platform/IDisplay.h"
-#include "Wanlix/Utility/NonCopyable.h"
+#include "Wanlix/Core3D/Platform/IDisplay.h"
+#include "Wanlix/Core3D/Utility/NonCopyable.h"
 
 namespace Wanlix
 {

@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Wanlix/Platform/IWindow.h"
+#include "Wanlix/Core3D/Platform/IWindow.h"
 #include "Win32LeanAndMean.h"
 #include <Windows.h>
-
-#define INVALID_TIMER_ID 0
 
 namespace Wanlix
 {
@@ -39,14 +37,12 @@ namespace Wanlix
     private:
         Win32Window(const WindowDescriptor& desc);
         void ProcessEventsInternal() override;
-        HWND CreateWindowHandle(const WindowDescriptor& desc);
+        HWND CreateWindowHandle(WindowDescriptor desc);
 
     private:
         HWND mHwnd = nullptr;
         HWND mParent = nullptr;
-
-        // A timer which will be activated when the window is moved or sized.
         // Set a timer during a window is moved or resized to make continous scene updates.
-        uint32_t mMoveAndResizeTimerId = 0;
+        uint32_t mMoveAndResizeTimerId = 1;
     };
 }

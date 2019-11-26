@@ -19,6 +19,7 @@ namespace Wanlix
             , size(size)
         {}
 
+        bool IsEmpty() const;
         Range operator+(uint32_t count) const;
         Range operator-(uint32_t count) const;
         bool operator==(const Range& other) const;
@@ -42,6 +43,7 @@ namespace Wanlix
             , z(z)
         {}
 
+        bool IsZero() const;
         Offset operator+(const Offset& other) const;
         Offset operator-(const Offset& other) const;
         bool operator==(const Offset& other) const;
@@ -65,6 +67,7 @@ namespace Wanlix
             , depth(depth)
         {}
 
+        bool IsEmpty() const;
         Extent operator+(const Extent& other) const;
         Extent operator-(const Extent& other) const;
         bool operator==(const Extent& other) const;
@@ -85,6 +88,7 @@ namespace Wanlix
             , extent(extent)
         {}
 
+        bool IsEmpty() const;
         Region operator+(const Extent& ext) const;
         Region operator-(const Extent& ext) const;
         bool operator==(const Region& other) const;

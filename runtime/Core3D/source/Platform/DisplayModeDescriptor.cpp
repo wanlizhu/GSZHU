@@ -1,4 +1,4 @@
-#include "Wanlix/Platform/DisplayModeDescriptor.h"
+#include "Wanlix/Core3D/Platform/DisplayModeDescriptor.h"
 
 namespace Wanlix
 {

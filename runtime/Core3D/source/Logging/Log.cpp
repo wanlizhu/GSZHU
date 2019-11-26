@@ -1,4 +1,4 @@
-#include "Wanlix/Logging/Log.h"
+#include "Wanlix/Core3D/Logging/Log.h"
 #include <cstdarg>
 #include <iostream>
 

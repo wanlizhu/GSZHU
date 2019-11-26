@@ -1,5 +1,5 @@
-#include "Wanlix/Platform/Win32/Win32Window.h"
-#include "Wanlix/Platform/MapKey.h"
+#include "Wanlix/Core3D/Platform/Win32/Win32Window.h"
+#include "Wanlix/Core3D/Platform/MapKey.h"
 #include <windowsx.h>
 
 #ifndef HID_USAGE_PAGE_GENERIC
@@ -349,12 +349,8 @@ namespace Wanlix
         {
             if (auto window = GetWindowFromUserData(wnd))
             {
-                auto timerID = window->GetMoveAndResizeTimerId();
-                if (timerID != INVALID_TIMER_ID)
-                {
-                    // Start timer 
-                    ::SetTimer(wnd, timerID, USER_TIMER_MINIMUM, nullptr);
-                }
+                auto timerId = window->GetMoveAndResizeTimerId();
+                ::SetTimer(wnd, timerId, USER_TIMER_MINIMUM, NULL);
             }
         }
         break;
@@ -363,12 +359,8 @@ namespace Wanlix
         {
             if (auto window = GetWindowFromUserData(wnd))
             {
-                auto timerID = window->GetMoveAndResizeTimerId();
-                if (timerID != INVALID_TIMER_ID)
-                {
-                    // Stop timer 
-                    KillTimer(wnd, timerID);
-                }
+                auto timerId = window->GetMoveAndResizeTimerId();
+                ::KillTimer(wnd, timerId);
             }
         }
         break;
@@ -377,8 +369,10 @@ namespace Wanlix
         {
             if (auto window = GetWindowFromUserData(wnd))
             {
-                auto timerID = static_cast<uint32_t>(wParam);
-                window->OnTimer(*window, timerID);
+                auto timerId = static_cast<uint32_t>(wParam);
+                if (timerId == window->GetMoveAndResizeTimerId()) {
+                    window->OnDraw(*window);
+                }
             }
         };
         break;

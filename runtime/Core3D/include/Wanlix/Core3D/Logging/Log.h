@@ -5,7 +5,7 @@
 #include <mutex>
 #include <fstream>
 #include <vector>
-#include "Wanlix/Core/EngineConfig.h"
+#include "Wanlix/Core3D/Config.h"
 #include "ILogger.h"
 
 #define LOG_INFO(fmt, ...) { Wanlix::Log::Write(Wanlix::LogInfo, std::string(__FUNCTION__) + ": " + std::string(fmt), __VA_ARGS__); }

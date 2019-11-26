@@ -1,4 +1,4 @@
-#include "Wanlix/Core/Types.h"
+#include "Wanlix/Core3D/Types.h"
 #include <limits>
 
 namespace Wanlix
@@ -14,6 +14,11 @@ namespace Wanlix
             return tMax;
         else
             return a + b;
+    }
+
+    bool Range::IsEmpty() const
+    {
+        return size == 0;
     }
 
     Range Range::operator+(uint32_t count) const
@@ -34,6 +39,11 @@ namespace Wanlix
     bool Range::operator!=(const Range& other) const
     {
         return !(*this == other);
+    }
+
+    bool Extent::IsEmpty() const
+    {
+        return width == 0 && height == 0 && depth == 0;
     }
 
     Extent Extent::operator+(const Extent& other) const
@@ -62,6 +72,11 @@ namespace Wanlix
         return !(*this == other);
     }
 
+    bool Offset::IsZero() const
+    {
+        return x == 0 && y == 0 && z == 0;
+    }
+
     Offset Offset::operator+(const Offset& other) const
     {
         return Offset(x + other.x,
@@ -86,6 +101,11 @@ namespace Wanlix
     bool Offset::operator!=(const Offset& other) const
     {
         return !(*this == other);
+    }
+
+    bool Region::IsEmpty() const
+    {
+        return extent.IsEmpty();
     }
 
     Region Region::operator+(const Extent& ext) const

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "EngineConfig.h"
-#include "Wanlix/Utility/NonCopyable.h"
+#include "Config.h"
+#include "Wanlix/Core3D/Utility/NonCopyable.h"
 #include <memory>
 #include <typeindex>
 
@@ -14,7 +14,7 @@ namespace Wanlix
     public:
         virtual ~IModule() = default;
         virtual bool Initialize() { return true; }
-        virtual void Tick(float delta) {}
+        virtual bool Tick(float delta) { return true; }
 
         template<typename T>
         bool IsInstanceOf() const { 

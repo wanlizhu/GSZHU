@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Wanlix/Core/EngineConfig.h"
+#include "Wanlix/Core3D/Config.h"
 #include "ILogger.h"
 
 namespace Wanlix

@@ -1,4 +1,4 @@
-#include "Wanlix/Platform/Win32/Win32Display.h"
+#include "Wanlix/Core3D/Platform/Win32/Win32Display.h"
 #include <codecvt>
 
 namespace Wanlix

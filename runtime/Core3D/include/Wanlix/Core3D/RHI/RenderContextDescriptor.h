@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Wanlix/Core/Types.h"
+#include "Wanlix/Core3D/Types.h"
 #include <cstdint>
 
 namespace Wanlix

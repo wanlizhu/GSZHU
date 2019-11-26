@@ -1,4 +1,4 @@
-#include "Wanlix/Platform/Win32/Win32Window.h"
+#include "Wanlix/Core3D/Platform/Win32/Win32Window.h"
 #include <string>
 #include <exception>
 #include <stdexcept>
@@ -46,7 +46,7 @@ namespace Wanlix
             wc.lpszMenuName = nullptr;
             wc.lpszClassName = GetName();
 
-            /* Register window class */
+            // Register window class 
             if (!RegisterClassW(&wc)) {
                 throw std::runtime_error("failed to register window class");
             }
@@ -114,7 +114,7 @@ namespace Wanlix
     {
         WindowAppearance appearance;
 
-        /* Get window style and client area */
+        // Get window style and client area 
         appearance.style = GetWindowStyle(desc);
 
         auto rc = GetClientArea(
@@ -123,11 +123,11 @@ namespace Wanlix
             appearance.style
         );
 
-        /* Setup window size */
-        appearance.size.width = static_cast<std::uint32_t>(rc.right - rc.left);
-        appearance.size.height = static_cast<std::uint32_t>(rc.bottom - rc.top);
+        // Setup window size 
+        appearance.size.width = static_cast<uint32_t>(rc.right - rc.left);
+        appearance.size.height = static_cast<uint32_t>(rc.bottom - rc.top);
 
-        /* Setup window position */
+        // Setup window position 
         appearance.position = (desc.centered ? GetScreenCenteredPosition(desc.size) : desc.position);
 
         if (desc.centered)
@@ -150,7 +150,8 @@ namespace Wanlix
     }
 
     Win32Window::Win32Window(const WindowDescriptor& desc)
-        : mHwnd(CreateWindowHandle(desc))
+        : IWindow(desc.context)
+        , mHwnd(CreateWindowHandle(desc))
     {}
 
     Win32Window::~Win32Window()
@@ -228,8 +229,8 @@ namespace Wanlix
             ::GetClientRect(mHwnd, &rc);
             return
             {
-                static_cast<std::uint32_t>(rc.right - rc.left),
-                static_cast<std::uint32_t>(rc.bottom - rc.top)
+                static_cast<uint32_t>(rc.right - rc.left),
+                static_cast<uint32_t>(rc.bottom - rc.top)
             };
         }
         else
@@ -238,8 +239,8 @@ namespace Wanlix
             ::GetWindowRect(mHwnd, &rc);
             return
             {
-                static_cast<std::uint32_t>(rc.right - rc.left),
-                static_cast<std::uint32_t>(rc.bottom - rc.top)
+                static_cast<uint32_t>(rc.right - rc.left),
+                static_cast<uint32_t>(rc.bottom - rc.top)
             };
         }
     }
@@ -281,7 +282,7 @@ namespace Wanlix
     {
         // Get window flags and other information for comparision
         auto windowFlags = GetWindowLong(mHwnd, GWL_STYLE);
-        auto windowSize = GetSize();
+        auto windowSize = GetContentSize();
         auto centerPoint = GetScreenCenteredPosition(windowSize);
 
         // Setup window descriptor 
@@ -321,7 +322,7 @@ namespace Wanlix
 
         // Check if anything changed
         auto position = GetPosition();
-        auto size = GetSize();
+        auto size = GetContentSize();
 
         bool positionChanged = (desc.position.x != position.x || desc.position.y != position.y);
         bool sizeChanged = (desc.size.width != size.width || desc.size.height != size.height);
@@ -387,9 +388,15 @@ namespace Wanlix
         }
     }
 
-    HWND Win32Window::CreateWindowHandle(const WindowDescriptor& desc)
+    HWND Win32Window::CreateWindowHandle(WindowDescriptor desc)
     {
         auto windowClass = Win32WindowClass::Instance();
+
+        // Populate default fields
+        if (desc.size.IsEmpty()) {
+            desc.size.width = (int)(::GetSystemMetrics(SM_CXSCREEN) / 1.414);
+            desc.size.height = (int)(::GetSystemMetrics(SM_CYSCREEN) / 1.414);
+        }
 
         // Get final window size 
         auto appearance = GetWindowAppearance(desc);
@@ -427,7 +434,7 @@ namespace Wanlix
         }
         #endif
 
-        /* Set reference of this object to the window user-data */
+        // Set reference of this object to the window user-data 
         SetUserData(wnd, this);
 
         return wnd;

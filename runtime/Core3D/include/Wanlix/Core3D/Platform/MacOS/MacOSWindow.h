@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Cocoa/Cocoa.h>
-#include "Wanlix/Platform/IWindow.h"
+#include "Wanlix/Core3D/Platform/IWindow.h"
 
 namespace Wanlix
 {

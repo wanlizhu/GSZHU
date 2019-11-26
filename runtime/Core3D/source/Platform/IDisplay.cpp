@@ -1,4 +1,4 @@
-#include "Wanlix/Platform/IDisplay.h"
+#include "Wanlix/Core3D/Platform/IDisplay.h"
 #include <algorithm>
 
 namespace Wanlix

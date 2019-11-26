@@ -1,4 +1,4 @@
-#include "Wanlix/Platform/MapKey.h"
+#include "Wanlix/Core3D/Platform/MapKey.h"
 
 namespace Wanlix
 {

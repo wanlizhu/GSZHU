@@ -1,4 +1,4 @@
-#include "Wanlix/Utility/DynamicLibrary.h"
+#include "Wanlix/Core3D/Utility/DynamicLibrary.h"
 
 #define WIN32_LEAN_AND_MEAN
 #if !defined(NOMINMAX) && defined(_MSC_VER)

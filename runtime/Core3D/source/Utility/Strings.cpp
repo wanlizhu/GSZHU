@@ -1,20 +1,59 @@
-#include "Wanlix/Utility/Strings.h"
+#include "Wanlix/Core3D/Utility/Strings.h"
 #include <codecvt>
+#ifdef _WIN32
+#include "Wanlix/Core3D/Platform/Win32/Win32LeanAndMean.h"
+#include <Windows.h>
+#endif
 
 namespace Wanlix
 {
+#if defined _WIN32 && !defined WANLIX_USE_CODECVT
+    std::wstring ToWString(const std::string& source)
+    {
+        if (source.empty()) {
+            return std::wstring();
+        }
+        int sizeNeeded = ::MultiByteToWideChar(CP_UTF8, 0, 
+                                               &source[0], (int)source.size(),
+                                               NULL, 0);
+        std::wstring result(sizeNeeded, '\0');
+        ::MultiByteToWideChar(CP_UTF8, 0, 
+                              &source[0], (int)source.size(), 
+                              &result[0], sizeNeeded);
+        return result;
+    }
+
+    template<> 
+    std::string ToString<std::wstring>(const std::wstring& source)
+    {
+        if (source.empty()) {
+            return std::string();
+        }
+        int sizeNeeded = ::WideCharToMultiByte(CP_UTF8, 0, 
+                                               &source[0], (int)source.size(), 
+                                               NULL, 0,
+                                               NULL, NULL);
+        std::string result(sizeNeeded, '\0');
+        ::WideCharToMultiByte(CP_UTF8, 0,
+                              &source[0], (int)source.size(),
+                              &result[0], sizeNeeded,
+                              NULL, NULL);
+        return result;
+    }
+#else
     std::wstring ToWString(const std::string& source)
     {
         std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
         return conv.from_bytes(source);
     }
 
-    template<> 
+    template<>
     std::string ToString<std::wstring>(const std::wstring& source)
     {
         std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
         return conv.to_bytes(source);
     }
+#endif
 
     void StringUtil::Trim(
         std::string& str, 

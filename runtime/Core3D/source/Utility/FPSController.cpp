@@ -1,4 +1,4 @@
-#include "Wanlix/Core/Timer.h"
+#include "Wanlix/Core3D/Utility/FPSController.h"
 #include <thread>
 
 namespace Wanlix
@@ -6,45 +6,45 @@ namespace Wanlix
     using namespace std;
     using namespace chrono;
 
-    Timer::Ptr Timer::Create(std::weak_ptr<Context> context)
+    FPSController::Ptr FPSController::Create(std::weak_ptr<Context> context)
     {
-        return std::shared_ptr<Timer>(new Timer(context));
+        return std::shared_ptr<FPSController>(new FPSController(context));
     }
 
-    Timer::Timer(std::weak_ptr<Context> context)
-        : IModule(typeid(Timer), context)
+    FPSController::FPSController(std::weak_ptr<Context> context)
+        : IModule(typeid(FPSController), context)
     {
         mTimeBegin = high_resolution_clock::now();
         mTimeFrameBegin = high_resolution_clock::now();
         mTimeFrameEnd = high_resolution_clock::now();
     }
 
-    void Timer::EnableMaxFPS(bool val)
+    void FPSController::EnableMaxFPS(bool val)
     {
         mEnableMaxFPS = val;
     }
 
-    void Timer::SetMaxFPS(double fps)
+    void FPSController::SetMaxFPS(double fps)
     {
         mMaxFPS = fps <= 0.0 ? 60.0 : fps;
     }
 
-    double Timer::GetMaxFPS() const
+    double FPSController::GetMaxFPS() const
     {
         return mMaxFPS;
     }
 
-    float Timer::GetTimeMs() const
+    float FPSController::GetTimeMs() const
     {
         return static_cast<float>((double)(high_resolution_clock::now() - mTimeBegin).count());
     }
 
-    float Timer::GetDeltaTimeMs() const
+    float FPSController::GetDeltaTimeMs() const
     {
         return static_cast<float>(mDeltaTimeMs);
     }
 
-    void Timer::Tick(float delta)
+    bool FPSController::Tick(float delta)
     {
         mTimeFrameBegin = high_resolution_clock::now();
         auto timeWork = mTimeFrameBegin - mTimeFrameEnd;
@@ -60,6 +60,7 @@ namespace Wanlix
 
         mTimeFrameEnd = high_resolution_clock::now();
         auto realSlept = mTimeFrameEnd - mTimeFrameBegin;
-        mDeltaTimeMs = (timeWork + realSlept).count();
+        mDeltaTimeMs = static_cast<double>((timeWork + realSlept).count());
+        return true;
     }
 }

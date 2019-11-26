@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Wanlix/Core/EngineConfig.h"
-#include "Wanlix/Utility/NonCopyable.h"
+#include "Wanlix/Core3D/Config.h"
+#include "Wanlix/Core3D/Utility/NonCopyable.h"
 #include "DisplayModeDescriptor.h"
 #include <vector>
 #include <memory>

@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Wanlix/Core/Types.h"
-#include "Wanlix/RHI/ISurface.h"
+#include "Wanlix/Core3D/Types.h"
+#include "Wanlix/Core3D/IModule.h"
+#include "Wanlix/Core3D/RHI/ISurface.h"
+#include "Wanlix/Core3D/Utility/Signal.h"
 #include "WindowDescriptor.h"
-#include "Wanlix/Utility/Signal.h"
+#include "IDisplay.h"
 #include "Key.h"
 
 namespace Wanlix
 {
-    class IWindow : public ISurface
+    class IWindow : public ISurface, public IModule
     {
     public:
         using Ptr = std::shared_ptr<IWindow>;
@@ -31,16 +33,17 @@ namespace Wanlix
         virtual WindowDescriptor GetDescriptor() const = 0;
         virtual bool IsVisible() const = 0;
 
-        bool AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) override;
+        bool Tick(float delta) override final;
         bool ProcessEvents() override final;
+        bool AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) override final;
         IDisplay::UniquePtr GetResidentDisplay() const override final;
 
     public:
         Signal<void(IWindow& sender)> OnProcessEvents;
+        Signal<void(IWindow& sender)> OnDraw;
         Signal<void(IWindow& sender)> OnQuit;
         Signal<void(IWindow& sender)> OnGetFocus;
         Signal<void(IWindow& sender)> OnLostFocus;
-        Signal<void(IWindow& sender, uint64_t id)> OnTimer;
         Signal<void(IWindow& sender, Key key)> OnKeyDown;
         Signal<void(IWindow& sender, Key key)> OnKeyUp;
         Signal<void(IWindow& sender, Key btn)> OnDoubleClick;
@@ -50,6 +53,7 @@ namespace Wanlix
         Signal<void(IWindow& sender, const Extent& size)> OnResize;
         
     protected:
+        IWindow(std::weak_ptr<Context> context);
         virtual void ProcessEventsInternal() = 0;
 
     protected:

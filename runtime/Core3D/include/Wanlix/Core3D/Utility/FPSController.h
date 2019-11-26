@@ -1,24 +1,22 @@
 #pragma once
 
-#include "IModule.h"
+#include "Wanlix/Core3D/IModule.h"
 #include <chrono>
 #include <deque>
 
 namespace Wanlix
 {
-    class Context;
-
-    class Timer : public IModule
+    class FPSController final : public IModule
     {
         using TimePoint = std::chrono::high_resolution_clock::time_point;
     public:
-        using Ptr = std::shared_ptr<Timer>;
-        using ConstPtr = std::shared_ptr<const Timer>;
+        using Ptr = std::shared_ptr<FPSController>;
+        using ConstPtr = std::shared_ptr<const FPSController>;
 
         static Ptr Create(std::weak_ptr<Context> context);
 
-        virtual ~Timer() = default;
-        virtual void Tick(float delta) override;
+        virtual ~FPSController() = default;
+        virtual bool Tick(float delta) override;
 
         void EnableMaxFPS(bool val);
         void SetMaxFPS(double fps);
@@ -28,7 +26,7 @@ namespace Wanlix
         float GetDeltaTimeMs() const;
 
     protected:
-        Timer(std::weak_ptr<Context> context);
+        FPSController(std::weak_ptr<Context> context);
 
     private:
         // Internal

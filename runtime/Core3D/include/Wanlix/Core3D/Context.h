@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EngineConfig.h"
+#include "Config.h"
 #include "IModule.h"
 #include <type_traits>
 #include <vector>

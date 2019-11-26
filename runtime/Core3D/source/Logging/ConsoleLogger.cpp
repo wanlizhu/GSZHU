@@ -1,4 +1,4 @@
-#include "Wanlix/Logging/ConsoleLogger.h"
+#include "Wanlix/Core3D/Logging/ConsoleLogger.h"
 #include <iostream>
 #include <unordered_map>
 #include <functional>

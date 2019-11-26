@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Wanlix/Platform/IDisplay.h"
+#include "Wanlix/Core3D/Platform/IDisplay.h"
 #include "Win32LeanAndMean.h"
 #include <Windows.h>
 
