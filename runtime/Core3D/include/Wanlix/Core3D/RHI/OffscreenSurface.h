@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ISurface.h"
-#include "ITexture.h"
+#include "Surface.h"
+#include "Texture.h"
 
 namespace Wanlix
 {
-    class OffscreenSurface : public ISurface
+    class OffscreenSurface : public Surface
     {
     public:
         using Ptr = std::shared_ptr<OffscreenSurface>;
@@ -18,14 +18,14 @@ namespace Wanlix
         virtual void* GetNativeHandle() const override;
         virtual Extent GetContentSize() const override;
         virtual bool AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) override;
-        virtual IDisplay::UniquePtr GetResidentDisplay() const override;
+        virtual Display::UniquePtr GetResidentDisplay() const override;
 
-        inline ITexture::Ptr GetTarget() const { return mTarget; }
+        inline Texture::Ptr GetTarget() const { return mTarget; }
 
     protected:
         OffscreenSurface(int width, int height);
 
     private:
-        ITexture::Ptr mTarget;
+        Texture::Ptr mTarget;
     };
 }

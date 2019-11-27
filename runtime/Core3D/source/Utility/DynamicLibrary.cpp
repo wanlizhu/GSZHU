@@ -8,9 +8,9 @@
 
 #ifdef _WIN32
     #define LIB_EXT ".dll"
-    #define LOAD_LIB(name) LoadLibraryEx(name, NULL, LOAD_WITH_ALTERED_SEARCH_PATH)
-    #define GET_SYMBOL(lib, sym) GetProcAddress((HMODULE)lib, sym)
-    #define UNLOAD_LIB(lib) FreeLibrary((HMODULE)lib)
+    #define LOAD_LIB(name) ::LoadLibraryExW(name, NULL, LOAD_WITH_ALTERED_SEARCH_PATH)
+    #define GET_SYMBOL(lib, sym) ::GetProcAddress((HMODULE)lib, sym)
+    #define UNLOAD_LIB(lib) ::FreeLibrary((HMODULE)lib)
 #else
     #ifdef __APPLE_CC__
         #include <dlfcn.h>
@@ -25,7 +25,7 @@
 
 namespace Wanlix
 {
-    DynamicLibrary::DynamicLibrary(const std::string& name)
+    DynamicLibrary::DynamicLibrary(const std::wstring& name)
         : mName(name)
     {}
 
@@ -61,7 +61,7 @@ namespace Wanlix
         }
     }
 
-    const std::string& DynamicLibrary::GetName() const
+    const std::wstring& DynamicLibrary::GetName() const
     {
         return mName;
     }

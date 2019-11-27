@@ -1,4 +1,5 @@
 #include "Wanlix/Core3D/RHI/TextureDescriptor.h"
+#include "TextureUtils.h"
 #include <cmath>
 
 namespace Wanlix

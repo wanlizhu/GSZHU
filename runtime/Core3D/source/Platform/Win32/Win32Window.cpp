@@ -58,11 +58,8 @@ namespace Wanlix
 
     static Offset GetScreenCenteredPosition(const Extent& size)
     {
-        return
-        {
-            ::GetSystemMetrics(SM_CXSCREEN) / 2 - static_cast<int>(size.width / 2),
-            ::GetSystemMetrics(SM_CYSCREEN) / 2 - static_cast<int>(size.height / 2)
-        };
+        return Offset(::GetSystemMetrics(SM_CXSCREEN) / 2 - (size.width / 2),
+                      ::GetSystemMetrics(SM_CYSCREEN) / 2 - (size.height / 2));
     }
 
     static WindowAppearance GetWindowAppearance(const WindowDescriptor& desc)
@@ -94,12 +91,12 @@ namespace Wanlix
         return appearance;
     }
 
-    IWindow::UniquePtr IWindow::Create(const WindowDescriptor& desc)
+    Window::UniquePtr Window::Create(const WindowDescriptor& desc)
     {
         return Win32Window::Create(desc);
     }
 
-    IWindow::UniquePtr IWindow::Attach(void* handle)
+    Window::UniquePtr Window::Attach(void* handle)
     {
         return Win32Window::Attach((HWND)handle);
     }
@@ -115,12 +112,12 @@ namespace Wanlix
     }
 
     Win32Window::Win32Window(const WindowDescriptor& desc)
-        : IWindow()
+        : Window()
         , mHwnd(CreateWindowHandle(desc))
     {}
 
     Win32Window::Win32Window(HWND handle)
-        : IWindow()
+        : Window()
         , mHwnd(handle)
     {
         mAttached = true;
@@ -156,7 +153,7 @@ namespace Wanlix
         RECT rc;
         ::GetWindowRect(mHwnd, &rc);
         ::MapWindowPoints(HWND_DESKTOP, GetParent(mHwnd), reinterpret_cast<LPPOINT>(&rc), 2);
-        return { rc.left, rc.top };
+        return Offset(rc.left, rc.top);
     }
 
     void Win32Window::SetSize(const Extent& size, bool clientArea)

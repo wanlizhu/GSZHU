@@ -4,6 +4,7 @@
 #include <type_traits>
 #include <cstdint>
 #include <stdexcept>
+#include <cassert>
 #include <vector>
 #include <limits>
 #include "Wanlix/Core3D/Utility/Macro.h"
@@ -48,14 +49,18 @@ namespace Wanlix
             std::fill(std::begin(mData), std::end(mData), scalar);
         }
 
-        template<typename... _Args_>
-        Color(_Args_&&... args) noexcept {
-            static_assert((std::is_constructible_v<T, _Args_&&> && ...));
-            std::vector<T> tmp(N);
-            (tmp.push_back(std::forward<_Args_>(args)), ...);
-            for (size_t i = 0; i < std::min(N, tmp.size()); i++) {
-                mData = tmp[i];
+        Color(const std::initializer_list<T>& init) noexcept {
+            int i = 0;
+            for (auto& val : init) {
+                if (i < N) mData[i++] = val;
             }
+        }
+
+        Color(T r, T g, T b, T a) noexcept {
+            if (N >= 1) mData[0] = r;
+            if (N >= 2) mData[1] = g;
+            if (N >= 3) mData[2] = b;
+            if (N >= 4) mData[3] = a;
         }
 
         template<typename U, int M>
@@ -71,7 +76,7 @@ namespace Wanlix
         inline T* GetData() { return mData; }
         inline const T* GetData() const { return mData; }
 
-        DEFINE_VEC_NUMERIC_OPS(Color<T, N>, N, mData)
+        DEFINE_VEC_NUMERIC_OPS(Color, N, mData)
 
     private:
         T mData[N] = { T(0) };

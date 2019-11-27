@@ -26,12 +26,8 @@ namespace Wanlix
         }
 
     protected:
-        IModule(
-            std::type_index type,
-            std::weak_ptr<Context> context
-        )
-            : mInstanceType(type)
-            , mContext(context)
+        IModule(std::type_index type, std::weak_ptr<Context> context)
+            : mInstanceType(type), mContext(context)
         {}
 
     protected:

@@ -8,13 +8,10 @@ namespace Wanlix
     class ConsoleLogger : public ILogger
     {
     public:
-        ConsoleLogger();
-        virtual ~ConsoleLogger() {}
+        ConsoleLogger() noexcept;
+        virtual ~ConsoleLogger() = default;
 
-        virtual void Log(
-            LogType type, 
-            const std::string& msg
-        ) const override;
+        virtual void Log(LogType type, const std::string& msg) const override;
 
     private:
         void LogCyan(const char* msg) const;

@@ -4,7 +4,7 @@
 #include "Types.h"
 #include "Context.h"
 #include "IModule.h"
-#include "Platform/IWindow.h"
+#include "Platform/Window.h"
 
 namespace Wanlix
 {
@@ -14,7 +14,7 @@ namespace Wanlix
         using Ptr = std::shared_ptr<Engine>;
         using ConstPtr = std::shared_ptr<const Engine>;
 
-        static Ptr Create(ISurface::Ptr surface);
+        static Ptr Create(Surface::Ptr surface);
         ~Engine();
 
         void Tick();

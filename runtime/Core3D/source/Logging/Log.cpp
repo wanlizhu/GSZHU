@@ -14,10 +14,7 @@ namespace Wanlix
         mLogger = logger;
     }
 
-    void Log::SetLogFile(
-        const std::string& filename,
-        bool clearFirst
-    )
+    void Log::SetLogFile(const std::string& filename, bool clearFirst)
     {
         FlushBuffer();
         if (mFileOut.is_open()) {
@@ -42,11 +39,7 @@ namespace Wanlix
         }
     }
 
-    void Log::Write(
-        const LogType type,
-        const char* fmt,
-        ...
-    )
+    void Log::Write(const LogType type, const char* fmt, ...)
     {
         char buffer[1024];
         va_list args;
@@ -93,10 +86,7 @@ namespace Wanlix
         mLogBuffer.clear();
     }
 
-    void Log::WriteToLogger(
-        LogType type,
-        const char* str
-    )
+    void Log::WriteToLogger(LogType type, const char* str)
     {
         std::unique_lock<std::mutex> lock(mMutex);
         if (!str) { 
@@ -106,10 +96,7 @@ namespace Wanlix
         mLogger.lock()->Log(type, str);
     }
 
-    void Log::WriteToFile(
-        LogType type,
-        const char* str
-    )
+    void Log::WriteToFile(LogType type, const char* str)
     {
         std::unique_lock<std::mutex> lock(mMutex);
         if (!str) {

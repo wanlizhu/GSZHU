@@ -1,9 +1,9 @@
-#include "Wanlix/Core3D/Platform/IDisplay.h"
+#include "Wanlix/Core3D/Platform/Display.h"
 #include <algorithm>
 
 namespace Wanlix
 {
-    void IDisplay::FinalizeDisplayModes(std::vector<DisplayModeDescriptor>& modes)
+    void Display::FinalizeDisplayModes(std::vector<DisplayModeDescriptor>& modes)
     {
         // Sort display mode descriptors in ascending order (with, height, frequency) 
         std::sort(modes.begin(), modes.end());

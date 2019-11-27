@@ -23,7 +23,8 @@ namespace Wanlix
         void Tick(float delta = 0.0f);
 
         template<typename T>
-        bool RegisterModule() {
+        bool RegisterModule()
+        {
             static_assert(std::is_base_of_v<IModule, T>);
             assert(!weak_from_this().expired());
 
@@ -36,7 +37,8 @@ namespace Wanlix
         }
 
         template<typename T>
-        typename T::Ptr GetModule() {
+        typename T::Ptr GetModule() 
+        {
             static_assert(std::is_base_of_v<IModule, T>);
             assert(!weak_from_this().expired());
 

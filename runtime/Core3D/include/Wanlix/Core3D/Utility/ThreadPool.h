@@ -61,7 +61,8 @@ namespace Wanlix
         static auto AddTaskTo(
             const std::string& threadName,
             _Function_&& func,
-            ARGS&& ... args) -> std::future<std::invoke_result_t<_Function_, ARGS...>>
+            ARGS&& ... args
+        ) -> std::future<std::invoke_result_t<_Function_, ARGS...>>
         {
             using ReturnType = std::result_of<_Function_(ARGS...)>;
             auto task = std::make_shared<std::packaged_task<ReturnType()>>(

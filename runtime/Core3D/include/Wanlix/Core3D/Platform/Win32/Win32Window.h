@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Wanlix/Core3D/Platform/IWindow.h"
+#include "Wanlix/Core3D/Platform/Window.h"
 #include "Win32LeanAndMean.h"
 #include <Windows.h>
 
 namespace Wanlix
 {
-    class Win32Window final : public IWindow
+    class Win32Window final : public Window
     {
     public:
         using Ptr = std::shared_ptr<Win32Window>;

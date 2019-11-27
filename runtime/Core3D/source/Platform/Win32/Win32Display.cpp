@@ -4,7 +4,7 @@
 
 namespace Wanlix
 {
-    thread_local static std::vector<IDisplay::UniquePtr>* gDisplayListRef = nullptr;
+    thread_local static std::vector<Display::UniquePtr>* gDisplayListRef = nullptr;
     static BOOL CALLBACK Win32MonitorEnumProc(
         HMONITOR monitor,
         HDC hDC,
@@ -20,9 +20,9 @@ namespace Wanlix
         return FALSE;
     }
 
-    std::vector<IDisplay::UniquePtr> IDisplay::List()
+    std::vector<Display::UniquePtr> Display::List()
     {
-        std::vector<IDisplay::UniquePtr> displayList;
+        std::vector<Display::UniquePtr> displayList;
 
         gDisplayListRef = &displayList;
         ::EnumDisplayMonitors(nullptr, nullptr, Win32MonitorEnumProc, 0);
@@ -31,27 +31,27 @@ namespace Wanlix
         return displayList;
     }
 
-    IDisplay::UniquePtr IDisplay::Primary()
+    Display::UniquePtr Display::Primary()
     {
         auto monitor = MonitorFromPoint({}, MONITOR_DEFAULTTOPRIMARY);
         return Win32Display::Create(monitor);
     }
 	
-    void IDisplay::ShowCursor()
+    void Display::ShowCursor()
     {
         if (!IsCursorVisible()) {
             ::ShowCursor(TRUE);
         }
     }
 		
-    void IDisplay::HideCursor()
+    void Display::HideCursor()
     {
 		if (IsCursorVisible()) {
             ::ShowCursor(FALSE);
         }
     }
 		
-    bool IDisplay::IsCursorVisible()
+    bool Display::IsCursorVisible()
 	{
         CURSORINFO info;
         info.cbSize = sizeof(CURSORINFO);
@@ -94,11 +94,8 @@ namespace Wanlix
     {
         MONITORINFO info;
         GetInfo(info);
-        return 
-        {
-            static_cast<int32_t>(info.rcMonitor.left),
-            static_cast<int32_t>(info.rcMonitor.top),
-        };
+        return Offset(info.rcMonitor.left, 
+                      info.rcMonitor.top);
     }
 
     bool Win32Display::ResetDisplayMode()

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <Cocoa/Cocoa.h>
-#include "Wanlix/Core3D/Platform/IWindow.h"
+#include "Wanlix/Core3D/Platform/Window.h"
 
 namespace Wanlix
 {
-    class MacOSWindow : public IWindow
+    class MacOSWindow : public Window
     {
     public:
         using Ptr = std::shared_ptr<MacOSWindow>;

@@ -1,16 +1,16 @@
-#include "Wanlix/Core3D/Platform/IWindow.h"
+#include "Wanlix/Core3D/Platform/Window.h"
 
 namespace Wanlix
 {
-    IWindow::IWindow()
+    Window::Window()
     {}
 
-    SurfaceType IWindow::GetSurfaceType() const
+    SurfaceType Window::GetSurfaceType() const
     {
         return SurfaceType::DesktopWindow;
     }
 
-    bool IWindow::AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc)
+    bool Window::AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc)
     {
         /* Query current window descriptor */
         auto windowDesc = GetDescriptor();
@@ -35,16 +35,15 @@ namespace Wanlix
         return true;
     }
 
-    bool IWindow::Tick()
+    bool Window::Tick()
     {
-        OnProcessEvents(*this);
         ProcessEventsInternal();
         return !mQuitFlag;
     }
 
-    IDisplay::UniquePtr IWindow::GetResidentDisplay() const
+    Display::UniquePtr Window::GetResidentDisplay() const
     {
-        auto displayList = IDisplay::List();
+        auto displayList = Display::List();
 
         const auto winPos = GetPosition();
         const auto winSize = GetContentSize();

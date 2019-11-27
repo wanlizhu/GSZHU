@@ -9,35 +9,32 @@
 
 namespace Wanlix
 {
-    static std::unordered_map<LogType, std::function<void(const char*)>> _colorPrintFuncs;
+    static std::unordered_map<LogType, std::function<void(const char*)>> g_colorPrintFuncs;
 
-    ConsoleLogger::ConsoleLogger() 
+    ConsoleLogger::ConsoleLogger() noexcept
     {
-        if (!_colorPrintFuncs.empty()) {
+        if (!g_colorPrintFuncs.empty()) {
             return;
         }
 
-        _colorPrintFuncs[LogType::LogInfo] = [this](const char* msg) { LogCyan(msg); };
-        _colorPrintFuncs[LogType::LogWarning] = [this](const char* msg) { LogYellow(msg); };
-        _colorPrintFuncs[LogType::LogError] = [this](const char* msg) { LogRed(msg); };
+        g_colorPrintFuncs[LogType::LogInfo] = [this](const char* msg) { LogCyan(msg); };
+        g_colorPrintFuncs[LogType::LogWarning] = [this](const char* msg) { LogYellow(msg); };
+        g_colorPrintFuncs[LogType::LogError] = [this](const char* msg) { LogRed(msg); };
     }
 
-    void ConsoleLogger::Log(
-        LogType type,
-        const std::string& msg
-    ) const
+    void ConsoleLogger::Log(LogType type, const std::string& msg) const
     {
         const std::string prefix = (type == LogInfo) ? "Info:"
             : (type == LogWarning) ? "Warning:"
             : "Error:";
         const auto text = prefix + " " + msg;
 
-        if (_colorPrintFuncs.find(type) == _colorPrintFuncs.end()) {
+        if (g_colorPrintFuncs.find(type) == g_colorPrintFuncs.end()) {
             LogNoColor(text.c_str());
             return;
         }
 
-        _colorPrintFuncs[type](text.c_str());
+        g_colorPrintFuncs[type](text.c_str());
     }
 
     void ConsoleLogger::LogNoColor(const char* msg) const

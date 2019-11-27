@@ -221,7 +221,7 @@ namespace Wanlix
         }
     }
 
-    uint32_t DataTypeSize(const DataType dataType)
+    uint32_t DataTypeSize(const DataType& dataType)
     {
         switch (dataType)
         {
@@ -239,17 +239,17 @@ namespace Wanlix
         return 0;
     }
 
-    bool IsIntDataType(const DataType dataType)
+    bool IsIntDataType(const DataType& dataType)
     {
         return (dataType == DataType::Int8 || dataType == DataType::Int16 || dataType == DataType::Int32);
     }
 
-    bool IsUIntDataType(const DataType dataType)
+    bool IsUIntDataType(const DataType& dataType)
     {
         return (dataType == DataType::UInt8 || dataType == DataType::UInt16 || dataType == DataType::UInt32);
     }
 
-    bool IsFloatDataType(const DataType dataType)
+    bool IsFloatDataType(const DataType& dataType)
     {
         return (dataType >= DataType::Float16 && dataType <= DataType::Float64);
     }

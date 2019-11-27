@@ -14,7 +14,6 @@ namespace Wanlix
         int width,
         int height
     )
-        : mTarget(width, height)
     {}
 
     OffscreenSurface::~OffscreenSurface() 
@@ -32,15 +31,15 @@ namespace Wanlix
 
     Extent OffscreenSurface::GetContentSize() const
     {
-        return mTarget.GetSize();
+        return mTarget->GetMipExtent(0);
     }
 
     bool OffscreenSurface::AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc)
     {
-        return mTarget.SetSize(videoModeDesc.resolution);
+        return true;
     }
 
-    IDisplay::UniquePtr OffscreenSurface::GetResidentDisplay() const
+    Display::UniquePtr OffscreenSurface::GetResidentDisplay() const
     {
         return nullptr;
     }

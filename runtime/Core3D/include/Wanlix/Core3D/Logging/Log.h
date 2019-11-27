@@ -20,8 +20,7 @@ namespace Wanlix
         std::string message;
 
         LogEntry(LogType type, const std::string& msg)
-            : type(type)
-            , message(msg)
+            : type(type), message(msg)
         {}
     };
 
@@ -33,28 +32,15 @@ namespace Wanlix
 
         // Set a logger to be used (if not set, logging will done in a text file).
         static void SetLogger(const std::weak_ptr<ILogger>& logger);
-        static void SetLogFile(
-            const std::string& filename,
-            bool clearFirst = false
-        );
+        static void SetLogFile(const std::string& filename, bool clearFirst = false);
         static void LogToFile(bool val);
         static void CloseLogFile();
-        static void Write(
-            const LogType type,
-            const char* fmt,
-            ...
-        );
+        static void Write(const LogType type, const char* fmt, ...);
 
     private:
         static void FlushBuffer(); // flush to logger
-        static void WriteToLogger(
-            LogType type,
-            const char* str
-        );
-        static void WriteToFile(
-            LogType type,
-            const char* str
-        );
+        static void WriteToLogger(LogType type, const char* str);
+        static void WriteToFile(LogType type, const char* str);
 
     private:
         static std::mutex mMutex;

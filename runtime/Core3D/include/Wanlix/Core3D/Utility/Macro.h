@@ -1,5 +1,7 @@
 #pragma once
 
+#define FUNCTION_AND_LINE (std::string(__FUNCTION__) + ":" + std::to_string(__LINE__)).c_str()
+
 #define DEFINE_BIT_OPS(type, target) \
 inline bool Has(type bit) const { return target & bit; }\
 inline void Set(type bit) { target |= bit; }\

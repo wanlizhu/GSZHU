@@ -25,8 +25,10 @@ source_group(TREE "${CSD}/source"   PREFIX "Source Files" FILES ${_sources_})
 target_sources(Core3D PRIVATE ${_headers_} ${_sources_})
 
 target_include_directories(Core3D PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
-target_link_libraries(Core3D PRIVATE CONAN_PKG::Assimp)
-target_link_libraries(Core3D PRIVATE CONAN_PKG::Eigen3)
+if (NOT GE_CODE_REVIEW_MODE)
+    target_link_libraries(Core3D PRIVATE CONAN_PKG::Assimp)
+    target_link_libraries(Core3D PRIVATE CONAN_PKG::Eigen3)
+endif()
 target_compile_definitions(Core3D PRIVATE "_UNICODE" "UNICODE")
 
 get_target_property(_outdir_ Core3D LIBRARY_OUTPUT_DIRECTORY)

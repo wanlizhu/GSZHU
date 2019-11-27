@@ -13,19 +13,19 @@ namespace Wanlix
         using Ptr = std::shared_ptr<DynamicLibrary>;
         using Handle = void*;
         using Symbol = void*;
-        using LoadedLibraries = std::unordered_map<std::string, Handle>;
+        using LoadedLibraries = std::unordered_map<std::wstring, Handle>;
         
         
-        DynamicLibrary(const std::string& name);
+        DynamicLibrary(const std::wstring& name);
 
         bool IsLoaded() const;
         bool Load();
         void Unload();
-        const std::string& GetName() const;
+        const std::wstring& GetName() const;
         Symbol GetSymbol(const std::string& name) const;
        
     private:
         static LoadedLibraries smLoadedLibraries;
-        const std::string mName;
+        const std::wstring mName;
     };
 }

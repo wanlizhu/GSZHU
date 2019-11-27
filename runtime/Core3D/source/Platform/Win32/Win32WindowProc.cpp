@@ -18,7 +18,7 @@ namespace Wanlix
     }
 
     static void PostKeyEvent(
-        IWindow& window, 
+        Window& window, 
         Key keyCode,
         bool isDown
     )
@@ -178,10 +178,7 @@ namespace Wanlix
                 WORD width = LOWORD(lParam);
                 WORD height = HIWORD(lParam);
                 window->OnResize(*window, 
-                                 Extent(
-                                     static_cast<uint32_t>(width),
-                                     static_cast<uint32_t>(height) 
-                                 ));
+                                 Extent(width,height));
             }
         }
         break;
@@ -221,18 +218,13 @@ namespace Wanlix
 
         case WM_SETFOCUS:
         {
-            if (auto window = GetWindowFromUserData(wnd)) {
-                window->OnGetFocus(*window);
-            }
+
         }
         break;
 
         case WM_KILLFOCUS:
         {
             ReleaseMouseCapture();
-            if (auto window = GetWindowFromUserData(wnd)) {
-                window->OnLostFocus(*window);
-            }
         }
         break;
 
