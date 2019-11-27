@@ -30,7 +30,7 @@ namespace Wanlix
                                       });
                 self->mBlocked.store(false);
                 {
-                    std::unique_lock<std::mutex> lockTaskList(self->mTaskList.GetMutexRef());
+                    std::unique_lock<std::mutex> lockTaskList(self->mTaskList.GetMutex());
                     for (auto& function : self->mTaskList.GetData()) {
                         function();
                     }
@@ -59,7 +59,7 @@ namespace Wanlix
 
         inline void PostTask(std::function<void()>&& func) {
             {
-                std::unique_lock<std::mutex> lock(mTaskList.GetMutexRef());
+                std::unique_lock<std::mutex> lock(mTaskList.GetMutex());
                 mTaskList.GetData().emplace_back(std::move(func));
             }
             mCondition.notify_one();

@@ -31,7 +31,7 @@ namespace Wanlix
             return mData;
         }
 
-        inline std::mutex& GetMutexRef() const {
+        inline std::mutex& GetMutex() const {
             return *mMutex.get();
         }
 

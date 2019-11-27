@@ -1,5 +1,6 @@
 #include <iostream>
-#include "Wanlix/Platform/IWindow.h"
+#include "Wanlix/Core3D/Context.h"
+#include "Wanlix/Core3D/Platform/IWindow.h"
 
 using namespace Wanlix;
 
@@ -10,6 +11,7 @@ int main()
     auto win = IWindow::Create(desc);
     win->Show();
 
+    while (win->Tick()) {}
     
 
     return 0;

@@ -12,6 +12,10 @@ namespace Wanlix
     class IModule : public NonCopyable
     {
     public:
+        using Ptr = std::shared_ptr<IModule>;
+        using ConstPtr = std::shared_ptr<const IModule>;
+        using WeakPtr = std::weak_ptr<IModule>;
+
         virtual ~IModule() = default;
         virtual bool Initialize() { return true; }
         virtual bool Tick(float delta) { return true; }

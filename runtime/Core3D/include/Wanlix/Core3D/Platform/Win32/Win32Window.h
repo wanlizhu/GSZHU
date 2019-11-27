@@ -14,9 +14,9 @@ namespace Wanlix
         using UniquePtr = std::unique_ptr<Win32Window>;
 
         static UniquePtr Create(const WindowDescriptor& desc);
+        static UniquePtr Attach(HWND handle);
         ~Win32Window();
 
-        void ResetPixelFormat() override;
         void SetPosition(const Offset& pos) override;
         void SetSize(const Extent& size, bool clientArea) override;
         void SetTitle(const std::wstring& title) override;
@@ -25,7 +25,7 @@ namespace Wanlix
         void Quit() override;
         void SetDescriptor(const WindowDescriptor& desc) override;
 
-        bool GetNativeHandle(void* handle, size_t handleSize) const override;
+        void* GetNativeHandle() const override;
         Extent GetContentSize() const override;
         Extent GetSize(bool clientArea) const override;
         Offset GetPosition() const override;
@@ -36,13 +36,18 @@ namespace Wanlix
 
     private:
         Win32Window(const WindowDescriptor& desc);
+        Win32Window(HWND handle);
         void ProcessEventsInternal() override;
         HWND CreateWindowHandle(WindowDescriptor desc);
+        void AttachHandle(HWND handle);
+        void DetachHandle(HWND handle);
 
     private:
         HWND mHwnd = nullptr;
         HWND mParent = nullptr;
+
         // Set a timer during a window is moved or resized to make continous scene updates.
         uint32_t mMoveAndResizeTimerId = 1;
+        WNDPROC mPreviousWindowProc = nullptr;
     };
 }

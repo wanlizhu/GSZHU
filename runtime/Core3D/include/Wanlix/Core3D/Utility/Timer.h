@@ -9,7 +9,8 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
-#include "TaskThread.h"
+#include "Lockable.h"
+#include "IterablePriorityQueue.h"
 
 namespace Wanlix
 {
@@ -21,15 +22,19 @@ namespace Wanlix
     class Timer final
     {
         struct Task;
+        struct Comparator;
+        using TaskPtr = std::shared_ptr<Task>;
+        using TaskPriorityQueue = IterablePriorityQueue<TaskPtr, std::vector<TaskPtr>, Comparator>;
     public:
         static const int kForever = -1;
-        static const DurationMs kImmediate;
+        static const DurationMs kImmediateMs;
+        static const TimePoint kInvalidTimePoint;
 
         static TimerId StartTimer(
             const DurationMs& interval,
             int repeat,
             std::function<void()>&& callback
-            ) noexcept;
+        ) noexcept;
 
         static TimerId StartTimerAt(
             const TimePoint& triggerAt,
@@ -42,16 +47,19 @@ namespace Wanlix
             TimerId id,
             DurationMs* interval,
             int* repeat,
-            DurationMs* nextTrigger
+            TimePoint* nextTrigger
         ) noexcept;
 
         static void Cancel(TimerId id) noexcept;
-        static DurationMs DurationToNearestTimer() noexcept;
+        static TimePoint NearestTriggerPoint() noexcept;
+
+    private:
+        static void Main(); // Timer thread function
         
     private:
-        static std::priority_queue<Task> mTaskQueue;
-        static std::atomic_uint64_t mTimerIdGenerator;
-        static std::mutex mMutex;
-        static TaskThread mTimerThread;
+        static Lockable<TaskPriorityQueue> mTaskQueue;
+        static std::condition_variable mCondition;
+        static std::atomic_uint64_t mTimerIdGen;
+        static std::atomic_bool mQuitFlag;
     };
 }

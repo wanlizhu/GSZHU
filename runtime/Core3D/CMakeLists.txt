@@ -23,10 +23,11 @@ endif()
 source_group(TREE "${CSD}/include"  PREFIX "Header Files" FILES ${_headers_})
 source_group(TREE "${CSD}/source"   PREFIX "Source Files" FILES ${_sources_})
 target_sources(Core3D PRIVATE ${_headers_} ${_sources_})
-target_link_libraries(Core3D PRIVATE CONAN_PKG::Assimp)
-target_link_libraries(Core3D PRIVATE CONAN_PKG::Eigen3)
 
 target_include_directories(Core3D PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
+target_link_libraries(Core3D PRIVATE CONAN_PKG::Assimp)
+target_link_libraries(Core3D PRIVATE CONAN_PKG::Eigen3)
+target_compile_definitions(Core3D PRIVATE "_UNICODE" "UNICODE")
 
 get_target_property(_outdir_ Core3D LIBRARY_OUTPUT_DIRECTORY)
 message(STATUS "Target: Core3D -> ${_outdir_}" )

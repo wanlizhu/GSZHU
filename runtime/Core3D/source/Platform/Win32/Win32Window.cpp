@@ -1,58 +1,13 @@
 #include "Wanlix/Core3D/Platform/Win32/Win32Window.h"
+#include "Win32WindowClass.h"
 #include <string>
 #include <exception>
 #include <stdexcept>
 #include <shellapi.h>
+#include <WinUser.h>
 
 namespace Wanlix
 {
-    extern LRESULT CALLBACK Win32WindowCallback(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-    class Win32WindowClass : public NonCopyable
-    {
-    public:
-        static Win32WindowClass* Instance() {
-            static Win32WindowClass _instance;
-            return &_instance;
-        }
-
-        ~Win32WindowClass() {
-            ::UnregisterClassW(GetName(), GetModuleHandle(nullptr));
-        }
-
-        const wchar_t* GetName() const {
-            return L"__Wanlix_Win32_Window_Class__";
-        }
-
-    private:
-        Win32WindowClass() 
-        {
-            // Setup window class information
-            WNDCLASSW wc;
-            ZeroMemory(&wc, sizeof(WNDCLASSW));
-
-            wc.style = (CS_HREDRAW | CS_VREDRAW | CS_OWNDC | CS_DBLCLKS);
-            wc.hInstance = GetModuleHandle(nullptr);
-            wc.lpfnWndProc = reinterpret_cast<WNDPROC>(Win32WindowCallback);
-            wc.hIcon = LoadIcon(0, IDI_APPLICATION);
-            wc.hCursor = LoadCursor(0, IDC_ARROW);
-            #ifdef WANLIX_ARCH_ARM
-            wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW);
-            #else
-            wc.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
-            #endif
-            wc.cbClsExtra = 0;
-            wc.cbWndExtra = 0;
-            wc.lpszMenuName = nullptr;
-            wc.lpszClassName = GetName();
-
-            // Register window class 
-            if (!RegisterClassW(&wc)) {
-                throw std::runtime_error("failed to register window class");
-            }
-        }
-    };
-
     struct WindowAppearance
     {
         DWORD style = 0;
@@ -62,7 +17,7 @@ namespace Wanlix
 
     static void SetUserData(HWND hwnd, void* data)
     {
-        SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(data));
+        ::SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(data));
     }
 
     static RECT GetClientArea(LONG width, LONG height, DWORD style)
@@ -105,8 +60,8 @@ namespace Wanlix
     {
         return
         {
-            GetSystemMetrics(SM_CXSCREEN) / 2 - static_cast<int>(size.width / 2),
-            GetSystemMetrics(SM_CYSCREEN) / 2 - static_cast<int>(size.height / 2)
+            ::GetSystemMetrics(SM_CXSCREEN) / 2 - static_cast<int>(size.width / 2),
+            ::GetSystemMetrics(SM_CYSCREEN) / 2 - static_cast<int>(size.height / 2)
         };
     }
 
@@ -144,40 +99,51 @@ namespace Wanlix
         return Win32Window::Create(desc);
     }
 
+    IWindow::UniquePtr IWindow::Attach(void* handle)
+    {
+        return Win32Window::Attach((HWND)handle);
+    }
+
     Win32Window::UniquePtr Win32Window::Create(const WindowDescriptor& desc)
     {
         return std::unique_ptr<Win32Window>(new Win32Window(desc));
     }
 
+    Win32Window::UniquePtr Win32Window::Attach(HWND handle)
+    {
+        return std::unique_ptr<Win32Window>(new Win32Window(handle));
+    }
+
     Win32Window::Win32Window(const WindowDescriptor& desc)
-        : IWindow(desc.context)
+        : IWindow()
         , mHwnd(CreateWindowHandle(desc))
     {}
 
+    Win32Window::Win32Window(HWND handle)
+        : IWindow()
+        , mHwnd(handle)
+    {
+        mAttached = true;
+        AttachHandle(mHwnd);
+    }
+
     Win32Window::~Win32Window()
     {
+        if (mAttached) {
+            DetachHandle(mHwnd);
+            mHwnd = nullptr;
+            return;
+        }
+
         if (mHwnd) {
             ::DestroyWindow(mHwnd);
             mHwnd = nullptr;
         }
     }
 
-    bool Win32Window::GetNativeHandle(void* handlePtr, size_t handleSize) const
+    void* Win32Window::GetNativeHandle() const
     {
-        if (handleSize == sizeof(HWND)) {
-            auto buffer = reinterpret_cast<HWND*>(handlePtr);
-            *buffer = mHwnd;
-            return true;
-        }
-        return false;
-    }
-
-    void Win32Window::ResetPixelFormat()
-    {
-        // Destroy previous window handle and create a new one with current descriptor settings
-        auto desc = GetDescriptor();
-        ::DestroyWindow(mHwnd);
-        mHwnd = CreateWindowHandle(desc);
+        return (void*)mHwnd;
     }
 
     void Win32Window::SetPosition(const Offset& pos)
@@ -202,7 +168,7 @@ namespace Wanlix
             auto rc = GetClientArea(
                 static_cast<LONG>(size.width),
                 static_cast<LONG>(size.height),
-                GetWindowLong(mHwnd, GWL_STYLE)
+                ::GetWindowLongW(mHwnd, GWL_STYLE)
             );
             cx = rc.right - rc.left;
             cy = rc.bottom - rc.top;
@@ -281,7 +247,7 @@ namespace Wanlix
     WindowDescriptor Win32Window::GetDescriptor() const
     {
         // Get window flags and other information for comparision
-        auto windowFlags = GetWindowLong(mHwnd, GWL_STYLE);
+        auto windowFlags = ::GetWindowLongW(mHwnd, GWL_STYLE);
         auto windowSize = GetContentSize();
         auto centerPoint = GetScreenCenteredPosition(windowSize);
 
@@ -337,10 +303,10 @@ namespace Wanlix
             if (flagsChanged)
             {
                 // Hide temporarily to avoid strange effects during frame change (if frame has changed) 
-                ShowWindow(mHwnd, SW_HIDE);
+                ::ShowWindow(mHwnd, SW_HIDE);
 
                 // Set new window style
-                SetWindowLongPtr(mHwnd, GWL_STYLE, newWindowFlags);
+                ::SetWindowLongPtrW(mHwnd, GWL_STYLE, newWindowFlags);
                 flags |= SWP_FRAMECHANGED;
             }
 
@@ -381,10 +347,10 @@ namespace Wanlix
         // Peek all queued messages 
         MSG message;
 
-        while (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE))
+        while (::PeekMessageW(&message, nullptr, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&message);
-            DispatchMessage(&message);
+            ::TranslateMessage(&message);
+            ::DispatchMessageW(&message);
         }
     }
 
@@ -409,7 +375,8 @@ namespace Wanlix
         }
 
         // Create frame window object
-        HWND wnd = CreateWindowW(
+        HWND wnd = CreateWindowExW(
+            NULL,
             windowClass->GetName(),
             desc.title.c_str(),
             appearance.style,
@@ -419,7 +386,7 @@ namespace Wanlix
             static_cast<int>(appearance.size.height),
             parentWnd,
             nullptr,
-            GetModuleHandle(nullptr),
+            ::GetModuleHandleW(nullptr),
             nullptr
         );
 
@@ -438,6 +405,24 @@ namespace Wanlix
         SetUserData(wnd, this);
 
         return wnd;
+    }
+
+    void Win32Window::AttachHandle(HWND handle)
+    {
+        mPreviousWindowProc = (WNDPROC)GetWindowLongPtrW(handle, GWLP_WNDPROC);
+        SetWindowLongPtrW(handle, GWLP_WNDPROC, (LONG_PTR)&Win32WindowClass::WindowProc);
+    }
+
+    void Win32Window::DetachHandle(HWND handle)
+    {
+        if (!mAttached) {
+            return;
+        }
+
+        if (mPreviousWindowProc) {
+            SetWindowLongPtrW(handle, GWLP_WNDPROC, (LONG_PTR)mPreviousWindowProc);
+            mPreviousWindowProc = nullptr;
+        }
     }
 
     uint32_t Win32Window::GetMoveAndResizeTimerId() const

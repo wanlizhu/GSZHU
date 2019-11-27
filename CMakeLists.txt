@@ -58,6 +58,7 @@ set_target_properties(Wanlix PROPERTIES VERSION ${GE_VERSION})
 
 target_include_directories(Wanlix PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
 target_link_libraries(Wanlix PRIVATE Core3D)
+target_compile_definitions(Wanlix PRIVATE "_UNICODE" "UNICODE")
 
 if (GE_BUILD_EDITOR)
     add_subdirectory(editor)

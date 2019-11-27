@@ -16,7 +16,7 @@ namespace Wanlix
         ~MacOSDisplay();
 
         bool IsPrimary() const override;
-        std::string GetDeviceName() const override;
+        std::wstring GetDeviceName() const override;
         Offset GetOffset() const override;
 
         bool ResetDisplayMode() override;

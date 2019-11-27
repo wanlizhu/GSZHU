@@ -7,7 +7,6 @@ namespace Wanlix
 {
     struct WindowDescriptor
     {
-        std::weak_ptr<Context> context;
         std::wstring title = L"Untitled";
         Offset position = { 0, 0 };
         Extent size = { 0, 0 };

@@ -2,9 +2,13 @@
 
 namespace Wanlix
 {
-    IWindow::IWindow(std::weak_ptr<Context> context)
-        : IModule(typeid(IWindow), context)
+    IWindow::IWindow()
     {}
+
+    SurfaceType IWindow::GetSurfaceType() const
+    {
+        return SurfaceType::DesktopWindow;
+    }
 
     bool IWindow::AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc)
     {
@@ -31,12 +35,7 @@ namespace Wanlix
         return true;
     }
 
-    bool IWindow::Tick(float delta)
-    {
-        return ProcessEvents();
-    }
-
-    bool IWindow::ProcessEvents()
+    bool IWindow::Tick()
     {
         OnProcessEvents(*this);
         ProcessEventsInternal();
@@ -48,7 +47,7 @@ namespace Wanlix
         auto displayList = IDisplay::List();
 
         const auto winPos = GetPosition();
-        const auto winSize = ISurface::GetContentSize();
+        const auto winSize = GetContentSize();
         const auto winArea = static_cast<int>(winSize.width * winSize.height);
 
         for (auto& display : displayList)

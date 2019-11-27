@@ -8,14 +8,13 @@ namespace Wanlix
     class MacOSWindow : public IWindow
     {
     public:
-        using Ptr = std::shared_ptr<Win32Window>;
-        using ConstPtr = std::shared_ptr<const Win32Window>;
-        using UniquePtr = std::unique_ptr<Win32Window>;
+        using Ptr = std::shared_ptr<MacOSWindow>;
+        using ConstPtr = std::shared_ptr<const MacOSWindow>;
+        using UniquePtr = std::unique_ptr<MacOSWindow>;
 
         static UniquePtr Create(const WindowDescriptor& desc);
         ~MacOSWindow();
 
-        void ResetPixelFormat() override;
         void SetPosition(const Offset& pos) override;
         void SetSize(const Extent& size, bool clientArea) override;
         void SetTitle(const std::wstring& title) override;
@@ -24,7 +23,7 @@ namespace Wanlix
         void Quit() override;
         void SetDescriptor(const WindowDescriptor& desc) override;
 
-        bool GetNativeHandle(void* handle, size_t handleSize) const override;
+        void* GetNativeHandle() const override;
         Extent GetContentSize() const override;
         Extent GetSize(bool clientArea) const override;
         Offset GetPosition() const override;

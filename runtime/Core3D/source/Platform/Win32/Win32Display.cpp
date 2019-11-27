@@ -1,4 +1,5 @@
 #include "Wanlix/Core3D/Platform/Win32/Win32Display.h"
+#include "Wanlix/Core3D/Utility/Strings.h"
 #include <codecvt>
 
 namespace Wanlix
@@ -78,15 +79,14 @@ namespace Wanlix
         return ((info.dwFlags & MONITORINFOF_PRIMARY) != 0);
     }
 
-    std::string Win32Display::GetDeviceName() const
+    std::wstring Win32Display::GetDeviceName() const
     {
         MONITORINFOEX infoEx;
         GetInfo(infoEx);
         #ifdef UNICODE
-        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-        return conv.to_bytes(infoEx.szDevice);
+        return std::wstring(infoEx.szDevice); 
         #else
-        return std::string(infoEx.szDevice);
+        return ToWString(infoEx.szDevice);
         #endif
     }
 
@@ -108,7 +108,7 @@ namespace Wanlix
         GetInfo(infoEx);
 
         // Change settings for this display to default
-        auto result = ChangeDisplaySettingsEx(infoEx.szDevice, nullptr, nullptr, 0, nullptr);
+        auto result = ::ChangeDisplaySettingsExW(infoEx.szDevice, nullptr, nullptr, 0, nullptr);
 
         return (result == DISP_CHANGE_SUCCESSFUL);
     }
@@ -133,7 +133,7 @@ namespace Wanlix
             devMode.dmFields = (DM_PELSWIDTH | DM_PELSHEIGHT | DM_DISPLAYFREQUENCY);
             Convert(devMode, displayModeDesc);
         }
-        auto result = ChangeDisplaySettingsEx(infoEx.szDevice, &devMode, nullptr, CDS_FULLSCREEN, nullptr);
+        auto result = ::ChangeDisplaySettingsExW(infoEx.szDevice, &devMode, nullptr, CDS_FULLSCREEN, nullptr);
 
         return (result == DISP_CHANGE_SUCCESSFUL);
     }
@@ -155,7 +155,7 @@ namespace Wanlix
         DEVMODE devMode;
         devMode.dmSize = sizeof(devMode);
 
-        if (EnumDisplaySettings(infoEx.szDevice, ENUM_CURRENT_SETTINGS, &devMode) != FALSE)
+        if (::EnumDisplaySettingsW(infoEx.szDevice, ENUM_CURRENT_SETTINGS, &devMode) != FALSE)
         {
             DisplayModeDescriptor displayModeDesc;
             Convert(displayModeDesc, devMode);
@@ -179,7 +179,7 @@ namespace Wanlix
         DEVMODE devMode;
         devMode.dmSize = sizeof(devMode);
 
-        for (DWORD modeNum = 0; EnumDisplaySettings(infoEx.szDevice, modeNum, &devMode) != FALSE; ++modeNum)
+        for (DWORD modeNum = 0; ::EnumDisplaySettingsW(infoEx.szDevice, modeNum, &devMode) != FALSE; ++modeNum)
         {
             // Only enumerate display settings where the width, height, and frequency fields have been initialized
             if ((devMode.dmFields & fieldBits) == fieldBits)
@@ -199,12 +199,12 @@ namespace Wanlix
     void Win32Display::GetInfo(MONITORINFO& info) const
     {
         info.cbSize = sizeof(info);
-        GetMonitorInfo(mMonitor, &info);
+        ::GetMonitorInfoW(mMonitor, &info);
     }
 
     void Win32Display::GetInfo(MONITORINFOEX& info) const
     {
         info.cbSize = sizeof(info);
-        GetMonitorInfo(mMonitor, &info);
+        ::GetMonitorInfoW(mMonitor, &info);
     }
 }

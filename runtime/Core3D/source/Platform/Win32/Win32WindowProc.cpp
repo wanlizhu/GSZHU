@@ -1,5 +1,6 @@
 #include "Wanlix/Core3D/Platform/Win32/Win32Window.h"
 #include "Wanlix/Core3D/Platform/MapKey.h"
+#include "Win32WindowClass.h"
 #include <windowsx.h>
 
 #ifndef HID_USAGE_PAGE_GENERIC
@@ -85,7 +86,11 @@ namespace Wanlix
         }
     }
 
-    static void CaptureMouseButton(HWND wnd, Key keyCode, bool doubleClick = false)
+    static void CaptureMouseButton(
+        HWND wnd,
+        Key keyCode,
+        bool doubleClick = false
+    )
     {
         // Get window object from window handle 
         if (auto window = GetWindowFromUserData(wnd))
@@ -101,7 +106,10 @@ namespace Wanlix
         }
     }
 
-    static void ReleaseMouseButton(HWND wnd, Key keyCode)
+    static void ReleaseMouseButton(
+        HWND wnd,
+        Key keyCode
+    )
     {
         // Get window object from window handle 
         if (auto window = GetWindowFromUserData(wnd))
@@ -120,7 +128,10 @@ namespace Wanlix
         }
     }
 
-    static void PostLocalMouseMotion(HWND wnd, LPARAM lParam)
+    static void PostLocalMouseMotion(
+        HWND wnd,
+        LPARAM lParam
+    )
     {
         // Get window object from window handle 
         if (auto window = GetWindowFromUserData(wnd))
@@ -134,7 +145,12 @@ namespace Wanlix
         }
     }
 
-    LRESULT CALLBACK Win32WindowCallback(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
+    LRESULT CALLBACK Win32WindowClass::WindowProc(
+        HWND wnd,
+        UINT msg,
+        WPARAM wParam,
+        LPARAM lParam
+    )
     {
         switch (msg)
         {
@@ -378,6 +394,6 @@ namespace Wanlix
         break;
         }
 
-        return DefWindowProc(wnd, msg, wParam, lParam);
+        return ::DefWindowProcW(wnd, msg, wParam, lParam);
     }
 }

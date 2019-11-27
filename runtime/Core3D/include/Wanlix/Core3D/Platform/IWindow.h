@@ -10,7 +10,7 @@
 
 namespace Wanlix
 {
-    class IWindow : public ISurface, public IModule
+    class IWindow : public ISurface
     {
     public:
         using Ptr = std::shared_ptr<IWindow>;
@@ -18,6 +18,7 @@ namespace Wanlix
         using UniquePtr = std::unique_ptr<IWindow>;
 
         static UniquePtr Create(const WindowDescriptor& desc);
+        static UniquePtr Attach(void* handle);
 
         virtual void SetPosition(const Offset& pos) = 0;
         virtual void SetSize(const Extent& size, bool clientArea) = 0;
@@ -33,8 +34,8 @@ namespace Wanlix
         virtual WindowDescriptor GetDescriptor() const = 0;
         virtual bool IsVisible() const = 0;
 
-        bool Tick(float delta) override final;
-        bool ProcessEvents() override final;
+        bool Tick();
+        SurfaceType GetSurfaceType() const override final;
         bool AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) override final;
         IDisplay::UniquePtr GetResidentDisplay() const override final;
 
@@ -53,10 +54,11 @@ namespace Wanlix
         Signal<void(IWindow& sender, const Extent& size)> OnResize;
         
     protected:
-        IWindow(std::weak_ptr<Context> context);
+        IWindow();
         virtual void ProcessEventsInternal() = 0;
 
     protected:
+        bool mAttached = false;
         bool mQuitFlag = false;
     };
 }

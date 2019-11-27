@@ -26,7 +26,7 @@ namespace Wanlix
 		static bool IsCursorVisible();
 
         virtual bool IsPrimary() const = 0;
-        virtual std::string GetDeviceName() const = 0;
+        virtual std::wstring GetDeviceName() const = 0;
         virtual Offset GetOffset() const = 0; // offset relative to the primary display
         
         virtual bool ResetDisplayMode() = 0;

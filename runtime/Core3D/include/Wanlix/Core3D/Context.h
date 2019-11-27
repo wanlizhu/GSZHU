@@ -14,6 +14,7 @@ namespace Wanlix
     public:
         using Ptr = std::shared_ptr<Context>;
         using ConstPtr = std::shared_ptr<const Context>;
+        using WeakPtr = std::weak_ptr<Context>;
 
         static Ptr Create();
         virtual ~Context() = default;
@@ -35,7 +36,7 @@ namespace Wanlix
         }
 
         template<typename T>
-        std::shared_ptr<T> GetModule() {
+        typename T::Ptr GetModule() {
             static_assert(std::is_base_of_v<IModule, T>);
             assert(!weak_from_this().expired());
 
@@ -51,6 +52,6 @@ namespace Wanlix
         Context() = default;
 
     private:
-        std::vector<std::shared_ptr<IModule>> mModules;
+        std::vector<IModule::Ptr> mModules;
     };
 }
