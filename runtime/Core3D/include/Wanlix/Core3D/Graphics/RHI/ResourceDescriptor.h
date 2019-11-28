@@ -60,10 +60,10 @@ namespace Wanlix
 
     struct ResourceDescriptor
     {
-        ResourceType type = ResourceType::Undefined;
-        BindFlags::UnderlyingType bindFlags;
-        CPUAccessFlags::UnderlyingType cpuAccess;
-        MiscFlags::UnderlyingType misc;
+        ResourceType                   type = ResourceType::Undefined;
+        BindFlags::UnderlyingType      bindFlags = 0;
+        CPUAccessFlags::UnderlyingType cpuAccess = 0;
+        MiscFlags::UnderlyingType      misc = 0;
 
         bool operator==(const ResourceDescriptor& rhs) const;
         bool operator!=(const ResourceDescriptor& rhs) const;

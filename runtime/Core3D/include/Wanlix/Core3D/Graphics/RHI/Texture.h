@@ -9,7 +9,7 @@ namespace Wanlix
     class Texture : public Resource
     {
     public:
-        using Ptr = std::shared_ptr<Texture>;
+        using Ptr      = std::shared_ptr<Texture>;
         using ConstPtr = std::shared_ptr<const Texture>;
 
         virtual TextureType GetTextureType() const = 0;

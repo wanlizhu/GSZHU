@@ -55,7 +55,7 @@ namespace Wanlix
     */
     struct TextureLocation
     {
-        Offset offset;
+        Offset   offset;
         uint32_t arrayLayer = 0;
         uint32_t mipLevel = 0;
     };
@@ -64,29 +64,29 @@ namespace Wanlix
     struct TextureRegion
     {
         TextureSubresource subresource;
-        Offset offset;
-        Extent extent;
+        Offset             offset;
+        Extent             extent;
     };
 
     /* Contains all information about type, format, and dimension to create a texture resource. */
     struct TextureDescriptor
     {
-        TextureType type = TextureType::Texture2D;
-        BindFlags::UnderlyingType bindFlags = (BindFlags::Sampled | BindFlags::ColorAttachment);
+        TextureType                    type = TextureType::Texture2D;
+        BindFlags::UnderlyingType      bindFlags = (BindFlags::Sampled | BindFlags::ColorAttachment);
         CPUAccessFlags::UnderlyingType cpuAccessFlags = 0;
-        MiscFlags::UnderlyingType miscFlags = (MiscFlags::FixedSamples | MiscFlags::GenerateMips);
-        Format format = Format::RGBA8UNorm;
-        Extent extent = { 1, 1, 1 };
-        uint32_t arrayLayers = 1;
-        uint32_t mipLevels = 0;
-        uint32_t samples = 1;
-        ClearValue clearValue;
+        MiscFlags::UnderlyingType      miscFlags = (MiscFlags::FixedSamples | MiscFlags::GenerateMips);
+        Format                         format = Format::RGBA8UNorm;
+        Extent                         extent = { 1, 1, 1 };
+        uint32_t                       arrayLayers = 1;
+        uint32_t                       mipLevels = 0;
+        uint32_t                       samples = 1;
+        ClearValue                     clearValue;
     };
 
     struct TextureViewDescriptor
     {
-        TextureType type = TextureType::Texture2D;
-        Format format = Format::RGBA8UNorm;
+        TextureType        type = TextureType::Texture2D;
+        Format             format = Format::RGBA8UNorm;
         TextureSubresource subresource;
         TextureSwizzleRGBA swizzle;
     };
@@ -98,17 +98,31 @@ namespace Wanlix
     uint32_t NumMipLevels(uint32_t width, uint32_t height = 1, uint32_t depth = 1);
     uint32_t NumMipLevels(const TextureType& type, const Extent& extent);
     uint32_t NumMipLevels(const TextureDescriptor& desc);
+
     uint32_t NumMipDimensions(const TextureType type);
     uint32_t NumTextureDimensions(const TextureType type);
-    Extent   GetMipExtent(const TextureType type, const Extent& extent, uint32_t mipLevel);
-    uint32_t NumMipTexels(const TextureType type, const Extent& extent, uint32_t mipLevel);
-    uint32_t NumMipTexels(const TextureType type, const Extent& extent, const TextureSubresource& subresource);
-    uint32_t NumMipTexels(const TextureDescriptor& textureDesc, uint32_t mipLevel = 0);
+
     uint32_t TextureBufferSize(const Format format, uint32_t numTexels);
+    Extent   GetMipExtent(const TextureType type, const Extent& extent, uint32_t mipLevel);
 
     bool IsMipMappedTexture(const TextureDescriptor& desc);
     bool IsArrayTexture(const TextureType type);
     bool IsMultiSampleTexture(const TextureType type);
     bool IsCubeTexture(const TextureType type);
     bool IsTextureSwizzleIdentity(const TextureSwizzleRGBA& swizzle);
+
+    uint32_t NumMipTexels(
+        const TextureType type,
+        const Extent&     extent,
+        uint32_t          mipLevel
+    );
+    uint32_t NumMipTexels(
+        const TextureType         type,
+        const Extent&             extent, 
+        const TextureSubresource& subresource
+    );
+    uint32_t NumMipTexels(
+        const TextureDescriptor& textureDesc,
+        uint32_t                 mipLevel = 0
+    );
 }

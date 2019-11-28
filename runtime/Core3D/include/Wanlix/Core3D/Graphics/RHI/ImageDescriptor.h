@@ -13,9 +13,9 @@ namespace Wanlix
     struct MutableImageDescriptor
     {
         ImageFormat format = ImageFormat::RGBA;
-        DataType dataType = DataType::UInt8;
-        void* data = nullptr;
-        size_t dataSize = 0; /* This is primarily used for compressed images and serves for robustness. */
+        DataType    dataType = DataType::UInt8;
+        void*       data = nullptr;
+        size_t      dataSize = 0; /* This is primarily used for compressed images and serves for robustness. */
 
         MutableImageDescriptor() = default;
         MutableImageDescriptor(
@@ -34,9 +34,9 @@ namespace Wanlix
     struct ImmutableImageDescriptor
     {
         ImageFormat format = ImageFormat::RGBA;
-        DataType dataType = DataType::UInt8;
+        DataType    dataType = DataType::UInt8;
         const void* data = nullptr;
-        size_t dataSize = 0; /* This is primarily used for compressed images and serves for robustness. */
+        size_t      dataSize = 0; /* This is primarily used for compressed images and serves for robustness. */
 
         ImmutableImageDescriptor() = default;
         ImmutableImageDescriptor(
@@ -59,8 +59,8 @@ namespace Wanlix
     uint32_t ImageFormatSize(const ImageFormat& imageFormat); 
     uint32_t ImageDataSize(
         const ImageFormat imageFormat, 
-        const DataType dataType, 
-        uint32_t numPixels
+        const DataType    dataType, 
+        uint32_t          numPixels
     ); 
 
     bool IsCompressedFormat(const ImageFormat imageFormat);
@@ -68,39 +68,39 @@ namespace Wanlix
 
     bool ConvertImageBuffer(
         const ImmutableImageDescriptor& srcImageDesc,
-        const MutableImageDescriptor& dstImageDesc,
-        size_t threadCount = 0
+        const MutableImageDescriptor&   dstImageDesc,
+        size_t                          threadCount = 0
     );
     ByteBuffer ConvertImageBuffer(
         const ImmutableImageDescriptor& srcImageDesc,
-        ImageFormat dstFormat,
-        DataType dstDataType,
-        std::size_t threadCount = 0
+        ImageFormat                     dstFormat,
+        DataType                        dstDataType,
+        std::size_t                     threadCount = 0
     );
     ByteBuffer GenerateByteBuffer(
         size_t bufferSize,
-        bool initialize = true
+        bool   initialize = true
     );
     ByteBuffer GenerateImageBuffer(
-        ImageFormat format,
-        DataType dataType,
-        size_t imageSize,
+        ImageFormat             format,
+        DataType                dataType,
+        size_t                  imageSize,
         const ColorRGBA<float>& fillColor
     );
     void CopyImageBufferRegion(
         // Destination
         const MutableImageDescriptor& dstImageDesc,
-        const Offset& dstOffset,
-        uint32_t dstRowStride,
-        uint32_t dstSliceStride,
-
+        const Offset&                 dstOffset,
+        uint32_t                      dstRowStride,
+        uint32_t                      dstSliceStride,
+                                      
         // Source
         const ImmutableImageDescriptor& srcImageDesc,
-        const Offset& srcOffset,
-        uint32_t srcRowStride,
-        uint32_t srcSliceStride,
+        const Offset&                   srcOffset,
+        uint32_t                        srcRowStride,
+        uint32_t                        srcSliceStride,
 
         // Region
-        const Extent& extent
+        const Extent&                   extent
     );
 }

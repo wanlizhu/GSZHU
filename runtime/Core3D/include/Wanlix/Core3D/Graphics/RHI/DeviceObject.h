@@ -11,10 +11,10 @@ namespace Wanlix
     class DeviceObject : public NonCopyable
     {
     public:
-        using Handle = void*;
-        using Ptr = std::shared_ptr<DeviceObject>;
+        using Handle   = void*;
+        using Ptr      = std::shared_ptr<DeviceObject>;
         using ConstPtr = std::shared_ptr<const DeviceObject>;
-        using WeakPtr = std::weak_ptr<DeviceObject>;
+        using WeakPtr  = std::weak_ptr<DeviceObject>;
 
         static DeviceObject* Find(const std::string& name);
         virtual ~DeviceObject();

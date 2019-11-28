@@ -37,8 +37,8 @@ namespace Wanlix
         using UnderlyingType = uint32_t;
         enum
         {
-            DeferredSubmit = (1 << 0), //!< Specifies that the encoded command buffer will be submitted as a secondary command buffer.
-            MultiSubmit = (1 << 1),    //!< Specifies that the encoded command buffer can be submitted multiple times.
+            DeferredSubmit = (1 << 0),  //!< Specifies that the encoded command buffer will be submitted as a secondary command buffer.
+            MultiSubmit    = (1 << 1),  //!< Specifies that the encoded command buffer can be submitted multiple times.
         };
     };
 
@@ -47,28 +47,28 @@ namespace Wanlix
         using UnderlyingType = uint32_t;
         enum
         {
-            Color = (1 << 0),                  //!< Clears the color attachment.
-            Depth = (1 << 1),                  //!< Clears the depth attachment.
-            Stencil = (1 << 2),                //!< Clears the stencil attachment.
+            Color   = (1 << 0),  //!< Clears the color attachment.
+            Depth   = (1 << 1),  //!< Clears the depth attachment.
+            Stencil = (1 << 2),  //!< Clears the stencil attachment.
 
-            ColorDepth = (Color | Depth),      //!< Clears the color and depth attachments.
-            DepthStencil = (Depth | Stencil),  //!< Clears the depth and stencil attachments.
-            All = (Color | Depth | Stencil),   //!< Clears the color, depth and stencil attachments.
+            ColorDepth   = (Color | Depth),            //!< Clears the color and depth attachments.
+            DepthStencil = (Depth | Stencil),          //!< Clears the depth and stencil attachments.
+            All          = (Color | Depth | Stencil),  //!< Clears the color, depth and stencil attachments.
         };
     };
 
     struct ClearValue
     {
         ColorRGBA<float> color = { 0.0f, 0.0f, 0.0f, 0.0f };
-        float depth = 1.0f;
-        uint32_t stencil = 0;
+        float            depth = 1.0f;
+        uint32_t         stencil = 0;
     };
 
     struct AttachmentClear
     {
         ClearFlags::UnderlyingType flags = 0;
-        uint32_t colorAttachment = 0;
-        ClearValue clearValue;
+        uint32_t                   colorAttachment = 0;
+        ClearValue                 clearValue;
 
 
         AttachmentClear() = default;
@@ -118,11 +118,6 @@ namespace Wanlix
     struct CommandBufferDescriptor
     {
         CommandBufferFlags::UnderlyingType flags = 0;
-        /* this member specifies how many native command buffers are to be allocated internally.
-         * These native command buffers are then switched everytime encoding begins with the CommandBuffer::Begin function.
-         * The benefit of having multiple native command buffers is that it reduces the time the GPU is idle
-         * because it waits for a command buffer to be completed before it can be reused.
-        */
         uint32_t numNativeBuffers = 2;
     };
 }

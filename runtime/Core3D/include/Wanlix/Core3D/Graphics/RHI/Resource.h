@@ -14,7 +14,7 @@ namespace Wanlix
     class Resource : public DeviceObject
     {
     public:
-        using Ptr = std::shared_ptr<Resource>;
+        using Ptr      = std::shared_ptr<Resource>;
         using ConstPtr = std::shared_ptr<const Resource>;
 
         virtual const ResourceType& GetResourceType() const = 0;

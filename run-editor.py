@@ -8,21 +8,25 @@ import argparse
 import traceback
 import platform
 
+def runcommand(cmd):
+    print('>>', cmd)
+    if not os.system(cmd) == 0:
+        os.system('pause')
+        
+        
+cmd = 'conan remove --locks'
+runcommand(cmd)
+
+cmd = 'conan install . --build missing --install-folder ./build'
+runcommand(cmd)
+
 iswindows = platform.system().startswith('Win')
 vsname = '"Visual Studio 16 2019" -A x64'
-cmake_gen = ['cmake']
-cmake_gen += ['-S', '"."']
-cmake_gen += ['-B', '"./build"']
-cmake_gen += ['-G', '%s'%(vsname if iswindows else 'Xcode')]
-cmake_gen += ['-D', 'GE_CODE_REVIEW_MODE:BOOL=OFF']
-cmd = ' '.join(cmake_gen)
-print('>>', cmd)
-os.system(cmd)
+cmd = 'cmake -S . -B ./build -G %s' % (vsname if iswindows else 'Xcode')
+runcommand(cmd)
 
 cmd = 'cmake --build ./build --target Editor --parallel'
-print('>>', cmd)
-os.system(cmd)
+runcommand(cmd)
 
 cmd = 'cd ./build/bin && ./Editor'
-print('>>', cmd)
-os.system(cmd)
+runcommand(cmd)

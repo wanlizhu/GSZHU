@@ -8,7 +8,7 @@ namespace Wanlix
     class Image
     {
     public:
-        using Ptr = std::shared_ptr<Image>;
+        using Ptr      = std::shared_ptr<Image>;
         using ConstPtr = std::shared_ptr<const Image>;
 
         Image() noexcept = default;
@@ -31,7 +31,7 @@ namespace Wanlix
             const DataType& dataType,
             size_t threadCount = 0
         );
-        //void Resize(const Extent& extent, const SamplerFilter& filter);
+        void Resize(const Extent& extent, const SamplerFilter& filter);
         void Resize(
             const Extent& extent,
             const ColorRGBA<float>& fillColor, //<! Specifies the color to fill the pixels with that are outside the previous extent.
@@ -85,21 +85,21 @@ namespace Wanlix
         uint32_t GetNumPixels() const;
         uint32_t GetDataSize() const;
         bool IsRegionInside(const Region& region) const;
-        const Extent& GetExtent() const { return mExtent; }
+        const Extent& GetExtent() const      { return mExtent; }
         const ImageFormat& GetFormat() const { return mFormat; }
-        const DataType& GetDataType() const { return mDataType; }
-        const void* GetData() const { return mData.get(); }
-        void* GetData() { return mData.get(); }
+        const DataType& GetDataType() const  { return mDataType; }
+        const void* GetData() const          { return mData.get(); }
+        void* GetData()                      { return mData.get(); }
 
     protected:
-        void ResetAttributes();
+        void   ResetAttributes();
         Region ClampRegion(const Region& region) const;
         size_t GetDataAt(const Offset& offset) const;
 
     protected:
-        ImageFormat mFormat = ImageFormat::RGBA;
-        DataType mDataType = DataType::UInt8;
-        Extent mExtent;
-        ByteBuffer mData;
+        ImageFormat mFormat   = ImageFormat::RGBA;
+        DataType    mDataType = DataType::UInt8;
+        Extent      mExtent;
+        ByteBuffer  mData;
     };
 }

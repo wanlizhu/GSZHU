@@ -21,13 +21,13 @@ namespace Wanlix
     class Surface : public NonCopyable
     {
     public:
-        using Ptr = std::shared_ptr<Surface>;
+        using Ptr      = std::shared_ptr<Surface>;
         using ConstPtr = std::shared_ptr<const Surface>;
 
-        virtual SurfaceType GetSurfaceType() const = 0;
-        virtual void* GetNativeHandle() const = 0;
-        virtual Extent GetContentSize() const = 0;
-        virtual bool AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) = 0;
+        virtual SurfaceType        GetSurfaceType() const = 0;
+        virtual void*              GetNativeHandle() const = 0;
+        virtual Extent             GetContentSize() const = 0;
+        virtual bool               AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) = 0;
         virtual Display::UniquePtr GetResidentDisplay() const = 0;
     };
 }

@@ -217,7 +217,7 @@ namespace Wanlix
     bool IsFloatFormat(const Format& format);
 
     uint32_t DataTypeSize(const DataType& dataType);
-    bool IsIntDataType(const DataType& dataType);
-    bool IsUIntDataType(const DataType& dataType);
-    bool IsFloatDataType(const DataType& dataType);
+    bool     IsIntDataType(const DataType& dataType);
+    bool     IsUIntDataType(const DataType& dataType);
+    bool     IsFloatDataType(const DataType& dataType);
 }

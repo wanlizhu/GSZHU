@@ -41,7 +41,7 @@ namespace Wanlix
     public:
         using Element = T;
         static const int kComponents = N;
-        static const int kBytes = (N * sizeof(T));
+        static const int kBytes      = (N * sizeof(T));
 
         Color() noexcept = default;
 
@@ -71,10 +71,10 @@ namespace Wanlix
             }
         }
 
-        inline T& operator[](int i) { return mData[i]; }
+        inline T& operator[](int i)             { return mData[i]; }
         inline const T& operator[](int i) const { return mData[i]; }
-        inline T* GetData() { return mData; }
-        inline const T* GetData() const { return mData; }
+        inline T* GetData()                     { return mData; }
+        inline const T* GetData() const         { return mData; }
 
         DEFINE_VEC_NUMERIC_OPS(Color, N, mData)
 
@@ -87,4 +87,9 @@ namespace Wanlix
 
     template<typename T>
     using ColorRGBA = Color<T, 4>;
+
+    using Color4F = ColorRGBA<float>;
+    using Color4B = ColorRGBA<char>;
+    using Color3F = ColorRGB<float>;
+    using Color3B = ColorRGB<char>;
 }
