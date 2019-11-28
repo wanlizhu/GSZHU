@@ -2,7 +2,7 @@
 
 #include "Wanlix/Core3D/Types.h"
 #include "Wanlix/Core3D/IModule.h"
-#include "Wanlix/Core3D/RHI/Surface.h"
+#include "Wanlix/Core3D/Graphics/Surface.h"
 #include "Wanlix/Core3D/Utility/Signal.h"
 #include "WindowDescriptor.h"
 #include "Display.h"

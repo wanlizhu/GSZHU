@@ -1,4 +1,4 @@
-#include "Wanlix/Core3D/RHI/Format.h"
+#include "Wanlix/Core3D/Graphics/Format.h"
 #include <tuple>
 
 namespace Wanlix
@@ -167,28 +167,28 @@ namespace Wanlix
 
     bool IsCompressedFormat(const Format& format)
     {
-        return ((GetFormatAttributes(format).flags.value & FormatFlags::IsCompressed) != 0);
+        return ((GetFormatAttributes(format).flags & FormatFlags::IsCompressed) != 0);
     }
 
     bool IsDepthStencilFormat(const Format& format)
     {
         const auto& formatAttribs = GetFormatAttributes(format);
-        return ((formatAttribs.flags.value & (FormatFlags::HasDepth | FormatFlags::HasStencil)) != 0);
+        return ((formatAttribs.flags & (FormatFlags::HasDepth | FormatFlags::HasStencil)) != 0);
     }
 
     bool IsDepthFormat(const Format& format)
     {
-        return ((GetFormatAttributes(format).flags.value & (FormatFlags::HasDepth)) != 0);
+        return ((GetFormatAttributes(format).flags & (FormatFlags::HasDepth)) != 0);
     }
 
     bool IsStencilFormat(const Format& format)
     {
-        return ((GetFormatAttributes(format).flags.value & FormatFlags::HasStencil) != 0);
+        return ((GetFormatAttributes(format).flags & FormatFlags::HasStencil) != 0);
     }
 
     bool IsNormalizedFormat(const Format& format)
     {
-        return ((GetFormatAttributes(format).flags.value & FormatFlags::IsNormalized) != 0);
+        return ((GetFormatAttributes(format).flags & FormatFlags::IsNormalized) != 0);
     }
 
     bool IsIntegralFormat(const Format& format)

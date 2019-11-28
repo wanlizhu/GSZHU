@@ -2,9 +2,9 @@
 
 #include "Wanlix/Core3D/Config.h"
 #include "Wanlix/Core3D/Types.h"
-#include "RenderContextDescriptor.h"
 #include "Wanlix/Core3D/Platform/Display.h"
 #include "Wanlix/Core3D/Utility/NonCopyable.h"
+#include "RenderContextDescriptor.h"
 
 namespace Wanlix
 {

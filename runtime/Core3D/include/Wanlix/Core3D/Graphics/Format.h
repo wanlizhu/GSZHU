@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include "Wanlix/Core3D/Utility/Macro.h"
+#include "Wanlix/Core3D/Utility/NonInstantiable.h"
 
 namespace Wanlix
 {
@@ -167,9 +168,9 @@ namespace Wanlix
         Float64,    //!< 64-bit real type (\c double).
     };
 
-    struct FormatFlags
+    struct FormatFlags : public NonInstantiable
     {
-        uint32_t value = 0;
+        using UnderlyingType = uint32_t;
         enum
         {
             HasDepth = (1 << 0),
@@ -189,11 +190,6 @@ namespace Wanlix
             SupportsTextureCube = (1 << 14),
             SupportsVertex = (1 << 15),
         };
-
-        FormatFlags(uint32_t val = 0) : value(val) {}
-        operator uint32_t() const { return value; }
-        DEFINE_CMP_OPS(FormatFlags, value)
-        DEFINE_BIT_OPS(uint32_t, value)
     };
 
     struct FormatAttributes
@@ -204,8 +200,12 @@ namespace Wanlix
         std::uint8_t components;
         ImageFormat format;
         DataType dataType;
-        FormatFlags flags;
+        FormatFlags::UnderlyingType flags;
     };
+
+
+    /* ----- Functions ----- */
+
 
     const FormatAttributes& GetFormatAttributes(const Format& format);
     bool IsCompressedFormat(const Format& format);

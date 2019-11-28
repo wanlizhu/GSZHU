@@ -1,4 +1,4 @@
-#include "Wanlix/Core3D/RHI/DeviceObject.h"
+#include "Wanlix/Core3D/Graphics/RHI/DeviceObject.h"
 #include "Wanlix/Core3D/Utility/Exceptions.h"
 
 namespace Wanlix

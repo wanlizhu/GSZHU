@@ -1,4 +1,4 @@
-#include "Wanlix/Core3D/RHI/Resource.h"
+#include "Wanlix/Core3D/Graphics/RHI/Resource.h"
 
 namespace Wanlix
 {

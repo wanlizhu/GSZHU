@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstdint>
-#include "DeviceObject.h"
 #include "ResourceDescriptor.h"
+#include "DeviceObject.h"
 
 namespace Wanlix
 {

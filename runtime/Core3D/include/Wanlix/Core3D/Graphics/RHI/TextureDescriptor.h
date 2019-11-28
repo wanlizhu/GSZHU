@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Format.h"
+#include "Wanlix/Core3D/Graphics/Format.h"
 #include "Wanlix/Core3D/Types.h"
 #include "ResourceDescriptor.h"
 #include "CommandBufferDescriptor.h"
@@ -20,7 +20,7 @@ namespace Wanlix
         Texture2DMSArray,   //!< 2-Dimensional multi-sample array texture.
     };
 
-    // Can be used to change the order of texel components independently of a shader.
+    /* Can be used to change the order of texel components independently of a shader.*/
     enum class TextureSwizzle
     {
         Zero,   //!< The component is replaced by the constant zero.
@@ -39,8 +39,9 @@ namespace Wanlix
         TextureSwizzle a = TextureSwizzle::Alpha;   
     };
 
-    // Texture subresource descriptor which specifies the array layer and MIP-map level range of a texture resource.
-    // The default values refer to the first array layer and the first MIP-map level.
+    /* Texture subresource descriptor which specifies the array layer and MIP-map level range of a texture resource.
+     * The default values refer to the first array layer and the first MIP-map level.
+    */
     struct TextureSubresource
     {
         uint32_t baseArrayLayer = 0; // Only used by array texture types
@@ -49,8 +50,9 @@ namespace Wanlix
         uint32_t numMipLevels = 1;
     };
 
-    // Texture location structure: MIP-map level and offset.
-    // This is used to specifiy the source and destination location of a texture copy operation.
+    /* Texture location structure: MIP-map level and offset.
+     * This is used to specifiy the source and destination location of a texture copy operation
+    */
     struct TextureLocation
     {
         Offset offset;
@@ -58,7 +60,7 @@ namespace Wanlix
         uint32_t mipLevel = 0;
     };
 
-    // This is used to write and read the image data of a single texture MIP-map level.
+    /* This is used to write and read the image data of a single texture MIP-map level. */
     struct TextureRegion
     {
         TextureSubresource subresource;
@@ -66,13 +68,13 @@ namespace Wanlix
         Extent extent;
     };
 
-    // Contains all information about type, format, and dimension to create a texture resource.
+    /* Contains all information about type, format, and dimension to create a texture resource. */
     struct TextureDescriptor
     {
         TextureType type = TextureType::Texture2D;
-        BindFlags bindFlags = (BindFlags::Sampled | BindFlags::ColorAttachment);
-        CPUAccessFlags cpuAccessFlags = 0;
-        MiscFlags miscFlags = (MiscFlags::FixedSamples | MiscFlags::GenerateMips);
+        BindFlags::UnderlyingType bindFlags = (BindFlags::Sampled | BindFlags::ColorAttachment);
+        CPUAccessFlags::UnderlyingType cpuAccessFlags = 0;
+        MiscFlags::UnderlyingType miscFlags = (MiscFlags::FixedSamples | MiscFlags::GenerateMips);
         Format format = Format::RGBA8UNorm;
         Extent extent = { 1, 1, 1 };
         uint32_t arrayLayers = 1;
@@ -88,6 +90,10 @@ namespace Wanlix
         TextureSubresource subresource;
         TextureSwizzleRGBA swizzle;
     };
+
+
+    /* ----- Functions ----- */
+
 
     uint32_t NumMipLevels(uint32_t width, uint32_t height = 1, uint32_t depth = 1);
     uint32_t NumMipLevels(const TextureType& type, const Extent& extent);

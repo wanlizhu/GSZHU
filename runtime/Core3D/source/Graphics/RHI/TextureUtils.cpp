@@ -1,5 +1,5 @@
 #include "TextureUtils.h"
-#include "Wanlix/Core3D/RHI/Limits.h"
+#include "Wanlix/Core3D/Graphics/Limits.h"
 
 namespace Wanlix
 {
@@ -69,7 +69,7 @@ namespace Wanlix
     bool MustGenerateMipsOnCreate(const TextureDescriptor& textureDesc)
     {
         return NumMipLevels(textureDesc) > 1 
-            && (textureDesc.miscFlags.value & (MiscFlags::GenerateMips | MiscFlags::NoInitialData)) == MiscFlags::GenerateMips;
+            && (textureDesc.miscFlags & (MiscFlags::GenerateMips | MiscFlags::NoInitialData)) == MiscFlags::GenerateMips;
     }
 
     uint32_t GetClampedSamples(uint32_t samples)

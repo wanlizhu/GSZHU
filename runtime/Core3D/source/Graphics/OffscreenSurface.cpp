@@ -1,4 +1,4 @@
-#include "Wanlix/Core3D/RHI/OffscreenSurface.h"
+#include "Wanlix/Core3D/Graphics/OffscreenSurface.h"
 
 namespace Wanlix
 {

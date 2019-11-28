@@ -1,4 +1,4 @@
-#include "Wanlix/Core3D/RHI/Texture.h"
+#include "Wanlix/Core3D/Graphics/RHI/Texture.h"
 
 namespace Wanlix
 {

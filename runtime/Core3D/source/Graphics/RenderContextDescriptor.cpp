@@ -1,4 +1,4 @@
-#include "Wanlix/Core3D/RHI/RenderContextDescriptor.h"
+#include "Wanlix/Core3D/Graphics/RenderContextDescriptor.h"
 
 namespace Wanlix
 {

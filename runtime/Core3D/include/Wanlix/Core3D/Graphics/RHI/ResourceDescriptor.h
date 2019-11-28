@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include "Wanlix/Core3D/Utility/Macro.h"
+#include "Wanlix/Core3D/Utility/NonInstantiable.h"
 
 namespace Wanlix
 {
@@ -14,9 +15,9 @@ namespace Wanlix
         Shader,
     };
 
-    struct BindFlags 
+    struct BindFlags : public NonInstantiable
     {
-        uint32_t value = 0;
+        using UnderlyingType = uint32_t;
         enum 
         {
             VertexBuffer = (1 << 0),
@@ -30,32 +31,22 @@ namespace Wanlix
             DepthStencilAttachment = (1 << 8),
             CombinedTextureSampler = (1 << 9),
         };
-
-        BindFlags(uint32_t val = 0) : value(val) {}
-        operator uint32_t() const { return value; }
-        DEFINE_CMP_OPS(BindFlags, value)
-        DEFINE_BIT_OPS(uint32_t, value)
     };
 
-    struct CPUAccessFlags
+    struct CPUAccessFlags : public NonInstantiable
     {
-        uint32_t value = 0;
+        using UnderlyingType = uint32_t;
         enum
         {
             Read = (1 << 0),
             Write = (1 << 1),
             ReadWrite = (Read | Write),
         };
-
-        CPUAccessFlags(uint32_t val = 0) : value(val) {}
-        operator uint32_t() const { return value; }
-        DEFINE_CMP_OPS(CPUAccessFlags, value)
-        DEFINE_BIT_OPS(uint32_t, value)
     };
 
-    struct MiscFlags
+    struct MiscFlags : public NonInstantiable
     {
-        uint32_t value = 0;
+        using UnderlyingType = uint32_t;
         enum
         {
             DynamicUsage = (1 << 0),
@@ -65,19 +56,14 @@ namespace Wanlix
             Append = (1 << 4),
             Counter = (1 << 5),
         };
-
-        MiscFlags(uint32_t val = 0) : value(val) {}
-        operator uint32_t() const { return value; }
-        DEFINE_CMP_OPS(MiscFlags, value)
-        DEFINE_BIT_OPS(uint32_t, value)
     };
 
     struct ResourceDescriptor
     {
         ResourceType type = ResourceType::Undefined;
-        BindFlags bindFlags;
-        CPUAccessFlags cpuAccess;
-        MiscFlags misc;
+        BindFlags::UnderlyingType bindFlags;
+        CPUAccessFlags::UnderlyingType cpuAccess;
+        MiscFlags::UnderlyingType misc;
 
         bool operator==(const ResourceDescriptor& rhs) const;
         bool operator!=(const ResourceDescriptor& rhs) const;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Wanlix/Core3D/RHI/TextureDescriptor.h"
+#include "Wanlix/Core3D/Graphics/RHI/TextureDescriptor.h"
 #include "Wanlix/Core3D/Types.h"
 #include <cstdint>
 
@@ -12,6 +12,10 @@ namespace Wanlix
         uint32_t layerStride = 0; // Bytes per layer
         uint32_t dataSize = 0; // Bytes per resource
     };
+
+
+    /* ----- Functions ----- */
+
 
     Offset ComputeTextureOffset(const TextureType type, const Offset& offset, uint32_t baseArrayLayer);
     Extent ComputeTextureExtent(const TextureType type, const Extent& extent, uint32_t numArrayLayers);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Surface.h"
-#include "Texture.h"
+#include "RHI/Texture.h"
 
 namespace Wanlix
 {
