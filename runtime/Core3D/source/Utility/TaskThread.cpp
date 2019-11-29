@@ -1,4 +1,5 @@
 #include "Wanlix/Core3D/Utility/TaskThread.h"
+#include "Wanlix/Core3D/Types.h"
 
 namespace Wanlix
 {
@@ -28,11 +29,11 @@ namespace Wanlix
         : std::thread(std::bind(&TaskThread::Main, this))
     {}
 
-    void TaskThread::SetName(const std::string& name) {
+    void TaskThread::SetName(StringCRef name) {
         mName = name;
     }
 
-    const std::string& TaskThread::GetName() const {
+    StringCRef TaskThread::GetName() const {
         return mName;
     }
 

@@ -2,7 +2,7 @@
 
 namespace Wanlix
 {
-    Resource::Resource(const std::string& name) noexcept
-        : DeviceObject(name)
+    Resource::Resource(StringCRef name) noexcept
+        : GObject(name)
     {}
 }

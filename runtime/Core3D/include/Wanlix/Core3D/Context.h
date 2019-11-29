@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Config.h"
+#include "Types.h"
 #include "IModule.h"
-#include <type_traits>
-#include <vector>
 
 namespace Wanlix
 {
@@ -12,9 +10,9 @@ namespace Wanlix
     class Context : public std::enable_shared_from_this<Context>
     {
     public:
-        using Ptr = std::shared_ptr<Context>;
+        using Ptr      = std::shared_ptr<Context>;
         using ConstPtr = std::shared_ptr<const Context>;
-        using WeakPtr = std::weak_ptr<Context>;
+        using WeakPtr  = std::weak_ptr<Context>;
 
         static Ptr Create();
         virtual ~Context() = default;

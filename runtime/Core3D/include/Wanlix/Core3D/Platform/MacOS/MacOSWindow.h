@@ -17,7 +17,7 @@ namespace Wanlix
 
         void SetPosition(const Offset& pos) override;
         void SetSize(const Extent& size, bool clientArea) override;
-        void SetTitle(const std::wstring& title) override;
+        void SetTitle(WStringCRef title) override;
         void Show() override;
         void Hide() override;
         void Quit() override;

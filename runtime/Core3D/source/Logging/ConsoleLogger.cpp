@@ -22,9 +22,9 @@ namespace Wanlix
         g_colorPrintFuncs[LogType::LogError] = [this](const char* msg) { LogRed(msg); };
     }
 
-    void ConsoleLogger::Log(LogType type, const std::string& msg) const
+    void ConsoleLogger::Log(LogType type, StringCRef msg) const
     {
-        const std::string prefix = (type == LogInfo) ? "Info:"
+        const String prefix = (type == LogInfo) ? "Info:"
             : (type == LogWarning) ? "Warning:"
             : "Error:";
         const auto text = prefix + " " + msg;

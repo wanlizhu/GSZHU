@@ -1,12 +1,11 @@
 #pragma once
 
-#include "CommandBufferDescriptor.h"
-#include "DeviceObject.h"
+#include "Wanlix/Core3D/Graphics/GObject.h"
 #include <memory>
 
 namespace Wanlix
 {
-    class CommandBuffer : public DeviceObject
+    class CommandBuffer : public GObject
     {
     public:
         using Ptr      = std::shared_ptr<CommandBuffer>;

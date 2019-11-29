@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Wanlix/Core3D/Config.h"
 #include "ILogger.h"
 
 namespace Wanlix
@@ -11,7 +10,7 @@ namespace Wanlix
         ConsoleLogger() noexcept;
         virtual ~ConsoleLogger() = default;
 
-        virtual void Log(LogType type, const std::string& msg) const override;
+        virtual void Log(LogType type, StringCRef msg) const override;
 
     private:
         void LogCyan(const char* msg) const;

@@ -17,9 +17,9 @@ namespace Wanlix
     class ThreadPool final
     {
         class Thread;
-        using ThreadMap = std::unordered_map<std::string, TaskThread>;
+        using ThreadMap = std::unordered_map<String, TaskThread>;
     public:
-        static void Initialize(const std::vector<std::string>& names)
+        static void Initialize(const std::vector<String>& names)
         {
             for (const auto& name : names) {
                 if (!mTaskThreadMap[name].joinable()) {
@@ -39,10 +39,10 @@ namespace Wanlix
         template<typename _Function_, typename... ARGS>
         static auto AddTask(
             _Function_&& func,
-            ARGS&& ... args
+            ARGS&& ...   args
         ) -> std::future<std::invoke_result_t<_Function_, ARGS...>>
         {
-            std::string threadName = "*";
+            String threadName = "*";
             auto it = std::find_if(mTaskThreadMap.begin(),
                                    mTaskThreadMap.end(),
                                    [](const ThreadMap::iterator& it) {
@@ -59,9 +59,9 @@ namespace Wanlix
 
         template<typename _Function_, typename... ARGS>
         static auto AddTaskTo(
-            const std::string& threadName,
+            StringCRef   threadName,
             _Function_&& func,
-            ARGS&& ... args
+            ARGS&& ...   args
         ) -> std::future<std::invoke_result_t<_Function_, ARGS...>>
         {
             using ReturnType = std::result_of<_Function_(ARGS...)>;

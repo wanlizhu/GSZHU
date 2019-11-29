@@ -14,7 +14,7 @@ namespace Wanlix
         mLogger = logger;
     }
 
-    void Log::SetLogFile(const std::string& filename, bool clearFirst)
+    void Log::SetLogFile(StringCRef filename, bool clearFirst)
     {
         FlushBuffer();
         if (mFileOut.is_open()) {
@@ -58,7 +58,7 @@ namespace Wanlix
         }
 
         if (mLogger.expired()) {
-            const std::string prefix = (type == LogInfo) ? "Info:"
+            const String prefix = (type == LogInfo) ? "Info:"
                 : (type == LogWarning) ? "Warning:"
                 : "Error:";
             const auto text = prefix + " " + buffer;
@@ -103,7 +103,7 @@ namespace Wanlix
             return;
         }
 
-        const std::string prefix = (type == LogInfo) ? "Info:" 
+        const String prefix = (type == LogInfo) ? "Info:" 
             : (type == LogWarning) ? "Warning:" 
             : "Error:";
         const auto text = prefix + " " + str;

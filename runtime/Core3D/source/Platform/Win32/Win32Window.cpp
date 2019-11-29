@@ -70,14 +70,14 @@ namespace Wanlix
         appearance.style = GetWindowStyle(desc);
 
         auto rc = GetClientArea(
-            static_cast<LONG>(desc.size.width),
-            static_cast<LONG>(desc.size.height),
+            (LONG)(desc.size.width),
+            (LONG)(desc.size.height),
             appearance.style
         );
 
         // Setup window size 
-        appearance.size.width = static_cast<uint32_t>(rc.right - rc.left);
-        appearance.size.height = static_cast<uint32_t>(rc.bottom - rc.top);
+        appearance.size.width = (uint32_t)(rc.right - rc.left);
+        appearance.size.height = (uint32_t)(rc.bottom - rc.top);
 
         // Setup window position 
         appearance.position = (desc.centered ? GetScreenCenteredPosition(desc.size) : desc.position);
@@ -163,8 +163,8 @@ namespace Wanlix
         if (clientArea)
         {
             auto rc = GetClientArea(
-                static_cast<LONG>(size.width),
-                static_cast<LONG>(size.height),
+                (LONG)(size.width),
+                (LONG)(size.height),
                 ::GetWindowLongW(mHwnd, GWL_STYLE)
             );
             cx = rc.right - rc.left;
@@ -172,8 +172,8 @@ namespace Wanlix
         }
         else
         {
-            cx = static_cast<int>(size.width);
-            cy = static_cast<int>(size.height);
+            cx = (int)(size.width);
+            cy = (int)(size.height);
         }
 
         ::SetWindowPos(mHwnd, HWND_TOP, 0, 0, cx, cy, (SWP_NOMOVE | SWP_NOZORDER));
@@ -192,8 +192,8 @@ namespace Wanlix
             ::GetClientRect(mHwnd, &rc);
             return
             {
-                static_cast<uint32_t>(rc.right - rc.left),
-                static_cast<uint32_t>(rc.bottom - rc.top)
+                (uint32_t)(rc.right - rc.left),
+                (uint32_t)(rc.bottom - rc.top)
             };
         }
         else
@@ -202,13 +202,13 @@ namespace Wanlix
             ::GetWindowRect(mHwnd, &rc);
             return
             {
-                static_cast<uint32_t>(rc.right - rc.left),
-                static_cast<uint32_t>(rc.bottom - rc.top)
+                (uint32_t)(rc.right - rc.left),
+                (uint32_t)(rc.bottom - rc.top)
             };
         }
     }
 
-    void Win32Window::SetTitle(const std::wstring& title)
+    void Win32Window::SetTitle(WStringCRef title)
     {
         ::SetWindowTextW(mHwnd, title.c_str());
     }
@@ -329,8 +329,8 @@ namespace Wanlix
                 0, // ignore, due to SWP_NOZORDER flag
                 appearance.position.x,
                 appearance.position.y,
-                static_cast<int>(appearance.size.width),
-                static_cast<int>(appearance.size.height),
+                (int)(appearance.size.width),
+                (int)(appearance.size.height),
                 flags
             );
 
@@ -379,8 +379,8 @@ namespace Wanlix
             appearance.style,
             appearance.position.x,
             appearance.position.y,
-            static_cast<int>(appearance.size.width),
-            static_cast<int>(appearance.size.height),
+            (int)(appearance.size.width),
+            (int)(appearance.size.height),
             parentWnd,
             nullptr,
             ::GetModuleHandleW(nullptr),

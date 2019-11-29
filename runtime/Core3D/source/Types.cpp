@@ -23,17 +23,17 @@ namespace Wanlix
 
     Range Range::operator+(uint32_t count) const
     {
-        return Range(begin, size + count);
+        return Range(offset, size + count);
     }
 
     Range Range::operator-(uint32_t count) const
     {
-        return Range(begin, size - count);
+        return Range(offset, size - count);
     }
 
     bool Range::operator==(const Range& other) const
     {
-        return begin == other.begin && size == other.size;
+        return offset == other.offset && size == other.size;
     }
 
     bool Range::operator!=(const Range& other) const

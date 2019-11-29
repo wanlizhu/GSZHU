@@ -1,10 +1,7 @@
 #pragma once
 
 #include "Wanlix/Core3D/Utility/NonCopyable.h"
-#include <cstdint>
-#include <string>
-#include <memory>
-#include <unordered_map>
+#include "Wanlix/Core3D/Types.h"
 
 namespace Wanlix
 {

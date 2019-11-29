@@ -23,6 +23,7 @@ namespace Wanlix
     {
         struct Task;
         struct Comparator;
+        using VoidFunction = std::function<void()>;
         using TaskPtr = std::shared_ptr<Task>;
         using TaskPriorityQueue = IterablePriorityQueue<TaskPtr, std::vector<TaskPtr>, Comparator>;
     public:
@@ -32,22 +33,22 @@ namespace Wanlix
 
         static TimerId StartTimer(
             const DurationMs& interval,
-            int repeat,
-            std::function<void()>&& callback
+            int               repeat,
+            VoidFunction&&    callback
         ) noexcept;
 
         static TimerId StartTimerAt(
-            const TimePoint& triggerAt,
+            const TimePoint&  triggerAt,
             const DurationMs& interval,
-            int repeat,
-            std::function<void()>&& callback
+            int               repeat,
+            VoidFunction&&    callback
         ) noexcept;
 
         static bool Query(
-            TimerId id,
+            TimerId     id,
             DurationMs* interval,
-            int* repeat,
-            TimePoint* nextTrigger
+            int*        repeat,
+            TimePoint*  nextTrigger
         ) noexcept;
 
         static void Cancel(TimerId id) noexcept;
@@ -58,8 +59,8 @@ namespace Wanlix
         
     private:
         static Lockable<TaskPriorityQueue> mTaskQueue;
-        static std::condition_variable mCondition;
-        static std::atomic_uint64_t mTimerIdGen;
-        static std::atomic_bool mQuitFlag;
+        static std::condition_variable     mCondition;
+        static std::atomic_uint64_t        mTimerIdGen;
+        static std::atomic_bool            mQuitFlag;
     };
 }

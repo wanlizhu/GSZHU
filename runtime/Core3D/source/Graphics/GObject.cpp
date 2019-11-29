@@ -1,11 +1,11 @@
-#include "Wanlix/Core3D/Graphics/RHI/DeviceObject.h"
+#include "Wanlix/Core3D/Graphics/GObject.h"
 #include "Wanlix/Core3D/Utility/Exceptions.h"
 
 namespace Wanlix
 {
-    std::unordered_map<std::string, DeviceObject*> DeviceObject::mObjects;
+    std::unordered_map<String, GObject*> GObject::mObjects;
 
-    DeviceObject::DeviceObject(const std::string& name)
+    GObject::GObject(StringCRef name)
         : mName(name)
         , mHandle(nullptr)
     {
@@ -15,7 +15,7 @@ namespace Wanlix
         mObjects[name] = this;
     }
 
-    DeviceObject::~DeviceObject()
+    GObject::~GObject()
     {
         auto it = mObjects.find(mName);
         if (it != mObjects.end()) {
@@ -23,7 +23,7 @@ namespace Wanlix
         }
     }
 
-    DeviceObject* DeviceObject::Find(const std::string& name)
+    GObject* GObject::Find(StringCRef name)
     {
         auto it = mObjects.find(name);
         if (it == mObjects.end()) {
@@ -32,17 +32,17 @@ namespace Wanlix
         return it->second;
     }
     
-    void DeviceObject::SetName(const std::string& name)
+    void GObject::SetName(StringCRef name)
     {
         mName = name;
     }
 
-    const std::string& DeviceObject::GetName() const
+    StringCRef GObject::GetName() const
     {
         return mName;
     }
 
-    DeviceObject::Handle DeviceObject::GetHandle() const
+    GObject::Handle GObject::GetHandle() const
     {
         return mHandle;
     }

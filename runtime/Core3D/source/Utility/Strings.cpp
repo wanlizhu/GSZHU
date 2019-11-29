@@ -8,7 +8,7 @@
 namespace Wanlix
 {
 #if defined _WIN32 && !defined WANLIX_USE_CODECVT
-    std::wstring ToWString(const std::string& source)
+    std::wstring ToWString(StringCRef source)
     {
         if (source.empty()) {
             return std::wstring();
@@ -24,16 +24,16 @@ namespace Wanlix
     }
 
     template<> 
-    std::string ToString<std::wstring>(const std::wstring& source)
+    String ToString<std::wstring>(WStringCRef source)
     {
         if (source.empty()) {
-            return std::string();
+            return String();
         }
         int sizeNeeded = ::WideCharToMultiByte(CP_UTF8, 0, 
                                                &source[0], (int)source.size(), 
                                                NULL, 0,
                                                NULL, NULL);
-        std::string result(sizeNeeded, '\0');
+        String result(sizeNeeded, '\0');
         ::WideCharToMultiByte(CP_UTF8, 0,
                               &source[0], (int)source.size(),
                               &result[0], sizeNeeded,
@@ -41,14 +41,14 @@ namespace Wanlix
         return result;
     }
 #else
-    std::wstring ToWString(const std::string& source)
+    std::wstring ToWString(StringCRef source)
     {
         std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
         return conv.from_bytes(source);
     }
 
     template<>
-    std::string ToString<std::wstring>(const std::wstring& source)
+    String ToString<std::wstring>(WStringCRef source)
     {
         std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
         return conv.to_bytes(source);
@@ -56,17 +56,17 @@ namespace Wanlix
 #endif
 
     void StringUtil::Trim(
-        std::string& str, 
+        String& str, 
         bool left,
         bool right
     )
     {
-        static const std::string delims = " \t\r\n";
+        static const String delims = " \t\r\n";
         return StringUtil::Trim(str, delims, left, right);
     }
 
     void StringUtil::Trim(
-        std::wstring& str,
+        WString& str,
         bool left,
         bool right
     )
@@ -76,8 +76,8 @@ namespace Wanlix
     }
 
     void StringUtil::Trim(
-        std::string& str,
-        const std::string& delims,
+        String& str,
+        StringCRef delims,
         bool left,
         bool right
     )
@@ -91,8 +91,8 @@ namespace Wanlix
     }
 
     void StringUtil::Trim(
-        std::wstring& str,
-        const std::wstring& delims,
+        WString& str,
+        WStringCRef delims,
         bool left,
         bool right
     )
@@ -144,18 +144,18 @@ namespace Wanlix
         return ret;
     }
 
-    StringUtil::StringList StringUtil::Split(
-        const std::string& str,
-        const std::string& delims,
+    StringList StringUtil::Split(
+        StringCRef str,
+        StringCRef delims,
         uint32_t maxSplits
     )
     {
         return SplitInternal(str, delims, maxSplits);
     }
 
-    StringUtil::WStringList StringUtil::Split(
-        const std::wstring& str,
-        const std::wstring& delims,
+    WStringList StringUtil::Split(
+        WStringCRef str,
+        WStringCRef delims,
         uint32_t maxSplits
     )
     {
@@ -227,42 +227,42 @@ namespace Wanlix
         return ret;
     }
 
-    StringUtil::StringList StringUtil::Tokenize(
-        const std::string& str,
-        const std::string& delims,
-        const std::string& doubleDelims,
+    StringList StringUtil::Tokenize(
+        StringCRef str,
+        StringCRef delims,
+        StringCRef doubleDelims,
         unsigned int maxSplits
     )
     {
         return TokenizeInternal(str, delims, doubleDelims, maxSplits);
     }
 
-    StringUtil::WStringList StringUtil::Tokenize(
-        const std::wstring& str,
-        const std::wstring& delims,
-        const std::wstring& doubleDelims,
+    WStringList StringUtil::Tokenize(
+        WStringCRef str,
+        WStringCRef delims,
+        WStringCRef doubleDelims,
         unsigned int maxSplits
     )
     {
         return TokenizeInternal(str, delims, doubleDelims, maxSplits);
     }
 
-    void StringUtil::ToLower(std::string& str)
+    void StringUtil::ToLower(String& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), tolower);
     }
 
-    void StringUtil::ToLower(std::wstring& str)
+    void StringUtil::ToLower(WString& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), tolower);
     }
 
-    void StringUtil::ToUpper(std::string& str)
+    void StringUtil::ToUpper(String& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), toupper);
     }
 
-    void StringUtil::ToUpper(std::wstring& str)
+    void StringUtil::ToUpper(WString& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), toupper);
     }
@@ -291,8 +291,8 @@ namespace Wanlix
     }
 
     bool StringUtil::StartsWith(
-        const std::string& str,
-        const std::string& pattern,
+        StringCRef str,
+        StringCRef pattern,
         bool caseSensitive
     )
     {
@@ -300,8 +300,8 @@ namespace Wanlix
     }
 
     bool StringUtil::StartsWith(
-        const std::wstring& str,
-        const std::wstring& pattern,
+        WStringCRef str,
+        WStringCRef pattern,
         bool caseSensitive
     )
     {
@@ -332,8 +332,8 @@ namespace Wanlix
     }
 
     bool StringUtil::EndsWith(
-        const std::string& str,
-        const std::string& pattern,
+        StringCRef str,
+        StringCRef pattern,
         bool caseSensitive
     )
     {
@@ -341,8 +341,8 @@ namespace Wanlix
     }
 
     bool StringUtil::EndsWith(
-        const std::wstring& str,
-        const std::wstring& pattern,
+        WStringCRef str,
+        WStringCRef pattern,
         bool caseSensitive
     )
     {
@@ -408,8 +408,8 @@ namespace Wanlix
     }
 
     bool StringUtil::Match(
-        const std::string& str,
-        const std::string& pattern,
+        StringCRef str,
+        StringCRef pattern,
         bool caseSensitive
     )
     {
@@ -417,8 +417,8 @@ namespace Wanlix
     }
 
     bool StringUtil::Match(
-        const std::wstring& str, 
-        const std::wstring& pattern, 
+        WStringCRef str, 
+        WStringCRef pattern, 
         bool caseSensitive
     )
     {
@@ -444,19 +444,19 @@ namespace Wanlix
         return result;
     }
 
-    std::string StringUtil::ReplaceAll(
-        const std::string& str, 
-        const std::string& replaceWhat,
-        const std::string& replaceWithWhat
+    String StringUtil::ReplaceAll(
+        StringCRef str, 
+        StringCRef replaceWhat,
+        StringCRef replaceWithWhat
     )
     {
         return ReplaceAllInternal(str, replaceWhat, replaceWithWhat);
     }
 
     std::wstring StringUtil::ReplaceAll(
-        const std::wstring& str, 
-        const std::wstring& replaceWhat,
-        const std::wstring& replaceWithWhat
+        WStringCRef str, 
+        WStringCRef replaceWhat,
+        WStringCRef replaceWithWhat
     )
     {
         return ReplaceAllInternal(str, replaceWhat, replaceWithWhat);

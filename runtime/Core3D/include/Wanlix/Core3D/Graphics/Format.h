@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include "Wanlix/Core3D/Utility/Macro.h"
-#include "Wanlix/Core3D/Utility/NonInstantiable.h"
 
 namespace Wanlix
 {
@@ -168,9 +167,8 @@ namespace Wanlix
         Float64,    //!< 64-bit real type (\c double).
     };
 
-    struct FormatFlags : public NonInstantiable
+    struct FormatFlags
     {
-        using UnderlyingType = uint32_t;
         enum
         {
             HasDepth = (1 << 0),
@@ -200,7 +198,7 @@ namespace Wanlix
         std::uint8_t components;
         ImageFormat format;
         DataType dataType;
-        FormatFlags::UnderlyingType flags;
+        long flags;
     };
 
 

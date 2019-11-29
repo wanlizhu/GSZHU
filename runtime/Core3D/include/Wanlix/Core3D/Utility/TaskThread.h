@@ -11,6 +11,7 @@
 #include <vector>
 #include <string>
 #include "Wanlix/Core3D/Utility/Lockable.h"
+#include "Wanlix/Core3D/Types.h"
 
 namespace Wanlix
 {
@@ -26,15 +27,15 @@ namespace Wanlix
         TaskThread& operator=(const TaskThread&) = delete;
         TaskThread& operator=(TaskThread&&) = delete;
 
-        void SetName(const std::string& name);
-        const std::string& GetName() const;
+        void       SetName(StringCRef name);
+        StringCRef GetName() const;
         void PostTask(std::function<void()>&& func);
         void Quit();
         bool ShouldAwake() const;
         bool IsBlocked() const;
 
     private:
-        std::string mName;
+        String mName;
         std::atomic_bool mQuitFlag = false;
         std::atomic_bool mBlocked = false;
 

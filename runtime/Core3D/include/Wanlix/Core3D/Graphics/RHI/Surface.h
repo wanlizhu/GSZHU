@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Wanlix/Core3D/Config.h"
-#include "Wanlix/Core3D/Types.h"
-#include "Wanlix/Core3D/Platform/Display.h"
 #include "Wanlix/Core3D/Utility/NonCopyable.h"
-#include "RenderContextDescriptor.h"
+#include "Wanlix/Core3D/Graphics/Types.h"
+#include "Wanlix/Core3D/Graphics/Descriptors.h"
 
 namespace Wanlix
 {
@@ -24,10 +22,9 @@ namespace Wanlix
         using Ptr      = std::shared_ptr<Surface>;
         using ConstPtr = std::shared_ptr<const Surface>;
 
-        virtual SurfaceType        GetSurfaceType() const = 0;
-        virtual void*              GetNativeHandle() const = 0;
-        virtual Extent             GetContentSize() const = 0;
-        virtual bool               AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) = 0;
-        virtual Display::UniquePtr GetResidentDisplay() const = 0;
+        virtual SurfaceType GetSurfaceType() const = 0;
+        virtual void*       GetNativeHandle() const = 0;
+        virtual Extent      GetContentSize() const = 0;
+        virtual bool        AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) = 0;
     };
 }

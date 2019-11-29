@@ -4,20 +4,61 @@
 #include <type_traits>
 #include <cassert>
 #include <algorithm>
+#include <unordered_map>
+#include <memory>
+#include <typeinfo>
+#include <typeindex>
+#include <functional>
+#include <string>
+#include <vector>
+#include <queue>
+#include <deque>
+#include <list>
+#include <codecvt>
+#include <chrono>
+#include <filesystem>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <any>
+#include <tuple>
+#include <variant>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include "Config.h"
 
 namespace Wanlix
 {
+    using String     = std::string;
+    using StringCRef = std::string const&;
+    using StringList = std::vector<std::string>;
+    template<typename T>
+    using StringMap  = std::unordered_map<std::string, T>;
+
+    using WString     = std::wstring;
+    using WStringCRef = std::wstring const&;
+    using WStringList = std::vector<std::wstring>;
+    template<typename T>
+    using WStringMap  = std::unordered_map<std::wstring, T>;
+
     struct Range 
     {
-        uint32_t begin = 0;
+        uint32_t offset = 0;
         uint32_t size = 0;
 
         Range() noexcept = default;
-        Range(uint32_t begin, uint32_t size) noexcept
-            : begin(begin), size(size)
+        Range(uint32_t offset, uint32_t size) noexcept
+            : offset(offset), size(size)
+        {}
+        Range(StringCRef str) noexcept
+            : offset(0), size((uint32_t)str.size())
+        {}
+        Range(WStringCRef str) noexcept
+            : offset(0), size((uint32_t)str.size())
         {}
         Range(const std::initializer_list<uint32_t>& init) noexcept 
-            : begin(*(init.begin())), size(*(init.begin()+1))
+            : offset(*(init.begin())), size(*(init.begin()+1))
         {
             assert(init.size() == 2);
         }

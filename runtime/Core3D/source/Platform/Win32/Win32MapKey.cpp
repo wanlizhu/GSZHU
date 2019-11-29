@@ -287,7 +287,7 @@ namespace Wanlix
     };
 
 
-    Key MapKey(uint32_t sysKeyCode)
+    Key MapKey(unsigned int sysKeyCode)
     {
         return g_win32KeyCodeMap[sysKeyCode];
     }

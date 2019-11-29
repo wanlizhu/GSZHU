@@ -43,16 +43,23 @@ namespace Wanlix
         static const int kComponents = N;
         static const int kBytes      = (N * sizeof(T));
 
+        static Color Null() {
+            return Color(-1);
+        }
+
         Color() noexcept = default;
 
         explicit Color(const T& scalar) noexcept {
             std::fill(std::begin(mData), std::end(mData), scalar);
         }
 
-        Color(const std::initializer_list<T>& init) noexcept {
+        template<typename U>
+        Color(const std::initializer_list<U>& init) noexcept {
             int i = 0;
             for (auto& val : init) {
-                if (i < N) mData[i++] = val;
+                if (i < N) {
+                    mData[i++] = static_cast<T>(val);
+                }
             }
         }
 
@@ -71,10 +78,16 @@ namespace Wanlix
             }
         }
 
-        inline T& operator[](int i)             { return mData[i]; }
+        inline T&       operator[](int i)       { return mData[i]; }
         inline const T& operator[](int i) const { return mData[i]; }
-        inline T* GetData()                     { return mData; }
+        inline T*       GetData()               { return mData; }
         inline const T* GetData() const         { return mData; }
+        inline bool     IsNull() const { 
+            return std::any_of(&mData[0], &mData[0] + N,
+                               [](T val) { 
+                                   return val < 0;
+                               }); 
+        }
 
         DEFINE_VEC_NUMERIC_OPS(Color, N, mData)
 

@@ -1,25 +1,20 @@
 #pragma once
 
-#include <string>
-#include <memory>
-#include <mutex>
-#include <fstream>
-#include <vector>
-#include "Wanlix/Core3D/Config.h"
+#include "Wanlix/Core3D/Types.h"
 #include "ILogger.h"
 
-#define LOG_INFO(fmt, ...) { Wanlix::Log::Write(Wanlix::LogInfo, std::string(__FUNCTION__) + ": " + std::string(fmt), __VA_ARGS__); }
-#define LOG_WARNING(fmt, ...) { Wanlix::Log::Write(Wanlix::LogWarning, std::string(__FUNCTION__) + ": " + std::string(fmt), __VA_ARGS__); }
-#define LOG_ERROR(fmt, ...) { Wanlix::Log::Write(Wanlix::LogError, std::string(__FUNCTION__) + ": " + std::string(fmt), __VA_ARGS__); }
+#define LOG_INFO(fmt, ...) { Wanlix::Log::Write(Wanlix::LogInfo, String(__FUNCTION__) + ": " + String(fmt), __VA_ARGS__); }
+#define LOG_WARNING(fmt, ...) { Wanlix::Log::Write(Wanlix::LogWarning, String(__FUNCTION__) + ": " + String(fmt), __VA_ARGS__); }
+#define LOG_ERROR(fmt, ...) { Wanlix::Log::Write(Wanlix::LogError, String(__FUNCTION__) + ": " + String(fmt), __VA_ARGS__); }
 
 namespace Wanlix
 {
     struct LogEntry 
     {
         LogType type = LogInfo;
-        std::string message;
+        String message;
 
-        LogEntry(LogType type, const std::string& msg)
+        LogEntry(LogType type, StringCRef msg)
             : type(type), message(msg)
         {}
     };
@@ -32,7 +27,7 @@ namespace Wanlix
 
         // Set a logger to be used (if not set, logging will done in a text file).
         static void SetLogger(const std::weak_ptr<ILogger>& logger);
-        static void SetLogFile(const std::string& filename, bool clearFirst = false);
+        static void SetLogFile(StringCRef filename, bool clearFirst = false);
         static void LogToFile(bool val);
         static void CloseLogFile();
         static void Write(const LogType type, const char* fmt, ...);

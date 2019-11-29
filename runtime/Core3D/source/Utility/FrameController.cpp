@@ -1,4 +1,4 @@
-#include "Wanlix/Core3D/Utility/FPSController.h"
+#include "Wanlix/Core3D/Utility/FrameController.h"
 #include <thread>
 
 namespace Wanlix
@@ -6,45 +6,45 @@ namespace Wanlix
     using namespace std;
     using namespace chrono;
 
-    FPSController::Ptr FPSController::Create(std::weak_ptr<Context> context)
+    FrameController::Ptr FrameController::Create(std::weak_ptr<Context> context)
     {
-        return std::shared_ptr<FPSController>(new FPSController(context));
+        return std::shared_ptr<FrameController>(new FrameController(context));
     }
 
-    FPSController::FPSController(std::weak_ptr<Context> context)
-        : IModule(typeid(FPSController), context)
+    FrameController::FrameController(std::weak_ptr<Context> context)
+        : IModule(typeid(FrameController), context)
     {
         mTimeBegin = high_resolution_clock::now();
         mTimeFrameBegin = high_resolution_clock::now();
         mTimeFrameEnd = high_resolution_clock::now();
     }
 
-    void FPSController::EnableMaxFPS(bool val)
+    void FrameController::EnableMaxFPS(bool val)
     {
         mEnableMaxFPS = val;
     }
 
-    void FPSController::SetMaxFPS(double fps)
+    void FrameController::SetMaxFPS(double fps)
     {
         mMaxFPS = fps <= 0.0 ? 60.0 : fps;
     }
 
-    double FPSController::GetMaxFPS() const
+    double FrameController::GetMaxFPS() const
     {
         return mMaxFPS;
     }
 
-    float FPSController::GetTimeMs() const
+    float FrameController::GetTimeMs() const
     {
         return static_cast<float>((double)(high_resolution_clock::now() - mTimeBegin).count());
     }
 
-    float FPSController::GetDeltaTimeMs() const
+    float FrameController::GetDeltaTimeMs() const
     {
         return static_cast<float>(mDeltaTimeMs);
     }
 
-    bool FPSController::Tick(float delta)
+    bool FrameController::Tick(float delta)
     {
         mTimeFrameBegin = high_resolution_clock::now();
         auto timeWork = mTimeFrameBegin - mTimeFrameEnd;

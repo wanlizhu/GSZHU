@@ -1,66 +1,46 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <unordered_map>
-
-#define NASIZE ((size_t)-1)
+#include "Wanlix/Core3D/Types.h"
 
 namespace Wanlix
 {
-    std::wstring ToWString(const std::string& source);
+    std::wstring ToWString(StringCRef source);
 
     template<typename T>
-    std::string ToString(const T& val) {
+    String ToString(const T& val) {
         static_assert(false);
     }
 
     template<> 
-    std::string ToString<std::wstring>(const std::wstring& source);
-
+    String ToString<WString>(WStringCRef source);
 
     class StringUtil
     {
     public:
-        using StringList = std::vector<std::string>;
-        using WStringList = std::vector<std::wstring>;
-        struct Range
-        {
-            size_t offset = 0;
-            size_t size = 0;
-
-            Range() = default;
-            Range(size_t a, size_t b) : offset(a), size(b) {}
-            template<typename _String_>
-            Range(const _String_& str) : offset(0), size(str.size()) {}
-        };
-        using RangeList = std::vector<Range>;
-
         // Removes any whitespace characters from beginning or end of the string
         static void Trim(
-            std::string& str,
-            bool left = true,
-            bool right = true
+            String& str,
+            bool    left = true,
+            bool    right = true
         );
         static void Trim(
-            std::wstring& str,
-            bool left = true,
-            bool right = true
+            WString& str,
+            bool     left = true,
+            bool     right = true
         );
 
         // Removes specified characters from beginning or end of the string
         static void Trim(
-            std::string& str,
-            const std::string& delims,
-            bool left = true,
-            bool right = true
+            String&    str,
+            StringCRef delims,
+            bool       left = true,
+            bool       right = true
         );
         static void Trim(
-            std::wstring& str,
-            const std::wstring& delims,
-            bool left = true,
-            bool right = true
+            WString&    str,
+            WStringCRef delims,
+            bool        left = true,
+            bool        right = true
         );
     
         /**
@@ -73,14 +53,14 @@ namespace Wanlix
          *							parameters is > 0, the splitting process will stop after this many splits, left to right.
          */
         static StringList Split(
-            const std::string& str,
-            const std::string& delims = "\t\n ",
-            uint32_t maxSplits = 0
+            StringCRef str,
+            StringCRef delims = "\t\n ",
+            uint32_t   maxSplits = 0
         );
         static WStringList Split(
-            const std::wstring& str,
-            const std::wstring& delims = L"\t\n ",
-            uint32_t maxSplits = 0
+            WStringCRef str,
+            WStringCRef delims = L"\t\n ",
+            uint32_t    maxSplits = 0
         );
 
         /**
@@ -97,23 +77,23 @@ namespace Wanlix
          *								left to right.
          */
         static StringList Tokenize(
-            const std::string& str, 
-            const std::string& delims = "\t\n ",
-            const std::string& doubleDelims = "\"", 
-            unsigned int maxSplits = 0
+            StringCRef str, 
+            StringCRef delims = "\t\n ",
+            StringCRef doubleDelims = "\"", 
+            uint32_t   maxSplits = 0
         );
         static WStringList Tokenize(
-            const std::wstring& str, 
-            const std::wstring& delims = L"\t\n ",
-            const std::wstring& doubleDelims = L"\"", 
-            unsigned int maxSplits = 0
+            WStringCRef str, 
+            WStringCRef delims = L"\t\n ",
+            WStringCRef doubleDelims = L"\"", 
+            uint32_t    maxSplits = 0
         );
 
-        static void ToLower(std::string& str);
-        static void ToLower(std::wstring& str);
+        static void ToLower(String& str);
+        static void ToLower(WString& str);
 
-        static void ToUpper(std::string& str);
-        static void ToUpper(std::wstring& str);
+        static void ToUpper(String& str);
+        static void ToUpper(WString& str);
 
         /**
          * Returns whether the string begins with the pattern passed in.
@@ -123,14 +103,14 @@ namespace Wanlix
          * @param[in]	caseSensitive	(optional) Should the match be case sensitive or not.
          */
         static bool StartsWith(
-            const std::string& str,
-            const std::string& pattern,
-            bool caseSensitive = true
+            StringCRef str,
+            StringCRef pattern,
+            bool       caseSensitive = true
         );
         static bool StartsWith(
-            const std::wstring& str,
-            const std::wstring& pattern,
-            bool caseSensitive = true
+            WStringCRef str,
+            WStringCRef pattern,
+            bool        caseSensitive = true
         );
 
         /**
@@ -141,14 +121,14 @@ namespace Wanlix
          * @param[in]	caseSensitive	(optional) Should the match be case sensitive or not.
          */
         static bool EndsWith(
-            const std::string& str,
-            const std::string& pattern,
-            bool caseSensitive = true
+            StringCRef str,
+            StringCRef pattern,
+            bool       caseSensitive = true
         );
         static bool EndsWith(
-            const std::wstring& str,
-            const std::wstring& pattern,
-            bool caseSensitive = true
+            WStringCRef str,
+            WStringCRef pattern,
+            bool        caseSensitive = true
         );
 
         /**
@@ -160,14 +140,14 @@ namespace Wanlix
          * @param[in]	caseSensitive	(optional) Should the match be case sensitive or not.
          */
         static bool Match(
-            const std::string& str,
-            const std::string& pattern,
-            bool caseSensitive = true
+            StringCRef str,
+            StringCRef pattern,
+            bool       caseSensitive = true
         );
         static bool Match(
-            const std::wstring& str,
-            const std::wstring& pattern, 
-            bool caseSensitive = true
+            WStringCRef str,
+            WStringCRef pattern, 
+            bool        caseSensitive = true
         );
 
         /**
@@ -179,15 +159,15 @@ namespace Wanlix
          *
          * @return	An updated string with the substrings replaced.
          */
-        static std::string ReplaceAll(
-            const std::string& str,
-            const std::string& replaceWhat,
-            const std::string& replaceWithWhat
+        static String ReplaceAll(
+            StringCRef str,
+            StringCRef replaceWhat,
+            StringCRef replaceWithWhat
         );
         static std::wstring ReplaceAll(
-            const std::wstring& str,
-            const std::wstring& replaceWhat,
-            const std::wstring& replaceWithWhat
+            WStringCRef str,
+            WStringCRef replaceWhat,
+            WStringCRef replaceWithWhat
         );
     };
 }
