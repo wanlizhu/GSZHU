@@ -47,6 +47,9 @@ namespace Wanlix
         uint32_t offset = 0;
         uint32_t size = 0;
 
+        static Range Null();
+        static Range All();
+
         Range() noexcept = default;
         Range(uint32_t offset, uint32_t size) noexcept
             : offset(offset), size(size)
@@ -64,6 +67,7 @@ namespace Wanlix
         }
 
         bool IsEmpty() const;
+        bool IsAll() const;
         Range operator+(uint32_t count) const;
         Range operator-(uint32_t count) const;
         bool operator==(const Range& other) const;
@@ -76,6 +80,8 @@ namespace Wanlix
         int y = 0;
         int z = 0;
 
+        static Offset Origin();
+
         Offset() noexcept = default;
         Offset(int x, int y, int z = 0) noexcept
             : x(x), y(y), z(z)
@@ -87,7 +93,7 @@ namespace Wanlix
             std::copy(init.begin(), init.end(), &x);
         }
 
-        bool IsZero() const;
+        bool IsOrigin() const;
         Offset operator+(const Offset& other) const;
         Offset operator-(const Offset& other) const;
         bool operator==(const Offset& other) const;
@@ -99,6 +105,9 @@ namespace Wanlix
         uint32_t width = 0;
         uint32_t height = 0;
         uint32_t depth = 0;
+
+        static Extent Null();
+        static Extent All();
 
         Extent() noexcept = default;
         Extent(uint32_t width, uint32_t height, uint32_t depth = 0) noexcept
@@ -112,6 +121,7 @@ namespace Wanlix
         }
 
         bool IsEmpty() const;
+        bool IsAll() const;
         Extent operator+(const Extent& other) const;
         Extent operator-(const Extent& other) const;
         bool operator==(const Extent& other) const;
@@ -122,6 +132,10 @@ namespace Wanlix
     {
         Offset offset;
         Extent extent;
+
+        static Region Null() {
+            return Region(Offset::Null(), Extent::Null());
+        }
 
         Region() = default;
         Region(const Offset& offset, const Extent& extent)

@@ -13,7 +13,7 @@ namespace Wanlix
         using ConstPtr  = std::shared_ptr<const Win32Window>;
         using UniquePtr = std::unique_ptr<Win32Window>;
 
-        static UniquePtr Create(const WindowDescriptor& desc);
+        static UniquePtr Create(const Window::Desc& desc);
         static UniquePtr Attach(HWND handle);
         ~Win32Window();
 
@@ -23,22 +23,22 @@ namespace Wanlix
         void Show() override;
         void Hide() override;
         void Quit() override;
-        void SetDescriptor(const WindowDescriptor& desc) override;
+        void SetDescriptor(const Window::Desc& desc) override;
 
-        void*    GetNativeHandle() const override;
-        Extent   GetContentSize() const override;
-        Extent   GetSize(bool clientArea) const override;
-        Offset   GetPosition() const override;
-        WString  GetTitle() const override;
-        bool     IsVisible() const override;
-        uint32_t GetMoveAndResizeTimerId() const;
-        WindowDescriptor GetDescriptor() const override;
+        void*        GetNativeHandle() const override;
+        Extent       GetContentSize() const override;
+        Extent       GetSize(bool clientArea) const override;
+        Offset       GetPosition() const override;
+        WString      GetTitle() const override;
+        bool         IsVisible() const override;
+        uint32_t     GetMoveAndResizeTimerId() const;
+        Window::Desc GetDescriptor() const override;
         
     private:
-        Win32Window(const WindowDescriptor& desc);
+        Win32Window(const Window::Desc& desc);
         Win32Window(HWND handle);
         void ProcessEventsInternal() override;
-        HWND CreateWindowHandle(WindowDescriptor desc);
+        HWND CreateWindowHandle(Window::Desc desc);
         void AttachHandle(HWND handle);
         void DetachHandle(HWND handle);
 

@@ -70,8 +70,6 @@ namespace Wanlix
         Undefined,
         Buffer,
         Texture,
-        Sampler,
-        Shader,
     };
 
     struct BindFlags
@@ -136,5 +134,156 @@ namespace Wanlix
         Green,  //!< The component is replaced by green component.
         Blue,   //!< The component is replaced by blue component.
         Alpha   //!< The component is replaced by alpha component.
+    };
+
+    enum class SamplerAddressMode
+    {
+        Repeat,
+        Mirror,
+        Clamp,
+        Border,
+        MirrorOnce,
+    };
+
+    enum class SamplerFilter
+    {
+        Nearest,
+        Linear,
+    };
+
+    enum class CompareOp
+    {
+        NeverPass,
+        Less,
+        Equal,
+        LessEqual,
+        Greater,
+        NotEqual,
+        GreaterEqual,
+        AlwaysPass,
+    };
+
+    enum class StencilOp
+    {
+        Keep,
+        Zero,
+        Replace,
+        IncClamp,
+        DecClamp,
+        Invert,
+        IncWrap,
+        DecWrap,
+    };
+
+    enum class BlendOp
+    {
+        Zero,
+        One,
+        SrcColor,
+        InvSrcColor,
+        SrcAlpha,
+        InvSrcAlpha,
+        DstColor,
+        InvDstColor,
+        DstAlpha,
+        InvDstAlpha,
+        SrcAlphaSaturate,
+        BlendFactor,
+        InvBlendFactor,
+        Src1Color,
+        InvSrc1Color,
+        Src1Alpha,
+        InvSrc1Alpha
+    };
+
+    enum class BlendArithmetic
+    {
+        Add,
+        Subtract,
+        RevSubtract,
+        Min,
+        Max,
+    };
+
+    enum class PolygonMode
+    {
+        Fill,
+        Wireframe,
+        Points,
+    };
+
+    enum class CullMode
+    {
+        Disabled,
+        Front,
+        Back,
+    };
+
+    enum class LogicOp
+    {
+        Disabled,
+        Clear,
+        Set,
+        Copy,
+        CopyInverted,
+        NoOp,
+        Invert,
+        AND,
+        ANDReverse,
+        ANDInverted,
+        NAND,
+        OR,
+        ORReverse,
+        ORInverted,
+        NOR,
+        XOR,
+        Equiv,
+    };
+
+    enum class PrimitiveTopology
+    {
+        PointList,
+        LineList,
+        LineStrip,
+        LineLoop,
+        LineListAdjacency,
+        LineStripAdjacency,
+        TriangleList,
+        TriangleStrip,
+        TriangleFan,
+        TriangleListAdjacency,
+        TriangleStripAdjacency,
+        Patches,
+    };
+
+    enum class TessellationPartition
+    {
+        Undefined,
+        Integer,
+        Pow2,
+        FractionalOdd,
+        FractionalEven,
+    };
+
+    /* This is only used for shader code reflection. */
+    enum class SystemValue
+    {
+        Undefined,
+        ClipDistance,
+        Color,
+        CullDistance,
+        Depth,
+        DepthGreater,
+        DepthLess,
+        FrontFacing,
+        InstanceID,
+        Position,
+        PrimitiveID,
+        RenderTargetIndex,
+        SampleMask,
+        SampleID,
+        Stencil,
+        VertexID,
+        ViewportIndex,
     };
 }

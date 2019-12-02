@@ -5,9 +5,7 @@
 
 namespace Wanlix
 {
-    // Texture and vertex attribute format enumeration used for GPU side operations.
-    // The counterpart of this enumeration for CPU side operations are LLGL::ImageFormat and Wanlix::DataType.
-    enum class Format
+    enum class Format /* on GPU side*/
     {
         Undefined, 
 
@@ -121,7 +119,7 @@ namespace Wanlix
         BC5SNorm,           //!< Compressed color format: S3TC BC5 compressed red and green channels with normalized signed integer components in 128-bit per 4x4 block.
     };
 
-    enum class ImageFormat
+    enum class ColorFormat /* on CPU side */
     {
         /* Color formats */
         Alpha,          //!< Single color component: Alpha.
@@ -147,9 +145,7 @@ namespace Wanlix
         BC5,            //!< Block compression BC5.
     };
 
-    // Data types enumeration used for CPU side operations.
-    // The counterpart of this enumeration for GPU side operations is Wanlix::Format.
-    enum class DataType
+    enum class DataType /* on CPU side */
     {
         Undefined,  //!< Undefined data type.
 
@@ -192,11 +188,11 @@ namespace Wanlix
 
     struct FormatAttributes
     {
-        std::uint16_t bitSize;
-        std::uint8_t blockWidth;
-        std::uint8_t blockHeight;
-        std::uint8_t components;
-        ImageFormat format;
+        uint16_t bitSize;
+        uint8_t blockWidth;
+        uint8_t blockHeight;
+        uint8_t components;
+        ColorFormat format;
         DataType dataType;
         long flags;
     };
@@ -204,8 +200,13 @@ namespace Wanlix
 
     /* ----- Functions ----- */
 
+    int  DataTypeSize(const DataType& dataType);
+    bool IsIntDataType(const DataType& dataType);
+    bool IsUIntDataType(const DataType& dataType);
+    bool IsFloatDataType(const DataType& dataType);
 
-    const FormatAttributes& GetFormatAttributes(const Format& format);
+    /* on GPU side */
+    const FormatAttributes& GetFormatAttribs(const Format& format);
     bool IsCompressedFormat(const Format& format);
     bool IsDepthStencilFormat(const Format& format);
     bool IsDepthFormat(const Format& format);
@@ -214,8 +215,8 @@ namespace Wanlix
     bool IsIntegralFormat(const Format& format);
     bool IsFloatFormat(const Format& format);
 
-    uint32_t DataTypeSize(const DataType& dataType);
-    bool     IsIntDataType(const DataType& dataType);
-    bool     IsUIntDataType(const DataType& dataType);
-    bool     IsFloatDataType(const DataType& dataType);
+    /* on CPU side*/
+    int  ColorFormatSize(const ColorFormat& colorType);
+    bool IsCompressedFormat(const ColorFormat& colorType);
+    bool IsDepthStencilFormat(const ColorFormat& colorType);
 }

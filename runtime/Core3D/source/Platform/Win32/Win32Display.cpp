@@ -137,9 +137,9 @@ namespace Wanlix
 
     static void Convert(DisplayModeDescriptor& dst, const DEVMODE& src)
     {
-        dst.resolution.width = static_cast<std::uint32_t>(src.dmPelsWidth);
-        dst.resolution.height = static_cast<std::uint32_t>(src.dmPelsHeight);
-        dst.refreshRate = static_cast<std::uint32_t>(src.dmDisplayFrequency);
+        dst.resolution.width = static_cast<uint32_t>(src.dmPelsWidth);
+        dst.resolution.height = static_cast<uint32_t>(src.dmPelsHeight);
+        dst.refreshRate = static_cast<uint32_t>(src.dmDisplayFrequency);
     }
 
     DisplayModeDescriptor Win32Display::GetDisplayMode() const

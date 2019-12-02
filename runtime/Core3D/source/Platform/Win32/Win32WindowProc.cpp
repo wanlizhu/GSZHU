@@ -24,9 +24,9 @@ namespace Wanlix
     )
     {
         if (isDown)
-            window.OnKeyDown(window, keyCode);
+            window.PostEvent(Event::KeyDown, keyCode);
         else
-            window.OnKeyUp(window, keyCode);
+            window.PostEvent(Event::KeyUp, keyCode);
     }
 
     static void PostKeyEvent(
@@ -96,26 +96,23 @@ namespace Wanlix
         if (auto window = GetWindowFromUserData(wnd))
         {
             // Post key events and capture mouse 
-            window->OnKeyDown(*window, keyCode);
+            window->PostEvent(Event::KeyDown, keyCode);
 
             if (doubleClick)
-                window->OnDoubleClick(*window, keyCode);
+                window->PostEvent(Event::DoubleClick, keyCode);
 
             if (++g_mouseCaptureCounter == 1)
                 SetCapture(wnd);
         }
     }
 
-    static void ReleaseMouseButton(
-        HWND wnd,
-        Key keyCode
-    )
+    static void ReleaseMouseButton(HWND wnd, Key keyCode)
     {
         // Get window object from window handle 
         if (auto window = GetWindowFromUserData(wnd))
         {
             // Post key event and release mouse capture 
-            window->OnKeyUp(*window, keyCode);
+            window->PostEvent(Event::KeyUp, keyCode);
 
             if (--g_mouseCaptureCounter == 0)
                 ReleaseCapture();
@@ -128,10 +125,7 @@ namespace Wanlix
         }
     }
 
-    static void PostLocalMouseMotion(
-        HWND wnd,
-        LPARAM lParam
-    )
+    static void PostLocalMouseMotion(HWND wnd, LPARAM lParam)
     {
         // Get window object from window handle 
         if (auto window = GetWindowFromUserData(wnd))
@@ -141,7 +135,36 @@ namespace Wanlix
             int y = GET_Y_LPARAM(lParam);
 
             // Post local mouse motion event 
-            window->OnMouseMotion(*window, Offset(x, y));
+            window->PostEvent(Event::LocalMotion, Offset(x, y));
+        }
+    }
+
+    static void PostGlobalMouseMotion(HWND wnd, LPARAM lParam)
+    {
+        /* Get window object from window handle */
+        if (auto window = GetWindowFromUserData(wnd))
+        {
+            RAWINPUT raw;
+            UINT rawSize = sizeof(raw);
+
+            GetRawInputData(
+                reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT,
+                &raw, &rawSize, sizeof(RAWINPUTHEADER)
+            );
+
+            if (raw.header.dwType == RIM_TYPEMOUSE)
+            {
+                const auto& mouse = raw.data.mouse;
+
+                if (mouse.usFlags == MOUSE_MOVE_RELATIVE)
+                {
+                    /* Post global mouse motion event */
+                    int dx = mouse.lLastX;
+                    int dy = mouse.lLastY;
+
+                    window->PostEvent(Event::GlobalMotion, dx, dy);
+                }
+            }
         }
     }
 
@@ -177,8 +200,7 @@ namespace Wanlix
             {
                 WORD width = LOWORD(lParam);
                 WORD height = HIWORD(lParam);
-                window->OnResize(*window, 
-                                 Extent(width,height));
+                window->PostEvent(Event::Resize, width, height);
             }
         }
         break;
@@ -187,7 +209,7 @@ namespace Wanlix
         {
             // Post close event to window 
             if (auto window = GetWindowFromUserData(wnd)) {
-                window->Quit();
+                window->PostEvent(Event::Quit);
             }
                
         }
@@ -257,7 +279,7 @@ namespace Wanlix
         case WM_CHAR:
         {
             if (auto window = GetWindowFromUserData(wnd))
-                window->OnChar(*window, static_cast<wchar_t>(wParam));
+                window->PostEvent(Event::Char, static_cast<wchar_t>(wParam));
         }
         return 0;
 
@@ -326,7 +348,8 @@ namespace Wanlix
         case WM_MOUSEWHEEL:
         {
             if (auto window = GetWindowFromUserData(wnd))
-                window->OnWheelMotion(*window, GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
+                window->PostEvent(Event::WheelMotion,
+                                  GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
         }
         return 0;
 
@@ -338,6 +361,7 @@ namespace Wanlix
 
         case WM_INPUT:
         {
+            PostGlobalMouseMotion(wnd, lParam);
         }
         return 0;
 
@@ -379,7 +403,7 @@ namespace Wanlix
             {
                 auto timerId = static_cast<uint32_t>(wParam);
                 if (timerId == window->GetMoveAndResizeTimerId()) {
-                    window->OnDraw(*window);
+                    window->PostEvent(Event::Redraw);
                 }
             }
         };

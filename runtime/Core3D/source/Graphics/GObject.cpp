@@ -5,9 +5,12 @@ namespace Wanlix
 {
     std::unordered_map<String, GObject*> GObject::mObjects;
 
-    GObject::GObject(StringCRef name)
+    GObject::GObject(
+        StringCRef name,
+        std::shared_ptr<Device> device
+    )
         : mName(name)
-        , mHandle(nullptr)
+        , mDevice(device)
     {
         if (mObjects.find(name) != mObjects.end()) {
             throw UniqueNameExists(FUNCTION_AND_LINE);
@@ -40,10 +43,5 @@ namespace Wanlix
     StringCRef GObject::GetName() const
     {
         return mName;
-    }
-
-    GObject::Handle GObject::GetHandle() const
-    {
-        return mHandle;
     }
 }

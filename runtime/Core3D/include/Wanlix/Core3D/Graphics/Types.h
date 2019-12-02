@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Wanlix/Core3D/Types.h"
+#include "Config.h"
 #include "Color.h"
 #include "Flags.h"
 #include "Format.h"
@@ -71,5 +72,36 @@ namespace Wanlix
         uint32_t rowStride = 0; // Bytes per row
         uint32_t layerStride = 0; // Bytes per layer
         uint32_t dataSize = 0; // Bytes per resource
+    };
+
+    struct Viewport
+    {
+        float x = 0.0f;
+        float y = 0.0f;
+        float width = 0.0f;
+        float height = 0.0f;
+        float minDepth = 0.0f;
+        float maxDepth = 1.0f;
+    };
+
+    struct Scissor
+    {
+        int32_t x = 0; 
+        int32_t y = 0; 
+        int32_t width = 0; 
+        int32_t height = 0;
+    };
+
+    struct VertexAttribute
+    {
+        std::string name; 
+        Format      format = Format::RGBA32Float;
+        uint32_t    location = 0; 
+        uint32_t    semanticIndex = 0;
+        SystemValue systemValue = SystemValue::Undefined;
+        uint32_t    slot = 0;
+        uint32_t    offset = 0;
+        uint32_t    stride = 0;
+        uint32_t    instanceDivisor = 0;
     };
 }

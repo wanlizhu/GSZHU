@@ -4,7 +4,7 @@
 namespace Wanlix
 {
     // Computes the greatest common divisor (GCD) for the two parameters
-    static std::uint32_t ComputeGCD(std::uint32_t a, std::uint32_t b)
+    static uint32_t ComputeGCD(uint32_t a, uint32_t b)
     {
         while (b != 0)
         {

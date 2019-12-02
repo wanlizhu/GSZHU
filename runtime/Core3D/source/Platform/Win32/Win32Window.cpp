@@ -91,7 +91,7 @@ namespace Wanlix
         return appearance;
     }
 
-    Window::UniquePtr Window::Create(const WindowDescriptor& desc)
+    Window::UniquePtr Window::Create(const Window::Desc& desc)
     {
         return Win32Window::Create(desc);
     }
@@ -101,7 +101,7 @@ namespace Wanlix
         return Win32Window::Attach((HWND)handle);
     }
 
-    Win32Window::UniquePtr Win32Window::Create(const WindowDescriptor& desc)
+    Win32Window::UniquePtr Win32Window::Create(const Window::Desc& desc)
     {
         return std::unique_ptr<Win32Window>(new Win32Window(desc));
     }
@@ -111,7 +111,7 @@ namespace Wanlix
         return std::unique_ptr<Win32Window>(new Win32Window(handle));
     }
 
-    Win32Window::Win32Window(const WindowDescriptor& desc)
+    Win32Window::Win32Window(const Window::Desc& desc)
         : Window()
         , mHwnd(CreateWindowHandle(desc))
     {}
@@ -233,7 +233,6 @@ namespace Wanlix
     void Win32Window::Quit()
     {
         mQuitFlag = true;
-        OnQuit(*this);
     }
 
     bool Win32Window::IsVisible() const
@@ -265,7 +264,7 @@ namespace Wanlix
         return desc;
     }
 
-    void Win32Window::SetDescriptor(const WindowDescriptor& desc)
+    void Win32Window::SetDescriptor(const Window::Desc& desc)
     {
         // Get current window flags
         auto windowFlags = GetWindowLong(mHwnd, GWL_STYLE);
@@ -351,7 +350,7 @@ namespace Wanlix
         }
     }
 
-    HWND Win32Window::CreateWindowHandle(WindowDescriptor desc)
+    HWND Win32Window::CreateWindowHandle(Window::Desc desc)
     {
         auto windowClass = Win32WindowClass::Instance();
 

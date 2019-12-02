@@ -6,6 +6,8 @@
 
 namespace Wanlix
 {
+    class Device;
+
     class GObject : public NonCopyable
     {
     public:
@@ -19,14 +21,16 @@ namespace Wanlix
 
         void       SetName(StringCRef name);
         StringCRef GetName() const;
-        Handle     GetHandle() const;
 
     protected:
-        GObject(StringCRef name);
+        GObject(
+            StringCRef name,
+            std::shared_ptr<Device> device
+        ) noexcept;
 
     protected:
         String mName;
-        Handle mHandle = nullptr;
+        std::shared_ptr<Device> mDevice;
 
     private:
         static std::unordered_map<String, GObject*> mObjects;

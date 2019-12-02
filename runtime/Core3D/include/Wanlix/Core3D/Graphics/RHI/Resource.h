@@ -16,6 +16,9 @@ namespace Wanlix
         virtual const Desc&         GetDescriptor() const = 0;
 
     protected:
-        Resource(StringCRef name) noexcept;
+        Resource(
+            StringCRef name,
+            std::shared_ptr<Device> device
+        ) noexcept;
     };
 }

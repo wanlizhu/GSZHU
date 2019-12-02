@@ -4,7 +4,7 @@ namespace Wanlix
 {
     Image::Image(
         const Extent&      extent,
-        const ImageFormat& format,
+        const ColorFormat& format,
         const DataType&    dataType,
         ByteBuffer&&       data,
         const Color4F&     fillColor

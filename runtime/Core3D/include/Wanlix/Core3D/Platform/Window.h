@@ -5,6 +5,7 @@
 #include "Wanlix/Core3D/Utility/Signal.h"
 #include "Display.h"
 #include "MapKey.h"
+#include "EventListener.h"
 
 namespace Wanlix
 {
@@ -27,8 +28,10 @@ namespace Wanlix
         using Ptr       = std::shared_ptr<Window>;
         using ConstPtr  = std::shared_ptr<const Window>;
         using UniquePtr = std::unique_ptr<Window>;
+        using Listener  = EventListener<SurfaceType::DesktopWindow>::Ptr;
+        using Desc      = WindowDescriptor;
 
-        static UniquePtr Create(const WindowDescriptor& desc);
+        static UniquePtr Create(const Desc& desc);
         static UniquePtr Attach(void* handle);
 
         virtual void SetPosition(const Offset& pos) = 0;
@@ -37,29 +40,21 @@ namespace Wanlix
         virtual void Show() = 0;
         virtual void Hide() = 0;
         virtual void Quit() = 0;
-        virtual void SetDescriptor(const WindowDescriptor& desc) = 0;
+        virtual void SetDescriptor(const Desc& desc) = 0;
 
-        virtual Offset           GetPosition() const = 0;
-        virtual Extent           GetSize(bool clientArea) const = 0;
-        virtual std::wstring     GetTitle() const = 0;
-        virtual WindowDescriptor GetDescriptor() const = 0;
-        virtual bool IsVisible() const = 0;
+        virtual Offset  GetPosition() const = 0;
+        virtual Extent  GetSize(bool clientArea) const = 0;
+        virtual WString GetTitle() const = 0;
+        virtual Desc    GetDescriptor() const = 0;
+        virtual bool    IsVisible() const = 0;
 
         bool Tick();
         SurfaceType GetSurfaceType() const override final;
         bool AdaptForVideoMode(const VideoModeDescriptor& videoModeDesc) override final;
         Display::UniquePtr GetResidentDisplay() const;
-
-    public:
-        Signal<void(Window&)>                OnDraw;
-        Signal<void(Window&)>                OnQuit;
-        Signal<void(Window&, Key)>           OnKeyDown;
-        Signal<void(Window&, Key)>           OnKeyUp;
-        Signal<void(Window&, Key)>           OnDoubleClick;
-        Signal<void(Window&, wchar_t)>       OnChar;
-        Signal<void(Window&, int)>           OnWheelMotion;
-        Signal<void(Window&, const Offset&)> OnMouseMotion;
-        Signal<void(Window&, const Extent&)> OnResize;
+        void AddEventListener(Listener listener);
+        void RemoveEventListener(Listener listener);
+        void PostEvent(Event event, std::any arg1 = 0, std::any arg2 = 0);
         
     protected:
         Window();
@@ -68,5 +63,8 @@ namespace Wanlix
     protected:
         bool mAttached = false;
         bool mQuitFlag = false;
+
+    private:
+        std::vector<Listener> mEventListeners;
     };
 }

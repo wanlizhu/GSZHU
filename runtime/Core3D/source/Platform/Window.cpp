@@ -84,4 +84,60 @@ namespace Wanlix
 
         return nullptr;
     }
+
+    void Window::AddEventListener(Listener listener)
+    {
+        mEventListeners.push_back(listener);
+    }
+
+    void Window::RemoveEventListener(Listener listener)
+    {
+        auto it = std::find(mEventListeners.begin(), mEventListeners.end(), listener);
+        if (it != mEventListeners.end()) {
+            mEventListeners.erase(it);
+        }
+    }
+
+    void Window::PostEvent(Event event, std::any arg1, std::any arg2)
+    {
+        for (auto& listener : mEventListeners) {
+            switch (event) {
+            case Event::Redraw:
+                listener->OnRedraw(*this);
+                break;
+            case Event::Quit:
+                listener->OnQuit(*this);
+                break;
+            case Event::KeyDown:
+                listener->OnKeyDown(*this, std::any_cast<Key>(arg1));
+                break;
+            case Event::KeyUp:
+                listener->OnKeyUp(*this, std::any_cast<Key>(arg1));
+                break;
+            case Event::DoubleClick:
+                listener->OnDoubleClick(*this, std::any_cast<Key>(arg1));
+                break;
+            case Event::Char:
+                listener->OnChar(*this, std::any_cast<wchar_t>(arg1));
+                break;
+            case Event::WheelMotion:
+                listener->OnWheelMotion(*this, std::any_cast<int>(arg1));
+                break;
+            case Event::LocalMotion:
+                Offset offset(std::any_cast<uint32_t>(arg1), std::any_cast<uint32_t>(arg2));
+                listener->OnLocalMotion(*this, offset);
+                break;
+            case Event::GlobalMotion:
+                Offset offset(std::any_cast<uint32_t>(arg1), std::any_cast<uint32_t>(arg2));
+                listener->OnGlobalMotion(*this, offset);
+                break;
+            case Event::Resize:
+                Extent extent(std::any_cast<uint32_t>(arg1), std::any_cast<uint32_t>(arg2));
+                listener->OnResize(*this, extent);
+                break;
+            default:
+                break;
+            }
+        }
+    }
 }

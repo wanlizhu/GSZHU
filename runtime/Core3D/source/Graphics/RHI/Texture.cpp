@@ -8,6 +8,11 @@ namespace Wanlix
         : Resource(name)
     {}
 
+    Region Texture::GetRegion() const
+    {
+        return Region(Offset(), GetDescriptor().extent);
+    }
+
     Offset ComputeTextureOffset(const TextureType type, const Offset& offset, uint32_t baseArrayLayer)
     {
         switch (type)
@@ -62,7 +67,7 @@ namespace Wanlix
 
     SubresourceLayout ComputeSubresourceLayout(const Format format, const Extent& extent)
     {
-        const auto& formatDesc = GetFormatAttributes(format);
+        const auto& formatDesc = GetFormatAttribs(format);
         SubresourceLayout layout;
         layout.rowStride = (extent.width * formatDesc.bitSize) / formatDesc.blockWidth / 8;
         layout.layerStride = (extent.height * layout.rowStride) / formatDesc.blockHeight;
@@ -82,10 +87,10 @@ namespace Wanlix
         return std::clamp(samples, 1u, WANLIX_MAX_NUM_SAMPLES);
     }
 
-    uint32_t NumMipLevels(uint32_t width, uint32_t height, uint32_t depth)
+    uint32_t NumMipLevels(uint32_t width, uint32_t height = 1, uint32_t depth = 1)
     {
         const auto maxSize = std::max({ width, height, depth });
-        const auto log2Size = static_cast<std::uint32_t>(std::log2(maxSize));
+        const auto log2Size = static_cast<uint32_t>(std::log2(maxSize));
         return (1u + log2Size);
     }
 
@@ -109,7 +114,7 @@ namespace Wanlix
     uint32_t NumMipLevels(const TextureDescriptor& desc)
     {
         if (desc.mipLevels == 0)
-            return NumMipLevels(desc.type, desc.extent);
+            return NumMipLevels(desc.textureType, desc.extent);
         else
             return desc.mipLevels;
     }
@@ -148,7 +153,7 @@ namespace Wanlix
         return 0;
     }
     // Returns the 1D extent for the specified MIP-map
-    static std::uint32_t MipExtent(std::uint32_t extent, std::uint32_t mipLevel)
+    static uint32_t MipExtent(uint32_t extent, uint32_t mipLevel)
     {
         return std::max(1u, extent >> mipLevel);
     }
@@ -181,10 +186,10 @@ namespace Wanlix
 
     uint32_t NumMipTexels(const TextureType type, const Extent& extent, const TextureSubresource& subresource)
     {
-        std::uint32_t numTexels = 0;
+        uint32_t numTexels = 0;
 
         const auto subresourceExtent = ComputeTextureExtent(type, extent, subresource.numArrayLayers);
-        for (std::uint32_t mipLevel = 0; mipLevel < subresource.numMipLevels; ++mipLevel)
+        for (uint32_t mipLevel = 0; mipLevel < subresource.numMipLevels; ++mipLevel)
             numTexels += NumMipTexels(type, subresourceExtent, subresource.baseMipLevel + mipLevel);
 
         return numTexels;
@@ -192,25 +197,25 @@ namespace Wanlix
 
     uint32_t NumMipTexels(const TextureDescriptor& textureDesc, uint32_t mipLevel)
     {
-        const auto extent = ComputeTextureExtent(textureDesc.type, textureDesc.extent, textureDesc.arrayLayers);
+        const auto extent = ComputeTextureExtent(textureDesc.textureType, textureDesc.extent, textureDesc.arrayLayers);
 
         if (mipLevel == ~0u)
         {
-            std::uint32_t numTexels = 0;
+            uint32_t numTexels = 0;
 
             const auto numMipLevels = NumMipLevels(textureDesc);
             for (mipLevel = 0; mipLevel < numMipLevels; ++mipLevel)
-                numTexels += NumMipTexels(textureDesc.type, extent, mipLevel);
+                numTexels += NumMipTexels(textureDesc.textureType, extent, mipLevel);
 
             return numTexels;
         }
 
-        return NumMipTexels(textureDesc.type, extent, mipLevel);
+        return NumMipTexels(textureDesc.textureType, extent, mipLevel);
     }
 
     uint32_t TextureBufferSize(const Format format, uint32_t numTexels)
     {
-        const auto& formatDesc = GetFormatAttributes(format);
+        const auto& formatDesc = GetFormatAttribs(format);
         const auto blockSize = formatDesc.blockWidth * formatDesc.blockHeight;
         if (blockSize > 0 && numTexels % blockSize == 0)
             return ((numTexels / blockSize * formatDesc.bitSize) / 8);
@@ -220,7 +225,7 @@ namespace Wanlix
 
     bool IsMipMappedTexture(const TextureDescriptor& desc)
     {
-        return (!IsMultiSampleTexture(desc.type) && (desc.mipLevels == 0 || desc.mipLevels > 1));
+        return (!IsMultiSampleTexture(desc.textureType) && (desc.mipLevels == 0 || desc.mipLevels > 1));
     }
 
     bool IsArrayTexture(const TextureType type)
