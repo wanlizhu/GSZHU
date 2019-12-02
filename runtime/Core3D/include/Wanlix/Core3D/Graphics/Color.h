@@ -12,8 +12,12 @@
 namespace Wanlix
 {
     template<typename T, typename U>
-    T ColorConv(const U& x)
+    T ColorChannelConv(const U& x)
     {
+        if (x < 0) {
+            return T(-1);
+        }
+
         if constexpr (std::is_integral_v<T>) {
             if constexpr (std::is_floating_point_v<U>) {
                 return (T)(255.0 * x);
@@ -35,6 +39,25 @@ namespace Wanlix
         }
     }
 
+    struct ColorData
+    {
+        std::shared_ptr<char[]> data;
+        ColorFormat format;
+        DataType dataType;
+
+        ColorData(
+            const ColorFormat& format,
+            const DataType& dataType
+        )
+            : data(std::shared_ptr<char[]>(new char[ColorFormatSize(format) * DataTypeSize(dataType)]))
+            , format(format)
+            , dataType(dataType)
+        {}
+
+        const char& operator[](int i) const { return (data.get())[i]; }
+        char&       operator[](int i)       { return (data.get())[i]; }
+    };
+
     template<typename T, int N>
     class Color
     {
@@ -43,6 +66,7 @@ namespace Wanlix
         static const int kComponents = N;
         static const int kBytes      = (N * sizeof(T));
 
+        static Color Null()  { return Color4B(-1, -1, -1, -1); }
         static Color White() { return Color4B(1, 1, 1, 1); }
         static Color Red()   { return Color4B(1, 0, 0, 1); }
         static Color Green() { return Color4B(0, 1, 0, 1); }
@@ -76,14 +100,35 @@ namespace Wanlix
         Color(const Color<U, M>& color) noexcept {
             static const kMinN = (N <= M ? N : M);
             for (int i = 0; i < kMinN; i++) {
-                mData[i] = ColorConv<T, U>(color[i]);
+                mData[i] = ColorChannelConv<T, U>(color[i]);
             }
         }
 
-        inline T&       operator[](int i)       { return mData[i]; }
-        inline const T& operator[](int i) const { return mData[i]; }
-        inline T*       GetData()               { return mData; }
-        inline const T* GetData() const         { return mData; }
+        T&       operator[](int i)       { return mData[i]; }
+        const T& operator[](int i) const { return mData[i]; }
+
+        bool IsNull() const noexcept
+        { 
+            for (int i = 0; i < N; i++) {
+                if (mData[i] < 0)
+                    return true;
+            }
+            return false;
+        }
+
+        ColorData Convert(
+            const ColorFormat& format,
+            const DataType& dataType
+        ) const noexcept
+        {
+            ColorData data(format, dataType);
+            const size_t elementSize = DataTypeSize(dataType);
+            for (int i = 0; i < ColorFormatSize(format); i++) {
+                char* dst = &data[i * DataTypeSize(dataType)];
+                std::memcpy(dst, );
+            }
+            return data;
+        }
 
         DEFINE_VEC_NUMERIC_OPS(Color, N, mData)
 
@@ -101,4 +146,5 @@ namespace Wanlix
     using Color4B = ColorRGBA<char>;
     using Color3F = ColorRGB<float>;
     using Color3B = ColorRGB<char>;
+
 }

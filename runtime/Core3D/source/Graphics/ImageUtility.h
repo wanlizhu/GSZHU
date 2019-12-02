@@ -4,6 +4,7 @@
 
 namespace Wanlix
 {
+    ByteBuffer GenerateByteBuffer(size_t size, bool init = true);
     ByteBuffer GenerateImageBuffer(
         const Extent& extent,
         const ColorFormat& format,

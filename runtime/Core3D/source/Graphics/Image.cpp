@@ -16,9 +16,25 @@ namespace Wanlix
         , mData(std::move(data))
     {
         if (!mData) {
-            mData = std::move(GenerateImageBuffer(extent, format, dataType, fillColor));
+            if (fillColor.IsNull()) {
+                mData = GenerateByteBuffer(GetDataSize(), true);
+            }
+            else {
+                mData = GenerateImageBuffer(extent,
+                                            format,
+                                            dataType,
+                                            fillColor);
+            }
         }
     }
 
+    Image::Image(const Image& rhs) noexcept
+    {
 
+    }
+
+    Image::Image(Image&& rhs) noexcept
+    {
+
+    }
 }

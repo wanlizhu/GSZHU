@@ -76,7 +76,7 @@ namespace Wanlix
         DestDesc   GetDescriptor();
         uint32_t   GetBytesPerPixel() const;
         uint32_t   GetBytesPerRow() const;
-        uint32_t   GetDataBytes() const;
+        uint32_t   GetDataSize() const;
         uint32_t   GetNumPixels() const;
         bool       IsRegionInside(const Region& region) const;
 
