@@ -134,7 +134,7 @@ namespace Wanlix
         Extent extent;
 
         static Region Null() {
-            return Region(Offset::Null(), Extent::Null());
+            return Region(Offset::Origin(), Extent::Null());
         }
 
         Region() = default;

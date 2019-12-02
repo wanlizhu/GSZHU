@@ -123,18 +123,21 @@ namespace Wanlix
             case Event::WheelMotion:
                 listener->OnWheelMotion(*this, std::any_cast<int>(arg1));
                 break;
-            case Event::LocalMotion:
+            case Event::LocalMotion: {
                 Offset offset(std::any_cast<uint32_t>(arg1), std::any_cast<uint32_t>(arg2));
                 listener->OnLocalMotion(*this, offset);
                 break;
-            case Event::GlobalMotion:
+            }
+            case Event::GlobalMotion: {
                 Offset offset(std::any_cast<uint32_t>(arg1), std::any_cast<uint32_t>(arg2));
                 listener->OnGlobalMotion(*this, offset);
                 break;
-            case Event::Resize:
+            }
+            case Event::Resize: {
                 Extent extent(std::any_cast<uint32_t>(arg1), std::any_cast<uint32_t>(arg2));
                 listener->OnResize(*this, extent);
                 break;
+            }
             default:
                 break;
             }

@@ -2,6 +2,7 @@
 
 #include "Wanlix/Core3D/Graphics/Types.h"
 #include "Resource.h"
+#include "TextureDescriptor.h"
 
 namespace Wanlix
 {
@@ -13,17 +14,17 @@ namespace Wanlix
         using Desc     = TextureDescriptor;
 
         virtual const Desc& GetDescriptor() const = 0;
-        virtual Extent GetMipExtent(int mipLevel) const = 0;
+        virtual Extent      GetMipExtent(int mipLevel) const = 0;
 
         TextureType GetType() const;
-        Region GetRegion() const;
+        Region      GetRegion() const;
         
     protected:
         Texture(
             StringCRef name,
             std::shared_ptr<Device> device, 
             TextureType type
-        ) noexcept;
+        );
 
     protected:
         TextureType mTextureType;

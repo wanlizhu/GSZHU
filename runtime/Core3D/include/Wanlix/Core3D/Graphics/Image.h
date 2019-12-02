@@ -1,17 +1,40 @@
 #pragma once
 
-#include "Wanlix/Core3D/Graphics/Types.h"
-#include "Wanlix/Core3D/Graphics/Descriptors.h"
+#include "Types.h"
 
 namespace Wanlix
 {
+    struct DestImageDescriptor
+    {
+        ColorFormat colorFormat = ColorFormat::RGBA;
+        DataType    dataType = DataType::UInt8;
+        size_t      dataSize = 0;
+        void* data = nullptr;
+    };
+
+    struct SourceImageDescriptor
+    {
+        ColorFormat colorFormat = ColorFormat::RGBA;
+        DataType    dataType = DataType::UInt8;
+        size_t      dataSize = 0;
+        const void* data = nullptr;
+
+        SourceImageDescriptor() = default;
+        SourceImageDescriptor(const DestImageDescriptor& rhs)
+            : colorFormat(rhs.colorFormat)
+            , dataType(rhs.dataType)
+            , dataSize(rhs.dataSize)
+            , data(rhs.data)
+        {}
+    };
+
     class Image
     {
     public:
         using Ptr       = std::shared_ptr<Image>;
         using ConstPtr  = std::shared_ptr<const Image>;
-        using ReadDesc  = ImageReadDescriptor;
-        using WriteDesc = ImageWriteDescriptor;
+        using SourceDesc  = SourceImageDescriptor;
+        using DestDesc = DestImageDescriptor;
 
         Image() noexcept = default;
         explicit Image(
@@ -19,7 +42,7 @@ namespace Wanlix
             const ColorFormat& format = ColorFormat::RGBA,
             const DataType&    dataType = DataType::UInt8,
             ByteBuffer&&       data = nullptr,
-            const Color4F&     fillColor = Color4F::Null()
+            const Color4F&     fillColor = Color4F::Black()
         ) noexcept;
         Image(const Image& rhs) noexcept;
         Image(Image&& rhs) noexcept;
@@ -31,7 +54,7 @@ namespace Wanlix
         /* ----- Storage ----- */
 
         void Convert(const ColorFormat& format, const DataType& dataType, int threads = 0);
-        void Resize(const Extent& extent, const SamplerFilter& filter);
+        //void Resize(const Extent& extent, const SamplerFilter& filter);
         void Resize(const Extent& extent, const Color4F& fillColor);
         void Swap(Image& rhs);
         void Reset();
@@ -40,8 +63,8 @@ namespace Wanlix
         /* ----- Pixels ----- */
 
         void CopyTo(const Image& dstImage, const Region& dstRegion);
-        void ReadPixels(const Region& region, const WriteDesc& dstImageDesc) const;
-        void WritePixels(const Region& region, const ReadDesc& srcImageDesc);
+        void ReadPixels(const Region& region, const DestDesc& dstImageDesc) const;
+        void WritePixels(const Region& region, const SourceDesc& srcImageDesc);
         void Fill(const Region& region, const Color4F& fillColor);
         void MirrorYZ();
         void MirrorXZ();
@@ -49,13 +72,13 @@ namespace Wanlix
 
         /* ----- Attributes ----- */
 
-        ReadDesc  GetReadDescriptor() const;
-        WriteDesc GetWriteDescriptor();
-        uint32_t  GetBytesPerPixel() const;
-        uint32_t  GetBytesPerRow() const;
-        uint32_t  GetDataBytes() const;
-        uint32_t  GetNumPixels() const;
-        bool      IsRegionInside(const Region& region) const;
+        SourceDesc GetDescriptor() const;
+        DestDesc   GetDescriptor();
+        uint32_t   GetBytesPerPixel() const;
+        uint32_t   GetBytesPerRow() const;
+        uint32_t   GetDataBytes() const;
+        uint32_t   GetNumPixels() const;
+        bool       IsRegionInside(const Region& region) const;
 
         Region             GetRegion() const    { return Region(Offset(0, 0, 0), mExtent); }
         const Extent&      GetExtent() const    { return mExtent; }

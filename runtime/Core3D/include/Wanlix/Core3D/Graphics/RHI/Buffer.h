@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Resource.h"
+#include "BufferDescriptor.h"
 
 namespace Wanlix
 {
@@ -24,7 +25,7 @@ namespace Wanlix
             StringCRef name, 
             std::shared_ptr<Device> device,
             long bindFlags
-        ) noexcept;
+        );
 
     protected:
         long mBindFlags = 0;

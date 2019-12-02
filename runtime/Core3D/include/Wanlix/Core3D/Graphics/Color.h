@@ -43,9 +43,11 @@ namespace Wanlix
         static const int kComponents = N;
         static const int kBytes      = (N * sizeof(T));
 
-        static Color Null() {
-            return Color(-1);
-        }
+        static Color White() { return Color4B(1, 1, 1, 1); }
+        static Color Red()   { return Color4B(1, 0, 0, 1); }
+        static Color Green() { return Color4B(0, 1, 0, 1); }
+        static Color Blue()  { return Color4B(0, 0, 1, 1); }
+        static Color Black() { return Color4B(0, 0, 0, 1); }
 
         Color() noexcept = default;
 
@@ -82,12 +84,6 @@ namespace Wanlix
         inline const T& operator[](int i) const { return mData[i]; }
         inline T*       GetData()               { return mData; }
         inline const T* GetData() const         { return mData; }
-        inline bool     IsNull() const { 
-            return std::any_of(&mData[0], &mData[0] + N,
-                               [](T val) { 
-                                   return val < 0;
-                               }); 
-        }
 
         DEFINE_VEC_NUMERIC_OPS(Color, N, mData)
 

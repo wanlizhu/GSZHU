@@ -2,7 +2,7 @@
 
 #include "Wanlix/Core3D/Utility/NonCopyable.h"
 #include "Wanlix/Core3D/Graphics/Types.h"
-#include "Wanlix/Core3D/Graphics/Descriptors.h"
+#include "DeviceDescriptor.h"
 
 namespace Wanlix
 {

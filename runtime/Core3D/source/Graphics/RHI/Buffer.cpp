@@ -2,17 +2,22 @@
 
 namespace Wanlix
 {
-    Range Buffer::GetRange() const
-    {
-        return Range(0, GetDescriptor().size);
-    }
-
     Buffer::Buffer(
         StringCRef name,
         std::shared_ptr<Device> device,
         long bindFlags
-    ) noexcept
+    )
         : Resource(name, device)
         , mBindFlags(bindFlags)
     {}
+
+    size_t Buffer::GetSize() const
+    {
+        return GetDescriptor().size;
+    }
+
+    Range Buffer::GetRange() const
+    {
+        return Range(0, GetDescriptor().size);
+    }
 }

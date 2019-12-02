@@ -2,7 +2,6 @@
 
 #include "Wanlix/Core3D/Utility/NonCopyable.h"
 #include "Types.h"
-#include "Flags.h"
 
 namespace Wanlix
 {
@@ -26,7 +25,7 @@ namespace Wanlix
         GObject(
             StringCRef name,
             std::shared_ptr<Device> device
-        ) noexcept;
+        );
 
     protected:
         String mName;
