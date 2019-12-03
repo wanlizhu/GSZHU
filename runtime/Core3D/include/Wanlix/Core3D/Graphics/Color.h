@@ -12,26 +12,27 @@
 namespace Wanlix
 {
     template<typename T, typename U>
-    T ColorChannelConv(const U& x)
+    void ConvColorChannel(T* dst, const U& x)
     {
         if (x < 0) {
-            return T(-1);
+            *dst = T(-1);
+            return;
         }
 
         if constexpr (std::is_integral_v<T>) {
             if constexpr (std::is_floating_point_v<U>) {
-                return (T)(255.0 * x);
+                *dst = (T)(255.0 * x);
             }
             else {
-                return x;
+                *dst = (T)x;
             }
         }
         else if constexpr (std::is_floating_point_v<T>) {
             if constexpr (std::is_integral_v<U>) {
-                return (T)(x / 255.0);
+                *dst = (T)(x / 255.0);
             }
             else {
-                return x;
+                *dst = (T)x;
             }
         }
         else {
@@ -62,10 +63,6 @@ namespace Wanlix
     class Color
     {
     public:
-        using Element = T;
-        static const int kComponents = N;
-        static const int kBytes      = (N * sizeof(T));
-
         static Color Null()  { return Color4B(-1, -1, -1, -1); }
         static Color White() { return Color4B(1, 1, 1, 1); }
         static Color Red()   { return Color4B(1, 0, 0, 1); }
@@ -76,31 +73,33 @@ namespace Wanlix
         Color() noexcept = default;
 
         explicit Color(const T& scalar) noexcept {
-            std::fill(std::begin(mData), std::end(mData), scalar);
+            for (int i = 0; i < N; i++) {
+                mData[i] = scalar;
+            }
         }
 
         template<typename U>
         Color(const std::initializer_list<U>& init) noexcept {
-            int i = 0;
-            for (auto& val : init) {
-                if (i < N) {
-                    mData[i++] = static_cast<T>(val);
-                }
+            assert(init.size() >= N);
+            auto it = init.begin();
+            for (int i = 0; i < N; i++, it++) {
+                mData[i] = static_cast<T>(*it);
             }
         }
 
-        Color(T r, T g, T b, T a) noexcept {
-            if (N >= 1) mData[0] = r;
-            if (N >= 2) mData[1] = g;
-            if (N >= 3) mData[2] = b;
-            if (N >= 4) mData[3] = a;
+        template<typename U>
+        Color(U r, U g, U b, U a = 1) noexcept {
+            if (N >= 1) mData[0] = static_cast<T>(r);
+            if (N >= 2) mData[1] = static_cast<T>(g);
+            if (N >= 3) mData[2] = static_cast<T>(b);
+            if (N >= 4) mData[3] = static_cast<T>(a);
         }
 
         template<typename U, int M>
         Color(const Color<U, M>& color) noexcept {
             static const kMinN = (N <= M ? N : M);
             for (int i = 0; i < kMinN; i++) {
-                mData[i] = ColorChannelConv<T, U>(color[i]);
+                ConvColorChannel<T, U>(&mData[i], color[i]);
             }
         }
 
