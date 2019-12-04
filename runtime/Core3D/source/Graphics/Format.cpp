@@ -1,4 +1,4 @@
-#include "Wanlix/Core3D/Graphics/Format.h"
+#include "Wanlix/Core3D/Graphics/PixelFormat.h"
 #include <tuple>
 
 namespace Wanlix
@@ -156,7 +156,7 @@ namespace Wanlix
         { 128, 4, 4, 2, ColorFormat::BC5,          DataType::Int8,      Mips | Dim2D_3D | DimCube | Compr | SNorm                  }, // BC5SNorm
     };
 
-    const FormatAttributes& GetFormatAttribs(const Format& format)
+    const FormatAttributes& GetFormatAttribs(const PixelFormat& format)
     {
         auto idx = static_cast<size_t>(format);
         if (idx < sizeof(g_formatAttribs) / sizeof(g_formatAttribs[0]))
@@ -165,57 +165,57 @@ namespace Wanlix
             return g_formatAttribs[0];
     }
 
-    bool IsCompressedFormat(const Format& format)
+    bool IsCompressedFormat(const PixelFormat& format)
     {
         return ((GetFormatAttribs(format).flags & FormatFlags::IsCompressed) != 0);
     }
 
-    bool IsDepthStencilFormat(const Format& format)
+    bool IsDepthStencilFormat(const PixelFormat& format)
     {
         const auto& formatAttribs = GetFormatAttribs(format);
         return ((formatAttribs.flags & (FormatFlags::HasDepth | FormatFlags::HasStencil)) != 0);
     }
 
-    bool IsDepthFormat(const Format& format)
+    bool IsDepthFormat(const PixelFormat& format)
     {
         return ((GetFormatAttribs(format).flags & (FormatFlags::HasDepth)) != 0);
     }
 
-    bool IsStencilFormat(const Format& format)
+    bool IsStencilFormat(const PixelFormat& format)
     {
         return ((GetFormatAttribs(format).flags & FormatFlags::HasStencil) != 0);
     }
 
-    bool IsNormalizedFormat(const Format& format)
+    bool IsNormalizedFormat(const PixelFormat& format)
     {
         return ((GetFormatAttribs(format).flags & FormatFlags::IsNormalized) != 0);
     }
 
-    bool IsIntegralFormat(const Format& format)
+    bool IsIntegralFormat(const PixelFormat& format)
     {
-        if (format >= Format::R8UNorm &&
-            format <= Format::BGRA8SInt)
+        if (format >= PixelFormat::R8UNorm &&
+            format <= PixelFormat::BGRA8SInt)
             return !IsFloatFormat(format);
         else
             return false;
     }
 
-    bool IsFloatFormat(const Format& format)
+    bool IsFloatFormat(const PixelFormat& format)
     {
         switch (format)
         {
-        case Format::R16Float:
-        case Format::R64Float:
-        case Format::R32Float:
-        case Format::RG16Float:
-        case Format::RG32Float:
-        case Format::RG64Float:
-        case Format::RGB16Float:
-        case Format::RGB32Float:
-        case Format::RGB64Float:
-        case Format::RGBA16Float:
-        case Format::RGBA32Float:
-        case Format::RGBA64Float:
+        case PixelFormat::R16Float:
+        case PixelFormat::R64Float:
+        case PixelFormat::R32Float:
+        case PixelFormat::RG16Float:
+        case PixelFormat::RG32Float:
+        case PixelFormat::RG64Float:
+        case PixelFormat::RGB16Float:
+        case PixelFormat::RGB32Float:
+        case PixelFormat::RGB64Float:
+        case PixelFormat::RGBA16Float:
+        case PixelFormat::RGBA32Float:
+        case PixelFormat::RGBA64Float:
             return true;
         default:
             return false;

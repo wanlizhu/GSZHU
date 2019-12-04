@@ -13,8 +13,24 @@ namespace Wanlix
         , mTextureType(type)
     {}
 
-    Region Texture::GetRegion() const
+    size_t Texture::GetDataSize() const
     {
-        return Region(Offset(), GetDescriptor().extent);
+        const Desc& desc = GetDescriptor();
+        size_t pixels = (desc.extent.width * desc.extent.height * desc.extent.depth);
+        size_t bytes = pixels * GetFormatAttribs(desc.format).bitSize / 32;
+        return bytes;
+    }
+
+    TextureType Texture::GetType() const
+    {
+        return mTextureType;
+    }
+
+    TextureRegion Texture::GetRegion() const
+    {
+        TextureRegion region;
+        region.offset = Offset();
+        region.extent = GetDescriptor().extent;
+        return region;
     }
 }
