@@ -12,7 +12,7 @@ namespace Wanlix
         , mDevice(device)
     {
         if (mObjects.find(name) != mObjects.end()) {
-            throw std::runtime_error("Device object name must be unique");
+            assert(false);
         }
         mObjects[name] = this;
     }

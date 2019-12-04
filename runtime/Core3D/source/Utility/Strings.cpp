@@ -1,7 +1,6 @@
 #include "Wanlix/Core3D/Utility/Strings.h"
 #include <codecvt>
 #ifdef _WIN32
-#include "Wanlix/Core3D/Platform/Win32/Win32LeanAndMean.h"
 #include <Windows.h>
 #endif
 

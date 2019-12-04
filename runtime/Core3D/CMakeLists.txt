@@ -12,6 +12,7 @@ if (NOT WANLIX_CODE_REVIEW_MODE)
     target_link_libraries(Core3D PRIVATE CONAN_PKG::Eigen3)
 endif()
 target_link_libraries(Core3D PRIVATE RHI)
+target_link_libraries(Core3D PRIVATE PAL)
 
 get_target_property(_outdir_ Core3D LIBRARY_OUTPUT_DIRECTORY)
 message(STATUS "Target: Core3D -> ${_outdir_}" )

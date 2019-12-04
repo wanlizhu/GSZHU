@@ -100,6 +100,8 @@ set_target_properties(Wanlix PROPERTIES VERSION ${WANLIX_VERSION})
 set(CSD "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(Wanlix PUBLIC "${CSD}/include" PRIVATE "${CSD}/source")
 target_link_libraries(Wanlix PRIVATE Core3D)
+target_link_libraries(Wanlix PRIVATE PAL)
+target_link_libraries(Wanlix PRIVATE RHI)
 target_compile_definitions(Wanlix PRIVATE "_UNICODE" "UNICODE")
 
 if (WANLIX_BUILD_EDITOR)

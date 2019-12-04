@@ -16,7 +16,7 @@ def runcommand(cmd):
 
 iswindows = platform.system().startswith('Win')
 vsname = '"Visual Studio 16 2019" -A x64'
-cmd = 'cmake -S . -B ./build -G %s -D GE_CODE_REVIEW_MODE:BOOL=ON' % (vsname if iswindows else 'Xcode')
+cmd = 'cmake -S . -B ./build -G %s -D WANLIX_CODE_REVIEW_MODE:BOOL=ON' % (vsname if iswindows else 'Xcode')
 runcommand(cmd)
 
 cmd = 'cmake --open ./build'
