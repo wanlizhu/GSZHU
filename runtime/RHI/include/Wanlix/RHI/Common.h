@@ -34,22 +34,22 @@ namespace Wanlix
 {
     struct Range
     {
-        int offset = 0;
-        int size = 0;
+        uint32_t offset = 0;
+        uint32_t size = 0;
     };
 
     struct Offset
     {
-        int x = 0;
-        int y = 0;
-        int z = 0;
+        uint32_t x = 0;
+        uint32_t y = 0;
+        uint32_t z = 0;
     };
 
     struct Extent
     {
-        int width = 0;
-        int height = 0;
-        int depth = 1;
+        uint32_t width = 0;
+        uint32_t height = 0;
+        uint32_t depth = 1;
     };
 
     struct Region
@@ -58,24 +58,20 @@ namespace Wanlix
         Extent extent;
     };
 
-    struct SubresourceOffset
+    struct Subresource
     {
-        int    arrayLayer = 0;
-        int    mipLevel = 0;
-        Offset offset;
+        uint32_t baseArrayLayer = 0;
+        uint32_t numArrayLayers = 1;
+        uint32_t baseMipLevel = 0;
+        uint32_t numMipLevels = 1;
     };
 
-    struct SubresourceExtent
+    struct SwizzleRGBA
     {
-        int    numArrayLayers = 1;
-        int    numMipLevels = 1;
-        Extent extent;
-    };
-
-    struct SubresourceRegion
-    {
-        SubresourceOffset offset;
-        SubresourceExtent extent;
+        uint8_t r = 0;
+        uint8_t g = 1;
+        uint8_t b = 2;
+        uint8_t a = 3;
     };
 
     struct Color
@@ -87,17 +83,16 @@ namespace Wanlix
 
         Color();
         Color(float val);
-        Color(int val);
+        Color(uint32_t val);
         Color(float r, float g, float b, float a = 1.0f);
-        Color(int r, int g, int b, int a = 255);
+        Color(uint32_t r, uint32_t g, uint32_t b, uint32_t a = 255);
         Color(std::initializer_list<float> init);
-        Color(std::initializer_list<int> init);
+        Color(std::initializer_list<uint32_t> init);
 
         float&       operator[](int i);
         const float& operator[](int i) const;
         bool operator==(const Color& rhs) const;
         bool operator!=(const Color& rhs) const;
-
         operator bool() const;
     };
 }

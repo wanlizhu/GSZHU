@@ -19,7 +19,7 @@ namespace Wanlix
         Texture2DMSArray,   //!< 2-Dimensional multi-sample array texture.
     };
 
-    struct TextureDescriptor : public ResourceDescriptor
+    struct TextureDescriptor : public Resource::Desc
     {
         TextureType    type = TextureType::Texture2D;
         ResourceFormat format = ResourceFormat::RGBA8UNorm;
@@ -28,6 +28,13 @@ namespace Wanlix
         uint32_t    arrayLayers = 1;
         uint32_t    mipLevels = 0;
         uint32_t    samples = 1;
-        ClearValue  clearValue;
+    };
+
+    struct TextureViewDescriptor : public ResourceViewDescriptor
+    {
+        TextureType    type = TextureType::Texture2D;
+        ResourceFormat format = ResourceFormat::RGBA8UNorm;
+        Subresource    subresource;
+        SwizzleRGBA    swizzle;
     };
 }

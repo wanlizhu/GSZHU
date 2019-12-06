@@ -43,4 +43,9 @@ namespace Wanlix
     {
         return mName;
     }
+
+    bool DeviceObject::IsRefCounted() const
+    {
+        return !weak_from_this().expired();
+    }
 }

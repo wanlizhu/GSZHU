@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "DeviceObject.h"
 
 namespace Wanlix
 {
@@ -44,10 +45,13 @@ namespace Wanlix
         };
     };
 
-    struct ResourceDescriptor
+    struct ResourceDescriptor : public DeviceObject::Desc
     {
         long bindFlags = 0;
         long cpuAccessFlags = 0;
         long miscFlags = 0;
     };
+
+    struct ResourceViewDescriptor
+    {};
 }

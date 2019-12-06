@@ -10,54 +10,54 @@ namespace Wanlix
     {}
 
     Color::Color(float val)
-        : r(val)
-        , g(val)
-        , b(val)
+        : r(std::clamp(val, -1.0f, 1.0f))
+        , g(std::clamp(val, -1.0f, 1.0f))
+        , b(std::clamp(val, -1.0f, 1.0f))
         , a(1.0f)
     {}
 
-    Color::Color(int val)
-        : r(val / 255.0f)
-        , g(val / 255.0f)
-        , b(val / 255.0f)
+    Color::Color(uint32_t val)
+        : r(std::clamp(val / 255.0f, -1.0f, 1.0f))
+        , g(std::clamp(val / 255.0f, -1.0f, 1.0f))
+        , b(std::clamp(val / 255.0f, -1.0f, 1.0f))
         , a(1.0f)
     {}
 
     Color::Color(float r, float g, float b, float a)
-        : r(r)
-        , g(g)
-        , b(b)
-        , a(a)
+        : r(std::clamp(r, -1.0f, 1.0f))
+        , g(std::clamp(g, -1.0f, 1.0f))
+        , b(std::clamp(b, -1.0f, 1.0f))
+        , a(std::clamp(a, -1.0f, 1.0f))
     {}
 
-    Color::Color(int r, int g, int b, int a)
-        : r(r / 255.0f)
-        , g(g / 255.0f)
-        , b(b / 255.0f)
-        , a(a / 255.0f)
+    Color::Color(uint32_t r, uint32_t g, uint32_t b, uint32_t a)
+        : r(std::clamp(r / 255.0f, -1.0f, 1.0f))
+        , g(std::clamp(g / 255.0f, -1.0f, 1.0f))
+        , b(std::clamp(b / 255.0f, -1.0f, 1.0f))
+        , a(std::clamp(a / 255.0f, -1.0f, 1.0f))
     {}
 
     Color::Color(std::initializer_list<float> init)
+        : Color()
     {
         assert(init.size() >= 3);
-        auto begin = init.begin();
-        r = *begin;
-        g = *(begin+1);
-        b = *(begin+2);
-        if (init.size() >= 4) {
-            a = *(begin + 3);
+        int i = 0;
+        for (auto& it : init) {
+            if (i < 4) {
+                data[i++] = std::clamp(it, -1.0f, 1.0f);
+            }
         }
     }
 
-    Color::Color(std::initializer_list<int> init)
+    Color::Color(std::initializer_list<uint32_t> init)
+        : Color()
     {
         assert(init.size() >= 3);
-        auto begin = init.begin();
-        r = *begin / 255.0f;
-        g = *(begin + 1) / 255.0f;
-        b = *(begin + 2) / 255.0f;
-        if (init.size() >= 4) {
-            a = *(begin + 3) / 255.0f;
+        int i = 0;
+        for (auto& it : init) {
+            if (i < 4) {
+                data[i++] = std::clamp(it / 255.0f, -1.0f, 1.0f);
+            }
         }
     }
 
@@ -86,6 +86,6 @@ namespace Wanlix
 
     Color::operator bool() const
     {
-        return r >= 0 && g >= 0 && b >= 0;
+        return r >= 0.0f && g >= 0.0f && b >= 0.0f && a >= 0.0f;
     }
 }
