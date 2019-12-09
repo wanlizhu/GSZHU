@@ -8,6 +8,7 @@ set(CSD "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(GAL PUBLIC "${CSD}/include")
 target_include_directories(GAL PRIVATE "${CSD}/source")
 target_compile_definitions(GAL PRIVATE "_UNICODE" "UNICODE")
+target_compile_definitions(GAL PRIVATE "GAL_FMA")
 
 get_target_property(_outdir_ GAL LIBRARY_OUTPUT_DIRECTORY)
 message(STATUS "Target: GAL -> ${_outdir_}" )
