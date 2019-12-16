@@ -23,6 +23,7 @@ set(WANLIX_ENABLE_VULKAN    ON  CACHE BOOL "")
 set(WANLIX_ENABLE_D3D12     ON  CACHE BOOL "")
 set(WANLIX_ENABLE_METAL     ON  CACHE BOOL "")
 set(WANLIX_ENABLE_OPENGL    ON  CACHE BOOL "")
+set(WANLIX_USE_ASSIMP       ON  CACHE BOOL "")
 set(WANLIX_VERSION_MAJOR 1)
 set(WANLIX_VERSION_MINOR 0)
 set(WANLIX_VERSION_PATCH 0)
@@ -70,6 +71,7 @@ function (GetCurrentDirectorySourceFiles
     set(COD "${CMAKE_CURRENT_BINARY_DIR}")
 
     file(GLOB_RECURSE ${_interfaceFiles_} "${CSD}/include/*.h" "${CSD}/include/*.hpp")
+    file(GLOB_RECURSE _classesFiles_      "${CSD}/classes/*.h" "${CSD}/classes/*.hpp")
     file(GLOB_RECURSE ${_headerFiles_}    "${CSD}/source/*.h"  "${CSD}/source/*.hpp")
     file(GLOB_RECURSE ${_sourceFiles_}    "${CSD}/source/*.c"  "${CSD}/source/*.cpp")
     if (APPLE)
@@ -78,12 +80,13 @@ function (GetCurrentDirectorySourceFiles
     endif()
 
     source_group(TREE "${CSD}/include" PREFIX "Header Files" FILES ${${_interfaceFiles_}})
+    source_group(TREE "${CSD}/classes" PREFIX "Class Files" FILES ${_classesFiles_})
     source_group(TREE "${CSD}/source"  PREFIX "Source Files" FILES ${${_headerFiles_}})
     source_group(TREE "${CSD}/source"  PREFIX "Source Files" FILES ${${_sourceFiles_}})
 
     set(${_interfaceFiles_} ${${_interfaceFiles_}} PARENT_SCOPE)
-    set(${_headerFiles_}    ${${_headerFiles_}}    PARENT_SCOPE)
-    set(${_sourceFiles_}    ${${_sourceFiles_}}    PARENT_SCOPE)
+    set(${_headerFiles_}    ${${_headerFiles_}} ${_classesFiles_} PARENT_SCOPE)
+    set(${_sourceFiles_}    ${${_sourceFiles_}} PARENT_SCOPE)
 endfunction()
 
 
@@ -104,7 +107,6 @@ target_link_libraries(Wanlix PRIVATE PAL)
 target_link_libraries(Wanlix PRIVATE RHI)
 target_link_libraries(Wanlix PRIVATE GAL)
 target_link_libraries(Wanlix PRIVATE DMS)
-target_link_libraries(Wanlix PRIVATE SIM)
 target_compile_definitions(Wanlix PRIVATE "_UNICODE" "UNICODE")
 
 if (WANLIX_BUILD_EDITOR)

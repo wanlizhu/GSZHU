@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Wanlix/Config.h"
+
 #if defined _MSC_VER && !defined WANLIX_RHI_BUILD_SHARED_LIBS
 #   define RHI_API __declspec(dllexport)
 #else

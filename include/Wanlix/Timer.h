@@ -10,6 +10,7 @@
 #include <mutex>
 #include <thread>
 #include "TaskThread.h"
+#include "OrderedList.h"
 
 namespace Wanlix
 {
@@ -27,10 +28,15 @@ namespace Wanlix
     public:
         static const int kForever = -1;
         static const DurationMs kImmediateMs;
-        static const TimePoint kInvalidTimePoint;
+        static const TimePoint kMaxTimePoint;
 
-        static TimerId StartTimer(const DurationMs& interval, int repeat, std::function<void()>&& callback);
-        static TimerId StartTimerAt(const TimePoint&  triggerAt, const DurationMs& interval, int repeat, std::function<void()>&& callback);
+        static TimerId StartTimer(const DurationMs& interval,
+                                  int repeat,
+                                  std::function<void()>&& callback);
+        static TimerId StartTimerAt(const TimePoint& triggerAt, 
+                                    const DurationMs& interval,
+                                    int repeat,
+                                    std::function<void()>&& callback);
         static void Cancel(TimerId id);
         static TimePoint NearestTriggerPoint();
 
@@ -38,6 +44,6 @@ namespace Wanlix
         static std::atomic_bool        mKillFlag;
         static std::atomic_uint64_t    mLastTimerId;
         static std::condition_variable mCV;
-        static Lockable<std::priority_queue<TimerTask>> mTaskQueue;
+        static Lockable<OrderedList<TimerTask>> mTaskQueue;
     };
 }

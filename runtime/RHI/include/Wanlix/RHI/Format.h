@@ -2,13 +2,14 @@
 
 #include <cstdint>
 #include <string>
+#include "Common.h"
 
 namespace Wanlix
 {
-    /* Texture and vertex attribute format enumeration used for GPU side operations. */
-    enum class ResourceFormat
+    // Used for GPU side operations. 
+    enum class PixelFormat
     {
-        Undefined,          //!< Undefined format.
+        Undefined,      
 
         /* --- Alpha channel color formats --- */
         A8UNorm,            
@@ -120,9 +121,6 @@ namespace Wanlix
         BC5SNorm,           //!< S3TC BC5 compressed red and green channels with normalized signed integer components in 128-bit per 4x4 block.
     };
 
-    /**
-    \brief Image format enumeration that applies to each pixel of an image.
-    */
     enum class ImageFormat
     {
         /* Color formats */
@@ -149,32 +147,7 @@ namespace Wanlix
         BC5,            
     };
 
-    /**
-    \brief Data types enumeration used for CPU side operations.
-    */
-    enum class DataType
-    {
-        Undefined,  
-
-        Int8,       
-        UInt8,      
-
-        Int16,      
-        UInt16,     
-
-        Int32,      
-        UInt32,     
-
-        Float16,    
-        Float32,    
-        Float64,    
-    };
-
-    /**
-    \brief Format attribute flags enumeration.
-    \see FormatAttributes::flags
-    */
-    struct ResourceFormatFlags
+    struct PixelFormatFlags
     {
         enum
         {
@@ -199,26 +172,26 @@ namespace Wanlix
 
     struct FormatDescriptor
     {
-        uint16_t    bits;
-        uint8_t     blockWidth;
-        uint8_t     blockHeight;
-        uint8_t     components;
+        Uint bits;
+        Byte blockWidth;
+        Byte blockHeight;
+        Byte components;
 
         ImageFormat imageFormat;
         DataType    dataType;
-        long        flags;
+        Uint        flags;
 
-        bool   IsCompressedFormat() const;
-        bool   IsDepthStencilFormat() const;
-        bool   IsDepthFormat() const;
-        bool   IsStencilFormat() const;
-        bool   IsNormalizedFormat() const;
-        bool   IsIntegralFormat() const;
-        bool   IsFloatFormat() const;
-        size_t GetSize() const;
+        Bool IsCompressedFormat() const;
+        Bool IsDepthStencilFormat() const;
+        Bool IsDepthFormat() const;
+        Bool IsStencilFormat() const;
+        Bool IsNormalizedFormat() const;
+        Bool IsIntegralFormat() const;
+        Bool IsFloatFormat() const;
+        Size GetSize() const;
     };
 
 
-    const FormatDescriptor& GetFormatDescritpor(ResourceFormat format);
+    const FormatDescriptor& GetFormatDescritpor(PixelFormat format);
     const FormatDescriptor& GetFormatDescritpor(ImageFormat imageFormat, DataType dataType);
 }
