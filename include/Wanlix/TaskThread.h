@@ -3,6 +3,7 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
+#include <deque>
 #include <condition_variable>
 #include <type_traits>
 #include <functional>

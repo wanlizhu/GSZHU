@@ -43,6 +43,7 @@ target_sources(PAL PRIVATE ${_interfaces_} ${_headers_} ${_sources_})
 
 
 target_include_directories(PAL PUBLIC "${CSD}/include")
+target_include_directories(PAL PRIVATE "${RSD}/include")
 target_include_directories(PAL PRIVATE "${CSD}/source")
 target_compile_definitions(PAL PRIVATE "_UNICODE" "UNICODE")
 

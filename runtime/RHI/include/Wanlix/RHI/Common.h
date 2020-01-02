@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <array>
 #include <type_traits>
 #include <cassert>
 #include <algorithm>
@@ -26,30 +27,68 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
+#include "Wanlix/Common.h"
 #include "Config.h"
 #include "Format.h"
+#include "Flags.h"
+#include "IAllocator.h"
 #include "NonCopyable.h"
 
 namespace Wanlix
 {
+    class IDevice;
+    class IDeviceContext;
+    class IDeviceObject;
+    class IResource;
+    class IBuffer;
+    class IBufferView;
+    class IShader;
+    class IShaderVariable;
+    class ITexture;
+    class ITextureView;
+    class ISampler;
+    class ISwapChain;
+    class IResourceBinding;
+    class IResourceMapping;
+    class IPipelineState;
+    class IFence;
+    class ICommandBuffer;
+    struct BufferDesc;
+    struct BufferViewDesc;
+    struct ShaderDesc;
+    struct ShaderCreateInfo;
+    struct TextureDesc;
+    struct TextureViewDesc;
+    struct SamplerDesc;
+    struct FenceDesc;
+    struct CommandBufferDesc;
+    struct ResourceMappingDesc;
+    struct PipelineStateDesc;
+    struct BlendStateDesc;
+    struct DepthStencilStateDesc;
+    struct RasterizerStateDesc;
+    struct DeviceCapability;
+    struct InputLayoutDesc;
+    struct SwapChainDesc;
+
     struct Range
     {
-        uint32_t offset = 0;
-        uint32_t size = 0;
+        Uint offset = 0;
+        Uint size = 0;
     };
 
     struct Offset
     {
-        uint32_t x = 0;
-        uint32_t y = 0;
-        uint32_t z = 0;
+        Uint x = 0;
+        Uint y = 0;
+        Uint z = 0;
     };
 
     struct Extent
     {
-        uint32_t width = 0;
-        uint32_t height = 0;
-        uint32_t depth = 1;
+        Uint width = 0;
+        Uint height = 0;
+        Uint depth = 1;
     };
 
     struct Region
@@ -58,41 +97,99 @@ namespace Wanlix
         Extent extent;
     };
 
+    struct Rect
+    {
+        Int left = 0;
+        Int top = 0;
+        Int right = 0;
+        Int bottom = 0;
+    };
+
     struct Subresource
     {
-        uint32_t baseArrayLayer = 0;
-        uint32_t numArrayLayers = 1;
-        uint32_t baseMipLevel = 0;
-        uint32_t numMipLevels = 1;
+        Uint baseArrayLayer = 0;
+        Uint numArrayLayers = 1;
+        Uint baseMipLevel = 0;
+        Uint numMipLevels = 1;
     };
 
     struct SwizzleRGBA
     {
-        uint8_t r = 0;
-        uint8_t g = 1;
-        uint8_t b = 2;
-        uint8_t a = 3;
+        Byte r = 0;
+        Byte g = 1;
+        Byte b = 2;
+        Byte a = 3;
     };
 
-    struct Color
+    struct Color4i
+    {
+        union {
+            struct { Byte r, g, b, a; };
+            Byte data[4];
+            Int packed;
+        };
+
+        Color4i();
+        Color4i(Int val);
+        Color4i(Int r, Int g, Int b, Int a = 255);
+        Color4i(std::initializer_list<Int> init);
+        Color4i(Color4f const& rhs);
+        Color4i& operator=(Color4f const& rhs);
+
+        Byte&       operator[](Int i);
+        Byte const& operator[](Int i) const;
+        Bool operator==(const Color4i& rhs) const;
+        Bool operator!=(const Color4i& rhs) const;
+    };
+
+    struct Color4f
     {
         union {
             struct { float r, g, b, a; };
             float data[4];
         };
 
-        Color();
-        Color(float val);
-        Color(uint32_t val);
-        Color(float r, float g, float b, float a = 1.0f);
-        Color(uint32_t r, uint32_t g, uint32_t b, uint32_t a = 255);
-        Color(std::initializer_list<float> init);
-        Color(std::initializer_list<uint32_t> init);
+        Color4f();
+        Color4f(float val);
+        Color4f(float r, float g, float b, float a = 1.f);
+        Color4f(std::initializer_list<float> init);
+        Color4f(Color4i const& rhs);
+        Color4f& operator=(Color4i const& rhs);
 
-        float&       operator[](int i);
-        const float& operator[](int i) const;
-        bool operator==(const Color& rhs) const;
-        bool operator!=(const Color& rhs) const;
-        operator bool() const;
+        float& operator[](Int i);
+        float const& operator[](Int i) const;
+        Bool operator==(const Color4f& rhs) const;
+        Bool operator!=(const Color4f& rhs) const;
     };
+
+    struct Viewport
+    {
+        float xTL = 0.f;
+        float yTL = 0.f;
+        float width = 0.f;
+        float height = 0.f;
+        float minDepth = 0.f;
+        float maxDepth = 1.f;
+    };
+
+    struct ClearValue
+    {
+        PixelFormat format = PixelFormat::Undefined;
+        Color4f color;
+        float depth = 0.f;
+        Uint stencil = 0;
+    };
+
+    struct StateTransitionDesc
+    {
+        ITexture* texture = nullptr;
+        IBuffer*  buffer = nullptr;
+        Uint mipLevels = 0;
+        Uint firstArraySlice = 0;
+        Uint numArraySlices = 0;
+        ResourceState oldState = ResourceState::Unknown;
+        ResourceState newState = ResourceState::Unknown;
+        TransitionBarrierType barrierType = TransitionBarrierType::Immediate;
+        Bool updateResourceState = false;
+    };  
 }

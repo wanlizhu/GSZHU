@@ -2,76 +2,67 @@
 
 namespace Wanlix
 {
-    Color::Color()
-        : r(0.0f)
-        , g(0.0f)
-        , b(0.0f)
-        , a(1.0f)
+    Color4i::Color4i()
+        : r(0)
+        , g(0)
+        , b(0)
+        , a(255)
     {}
 
-    Color::Color(float val)
-        : r(std::clamp(val, -1.0f, 1.0f))
-        , g(std::clamp(val, -1.0f, 1.0f))
-        , b(std::clamp(val, -1.0f, 1.0f))
-        , a(1.0f)
+    Color4i::Color4i(Int val)
+        : r(std::clamp<Byte>(val, 0, 255))
+        , g(std::clamp<Byte>(val, 0, 255))
+        , b(std::clamp<Byte>(val, 0, 255))
+        , a(255)
     {}
 
-    Color::Color(uint32_t val)
-        : r(std::clamp(val / 255.0f, -1.0f, 1.0f))
-        , g(std::clamp(val / 255.0f, -1.0f, 1.0f))
-        , b(std::clamp(val / 255.0f, -1.0f, 1.0f))
-        , a(1.0f)
+    Color4i::Color4i(Int r, Int g, Int b, Int a)
+        : r(std::clamp<Byte>(r, 0, 255))
+        , g(std::clamp<Byte>(g, 0, 255))
+        , b(std::clamp<Byte>(b, 0, 255))
+        , a(std::clamp<Byte>(a, 0, 255))
     {}
 
-    Color::Color(float r, float g, float b, float a)
-        : r(std::clamp(r, -1.0f, 1.0f))
-        , g(std::clamp(g, -1.0f, 1.0f))
-        , b(std::clamp(b, -1.0f, 1.0f))
-        , a(std::clamp(a, -1.0f, 1.0f))
-    {}
-
-    Color::Color(uint32_t r, uint32_t g, uint32_t b, uint32_t a)
-        : r(std::clamp(r / 255.0f, -1.0f, 1.0f))
-        , g(std::clamp(g / 255.0f, -1.0f, 1.0f))
-        , b(std::clamp(b / 255.0f, -1.0f, 1.0f))
-        , a(std::clamp(a / 255.0f, -1.0f, 1.0f))
-    {}
-
-    Color::Color(std::initializer_list<float> init)
-        : Color()
+    Color4i::Color4i(std::initializer_list<Int> init)
+        : Color4i()
     {
         assert(init.size() >= 3);
-        int i = 0;
+        Int i = 0;
         for (auto& it : init) {
             if (i < 4) {
-                data[i++] = std::clamp(it, -1.0f, 1.0f);
+                data[i++] = std::clamp<Byte>(it, 0, 255);
             }
         }
     }
 
-    Color::Color(std::initializer_list<uint32_t> init)
-        : Color()
+    Color4i::Color4i(Color4f const& rhs)
+        : Color4i()
     {
-        assert(init.size() >= 3);
-        int i = 0;
-        for (auto& it : init) {
-            if (i < 4) {
-                data[i++] = std::clamp(it / 255.0f, -1.0f, 1.0f);
-            }
+        for (int i = 0; i < 4; i++) {
+            data[i] = (Byte)(rhs.data[i] * 255.f);
+            data[i] = std::clamp<Byte>(data[i], 0, 255);
         }
     }
 
-    float& Color::operator[](int i)
+    Color4i& Color4i::operator=(Color4f const& rhs)
+    {
+        for (int i = 0; i < 4; i++) {
+            data[i] = (Byte)(rhs.data[i] * 255.f);
+            data[i] = std::clamp<Byte>(data[i], 0, 255);
+        }
+    }
+
+    Byte& Color4i::operator[](Int i)
     {
         return data[i];
     }
 
-    const float& Color::operator[](int i) const
+    const Byte& Color4i::operator[](Int i) const
     {
         return data[i];
     }
 
-    bool Color::operator==(const Color& rhs) const
+    Bool Color4i::operator==(const Color4i& rhs) const
     {
         return r == rhs.r &&
                g == rhs.g &&
@@ -79,13 +70,84 @@ namespace Wanlix
                a == rhs.a;
     }
 
-    bool Color::operator!=(const Color& rhs) const
+    Bool Color4i::operator!=(const Color4i& rhs) const
     {
         return !(*this == rhs);
     }
 
-    Color::operator bool() const
+    Color4f::Color4f()
+        : r(0)
+        , g(0)
+        , b(0)
+        , a(255)
+    {}
+
+    Color4f::Color4f(float val)
+        : r(std::clamp<float>(val, 0.f, 1.f))
+        , g(std::clamp<float>(val, 0.f, 1.f))
+        , b(std::clamp<float>(val, 0.f, 1.f))
+        , a(1.f)
+    {}
+
+    Color4f::Color4f(float r, float g, float b, float a)
+        : r(std::clamp<float>(r, 0.f, 1.f))
+        , g(std::clamp<float>(g, 0.f, 1.f))
+        , b(std::clamp<float>(b, 0.f, 1.f))
+        , a(std::clamp<float>(a, 0.f, 1.f))
+    {}
+
+    Color4f::Color4f(std::initializer_list<float> init)
+        : Color4f()
     {
-        return r >= 0.0f && g >= 0.0f && b >= 0.0f && a >= 0.0f;
+        assert(init.size() >= 3);
+        Int i = 0;
+        for (auto& it : init) {
+            if (i < 4) {
+                data[i++] = std::clamp<float>(it, 0.f, 1.f);
+            }
+        }
+    }
+
+    Color4f::Color4f(Color4i const& rhs)
+        : Color4f()
+    {
+        for (int i = 0; i < 4; i++) {
+            data[i] = (float)(rhs.data[i] / 255.f);
+            data[i] = std::clamp<float>(data[i], 0.f, 1.f);
+        }
+    }
+
+    Color4f& Color4f::operator=(Color4i const& rhs)
+    {
+        for (int i = 0; i < 4; i++) {
+            data[i] = (float)(rhs.data[i] / 255.f);
+            data[i] = std::clamp<float>(data[i], 0.f, 1.f);
+        }
+    }
+
+    float& Color4f::operator[](Int i)
+    {
+        return data[i];
+    }
+
+    float const& Color4f::operator[](Int i) const
+    {
+        return data[i];
+    }
+
+    Bool Color4f::operator==(const Color4f& rhs) const
+    {
+        static const float eps = 1e-5;
+        for (int i = 0; i < 4; i++) {
+            if (!Equals(data[i], rhs.data[i]), eps) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    Bool Color4f::operator!=(const Color4f& rhs) const
+    {
+        return !(*this == rhs);
     }
 }

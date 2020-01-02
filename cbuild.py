@@ -177,7 +177,6 @@ if __name__=='__main__':
                                                                      member.__module__==__name__)]
     cbuild = CBuild()
     cbuild.print_status()
-    cbuild.init_packages([])
     
     while True:
         cmd, subcmd, args = await_input()
