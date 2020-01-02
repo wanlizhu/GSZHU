@@ -119,3 +119,7 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CSD}/data" "${_outdir_}/data"
     WORKING_DIRECTORY "${CSD}"
 )
+
+message(${CMAKE_SYSTEM_NAME})
+message(${CMAKE_SYSTEM_PROCESSOR})
+message(${CMAKE_SYSTEM_VERSION})
