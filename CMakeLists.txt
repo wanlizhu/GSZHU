@@ -106,7 +106,6 @@ target_include_directories(Wanlix PRIVATE "${CSD}/source")
 target_link_libraries(Wanlix PRIVATE PAL)
 target_link_libraries(Wanlix PRIVATE RHI)
 target_link_libraries(Wanlix PRIVATE GAL)
-target_link_libraries(Wanlix PRIVATE DMS)
 target_compile_definitions(Wanlix PRIVATE "_UNICODE" "UNICODE")
 
 if (WANLIX_BUILD_EDITOR)
