@@ -28,11 +28,10 @@
 #include <mutex>
 #include <condition_variable>
 #include "Wanlix/Common.h"
-#include "Config.h"
-#include "Format.h"
-#include "Flags.h"
-#include "IAllocator.h"
-#include "NonCopyable.h"
+#include "Wanlix/NonCopyable.h"
+#include "Wanlix/RHI/Config.h"
+#include "Wanlix/RHI/Format.h"
+#include "Wanlix/RHI/Flags.h"
 
 namespace Wanlix
 {
@@ -120,6 +119,8 @@ namespace Wanlix
         Byte b = 2;
         Byte a = 3;
     };
+
+    struct Color4f;
 
     struct Color4i
     {

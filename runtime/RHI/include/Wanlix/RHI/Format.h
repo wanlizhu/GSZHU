@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <string>
-#include "Common.h"
+#include "Wanlix/Flags.h"
 
 namespace Wanlix
 {
@@ -172,23 +172,23 @@ namespace Wanlix
 
     struct FormatDescriptor
     {
-        Uint bits;
-        Byte blockWidth;
-        Byte blockHeight;
-        Byte components;
+        uint32_t bits;
+        uint8_t  blockWidth;
+        uint8_t  blockHeight;
+        uint8_t  components;
 
         ImageFormat imageFormat;
         DataType    dataType;
-        Uint        flags;
+        uint32_t    flags;
 
-        Bool IsCompressedFormat() const;
-        Bool IsDepthStencilFormat() const;
-        Bool IsDepthFormat() const;
-        Bool IsStencilFormat() const;
-        Bool IsNormalizedFormat() const;
-        Bool IsIntegralFormat() const;
-        Bool IsFloatFormat() const;
-        Size GetSize() const;
+        bool IsCompressedFormat() const;
+        bool IsDepthStencilFormat() const;
+        bool IsDepthFormat() const;
+        bool IsStencilFormat() const;
+        bool IsNormalizedFormat() const;
+        bool IsIntegralFormat() const;
+        bool IsFloatFormat() const;
+        uint32_t GetSize() const;
     };
 
 

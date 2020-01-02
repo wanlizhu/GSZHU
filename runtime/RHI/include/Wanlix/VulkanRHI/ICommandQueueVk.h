@@ -1,12 +1,14 @@
 #pragma once
 
-#include "Common.h"
-#include "Wanlix/RHI/Object.h"
+#include "Wanlix/VulkanRHI/Common.h"
+#include "Wanlix/Object.h"
 
 namespace Wanlix
 {
-    class ICommandQueueVk : public inherit_shared_from_this<Object, ICommandQueueVk>
+    class RHI_API ICommandQueueVk : public Object
     {
+        CLASSINFO(ICommandQueueVk)
+        INHERIT_SHARED_FROM_THIS(Object)
     public:
         virtual Ui64 NextFenceValue() const = 0;
         virtual Ui64 Submit(VkCommandBuffer commandBuffer) = 0;

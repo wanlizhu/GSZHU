@@ -7,8 +7,10 @@ namespace Wanlix
     struct CommandBufferDesc : public DeviceObjectDesc
     {};
 
-    class ICommandBuffer : public inherit_shared_from_this<IDeviceObject, ICommandBuffer>
+    class RHI_API ICommandBuffer : public IDeviceObject
     {
+        CLASSINFO(ICommandBuffer)
+        INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
         virtual ~ICommandBuffer() = default;
 

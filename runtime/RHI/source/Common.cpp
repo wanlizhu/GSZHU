@@ -50,6 +50,7 @@ namespace Wanlix
             data[i] = (Byte)(rhs.data[i] * 255.f);
             data[i] = std::clamp<Byte>(data[i], 0, 255);
         }
+        return *this;
     }
 
     Byte& Color4i::operator[](Int i)
@@ -123,6 +124,7 @@ namespace Wanlix
             data[i] = (float)(rhs.data[i] / 255.f);
             data[i] = std::clamp<float>(data[i], 0.f, 1.f);
         }
+        return *this;
     }
 
     float& Color4f::operator[](Int i)
@@ -137,7 +139,7 @@ namespace Wanlix
 
     Bool Color4f::operator==(const Color4f& rhs) const
     {
-        static const float eps = 1e-5;
+        static const float eps = static_cast<float>(1e-5);
         for (int i = 0; i < 4; i++) {
             if (!Equals(data[i], rhs.data[i]), eps) {
                 return false;

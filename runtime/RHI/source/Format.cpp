@@ -4,32 +4,32 @@
 namespace Wanlix
 {
     // Shortcuts for the format flags
-    static const Uint Depth = PixelFormatFlags::HasDepth;
-    static const Uint Stencil = PixelFormatFlags::HasStencil;
-    static const Uint sRGB = PixelFormatFlags::IsColorSpace_sRGB;
-    static const Uint Compr = PixelFormatFlags::IsCompressed;
-    static const Uint Norm = PixelFormatFlags::IsNormalized;
-    static const Uint Integer = PixelFormatFlags::IsInteger;
-    static const Uint Unsigned = PixelFormatFlags::IsUnsigned;
-    static const Uint Packed = PixelFormatFlags::IsPacked;
-    static const Uint RTV = PixelFormatFlags::SupportsRenderTarget;
-    static const Uint Mips = PixelFormatFlags::SupportsMips;
-    static const Uint GenMips = PixelFormatFlags::SupportsGenerateMips | Mips | RTV;
-    static const Uint Dim1D = PixelFormatFlags::SupportsTexture1D;
-    static const Uint Dim2D = PixelFormatFlags::SupportsTexture2D;
-    static const Uint Dim3D = PixelFormatFlags::SupportsTexture3D;
-    static const Uint DimCube = PixelFormatFlags::SupportsTextureCube;
-    static const Uint Vertex = PixelFormatFlags::SupportsVertex;
+    static const uint32_t Depth = PixelFormatFlags::HasDepth;
+    static const uint32_t Stencil = PixelFormatFlags::HasStencil;
+    static const uint32_t sRGB = PixelFormatFlags::IsColorSpace_sRGB;
+    static const uint32_t Compr = PixelFormatFlags::IsCompressed;
+    static const uint32_t Norm = PixelFormatFlags::IsNormalized;
+    static const uint32_t Integer = PixelFormatFlags::IsInteger;
+    static const uint32_t Unsigned = PixelFormatFlags::IsUnsigned;
+    static const uint32_t Packed = PixelFormatFlags::IsPacked;
+    static const uint32_t RTV = PixelFormatFlags::SupportsRenderTarget;
+    static const uint32_t Mips = PixelFormatFlags::SupportsMips;
+    static const uint32_t GenMips = PixelFormatFlags::SupportsGenerateMips | Mips | RTV;
+    static const uint32_t Dim1D = PixelFormatFlags::SupportsTexture1D;
+    static const uint32_t Dim2D = PixelFormatFlags::SupportsTexture2D;
+    static const uint32_t Dim3D = PixelFormatFlags::SupportsTexture3D;
+    static const uint32_t DimCube = PixelFormatFlags::SupportsTextureCube;
+    static const uint32_t Vertex = PixelFormatFlags::SupportsVertex;
 
-    static const Uint Dim1D_2D = Dim1D | Dim2D;
-    static const Uint Dim2D_3D = Dim2D | Dim3D;
-    static const Uint Dim1D_2D_3D = Dim1D | Dim2D | Dim3D;
-    static const Uint UInt = Integer | Unsigned;
-    static const Uint SInt = Integer;
-    static const Uint UNorm = UInt | Norm;
-    static const Uint SNorm = SInt | Norm;
-    static const Uint SFloat = Unsigned;
-    static const Uint UFloat = 0;
+    static const uint32_t Dim1D_2D = Dim1D | Dim2D;
+    static const uint32_t Dim2D_3D = Dim2D | Dim3D;
+    static const uint32_t Dim1D_2D_3D = Dim1D | Dim2D | Dim3D;
+    static const uint32_t UInt = Integer | Unsigned;
+    static const uint32_t SInt = Integer;
+    static const uint32_t UNorm = UInt | Norm;
+    static const uint32_t SNorm = SInt | Norm;
+    static const uint32_t SFloat = Unsigned;
+    static const uint32_t UFloat = 0;
 
     // Declaration of all hardware format descriptors
     static const FormatDescriptor g_formatDescriptors[] =
@@ -158,9 +158,9 @@ namespace Wanlix
 
     const FormatDescriptor& GetFormatDescritpor(PixelFormat format)
     {
-        static const Size kLength = sizeof(g_formatDescriptors) / sizeof(g_formatDescriptors[0]);
+        static const uint32_t kLength = sizeof(g_formatDescriptors) / sizeof(g_formatDescriptors[0]);
         
-        auto idx = static_cast<Size>(format);
+        auto idx = static_cast<uint32_t>(format);
         if (idx < kLength) {
             return g_formatDescriptors[idx];
         }
@@ -171,9 +171,9 @@ namespace Wanlix
 
     const FormatDescriptor& GetFormatDescritpor(ImageFormat imageFormat, DataType dataType)
     {
-        static const Size kLength = sizeof(g_formatDescriptors) / sizeof(g_formatDescriptors[0]);
+        static const uint32_t kLength = sizeof(g_formatDescriptors) / sizeof(g_formatDescriptors[0]);
 
-        Size i = 0;
+        uint32_t i = 0;
         for (; i < kLength; i++) {
             const FormatDescriptor& desc = g_formatDescriptors[i];
             if (desc.imageFormat == imageFormat && desc.dataType == dataType) {
@@ -187,44 +187,44 @@ namespace Wanlix
         return g_formatDescriptors[i];
     }
 
-    Bool FormatDescriptor::IsCompressedFormat() const
+    bool FormatDescriptor::IsCompressedFormat() const
     {
         return (flags & PixelFormatFlags::IsCompressed) != 0;
     }
 
-    Bool FormatDescriptor::IsDepthStencilFormat() const
+    bool FormatDescriptor::IsDepthStencilFormat() const
     {
         return (flags & (PixelFormatFlags::HasDepth | PixelFormatFlags::HasStencil)) != 0;
     }
 
-    Bool FormatDescriptor::IsDepthFormat() const
+    bool FormatDescriptor::IsDepthFormat() const
     {
         return (flags & PixelFormatFlags::HasDepth) != 0;
     }
 
-    Bool FormatDescriptor::IsStencilFormat() const
+    bool FormatDescriptor::IsStencilFormat() const
     {
         return (flags & PixelFormatFlags::HasStencil) != 0;
     }
 
-    Bool FormatDescriptor::IsNormalizedFormat() const
+    bool FormatDescriptor::IsNormalizedFormat() const
     {
         return (flags & PixelFormatFlags::IsNormalized) != 0;
     }
 
-    Bool FormatDescriptor::IsIntegralFormat() const
+    bool FormatDescriptor::IsIntegralFormat() const
     {
         return (flags & PixelFormatFlags::IsInteger) != 0;
     }
 
-    Bool FormatDescriptor::IsFloatFormat() const
+    bool FormatDescriptor::IsFloatFormat() const
     {
         return dataType == DataType::Float16 ||
                dataType == DataType::Float32 ||
                dataType == DataType::Float64;
     }
 
-    Size FormatDescriptor::GetSize() const
+    uint32_t FormatDescriptor::GetSize() const
     {
         return bits / 8;
     }

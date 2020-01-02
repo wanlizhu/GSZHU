@@ -23,8 +23,10 @@ namespace Wanlix
         Uint flags = TextureViewFlags::None;
     };
 
-    class ITextureView : public inherit_shared_from_this<IDeviceObject, ITextureView> 
+    class RHI_API ITextureView : public IDeviceObject
     {
+        CLASSINFO(ITextureView)
+        INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
         virtual ~ITextureView() = default;
 

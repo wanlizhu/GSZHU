@@ -1,12 +1,14 @@
 #pragma once
 
-#include "Common.h"
+#include "Wanlix/VulkanRHI/Common.h"
 #include "Wanlix/RHI/IBuffer.h"
 
 namespace Wanlix
 {
-    class IBufferVk : public inherit_shared_from_this<IBuffer, IBufferVk>
+    class RHI_API IBufferVk : public IBuffer
     {
+        CLASSINFO(IBufferVk)
+        INHERIT_SHARED_FROM_THIS(IBuffer)
     public:
         virtual VkBuffer GetVkBuffer() const = 0;
         virtual void SetAccessFlags(VkAccessFlags flags) = 0;

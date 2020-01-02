@@ -1,12 +1,14 @@
 #pragma once
 
-#include "Common.h"
+#include "Wanlix/VulkanRHI/Common.h"
 #include "Wanlix/RHI/IBufferView.h"
 
 namespace Wanlix
 {
-    class IBufferViewVk : public inherit_shared_from_this<IBufferView, IBufferViewVk>
+    class RHI_API IBufferViewVk : public IBufferView
     {
+        CLASSINFO(IBufferViewVk)
+        INHERIT_SHARED_FROM_THIS(IBufferView)
     public:
         virtual VkBufferView GetVkBufferView() const = 0;
     };

@@ -30,8 +30,10 @@ namespace Wanlix
         Bool isPrimary = true;
     }; 
 
-    class ISwapChain : public inherit_shared_from_this<Object, ISwapChain>
+    class RHI_API ISwapChain : public Object
     {
+        CLASSINFO(ISwapChain)
+        INHERIT_SHARED_FROM_THIS(Object)
     public:
         virtual ~ISwapChain() = default;
 

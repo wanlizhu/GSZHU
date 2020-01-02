@@ -39,8 +39,10 @@ namespace Wanlix
         Uint arraySize = 0;
     };
 
-    class IShader : public inherit_shared_from_this<IDeviceObject, IShader>
+    class RHI_API IShader : public IDeviceObject
     {
+        CLASSINFO(IShader)
+        INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
         virtual ~IShader() = default;
 

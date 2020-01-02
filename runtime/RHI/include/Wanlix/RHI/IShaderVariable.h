@@ -11,8 +11,10 @@ namespace Wanlix
         ShaderVariableType type = ShaderVariableType::Static;
     };
 
-    class IShaderVariable : public inherit_shared_from_this<Object, IShaderVariable>
+    class RHI_API IShaderVariable : public Object
     {
+        CLASSINFO(IShaderVariable)
+        INHERIT_SHARED_FROM_THIS(Object)
     public:
         virtual ~IShaderVariable() = default;
 

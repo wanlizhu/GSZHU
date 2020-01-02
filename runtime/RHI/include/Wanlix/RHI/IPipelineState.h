@@ -66,8 +66,10 @@ namespace Wanlix
         ComputePipelineDesc computePipeline;
     };
 
-    class IPipelineState : public inherit_shared_from_this<IDeviceObject, IPipelineState>
+    class RHI_API IPipelineState : public IDeviceObject
     {
+        CLASSINFO(IPipelineState)
+        INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
         virtual ~IPipelineState() = default;
 

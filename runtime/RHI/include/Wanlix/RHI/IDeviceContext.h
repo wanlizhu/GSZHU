@@ -5,8 +5,10 @@
 
 namespace Wanlix
 {
-    class IDeviceContext : public inherit_shared_from_this<Object, IDeviceContext>
+    class RHI_API IDeviceContext : public Object
     {
+        CLASSINFO(IDeviceContext)
+        INHERIT_SHARED_FROM_THIS(Object)
     public:
         virtual ~IDeviceContext() = default;
 

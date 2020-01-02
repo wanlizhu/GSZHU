@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IAllocator.h"
 #include "IDevice.h"
 #include "DebugOutput.h"
 
@@ -12,8 +13,10 @@ namespace Wanlix
         Uint numDeferredContexts = 0;
     };
 
-    class IDeviceFactory : public inherit_shared_from_this<Object, IDeviceFactory>
+    class RHI_API IDeviceFactory : public Object
     {
+        CLASSINFO(IDeviceFactory)
+        INHERIT_SHARED_FROM_THIS(Object)
     public:
         virtual IDevice* CreateDevice() = 0;
     };

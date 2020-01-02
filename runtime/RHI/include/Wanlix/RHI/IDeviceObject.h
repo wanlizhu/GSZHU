@@ -6,8 +6,10 @@ namespace Wanlix
 {
     struct DeviceObjectDesc {};
 
-    class IDeviceObject : public inherit_shared_from_this<Object, IDeviceObject>
+    class RHI_API IDeviceObject : public Object
     {
+        CLASSINFO(IDeviceObject)
+        INHERIT_SHARED_FROM_THIS(Object)
     public:
         virtual ~IDeviceObject() = default;
 

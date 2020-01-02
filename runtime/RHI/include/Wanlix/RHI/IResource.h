@@ -4,8 +4,10 @@
 
 namespace Wanlix
 {
-    class IResource : public inherit_shared_from_this<IDeviceObject, IResource>
+    class RHI_API IResource : public IDeviceObject
     {
+        CLASSINFO(IResource)
+        INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
         virtual ~IResource() = default;
 

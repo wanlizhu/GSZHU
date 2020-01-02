@@ -22,8 +22,10 @@ namespace Wanlix
                                       BufferFormat format,
                                       Range range);
 
-    class IBufferView : public inherit_shared_from_this<IDeviceObject, IBufferView>
+    class RHI_API IBufferView : public IDeviceObject
     {
+        CLASSINFO(IBufferView)
+        INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
         virtual ~IBufferView() = default;
 

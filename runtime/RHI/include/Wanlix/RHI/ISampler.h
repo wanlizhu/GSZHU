@@ -27,8 +27,10 @@ namespace Wanlix
         SamplerDesc samplerDesc;
     };
 
-    class ISampler : public inherit_shared_from_this<IDeviceObject, ISampler>
+    class RHI_API ISampler : public IDeviceObject
     {
+        CLASSINFO(ISampler)
+        INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
         virtual ~ISampler() = default;
 

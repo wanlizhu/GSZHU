@@ -93,14 +93,6 @@ namespace Wanlix
         };
     };
 
-    enum class Usage
-    {
-        Default,
-        Static,
-        Dynamic,
-        Staging,
-    };
-
     struct CpuAccessFlags
     {
         enum {
@@ -337,17 +329,6 @@ namespace Wanlix
         LineStrip,
         LineStrip_Adjacency,
         PatchList,
-    };
-
-    enum class ShaderType
-    {
-        Unknown = 0,
-        Vertex,
-        Fragment,
-        Geometry,
-        TessEval,
-        TessCtrl,
-        Compute,
     };
 
     struct ShaderStages

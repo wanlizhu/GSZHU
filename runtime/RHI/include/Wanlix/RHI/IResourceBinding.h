@@ -4,8 +4,10 @@
 
 namespace Wanlix
 {
-    class IResourceBinding : public inherit_shared_from_this<Object, IResourceBinding>
+    class RHI_API IResourceBinding : public Object
     {
+        CLASSINFO(IResourceBinding)
+        INHERIT_SHARED_FROM_THIS(Object)
     public:
         virtual ~IResourceBinding() = default;
 

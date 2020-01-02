@@ -7,8 +7,10 @@ namespace Wanlix
     struct FenceDesc : public DeviceObjectDesc
     {};
 
-    class IFence : public inherit_shared_from_this<IDeviceObject, IFence>
+    class RHI_API IFence : public IDeviceObject
     {
+        CLASSINFO(IFence)
+        INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
         virtual ~IFence() = default;
 

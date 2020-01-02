@@ -26,8 +26,10 @@ namespace Wanlix
 
     BufferDesc MakeBufferDesc(Uint size, Uint bindFlags);
 
-    class IBuffer : public inherit_shared_from_this<IResource, IBuffer>
+    class RHI_API IBuffer : public IResource
     {
+        CLASSINFO(IBuffer)
+        INHERIT_SHARED_FROM_THIS(IResource)
     public:
         virtual ~IBuffer() = default;
 

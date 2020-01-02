@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common.h"
+#include "Wanlix/RHI/Common.h"
 
 namespace Wanlix
 {
@@ -16,8 +16,10 @@ namespace Wanlix
         Array<ResourceMappingEntry> entries;
     };
 
-    class IResourceMapping : public inherit_shared_from_this<Object, IResourceMapping>
+    class RHI_API IResourceMapping : public Object
     {
+        CLASSINFO(IResourceMapping)
+        INHERIT_SHARED_FROM_THIS(Object)
     public:
         virtual ~IResourceMapping() = default;
 

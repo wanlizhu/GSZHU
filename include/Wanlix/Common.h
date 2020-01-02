@@ -27,23 +27,25 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
-#include "Config.h"
-#include "Flags.h"
+#include "Wanlix/Config.h"
+#include "Wanlix/Flags.h"
+#include "Wanlix/Macro.h"
+#include "Wanlix/Object.h"
 
 namespace Wanlix
 {
-    using I08 = int8_t;
-    using I16 = int16_t;
+    using Int8 = int8_t;
+    using Int16 = int16_t;
     using Int = int32_t;
-    using I32 = int32_t;
-    using I64 = int64_t;
+    using Int32 = int32_t;
+    using Int64 = int64_t;
     using Bool = bool;
     using Byte = uint8_t;
-    using Ui08 = uint8_t;
-    using Ui16 = Uint;
+    using Uint8 = uint8_t;
+    using Uint16 = uint16_t;
     using Uint = uint32_t;
-    using Ui32 = uint32_t;
-    using Ui64 = uint64_t;
+    using Uint32 = uint32_t;
+    using Uint64 = uint64_t;
     using Size = size_t;
     using Pvoid = void*;
     using Wstring = std::wstring;
@@ -57,6 +59,7 @@ namespace Wanlix
     
     template<typename _Value_>
     using Array = std::vector<_Value_>;
+    using ByteArray = std::vector<uint8_t>;
     
     template<typename _Key_, typename _Value_>
     using HashMap = std::unordered_map<_Key_, _Value_>;
@@ -168,23 +171,4 @@ namespace Wanlix
             return a == b;
         }
     }
-
-    template<typename _Base_, typename _This_>
-    class inherit_shared_from_this : public _Base_
-    {
-    public:
-        typename std::shared_ptr<_This_> shared_from_this()
-        {
-            _Base_* base = static_cast<_This_*>(this);
-            std::shared_ptr<_Base_> shared = base->shared_from_this();
-            return std::static_pointer_cast<_This_>(shared);
-        }
-
-        typename std::shared_ptr<const _This_> shared_from_this() const
-        {
-            const _Base_* base = static_cast<const _This_*>(this);
-            std::shared_ptr<const _Base_> shared = base->shared_from_this();
-            return std::static_pointer_cast<const _This_>(shared);
-        }
-    };
 }

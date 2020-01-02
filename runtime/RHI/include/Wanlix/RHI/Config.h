@@ -2,7 +2,7 @@
 
 #include "Wanlix/Config.h"
 
-#if defined _MSC_VER && !defined WANLIX_RHI_BUILD_SHARED_LIBS
+#if defined _MSC_VER && defined WANLIX_RHI_BUILD_SHARED_LIBS
 #   define RHI_API __declspec(dllexport)
 #else
 #   define RHI_API

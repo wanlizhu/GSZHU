@@ -59,8 +59,10 @@ namespace Wanlix
         Uint depthStride = 0;
     };
 
-    class ITexture : public inherit_shared_from_this<IResource, ITexture>
+    class RHI_API ITexture : public IResource
     {
+        CLASSINFO(ITexture)
+        INHERIT_SHARED_FROM_THIS(IResource)
     public:
         virtual ~ITexture() = default;
 
