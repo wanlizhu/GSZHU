@@ -4,6 +4,14 @@
 
 namespace Wanlix
 {
+    enum class DebugSeverity
+    {
+        Info = 0,
+        Warning,
+        Error,
+        FatalError,
+    };
+
     enum class BlendFactor
     {
         Undefined = 0,

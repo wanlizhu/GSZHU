@@ -1,50 +1,89 @@
 #pragma once
 
 #include "Wanlix/VulkanRHI/Common.h"
-#include "Wanlix/RHI/IDeviceObject.h"
 
 namespace Wanlix
 {
-    class LogicalDevice;
-
     template<typename T>
-    class VulkanObject final : public IDeviceObject
+    class VulkanObject : public NonCopyable
     {
-        CLASSINFO(VulkanObject)
-        INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
         friend class LogicalDevice;
         using ObjectType = T;
 
         VulkanObject();
-        VulkanObject(SharedPtr<LogicalDevice> device, ObjectType&& object);
-        explicit VulkanObject(ObjectType object); // This constructor does not take ownership of the vulkan object
-        virtual ~VulkanObject(); 
+        VulkanObject(SharedPtr<LogicalDevice> device, T object);
+        explicit VulkanObject(T object);
+        VulkanObject(VulkanObject&& rhs);
+        VulkanObject& operator=(VulkanObject&& rhs);
+        ~VulkanObject();
 
         operator T() const;
         void Release();
 
     private:
         SharedPtr<LogicalDevice> mLogicalDevice;
-        ObjectType mObject;
+        ObjectType mVkObject;
     };
 
 
-    using VkCommandPoolObject = VulkanObject<VkCommandPool>;
-    using VkBufferObject = VulkanObject<VkBuffer>;
-    using VkBufferViewObject = VulkanObject<VkBufferView>;
-    using VkImageObject = VulkanObject<VkImage>;
-    using VkImageViewObject = VulkanObject<VkImageView>;
-    using VkDeviceMemoryObject = VulkanObject<VkDeviceMemory>;
-    using VkFenceObject = VulkanObject<VkFence>;
-    using VkRenderPassObject = VulkanObject<VkRenderPass>;
-    using VkPipelineObject = VulkanObject<VkPipeline>;
-    using VkShaderModuleObject = VulkanObject<VkShaderModule>;
-    using VkPipelineLayoutObject = VulkanObject<VkPipelineLayout>;
-    using VkSamplerObject = VulkanObject<VkSampler>;
-    using VkFramebufferObject = VulkanObject<VkFramebuffer>;
-    using VkDescriptorPoolObject = VulkanObject<VkDescriptorPool>;
-    using VkDescriptorSetLayoutObject = VulkanObject<VkDescriptorSetLayout>;
-    using VkSemaphoreObject = VulkanObject<VkSemaphore>;
 
+
+    template<typename T>
+    VulkanObject<T>::VulkanObject()
+        : mLogicalDevice(nullptr)
+        , mVkObject(VK_NULL_HANDLE)
+    {}
+
+    template<typename T>
+    VulkanObject<T>::VulkanObject(SharedPtr<LogicalDevice> device, T object)
+        : mLogicalDevice(device)
+        , mVkObject(object)
+    {}
+
+    template<typename T>
+    VulkanObject<T>::VulkanObject(T object)
+        : mLogicalDevice(nullptr)
+        , mVkObject(object)
+    {}
+
+    template<typename T>
+    VulkanObject<T>::VulkanObject(VulkanObject&& rhs)
+        : mLogicalDevice(std::move(rhs.mLogicalDevice))
+        , mVkObject(rhs.mVkObject)
+    {
+        rhs.mVkObject = VK_NULL_HANDLE;
+    }
+
+    template<typename T>
+    VulkanObject<T>& VulkanObject<T>::operator=(VulkanObject&& rhs)
+    {
+        Release();
+        mLogicalDevice = std::move(rhs.mLogicalDevice);
+        mVkObject = rhs.mVkObject;
+        rhs.mVkObject = VK_NULL_HANDLE;
+        return *this;
+    }
+
+    template<typename T>
+    VulkanObject<T>::~VulkanObject()
+    {
+        Release();
+    }
+
+    template<typename T>
+    VulkanObject<T>::operator T() const 
+    {
+        return mVkObject;
+    }
+
+    template<typename T>
+    void VulkanObject<T>::Release()
+    {
+        if (mLogicalDevice && mVkObject != VK_NULL_HANDLE) {
+            
+        }
+        mVkObject = VK_NULL_HANDLE;
+        mLogicalDevice.reset();
+    }
 }

@@ -28,8 +28,6 @@ namespace Wanlix
         CLASSINFO(ITextureView)
         INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
-        virtual ~ITextureView() = default;
-
         /* interfaces inherited from IDeviceObject */
         virtual Pvoid GetNativeHandle() const override = 0;
         virtual TextureViewDesc const& GetDesc() const override = 0;

@@ -9,8 +9,6 @@ namespace Wanlix
         CLASSINFO(IResource)
         INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
-        virtual ~IResource() = default;
-
         /* interfaces inherited from IDeviceObject */
         virtual void* GetNativeHandle() const override = 0;
         virtual DeviceObjectDesc const& GetDesc() const override = 0;

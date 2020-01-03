@@ -4,14 +4,14 @@
 
 namespace Wanlix
 {
-    struct SamplerCapability
+    struct SamplerCaps
     {
         Bool borderSamplingModeSupported = true;
         Bool anisotropicFilteringSupported = true;
         Bool lodBiasSupported = true;
     };
 
-    struct TextureCapability
+    struct TextureCaps
     {
         Bool texture1DSupported = true;
         Bool texture1DArraySupported = true;
@@ -28,7 +28,7 @@ namespace Wanlix
         const float YtoVScale;     
     };
 
-    struct DeviceCapability
+    struct DeviceCaps
     {
         DeviceType deviceType = DeviceType::Undefined;
         Int  majorVersion = 0;
@@ -40,8 +40,8 @@ namespace Wanlix
         Bool computeShadersSupported = true;
         Bool geometryShadersSupported = true;
         Bool tessellationSupported = true;
-        SamplerCapability sampler;
-        TextureCapability texture;
+        SamplerCaps sampler;
+        TextureCaps texture;
         NDCAttribs ndc;
     };
 }

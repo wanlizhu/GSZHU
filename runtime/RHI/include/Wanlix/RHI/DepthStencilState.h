@@ -24,8 +24,4 @@ namespace Wanlix
         StencilFaceDesc frontFace;
         StencilFaceDesc backFace;
     };
-
-    DepthStencilStateDesc MakeDepthStencilStateDesc(Bool depthEnabled,
-                                                    Bool depthWriteEnabled,
-                                                    Bool stencilEnabled);
 }

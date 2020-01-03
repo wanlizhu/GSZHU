@@ -35,7 +35,7 @@ namespace Wanlix
         Uint  cpuAccessFlags = CpuAccessFlags::None;
         Uint  miscFlags = MiscFlags::None;
         ClearValue clearValue;
-        Ui64 commandQueueMask = 1;
+        Uint64 commandQueueMask = 1;
     };
 
     struct SubresourceData
@@ -64,8 +64,6 @@ namespace Wanlix
         CLASSINFO(ITexture)
         INHERIT_SHARED_FROM_THIS(IResource)
     public:
-        virtual ~ITexture() = default;
-
         /* interfaces inherited from IDeviceObject */
         virtual Pvoid GetNativeHandle() const override = 0;
         virtual TextureDesc const& GetDesc() const override = 0;

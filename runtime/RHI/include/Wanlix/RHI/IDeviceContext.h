@@ -10,8 +10,6 @@ namespace Wanlix
         CLASSINFO(IDeviceContext)
         INHERIT_SHARED_FROM_THIS(Object)
     public:
-        virtual ~IDeviceContext() = default;
-
         virtual void SetPipelineState(IPipelineState* pipeline) = 0;
         virtual void TransitionResources(IPipelineState* pipeline, IResourceBinding* binding) = 0;
         virtual void CommitResources(IResourceBinding* binding, RSTMode transitionMode) = 0;
@@ -43,7 +41,7 @@ namespace Wanlix
         virtual void Clear(Uint clearFlags) = 0;
         virtual void EndCommandBuffer(ICommandBuffer* commandBuffer) = 0;
         virtual void ExecuteCommandBuffer(ICommandBuffer* commandBuffer) = 0;
-        virtual void SignalFence(IFence* fence, Ui64 value) = 0;
+        virtual void SignalFence(IFence* fence, Uint64 value) = 0;
         virtual void Flush() = 0;
 
         virtual void UpdateBuffer(IBuffer* buffer,

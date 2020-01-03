@@ -9,8 +9,6 @@ namespace Wanlix
         CLASSINFO(IResourceBinding)
         INHERIT_SHARED_FROM_THIS(Object)
     public:
-        virtual ~IResourceBinding() = default;
-
         virtual IPipelineState* GetPipelineState() = 0;
         virtual void BindResources(Uint shaderFlags, IResourceMapping* resourceMapping, Uint flags) = 0;
         virtual IShaderVariable* GetVariableByName(ShaderType shaderType, String const& name) = 0;

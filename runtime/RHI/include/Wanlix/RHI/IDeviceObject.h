@@ -12,9 +12,8 @@ namespace Wanlix
         INHERIT_SHARED_FROM_THIS(Object)
     public:
         virtual ~IDeviceObject() = default;
-
         virtual Pvoid GetNativeHandle() const = 0;
-        virtual const DeviceObjectDesc& GetDesc() const = 0;
+        virtual DeviceObjectDesc const& GetDesc() const = 0;
         virtual IDevice* GetDevice() const = 0;
     };
 }

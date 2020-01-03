@@ -60,7 +60,7 @@ namespace Wanlix
     {
         Bool isGraphicsPipeline = true;
         Uint allocationGranularity = 1;
-        Ui64 commandQueueMask = 1;
+        Uint64 commandQueueMask = 1;
         PipelineResourceLayoutDesc resourceLayout;
         GraphicsPipelineDesc graphicsPipeline;
         ComputePipelineDesc computePipeline;
@@ -71,8 +71,6 @@ namespace Wanlix
         CLASSINFO(IPipelineState)
         INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
-        virtual ~IPipelineState() = default;
-
         /* interfaces inherited from IDeviceObject */
         virtual Pvoid GetNativeHandle() const = 0;
         virtual PipelineStateDesc const& GetDesc() const override = 0;

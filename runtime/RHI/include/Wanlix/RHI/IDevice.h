@@ -9,7 +9,8 @@ namespace Wanlix
         CLASSINFO(IDevice)
         INHERIT_SHARED_FROM_THIS(Object)
     public:
-        virtual ~IDevice() = default;
+        using DebugMessageCallback = void(*)(DebugSeverity, String const&, DebugLocation const&);
+
         virtual IDeviceContext* Context() const = 0;
         virtual IBuffer* CreateBuffer(BufferDesc const& desc, BufferData const* data) = 0;
         virtual IShader* CreateShader(ShaderCreateInfo const& info) = 0;
@@ -20,5 +21,6 @@ namespace Wanlix
         virtual IFence* CreateFence(FenceDesc const& desc) = 0;
         virtual DeviceCapability const& Capability() const = 0;
         virtual void ReleaseResources(Bool forceRelease = false) = 0;
+        virtual void SetDebugMessageCallback(DebugMessageCallback callback) = 0;
     };
 }

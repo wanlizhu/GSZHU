@@ -60,6 +60,7 @@ namespace Wanlix
     template<typename _Value_>
     using Array = std::vector<_Value_>;
     using ByteArray = std::vector<uint8_t>;
+    using StringArray = std::vector<std::string>;
     
     template<typename _Key_, typename _Value_>
     using HashMap = std::unordered_map<_Key_, _Value_>;

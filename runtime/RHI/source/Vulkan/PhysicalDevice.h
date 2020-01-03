@@ -9,9 +9,7 @@ namespace Wanlix
         CLASSINFO(PhysicalDevice)
         INHERIT_SHARED_FROM_THIS(Object)
     public:
-        using UniquePtr = std::unique_ptr<PhysicalDevice>;
-
-        static UniquePtr Create(VkPhysicalDevice device);
+        static UniquePtr<PhysicalDevice> Create(VkPhysicalDevice device);
 
         Uint32 FindQueueFamily(VkQueueFlags flags) const;
         VkPhysicalDevice GetVkPhysicalDevice() const;

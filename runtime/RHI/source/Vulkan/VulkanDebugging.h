@@ -38,8 +38,8 @@ namespace Wanlix
     void EndCommandBufferLabelRegion(VkCommandBuffer cmdbuffer);
     void EndCommandQueueLabelRegion(VkQueue queue);
 
-    const char* VkResultToString(VkResult result);
-    const char* VkObjectTypeToString(VkObjectType type);
-    const char* VkImageLayoutToString(VkImageLayout layout);
-    std::string VkAccessFlagToString(VkAccessFlagBits bits);
+    String VkResultToString(VkResult result);
+    String VkObjectTypeToString(VkObjectType type);
+    String VkImageLayoutToString(VkImageLayout layout);
+    String VkAccessFlagToString(VkAccessFlagBits bits);
 }

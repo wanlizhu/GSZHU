@@ -35,8 +35,6 @@ namespace Wanlix
         CLASSINFO(ISwapChain)
         INHERIT_SHARED_FROM_THIS(Object)
     public:
-        virtual ~ISwapChain() = default;
-
         virtual void Present(Uint syncInterval = 1) = 0;
         virtual SwapChainDesc const& GetDesc() const = 0;
         virtual void Resize(Uint w, Uint h) = 0;

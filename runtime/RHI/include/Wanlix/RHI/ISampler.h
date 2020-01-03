@@ -32,8 +32,6 @@ namespace Wanlix
         CLASSINFO(ISampler)
         INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
-        virtual ~ISampler() = default;
-
         /* interfaces inherited from IDeviceObject */
         virtual Pvoid GetNativeHandle() const = 0;
         virtual SamplerDesc const& GetDesc() const override = 0;

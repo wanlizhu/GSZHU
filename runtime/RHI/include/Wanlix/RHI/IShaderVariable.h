@@ -16,8 +16,6 @@ namespace Wanlix
         CLASSINFO(IShaderVariable)
         INHERIT_SHARED_FROM_THIS(Object)
     public:
-        virtual ~IShaderVariable() = default;
-
         virtual void Set(IDeviceObject* object) = 0;
         virtual void SetArray(IDeviceObject** objects, Uint firstElement, Uint elements) = 0;
         virtual ShaderVariableType GetType() const = 0;

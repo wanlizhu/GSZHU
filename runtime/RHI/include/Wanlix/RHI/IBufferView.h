@@ -27,13 +27,10 @@ namespace Wanlix
         CLASSINFO(IBufferView)
         INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
-        virtual ~IBufferView() = default;
-
         /* interfaces inherited from IDeviceObject */
         virtual Pvoid GetNativeHandle() const override = 0;
         virtual BufferViewDesc const& GetDesc() const override = 0;
         virtual IDevice* GetDevice() const override = 0;
-
         virtual IBuffer* GetBuffer() const = 0;
     };
 }

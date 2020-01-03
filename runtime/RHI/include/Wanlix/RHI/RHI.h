@@ -8,7 +8,7 @@
 #include "BlendState.h"
 #include "DepthStencilState.h"
 #include "RasterizerState.h"
-#include "DeviceCapability.h"
+#include "DeviceCaps.h"
 #include "IBuffer.h"
 #include "IBufferView.h"
 #include "ITexture.h"

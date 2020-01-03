@@ -70,6 +70,13 @@ namespace Wanlix
     struct InputLayoutDesc;
     struct SwapChainDesc;
 
+    struct DebugLocation
+    {
+        String fileName;
+        String funcName;
+        Uint   line;
+    };
+
     struct Range
     {
         Uint offset = 0;

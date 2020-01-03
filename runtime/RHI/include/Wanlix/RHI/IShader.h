@@ -44,8 +44,6 @@ namespace Wanlix
         CLASSINFO(IShader)
         INHERIT_SHARED_FROM_THIS(IDeviceObject)
     public:
-        virtual ~IShader() = default;
-
         /* interfaces inherited from IDeviceObject */
         virtual Pvoid GetNativeHandle() const = 0;
         virtual ShaderDesc const& GetDesc() const override = 0;

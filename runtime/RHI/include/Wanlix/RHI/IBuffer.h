@@ -20,8 +20,8 @@ namespace Wanlix
         Usage usage = Usage::Default;
         Uint  cpuAccessFlags = CpuAccessFlags::None;
         BufferMode mode = BufferMode::Undefined;
-        Uint  stride = 0;
-        Ui64  commandQueueMask = 1;
+        Uint   stride = 0;
+        Uint64 commandQueueMask = 1;
     };
 
     BufferDesc MakeBufferDesc(Uint size, Uint bindFlags);
@@ -31,8 +31,6 @@ namespace Wanlix
         CLASSINFO(IBuffer)
         INHERIT_SHARED_FROM_THIS(IResource)
     public:
-        virtual ~IBuffer() = default;
-
         /* interfaces inherited from IDeviceObject */
         virtual Pvoid GetNativeHandle() const override = 0;
         virtual BufferDesc const& GetDesc() const override = 0;
