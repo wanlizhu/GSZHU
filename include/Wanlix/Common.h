@@ -30,7 +30,7 @@
 #include "Wanlix/Config.h"
 #include "Wanlix/Flags.h"
 #include "Wanlix/Macro.h"
-#include "Wanlix/Object.h"
+#include "Wanlix/NonCopyable.h"
 
 namespace Wanlix
 {
@@ -43,6 +43,7 @@ namespace Wanlix
     using Byte = uint8_t;
     using Uint8 = uint8_t;
     using Uint16 = uint16_t;
+    using BitSet = uint32_t;
     using Uint = uint32_t;
     using Uint32 = uint32_t;
     using Uint64 = uint64_t;
@@ -67,6 +68,9 @@ namespace Wanlix
     
     template<typename T>
     using SharedPtr = std::shared_ptr<T>;
+
+    template<typename T>
+    using WeakPtr = std::weak_ptr<T>;
     
     template<typename T>
     using UniquePtr = std::unique_ptr<T>;
@@ -81,10 +85,7 @@ namespace Wanlix
     using Float2 = std::array<float, 2>;
     using Float3 = std::array<float, 3>;
     using Float4 = std::array<float, 4>;
-    using Uv = Float2;
-    using Uvw = Float3;
-    using Color = Float4;
-    using Quat = Float4;
+    using Quaternion = Float4;
     using Float3x3 = std::array<float, 9>;
     using Float4x4 = std::array<float, 16>;
     using Variant = std::variant<
@@ -157,7 +158,7 @@ namespace Wanlix
 
     template<typename T>
     inline Bool IsPowerOf2(T num) {
-        Ui64 tmp = (Ui64)num;
+        Uint64 tmp = (Ui64)num;
         return (tmp & (tmp - 1)) == 0;
     }
 

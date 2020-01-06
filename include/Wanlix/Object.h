@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common.h"
+#include "Wanlix/Common.h"
 
 namespace Wanlix
 {
@@ -13,7 +13,8 @@ namespace Wanlix
         Object& operator=(Object&& obj);
         virtual ~Object();
 
-        String const& ObjectName() const;
+        void SetObjectName(String const& name);
+        String const& GetObjectName() const;
         void SetParent(Object* parent);
         Object* GetParent() const;
         void SetProperty(String const& name, Variant const& value);
@@ -30,7 +31,7 @@ namespace Wanlix
         virtual void TimerEvent(Uint timerId);
 
     private:
-        String  mObjectName;
+        String mObjectName;
         Object* mParent = nullptr;
         StringMap<Variant> mProperties;
     };

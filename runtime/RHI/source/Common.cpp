@@ -1,4 +1,4 @@
-#include "Wanlix/RHI/Common.h"
+#include "Wanlix/CommonRHI.h"
 
 namespace Wanlix
 {

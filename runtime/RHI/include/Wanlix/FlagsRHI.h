@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include "Wanlix/Flags.h"
 
 namespace Wanlix
 {
@@ -165,13 +165,13 @@ namespace Wanlix
     enum class ResourceType
     {
         Undefined = 0,
-        Buffer,                 
-        Texture1D, 
+        Buffer,
+        Texture1D,
         Texture1DArray,
-        Texture2D,     
+        Texture2D,
         Texture2DArray,
-        Texture3D,              
-        TextureCube, 
+        Texture3D,
+        TextureCube,
         TextureCubeArray,
         Texture2DMultisample,
     };
@@ -433,31 +433,5 @@ namespace Wanlix
         TextureUAV,
         BufferUAV,
         Sampler,
-    };
-
-    struct SwapChainUsage
-    {
-        enum {
-            None = 0,
-            RenderTarget = 1,
-            ShaderInput = (1 << 1),
-            CopySource = (1 << 2),
-            CopyDest = (1 << 3),
-        };
-    };
-
-    enum class ScalingMode
-    {
-        Unspecified = 0,
-        centered,
-        Stretched,
-    };
-
-    enum class ScanLineMode
-    {
-        Unspecified = 0,
-        Progressive,
-        UpperFieldFirst,
-        LowerFieldFirst,
     };
 }
