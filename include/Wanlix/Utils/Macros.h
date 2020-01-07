@@ -1,5 +1,21 @@
 #pragma once
 
+#define SafeDelete(a) { if (a != nullptr) { delete a; a = nullptr; } }
+#define SafeDeleteArray(a) { if (a != nullptr) { delete[] a; a = nullptr; } }
+#define Stringize(a) #a
+#define ConcatStrings(a, b) a##b
+#define EnumToInt(T, var) static_cast<std::underlying_type_t<T>>(var)
+
+
+#define ENUM_CLASS_OPERATORS(T) \
+inline constexpr T  operator& (T  a, T b) { return static_cast<T>(EnumToInt(T, a) & EnumToInt(T, b)); } \
+inline constexpr T  operator| (T  a, T b) { return static_cast<T>(EnumToInt(T, a) | EnumToInt(T, b)); } \
+inline constexpr T& operator|=(T& a, T b) { a = a | b; return a; }; \
+inline constexpr T& operator&=(T& a, T b) { a = a & b; return a; }; \
+inline constexpr T  operator~ (T a) { return static_cast<T>(~EnumToInt(T, a)); } \
+inline constexpr bool HasBits(T val, T flag) { return (val & flag) != (T)0; }
+
+
 #define CLASSINFO(type) \
 private: \
     using __class = type;\

@@ -3,8 +3,8 @@
 #include "Wanlix/Common.h"
 #include "Wanlix/ConfigRHI.h"
 #include "Wanlix/FlagsRHI.h"
-#include "Wanlix/Format.h"
-#include "Wanlix/Color.h"
+#include "Wanlix/FormatRHI.h"
+#include "Wanlix/Utils/Color.h"
 
 namespace Wanlix
 {
@@ -65,7 +65,7 @@ namespace Wanlix
 
     struct ClearValue
     {
-        PixelFormat format = PixelFormat::Undefined;
+        EPixelFormat format = EPixelFormat::Undefined;
         Color color;
         float depth = 0.f;
         Uint stencil = 0;
@@ -73,9 +73,9 @@ namespace Wanlix
 
     struct ResourceStateDesc
     {
-        Bool isGlobal = true;
-        ResourceState globalState = ResourceState::Undefined;
-        Array<ResourceState> subresources;
+        Bool isGlobalState = true;
+        EResourceState globalState = EResourceState::Undefined;
+        Array<EResourceState> subresources;
     };
 }
 

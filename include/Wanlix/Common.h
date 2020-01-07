@@ -27,10 +27,9 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
-#include "Wanlix/Config.h"
-#include "Wanlix/Flags.h"
-#include "Wanlix/Macro.h"
-#include "Wanlix/NonCopyable.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 namespace Wanlix
 {
@@ -43,7 +42,6 @@ namespace Wanlix
     using Byte = uint8_t;
     using Uint8 = uint8_t;
     using Uint16 = uint16_t;
-    using BitSet = uint32_t;
     using Uint = uint32_t;
     using Uint32 = uint32_t;
     using Uint64 = uint64_t;
@@ -76,23 +74,19 @@ namespace Wanlix
     using UniquePtr = std::unique_ptr<T>;
 
 
-    using Int2 = std::array<int32_t, 2>;
-    using Int3 = std::array<int32_t, 3>;
-    using Int4 = std::array<int32_t, 4>;
-    using Uint2 = std::array<uint32_t, 2>;
-    using Uint3 = std::array<uint32_t, 3>;
-    using Uint4 = std::array<uint32_t, 4>;
-    using Float2 = std::array<float, 2>;
-    using Float3 = std::array<float, 3>;
-    using Float4 = std::array<float, 4>;
-    using Quaternion = Float4;
-    using Float3x3 = std::array<float, 9>;
-    using Float4x4 = std::array<float, 16>;
-    using Variant = std::variant<
-        Bool, Byte, Uint, uint32_t, uint64_t, float, double,
-        Int2, Int3, Int4, Uint2, Uint3, Uint4, Float2, Float3, Float4,
-        Float3x3, Float4x4, Pvoid, String, StringList
-    >;
+    using Int2 = glm::ivec2;
+    using Int3 = glm::ivec3;
+    using Int4 = glm::ivec4;
+    using Uint2 = glm::uvec2;
+    using Uint3 = glm::uvec3;
+    using Uint4 = glm::uvec4;
+    using Float2 = glm::vec2;
+    using Float3 = glm::vec3;
+    using Float4 = glm::vec4;
+    using Quaternion = glm::fquat;
+    using Float2x2 = glm::mat2;
+    using Float3x3 = glm::mat3;
+    using Float4x4 = glm::mat4;
 
     struct DataBlockFlags
     {
@@ -101,59 +95,6 @@ namespace Wanlix
             IsArray = 1,
             IsOwner = (1 << 1),
         };
-    };
-
-    class DataBlock final
-    {
-    public:
-        DataBlock() = default;
-        DataBlock(Pvoid data, Size size, Uint flags = 0);
-        DataBlock(DataBlock const& rhs);
-        DataBlock(DataBlock&& rhs);
-        ~DataBlock();
-        DataBlock& operator=(DataBlock const& rhs);
-        DataBlock& operator=(DataBlock&& rhs);
-
-        Byte& operator[](int index);
-        Byte const& operator[](int index) const;
-        Bool operator==(DataBlock const& rhs) const;
-        Bool operator!=(DataBlock const& rhs) const;
-
-        Size  GetSize() const;
-        Uint  GetFlags() const;
-        Pvoid GetData();
-        const void* GetData() const;
-
-    private:
-        void Free();
-
-    private:
-        Pvoid mData = nullptr;
-        Size  mSize = 0;
-        Uint  mFlags = 0;
-    };
-
-    class AABB final
-    {
-    public:
-        AABB();
-        AABB(Float3 const& min, Float3 const& max);
-
-        Float3& GetMin();
-        Float3& GetMax();
-        Float3 const& GetMin() const;
-        Float3 const& GetMax() const;
-
-        Bool operator==(AABB const&) const;
-        Bool operator!=(AABB const&) const;
-        Bool Intersects(AABB const& box) const;
-        Bool Contains(AABB const& box) const;
-        void Extent(Float3 const& point);
-        void Extent(AABB const& box);
-
-    private:
-        Float3 mMin;
-        Float3 mMax;
     };
 
     template<typename T>

@@ -11,5 +11,7 @@ target_include_directories(GAL PRIVATE "${CSD}/source")
 target_compile_definitions(GAL PRIVATE "_UNICODE" "UNICODE")
 target_compile_definitions(GAL PRIVATE "GAL_FMA")
 
+target_link_libraries(GAL PUBLIC CONAN_PKG::glm)
+
 get_target_property(_outdir_ GAL LIBRARY_OUTPUT_DIRECTORY)
 message(STATUS "Target: GAL -> ${_outdir_}" )

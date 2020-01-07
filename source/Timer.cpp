@@ -1,4 +1,4 @@
-#include "Wanlix/Timer.h"
+#include "Wanlix/Utils/Timer.h"
 
 using namespace std;
 using namespace chrono;
@@ -130,7 +130,7 @@ namespace Wanlix
     {
         std::unique_lock<std::mutex> lock(mTaskQueue.GetMutex());
         if (mTaskQueue.GetData().empty()) {
-            return kInvalidTimePoint;
+            return kMaxTimePoint;
         }
         return mTaskQueue.GetData().top().triggerAt;
     }

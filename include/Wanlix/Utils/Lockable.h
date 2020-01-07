@@ -8,17 +8,17 @@ namespace Wanlix
     class Lockable
     {
     public:
-        Lockable()
+        constexpr Lockable()
             : mMutex(std::make_shared<std::mutex>())
         {}
 
-        Lockable(const T& data)
+        constexpr Lockable(const T& data)
             : Lockable()
             , mData(data)
         {}
 
         template<typename... _Args_>
-        Lockable(_Args_&& ... args)
+        constexpr Lockable(_Args_&& ... args)
             : Lockable()
             , mData(std::forward<_Args_>(args)...)
         {}

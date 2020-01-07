@@ -22,53 +22,54 @@ namespace Wanlix
 
         static_assert(std::is_same_v<T, value_type>);
 
-        OrderedList() {}
-        OrderedList(value_compare const& comp)
+        inline OrderedList() noexcept 
+        {}
+        inline OrderedList(value_compare const& comp) noexcept
             : m_compare(comp)
         {}
-        OrderedList(container_type const& container, value_compare const& comp)
+        inline OrderedList(container_type const& container, value_compare const& comp) noexcept
             : m_container(container)
             , m_compare(comp)
         {
             std::make_heap(m_container.begin(), m_container.end(), m_compare);
         }
 
-        void push_back(value_type&& val) { 
+        inline void push_back(value_type&& val) noexcept {
             m_container.push_back(std::move(val));
             std::push_heap(m_container.begin(), m_container.end(), m_compare);
         }
 
         template<typename... _Args_>
-        void emplace_back(_Args_&& ... args) { 
+        inline void emplace_back(_Args_&& ... args) noexcept {
             m_container.emplace_back(std::forward<_Args_>(args)...);
             std::push_heap(m_container.begin(), m_container.end(), m_compare);
         }
 
-        void pop() { // erase highest-priority element
+        inline void pop() noexcept { // erase highest-priority element
             std::pop_heap(m_container.begin(), m_container.end(), m_compare);
             m_container.pop_back();
         }
 
-        iterator erase(iterator it) {
+        inline iterator erase(iterator it) noexcept {
             auto result = m_container.erase(it);
             std::make_heap(m_container.begin(), m_container.end(), m_compare);
             return result;
         }
 
-        iterator erase(const_iterator it) {
+        inline iterator erase(const_iterator it) noexcept {
             auto result = m_container.erase(it);
             std::make_heap(m_container.begin(), m_container.end(), m_compare);
             return result;
         }
 
-        const_reference top() const { return m_container.front(); }
-        reference top() { return m_container.front(); }
-        bool empty() const { return m_container.empty(); }
-        size_type size() const { return m_container.size(); }
-        const_iterator begin() const { return m_container.begin(); }
-        iterator begin() { return m_container.begin(); }
-        const_iterator end() const { return m_container.end(); }
-        iterator end() { return m_container.end(); }
+        inline const_reference top() const noexcept { return m_container.front(); }
+        inline reference top() noexcept { return m_container.front(); }
+        inline bool empty() const noexcept { return m_container.empty(); }
+        inline size_type size() const noexcept { return m_container.size(); }
+        inline const_iterator begin() const noexcept { return m_container.begin(); }
+        inline iterator begin() noexcept { return m_container.begin(); }
+        inline const_iterator end() const noexcept { return m_container.end(); }
+        inline iterator end() noexcept { return m_container.end(); }
 
     protected:
         container_type m_container;

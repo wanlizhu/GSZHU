@@ -2,14 +2,14 @@
 
 #include <cstdint>
 #include <string>
-#include "Wanlix/Flags.h"
+#include "Wanlix/Utils/Flags.h"
 
 namespace Wanlix
 {
     // Used for GPU side operations. 
-    enum class PixelFormat
+    enum class EPixelFormat
     {
-        Undefined,      
+        Undefined = 0,      
 
         /* --- Alpha channel color formats --- */
         A8UNorm,            
@@ -121,7 +121,7 @@ namespace Wanlix
         BC5SNorm,           //!< S3TC BC5 compressed red and green channels with normalized signed integer components in 128-bit per 4x4 block.
     };
 
-    enum class ImageFormat
+    enum class EImageFormat
     {
         /* Color formats */
         Alpha,          
@@ -147,39 +147,38 @@ namespace Wanlix
         BC5,            
     };
 
-    struct PixelFormatFlags
+    enum class EPixelFormatFlags
     {
-        enum
-        {
-            HasDepth = (1 << 0),
-            HasStencil = (1 << 1),
-            IsColorSpace_sRGB = (1 << 2),
-            IsCompressed = (1 << 3),
-            IsNormalized = (1 << 4),
-            IsInteger = (1 << 5),
-            IsUnsigned = (1 << 6),
-            IsPacked = (1 << 7),
-            SupportsRenderTarget = (1 << 8),
-            SupportsMips = (1 << 9),
-            SupportsGenerateMips = (1 << 10),
-            SupportsTexture1D = (1 << 11),
-            SupportsTexture2D = (1 << 12),
-            SupportsTexture3D = (1 << 13),
-            SupportsTextureCube = (1 << 14),
-            SupportsVertex = (1 << 15),
-        };
+        None = 0,
+        HasDepth = (1 << 0),
+        HasStencil = (1 << 1),
+        IsColorSpace_sRGB = (1 << 2),
+        IsCompressed = (1 << 3),
+        IsNormalized = (1 << 4),
+        IsInteger = (1 << 5),
+        IsUnsigned = (1 << 6),
+        IsPacked = (1 << 7),
+        SupportsRenderTarget = (1 << 8),
+        SupportsMips = (1 << 9),
+        SupportsGenerateMips = (1 << 10),
+        SupportsTexture1D = (1 << 11),
+        SupportsTexture2D = (1 << 12),
+        SupportsTexture3D = (1 << 13),
+        SupportsTextureCube = (1 << 14),
+        SupportsVertex = (1 << 15),
     };
+    ENUM_CLASS_OPERATORS(EPixelFormatFlags)
 
-    struct FormatDescriptor
+    struct PixelFormatDesc
     {
         uint32_t bits;
         uint8_t  blockWidth;
         uint8_t  blockHeight;
         uint8_t  components;
 
-        ImageFormat imageFormat;
-        DataType    dataType;
-        uint32_t    flags;
+        EImageFormat imageFormat;
+        EDataType dataType;
+        EPixelFormatFlags flags;
 
         bool IsCompressedFormat() const;
         bool IsDepthStencilFormat() const;
@@ -188,10 +187,10 @@ namespace Wanlix
         bool IsNormalizedFormat() const;
         bool IsIntegralFormat() const;
         bool IsFloatFormat() const;
-        uint32_t GetSize() const;
+        uint32_t GetSizeInBytes() const;
     };
 
 
-    const FormatDescriptor& GetFormatDescritpor(PixelFormat format);
-    const FormatDescriptor& GetFormatDescritpor(ImageFormat imageFormat, DataType dataType);
+    PixelFormatDesc const& GetPixelFormatDesc(EPixelFormat format);
+    PixelFormatDesc const& GetPixelFormatDesc(EImageFormat imageFormat, EDataType dataType);
 }

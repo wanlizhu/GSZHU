@@ -15,16 +15,16 @@ target_compile_definitions(RHI PRIVATE $<$<BOOL:WANLIX_ENABLE_VULKAN>:"RHI_ENABL
 target_compile_definitions(RHI PRIVATE $<$<BOOL:WANLIX_ENABLE_METAL>:"RHI_ENABLE_METAL">)
 target_compile_definitions(RHI PRIVATE $<$<BOOL:WANLIX_ENABLE_OPENGL>:"RHI_ENABLE_OPENGL">)
 
-target_link_libraries(RHI DMS)
+target_link_libraries(RHI PUBLIC CONAN_PKG::glm)
 
 if (WANLIX_ENABLE_OPENGL)
     find_package(OpenGL REQUIRED)
-    target_link_libraries(RHI OpenGL)
+    target_link_libraries(RHI PRIVATE OpenGL::GL)
 endif()
 
 if (WANLIX_ENABLE_VULKAN)
     find_package(Vulkan REQUIRED)
-    target_link_libraries(RHI Vulkan::Vulkan)
+    target_link_libraries(RHI PRIVATE Vulkan::Vulkan)
 endif()
 
 get_target_property(_outdir_ RHI LIBRARY_OUTPUT_DIRECTORY)

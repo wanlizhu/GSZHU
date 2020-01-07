@@ -1,9 +1,7 @@
 [requires]
-rapidjson/1.1.0@bincrafters/stable
 Assimp/4.1.0@jacmoe/stable
 imgui/1.73@bincrafters/stable
-stb/20190512@conan/stable
-eigen/3.3.7@conan/stable
+glm/0.9.9.5@g-truc/stable
 
 [generators]
 cmake

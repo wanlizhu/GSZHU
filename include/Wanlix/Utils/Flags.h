@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Wanlix/Utils/Macros.h"
+
 namespace Wanlix
 {
-    enum class DataType
+    enum class EDataType
     {
         Undefined = 0,
         Int8,
@@ -17,4 +19,5 @@ namespace Wanlix
         Float32,
         Float64,
     };
+    ENUM_CLASS_OPERATORS(EDataType)
 }

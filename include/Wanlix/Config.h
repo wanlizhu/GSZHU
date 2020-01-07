@@ -26,28 +26,47 @@
 #   define WANLIX_ARCH_IA32
 #endif
 
+#if defined _WIN32
+#   define DLLEXPORT __declspec(dllexport)
+#   define DLLIMPORT __declspec(dllimport)
+#else
+#   define DLLEXPORT __attribute__((visibility("default")))
+#   define DLLIMPORT __attribute__((visibility("default")))
+#endif
+
 #if defined _WIN32 && !defined WANLIX_STATIC
-#    if defined WANLIX_BUILD
-#        define WANLIX_API __declspec(dllexport)
+#    if defined WANLIX_BUILD_SHARED_LIBS
+#        define WANLIX_API DLLEXPORT
 #    else
-#        define WANLIX_API __declspec(dllimport)
+#        define WANLIX_API DLLIMPORT
 #    endif
 #else
 #    define WANLIX_API
 #endif
 
 #ifdef _WIN32
-    #ifndef WIN32_LEAN_AND_MEAN
-        #define WIN32_LEAN_AND_MEAN
-    #endif
-    #ifndef NOMINMAX
-        #define NOMINMAX
-    #endif
+#   ifndef WIN32_LEAN_AND_MEAN
+#       define WIN32_LEAN_AND_MEAN
+#   endif
+#   ifndef NOMINMAX
+#       define NOMINMAX
+#   endif
 
     // identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2'
-    #pragma warning(disable: 4251)
+#   pragma warning(disable: 4251)
     // non – DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
-    #pragma warning(disable: 4275)
+#   pragma warning(disable: 4275)
     // no definition for inline function 'function'
-    #pragma warning(disable: 4506)
+#   pragma warning(disable: 4506)
+#   pragma warning(disable: 4996)
+
+#   define CDECL       __cdecl
+#   define STDCALL     __stdcall
+#   define FORCEINLINE __forceinline
+#   define NOINLINE    __declspec(noinline)
+#else // NOT Windows
+#   define CDECL
+#   define STDCALL
+#   define FORCEINLINE __attribute__((always_inline))
+#   define NOINLINE    __attribute__((noinline))
 #endif

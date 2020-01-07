@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Wanlix/Flags.h"
+#include "Wanlix/Utils/Flags.h"
 
 namespace Wanlix
 {
-    enum class DebugSeverity
+    enum class EDebugSeverity
     {
         Info = 0,
         Warning,
@@ -12,7 +12,7 @@ namespace Wanlix
         FatalError,
     };
 
-    enum class BlendFactor
+    enum class EBlendFactor
     {
         Undefined = 0,
         Zero,
@@ -37,7 +37,7 @@ namespace Wanlix
         AlphaSrc1Inv,
     };
 
-    enum class BlendOp
+    enum class EBlendOp
     {
         Undefined = 0,
         Add,
@@ -47,7 +47,7 @@ namespace Wanlix
         Max,
     };
 
-    struct ColorMask
+    struct EColorMask
     {
         enum {
             Red = 1,
@@ -58,7 +58,7 @@ namespace Wanlix
         };
     };
 
-    enum class LogicOp
+    enum class ELogicOp
     {
         Clear = 0,
         Set,
@@ -77,7 +77,7 @@ namespace Wanlix
         OrInverted,
     };
 
-    enum class BufferMode
+    enum class EBufferMode
     {
         Undefined = 0,
         Formatted,
@@ -85,53 +85,49 @@ namespace Wanlix
         Raw,
     };
 
-    struct BindFlags
+    enum class EBindFlags 
     {
-        enum {
-            None = 0,
-            VertexBuffer = 1,
-            IndexBuffer = (1 << 1),
-            UniformBuffer = (1 << 2),
-            ShaderResource = (1 << 3),
-            StreamOutput = (1 << 4),
-            RenderTarget = (1 << 5),
-            DepthStencil = (1 << 6),
-            UnorderedAccess = (1 << 7),
-            IndirectDrawArguments = (1 << 8),
-        };
+        None = 0,
+        VertexBuffer = 1,
+        IndexBuffer = (1 << 1),
+        UniformBuffer = (1 << 2),
+        ShaderResource = (1 << 3),
+        StreamOutput = (1 << 4),
+        RenderTarget = (1 << 5),
+        DepthStencil = (1 << 6),
+        UnorderedAccess = (1 << 7),
+        IndirectDrawArguments = (1 << 8),
     };
+    ENUM_CLASS_OPERATORS(EBindFlags)
 
-    struct CpuAccessFlags
+    enum class ECPUAccessFlags
     {
-        enum {
-            None,
-            Read,
-            Write,
-        };
+        None,
+        Read,
+        Write,
     };
+    ENUM_CLASS_OPERATORS(ECPUAccessFlags)
 
-    struct MapType
+    enum class EMapType
     {
-        enum {
-            Read = 1,
-            Write = 2,
-            ReadWrite = 3,
-        };
+        Read = 1,
+        Write = 2,
+        ReadWrite = 3,
     };
+    ENUM_CLASS_OPERATORS(EMapType)
 
-    struct MapFlags
+    enum class EMapFlags
     {
-        enum {
-            None = 0,
-            DoNotWait = 1,
-            Discard = (1 << 1),
-            DoNotWaitSync = (1 << 2),
-        };
+        None = 0,
+        DoNotWait = 1,
+        Discard = (1 << 1),
+        DoNotWaitSync = (1 << 2),
     };
+    ENUM_CLASS_OPERATORS(EMapFlags)
 
-    enum class ResourceState
+    enum class EResourceState
     {
-        Undefined,
+        Undefined = 0,
         Unknown,
         PreInitialized,
         Common,
@@ -155,14 +151,7 @@ namespace Wanlix
         AccelerationStructure,
     };
 
-    enum class TransitionBarrierType
-    {
-        Immediate = 0,
-        Begin, // This mode only has effect in Direct3D12 backend
-        End,   // This mode only has effect in Direct3D12 backend
-    };
-
-    enum class ResourceType
+    enum class EResourceType
     {
         Undefined = 0,
         Buffer,
@@ -176,7 +165,7 @@ namespace Wanlix
         Texture2DMultisample,
     };
 
-    enum class Usage
+    enum class EUsage
     {
         Default = 0,
         Static,
@@ -184,7 +173,7 @@ namespace Wanlix
         Staging,
     };
 
-    struct MiscFlags
+    struct EMiscFlags
     {
         enum {
             None = 0,
@@ -192,7 +181,7 @@ namespace Wanlix
         };
     };
 
-    enum class BufferViewType
+    enum class EBufferViewType
     {
         Undefined = 0,
         ShaderResource,
@@ -202,7 +191,7 @@ namespace Wanlix
         ShaderReadWrite = UnorderedAccess,
     };
 
-    enum class TextureViewType
+    enum class ETextureViewType
     {
         Undefined = 0,
         ShaderResource,
@@ -214,25 +203,23 @@ namespace Wanlix
         ShaderReadWrite = UnorderedAccess,
     };
 
-    struct UavAccessFlags
+    enum class EUAVAccessFlags
     {
-        enum {
-            Undefined = 0,
-            Read = 1,
-            Write = (1 << 1),
-            ReadWrite = Read | Write,
-        };
+        Undefined = 0,
+        Read = 1,
+        Write = (1 << 1),
+        ReadWrite = Read | Write,
     };
+    ENUM_CLASS_OPERATORS(EUAVAccessFlags)
 
-    struct TextureViewFlags
+    enum class ETextureViewFlags
     {
-        enum {
-            None = 0,
-            AllowGenerateMip = 1,
-        };
+        None = 0,
+        AllowGenerateMip = 1,
     };
+    ENUM_CLASS_OPERATORS(ETextureViewFlags)
 
-    enum class StencilOp
+    enum class EStencilOp
     {
         Undefined,
         Keep,
@@ -245,7 +232,7 @@ namespace Wanlix
         DecrWrap,
     };
 
-    enum class ComparisonFunc
+    enum class EComparisonFunc
     {
         Unknown,
         Never,
@@ -258,7 +245,7 @@ namespace Wanlix
         Always,
     };
 
-    enum class DeviceType
+    enum class EDeviceType
     {
         Undefined,
         D3D12,
@@ -268,63 +255,43 @@ namespace Wanlix
         Metal,
     };
 
-    struct DrawFalgs
-    {
-        enum {
-            None,
-            VerifyStates,
-            VerifyParameters,
-            VerifyRenderTargets,
-            VerifyAll = VerifyStates | VerifyParameters | VerifyRenderTargets,
-        };
-    };
-
-    /* Resource state transition mode*/
-    enum class RSTMode
+    enum class EDrawFalgs
     {
         None,
-        // Any method that uses this mode may alter the state of the resources it works with.
-        Transition,
-        // Any method that uses this mode will read the state of resources it works with.
-        Verify,
+        VerifyStates,
+        VerifyParameters,
+        VerifyRenderTargets,
+        VerifyAll = VerifyStates | VerifyParameters | VerifyRenderTargets,
     };
+    ENUM_CLASS_OPERATORS(EDrawFalgs)
 
-    struct ClearFlags
+    enum class EClearFlags
     {
-        enum {
-            None = 0,
-            Color,
-            Depth,
-            Stencil,
-            ColorDepth = Color | Depth,
-            DepthStencil = Depth | Stencil,
-            All = Color | Depth | Stencil,
-        };
+        None = 0,
+        Color,
+        Depth,
+        Stencil,
+        ColorDepth = Color | Depth,
+        DepthStencil = Depth | Stencil,
+        All = Color | Depth | Stencil,
     };
+    ENUM_CLASS_OPERATORS(EClearFlags)
 
-    struct SetVbsFlags
-    {
-        enum {
-            None = 0,
-            Reset,
-        };
-    };
-
-    enum class InputFrequency
+    enum class EInputFrequency
     {
         Undefined = 0,
         PerVertex,
         PerInstance,
     };
 
-    enum class ShaderVariableType
+    enum class EShaderVariableType
     {
         Static = 0,
         Mutable,
         Dynamic,
     };
 
-    enum class PrimitiveTopology
+    enum class EPrimitiveTopology
     {
         Undefined = 0,
         TriangleList,
@@ -339,30 +306,29 @@ namespace Wanlix
         PatchList,
     };
 
-    struct ShaderStages
+    enum class EShaderStages
     {
-        enum {
-            Unknown = 0,
-            Vertex,
-            Fragment,
-            Geometry,
-            TessEval,
-            TessCtrl,
-            Compute,
+        Unknown = 0,
+        Vertex,
+        Fragment,
+        Geometry,
+        TessEval,
+        TessCtrl,
+        Compute,
 
-            Basic = Vertex | Fragment,
-            All = Vertex | Fragment | Geometry | TessEval | TessCtrl | Compute,
-        };
+        Basic = Vertex | Fragment,
+        All = Vertex | Fragment | Geometry | TessEval | TessCtrl | Compute,
     };
+    ENUM_CLASS_OPERATORS(EShaderStages)
 
-    enum class FillMode
+    enum class EFillMode
     {
         Undefined = 0,
         Wireframe,
         Solid,
     };
 
-    enum class CullMode
+    enum class ECullMode
     {
         Undefined = 0,
         None,
@@ -370,7 +336,7 @@ namespace Wanlix
         Back,
     };
 
-    enum class FilterType
+    enum class EFilterType
     {
         Unknown = 0,
         Point,
@@ -387,7 +353,7 @@ namespace Wanlix
         MaxAnisotropic,
     };
 
-    enum class AddressMode
+    enum class EAddressMode
     {
         Unknown = 0,
         Wrap,
@@ -397,7 +363,7 @@ namespace Wanlix
         MirrorOnce,
     };
 
-    enum class ShaderType
+    enum class EShaderType
     {
         Unknown = 0,
         Vertex,
@@ -408,7 +374,7 @@ namespace Wanlix
         Compute,
     };
 
-    enum class ShaderProfile
+    enum class EShaderProfile
     {
         Default = 0,
         Dx_5_0,
@@ -416,7 +382,7 @@ namespace Wanlix
         Gl_4_2,
     };
 
-    enum class ShaderLanguage
+    enum class EShaderLanguage
     {
         Default = 0,
         Hlsl,
@@ -424,7 +390,7 @@ namespace Wanlix
         SpirV,
     };
 
-    enum class ShaderResourceType
+    enum class EShaderResourceType
     {
         Unknown = 0,
         UniformBuffer,

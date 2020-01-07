@@ -1,4 +1,4 @@
-#include "Wanlix/Log.h"
+#include "Wanlix/Utils/Logger.h"
 #include <cstdarg>
 #include <iostream>
 
@@ -8,12 +8,12 @@
 
 namespace Wanlix
 {
-    std::ofstream Log::mLogFile;
-    bool Log::mLogToFileEnabled = true;
-    bool Log::mDialogOnErrorEnabled = true;
-    TaskThread Log::mLogThread;
+    std::ofstream Logger::mLogFile;
+    bool Logger::mLogToFileEnabled = true;
+    bool Logger::mDialogOnErrorEnabled = true;
+    TaskThread Logger::mLogThread;
 
-    void Log::SetLogFile(const std::string& filename, bool clearFirst)
+    void Logger::SetLogFile(const std::wstring& filename, bool clearFirst)
     {
         if (mLogFile.is_open()) {
             mLogFile.flush();
@@ -25,24 +25,24 @@ namespace Wanlix
         mLogFile.open(filename, mode);
     }
 
-    void Log::LogToFile(bool val)
+    void Logger::LogToFile(bool val)
     {
         mLogToFileEnabled = val;
     }
 
-    void Log::ShowDialogOnError(bool val)
+    void Logger::ShowDialogOnError(bool val)
     {
         mDialogOnErrorEnabled = val;
     }
 
-    void Log::CloseLogFile()
+    void Logger::Shutdown()
     {
         if (mLogFile.is_open()) {
             mLogFile.close();
         }
     }
 
-    void Log::Write(LogLevel level, const char* fmt, ...)
+    void Logger::Log(ELevel level, const char* fmt, ...)
     {
         static char buffer[1024];
         va_list args;
@@ -61,18 +61,18 @@ namespace Wanlix
         }
     }
 
-    void Log::WriteToConsole(LogLevel level, const char* str)
+    void Logger::WriteToConsole(ELevel level, const char* str)
     {
         mLogThread.AddTask([&]() {
             SetConsoleColor(level);
             printf(str);
             printf("\n");
-            SetConsoleColor(LogNone);
+            SetConsoleColor(ELevel::Disabled);
             fflush(stdout);
         });
     }
 
-    void Log::WriteToFile(LogLevel level, const char* str)
+    void Logger::WriteToFile(ELevel level, const char* str)
     {
         mLogThread.AddTask([&]() {
             if (mLogFile.is_open() && mLogToFileEnabled) {
@@ -83,32 +83,32 @@ namespace Wanlix
     }
 
 #ifdef _WIN32
-    void Log::SetConsoleColor(LogLevel level)
+    void Logger::SetConsoleColor(ELevel level)
     {
         HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
-        if (level == LogNone || level == LogInfo) {
+        if (level == ELevel::Disabled || level == ELevel::Info) {
             WORD color = FOREGROUND_RED | FOREGROUND_RED | FOREGROUND_BLUE;
             SetConsoleTextAttribute(console, color);
         }
 
-        if (level == LogWarning) {
+        if (level == ELevel::Warning) {
             WORD color = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
             SetConsoleTextAttribute(console, color);
         }
 
-        if (level == LogDebug) {
+        if (level == ELevel::Debug) {
             WORD color = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
             SetConsoleTextAttribute(console, color);
         }
 
-        if (level == LogError) {
+        if (level == ELevel::Error || level == ELevel::Fatal) {
             WORD color = FOREGROUND_RED | FOREGROUND_INTENSITY;
             SetConsoleTextAttribute(console, color);
         }
     }
 #else
-    void Log::SetConsoleColor(LogLevel level)
+    void Logger::SetConsoleColor(ELevel level)
     {
     }
 #endif
