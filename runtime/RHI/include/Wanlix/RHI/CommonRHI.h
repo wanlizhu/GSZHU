@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Wanlix/Common.h"
-#include "Wanlix/ConfigRHI.h"
-#include "Wanlix/FlagsRHI.h"
-#include "Wanlix/FormatRHI.h"
+#include "Wanlix/RHI/ConfigRHI.h"
+#include "Wanlix/RHI/FlagsRHI.h"
+#include "Wanlix/RHI/FormatRHI.h"
 #include "Wanlix/Utils/Color.h"
 
 namespace Wanlix

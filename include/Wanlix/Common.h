@@ -26,6 +26,7 @@
 #include <variant>
 #include <thread>
 #include <mutex>
+#include <optional>
 #include <condition_variable>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
@@ -49,9 +50,7 @@ namespace Wanlix
     using Pvoid = void*;
     using Wstring = std::wstring;
     using String = std::string;
-    using StringList = std::vector<std::string>;
     using Path = std::wstring;
-    using ByteArray = std::vector<Byte>;
     
     template<typename _Value_>
     using StringMap = std::unordered_map<std::string, _Value_>;
@@ -59,8 +58,10 @@ namespace Wanlix
     template<typename _Value_>
     using Array = std::vector<_Value_>;
     using ByteArray = std::vector<uint8_t>;
+    using ByteArrayPtr = std::shared_ptr<ByteArray>;
     using StringArray = std::vector<std::string>;
-    
+    using StringArrayPtr = std::shared_ptr<StringArray>;
+
     template<typename _Key_, typename _Value_>
     using HashMap = std::unordered_map<_Key_, _Value_>;
     
@@ -73,6 +74,8 @@ namespace Wanlix
     template<typename T>
     using UniquePtr = std::unique_ptr<T>;
 
+    template<typename T>
+    using Optional = std::optional<T>;
 
     using Int2 = glm::ivec2;
     using Int3 = glm::ivec3;

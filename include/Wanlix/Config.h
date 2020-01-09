@@ -60,12 +60,10 @@
 #   pragma warning(disable: 4506)
 #   pragma warning(disable: 4996)
 
-#   define CDECL       __cdecl
 #   define STDCALL     __stdcall
 #   define FORCEINLINE __forceinline
 #   define NOINLINE    __declspec(noinline)
 #else // NOT Windows
-#   define CDECL
 #   define STDCALL
 #   define FORCEINLINE __attribute__((always_inline))
 #   define NOINLINE    __attribute__((noinline))

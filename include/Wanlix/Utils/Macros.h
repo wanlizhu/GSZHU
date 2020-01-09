@@ -1,11 +1,21 @@
 #pragma once
 
+#include <type_traits>
+#include <string>
+#include <algorithm>
+#include <memory>
+#include <stdint.h>
+
+#define ArraySize(a) (sizeof(a) / sizeof(a[0]))
+#define OffsetOf(T, m) (size_t)((ptrdiff_t)&reinterpret_cast<const volatile char&>((((T*)0)->m)))
 #define SafeDelete(a) { if (a != nullptr) { delete a; a = nullptr; } }
 #define SafeDeleteArray(a) { if (a != nullptr) { delete[] a; a = nullptr; } }
 #define Stringize(a) #a
 #define ConcatStrings(a, b) a##b
 #define EnumToInt(T, var) static_cast<std::underlying_type_t<T>>(var)
-
+#define StringEqual(a, b) (strcmp(a, b) == 0)
+#define StringEqual2(a, b1, b2) (strcmp(a, b1) == 0 || strcmp(a, b2) == 0)
+#define StringEqual3(a, b1, b2, b3) (strcmp(a, b1) == 0 || strcmp(a, b2) == 0 || strcmp(a, b3) == 0)
 
 #define ENUM_CLASS_OPERATORS(T) \
 inline constexpr T  operator& (T  a, T b) { return static_cast<T>(EnumToInt(T, a) & EnumToInt(T, b)); } \
