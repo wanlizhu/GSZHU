@@ -1,7 +1,5 @@
 #pragma once
 
-#include <assert.h>
-
 #if defined _WIN32
 #   define WANLIX_OS_WINDOWS
 #elif defined __APPLE__

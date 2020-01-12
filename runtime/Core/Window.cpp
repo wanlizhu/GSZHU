@@ -141,7 +141,7 @@ namespace Wanlix
                 for (int i = 0; i < count; i++)
                 {
                     std::string filename(paths[i]);
-                    window->mCallbacks->OnDropFile(filename);
+                    window->mCallbacks->OnDroppedFile(filename);
                 }
             }
         }

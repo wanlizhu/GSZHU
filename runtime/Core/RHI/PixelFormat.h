@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <string>
-#include "Utils/Flags.h"
+#include "RHIFlags.h"
 
 namespace Wanlix
 {

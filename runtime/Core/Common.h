@@ -31,11 +31,97 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-#include "Flags.h"
+#include "Config.h"
+#ifdef _WIN32
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#endif
+
+
+#define ArraySize(a) (sizeof(a) / sizeof(a[0]))
+#define OffsetOf(T, m) (size_t)((ptrdiff_t)&reinterpret_cast<const volatile char&>((((T*)0)->m)))
+#define SafeDelete(a) { if (a != nullptr) { delete a; a = nullptr; } }
+#define SafeDeleteArray(a) { if (a != nullptr) { delete[] a; a = nullptr; } }
+#define Stringize(a) #a
+#define ConcatStrings(a, b) a##b
+#define EnumToInt(T, var) static_cast<std::underlying_type_t<T>>(var)
+#define StringEqual(a, b) (strcmp(a, b) == 0)
+#define StringEqual2(a, b1, b2) (strcmp(a, b1) == 0 || strcmp(a, b2) == 0)
+#define StringEqual3(a, b1, b2, b3) (strcmp(a, b1) == 0 || strcmp(a, b2) == 0 || strcmp(a, b3) == 0)
+
+#define ENUM_CLASS_OPERATORS(T) \
+inline constexpr T  operator& (T  a, T b) { return static_cast<T>(EnumToInt(T, a) & EnumToInt(T, b)); } \
+inline constexpr T  operator| (T  a, T b) { return static_cast<T>(EnumToInt(T, a) | EnumToInt(T, b)); } \
+inline constexpr T& operator|=(T& a, T b) { a = a | b; return a; }; \
+inline constexpr T& operator&=(T& a, T b) { a = a & b; return a; }; \
+inline constexpr T  operator~ (T a) { return static_cast<T>(~EnumToInt(T, a)); } \
+inline constexpr bool HasBits(T val, T flag) { return (val & flag) != (T)0; }
+
+
+#define CLASSINFO(type) \
+private: \
+    using __class = type;\
+    static constexpr const char* __className = #type;
+
+
+#define FUNCTION_AND_LINE (std::string(__FUNCTION__) + ":" + std::to_string(__LINE__)).c_str()
+
+
+#define DEFINE_BIT_OPS(type, target) \
+inline bool Has(type bit) const { return target & bit; }\
+inline void Set(type bit) { target |= bit; }\
+inline void Unset(type bit) { target &= ~bit; }\
+inline void Toggle(type bit) { target = Has(bit) ? (target & ~bit) : (target | bit); }
+
+
+#define DEFINE_CMP_OPS(type, member) \
+inline bool operator==(const type& rhs) const { return member == rhs.member; }\
+inline bool operator!=(const type& rhs) const { return member != rhs.member; }\
+inline bool operator< (const type& rhs) const { return member <  rhs.member; }\
+inline bool operator<=(const type& rhs) const { return member <= rhs.member; }\
+inline bool operator> (const type& rhs) const { return member >  rhs.member; }\
+inline bool operator>=(const type& rhs) const { return member >= rhs.member; }
+
+
+#define DEFINE_VEC_NUMERIC_OPS(type, N, data) \
+inline type  operator+(const type& rhs) const { return type(*this) += rhs; }\
+inline type  operator-(const type& rhs) const { return type(*this) -= rhs; }\
+inline type  operator*(const type& rhs) const { return type(*this) *= rhs; }\
+inline type  operator/(const type& rhs) const { return type(*this) /= rhs; }\
+inline type& operator+=(const type& rhs) { LOOP_OP((*this).data, rhs.data, 0, N, +=); return *this; }\
+inline type& operator-=(const type& rhs) { LOOP_OP((*this).data, rhs.data, 0, N, -=); return *this; }\
+inline type& operator*=(const type& rhs) { LOOP_OP((*this).data, rhs.data, 0, N, *=); return *this; }\
+inline type& operator/=(const type& rhs) { LOOP_OP((*this).data, rhs.data, 0, N, /=); return *this; }\
+inline type  operator-() const { type tmp; LOOP_OP(tmp.data, (*this).data, 0, N, =-); return tmp; }
+
+
+#define INHERIT_SHARED_FROM_THIS(basetype) \
+public: \
+std::shared_ptr<__class> shared_from_this()\
+{\
+    basetype* base = static_cast<basetype*>(this);\
+    std::shared_ptr<basetype> shared = base->shared_from_this();\
+    return std::static_pointer_cast<__class>(shared);\
+}\
+std::shared_ptr<const __class> shared_from_this() const\
+{\
+    const basetype* base = static_cast<const basetype*>(this);\
+    std::shared_ptr<const basetype> shared = base->shared_from_this();\
+    return std::static_pointer_cast<const __class>(shared);\
+}
 
 
 namespace Wanlix
 {
+#ifdef _WIN32
+    using WindowHandle = HWND;
+    using DllHandle = HMODULE;
+#else
+    using WindowHandle = void*;
+    using DllHandle = void*;
+#endif
+
     using Int8 = int8_t;
     using Int16 = int16_t;
     using Int = int32_t;
@@ -93,6 +179,41 @@ namespace Wanlix
     using Float3x3 = glm::mat3;
     using Float4x4 = glm::mat4;
 
+
+    enum class EMessageBoxButton
+    {
+        None,
+        Ok,
+        Cancel,
+        Retry,
+        Abort,
+        Ignore,
+    };
+
+    enum class EMessageBoxType
+    {
+        Ok,
+        OkCancel,
+        RetryCancel,
+        AbortRetryIgnore,
+    };
+
+    enum class EFileEvent
+    {
+        Changed,
+        Created,
+        Deleted,
+        Renamed,
+    };
+
+    enum class EDebugSeverity
+    {
+        Info = 0,
+        Warning,
+        Error,
+        FatalError,
+    };
+
     struct DataBlockFlags
     {
         enum {
@@ -138,65 +259,5 @@ namespace Wanlix
     {
         Offset offset;
         Extent extent;
-    };
-
-    struct Subresource
-    {
-        Uint baseArrayLayer = 0;
-        Uint numArrayLayers = 1;
-        Uint baseMipLevel = 0;
-        Uint numMipLevels = 1;
-
-        Subresource() = default;
-        Bool IsGlobal() const {
-            static Subresource global;
-            return *this == global;
-        }
-        Bool operator==(const Subresource& rhs) const {
-            return baseArrayLayer == rhs.baseArrayLayer
-                && numArrayLayers == rhs.numArrayLayers
-                && baseMipLevel == rhs.baseMipLevel
-                && numMipLevels == rhs.numMipLevels;
-        }
-    };
-
-    struct Viewport
-    {
-        float xTL = 0.f;
-        float yTL = 0.f;
-        float width = 0.f;
-        float height = 0.f;
-        float minDepth = 0.f;
-        float maxDepth = 1.f;
-    };
-
-    struct ClearValue
-    {
-        EPixelFormat format = EPixelFormat::Undefined;
-        Color color;
-        float depth = 0.f;
-        Uint stencil = 0;
-    };
-
-    struct ResourceStateDesc
-    {
-        Bool isGlobalState = true;
-        EResourceState globalState = EResourceState::Undefined;
-        Array<EResourceState> subresources;
-    };
-}
-
-namespace std
-{
-    template<>
-    struct hash<Wanlix::Subresource>
-    {
-        std::size_t operator()(const Wanlix::Subresource& key) const
-        {
-            return ((std::hash<uint32_t>()(key.baseArrayLayer)
-                    ^ (std::hash<uint32_t>()(key.numArrayLayers) << 1)) >> 1)
-                    ^ (std::hash<uint32_t>()(key.baseMipLevel) << 1)
-                    ^ (std::hash<uint32_t>()(key.numMipLevels) << 3);
-        }
     };
 }

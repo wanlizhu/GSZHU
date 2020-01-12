@@ -11,7 +11,6 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
-#include "Lockable.h"
 
 namespace Wanlix
 {
@@ -21,31 +20,47 @@ namespace Wanlix
         static void Main(TaskThread* self);
 
     public:
-        enum Tag
-        {
-            TagPushBack,
-            TagPushFront,
-        };
-
-        TaskThread() noexcept;
+        TaskThread() noexcept
+            : std::thread(std::bind(&TaskThread::Main, this))
+        {}
         TaskThread(TaskThread&) = delete;
         TaskThread(TaskThread&& other) = delete;
         TaskThread& operator=(const TaskThread&) = delete;
         TaskThread& operator=(TaskThread&&) = delete;
 
-        bool AddTask(std::function<void()>&& func, Tag tag = TagPushBack);
+        inline void AddTask(std::function<void()>&& func)
+        {
+            std::unique_lock<std::mutex> lock(mQueueMutex);
+            mTaskQueue.emplace_back(std::move(func));
+        }
         
-        void Kill();
-        void Clear();
-        bool IsFree() const;
-        bool IsKilled() const;
-        bool HasTask() const;
+        inline void Kill()
+        {
+            mKillFlag.store(true);
+            mCV.notify_all();
+        }
+
+        inline void Clear()
+        {
+            std::unique_lock<std::mutex> lock(mQueueMutex);
+            mTaskQueue.clear();
+        }
+
+        inline bool HasTask() const
+        {
+            std::unique_lock<std::mutex> lock(mQueueMutex);
+            return !mTaskQueue.empty();
+        }
+
+        inline bool IsFree() const { return mFreeFlag.load(); }
+        inline bool IsKilled() const { return mKillFlag.load(); }
         
     private:
         std::atomic_bool mKillFlag = false;
         std::atomic_bool mFreeFlag = false;
 
         std::condition_variable mCV;
-        Lockable<std::deque<std::function<void()>>> mTaskQueue;
+        std::mutex mQueueMutex;
+        std::deque<std::function<void()>> mTaskQueue;
     };
 }

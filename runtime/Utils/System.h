@@ -1,12 +1,9 @@
 #pragma once
 
-#include "Core/Config.h"
 #include "Core/Common.h"
 
 namespace Wanlix
 {
-    using DllHandle = void*;
-    
     EMessageBoxButton ShowMessageBox(const String& msg, EMessageBoxType type = EMessageBoxType::Ok);
     StringArray FindFiles(const String& filename, const String& dir, Bool recursive = true);
     Bool MakeDirectory(const String& path);

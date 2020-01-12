@@ -10,7 +10,6 @@
 #include <functional>
 #include <future>
 #include <deque>
-#include "Lockable.h"
 
 namespace Wanlix
 {
@@ -20,11 +19,33 @@ namespace Wanlix
         static void Main();
 
     public:
-        static void Initialize(int numThreads);
-        static void Destroy();
+        static ThreadPool& Get()
+        {
+            static ThreadPool _inst;
+            return _inst;
+        }
+
+        inline void Initialize(int numThreads)
+        {
+            Destroy();
+            for (int i = 0; i < numThreads; i++) {
+                mThreads.push_back(std::make_shared<std::thread>(&ThreadPool::Main));
+            }
+        }
+
+        inline void Destroy()
+        {
+            mKillFlag.store(true);
+            for (auto& thread : mThreads) {
+                if (thread->joinable()) {
+                    thread->join();
+                }
+            }
+            mThreads.clear();
+        }
 
         template<typename _Func_, typename... _Args_>
-        static auto AddTask(_Func_&& func,
+        inline auto AddTask(_Func_&& func,
                             _Args_&&... args) 
             -> std::future<std::invoke_result_t<_Func_, _Args_...>>
         {
@@ -38,9 +59,32 @@ namespace Wanlix
         }
 
     private:
-        static std::atomic_bool mKillFlag;
-        static std::condition_variable mCV;
-        static Lockable<std::deque<std::function<void()>>> mTaskQueue;
-        static std::vector<std::shared_ptr<std::thread>> mThreads;
+        std::atomic_bool mKillFlag;
+        std::condition_variable mCV;
+        std::mutex mQueueMutex;
+        std::deque<std::function<void()>> mTaskQueue;
+        std::vector<std::shared_ptr<std::thread>> mThreads;
     };
+
+    void ThreadPool::Main()
+    {
+        std::mutex waitMutex;
+        while (!mKillFlag.load())
+        {
+            std::unique_lock<std::mutex> lock(waitMutex);
+            mCV.wait(lock,
+                     [] () {
+                         std::unique_lock<std::mutex> lock2(mQueueMutex);
+                         return mKillFlag.load() || !mTaskQueue.empty();
+                     });
+
+            {
+                std::unique_lock<std::mutex> lock2(mQueueMutex);
+                for (auto& func : mTaskQueue) {
+                    func();
+                }
+                mTaskQueue.clear();
+            }
+        }
+    }
 }

@@ -39,7 +39,7 @@ namespace Wanlix
             virtual void OnDraw() = 0;
             virtual void OnKeyEvent(const KeyEvent& event) = 0;
             virtual void OnMouseEvent(const MouseEvent& event) = 0;
-            virtual void OnDropFile(const String& filename) = 0;
+            virtual void OnDroppedFile(const String& filename) = 0;
         };
 
         static SharedPtr<Window> Create(const WindowDesc& desc, ICallbacks* callbacks);

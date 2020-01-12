@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utils/Macros.h"
+#include "Core/Common.h"
 
 namespace Wanlix
 {
@@ -20,40 +20,6 @@ namespace Wanlix
         Float64,
     };
     ENUM_CLASS_OPERATORS(EDataType)
-
-        enum class EMessageBoxButton
-    {
-        None,
-        Ok,
-        Cancel,
-        Retry,
-        Abort,
-        Ignore,
-    };
-
-    enum class EMessageBoxType
-    {
-        Ok,
-        OkCancel,
-        RetryCancel,
-        AbortRetryIgnore,
-    };
-
-    enum class EFileEvent
-    {
-        Changed,
-        Created,
-        Deleted,
-        Renamed,
-    };
-
-    enum class EDebugSeverity
-    {
-        Info = 0,
-        Warning,
-        Error,
-        FatalError,
-    };
 
     enum class EBlendFactor
     {
