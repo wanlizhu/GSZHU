@@ -24,6 +24,18 @@ namespace Wanlix
         return conv.from_bytes(str, str + size);
     }
 
+    inline std::string ToLower(const std::string& str)
+    {
+        std::string data;
+        std::transform(str.begin(),
+                       str.end(),
+                       data.begin(),
+                       [] (unsigned char c) { 
+                           return std::tolower(c);
+                       });
+        return data;
+    }
+
     inline std::string Utf32ToUtf8(uint32_t codepoint)
     {
         #ifdef _WIN32

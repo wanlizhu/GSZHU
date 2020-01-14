@@ -1,4 +1,4 @@
-#include "Core/RHI/PixelFormat.h"
+#include "RHI/PixelFormat.h"
 #include <unordered_map>
 
 namespace Wanlix

@@ -16,7 +16,28 @@ namespace Wanlix
     class ThreadPool final
     {
     private:
-        static void Main();
+        static void Main()
+        {
+            ThreadPool& pool = ThreadPool::Get();
+            std::mutex waitMutex;
+            while (!pool.mKillFlag.load())
+            {
+                std::unique_lock<std::mutex> lock(waitMutex);
+                pool.mCV.wait(lock,
+                         [&] () {
+                             std::unique_lock<std::mutex> lock2(pool.mQueueMutex);
+                             return pool.mKillFlag.load() || !pool.mTaskQueue.empty();
+                         });
+
+                {
+                    std::unique_lock<std::mutex> lock2(pool.mQueueMutex);
+                    for (auto& func : pool.mTaskQueue) {
+                        func();
+                    }
+                    pool.mTaskQueue.clear();
+                }
+            }
+        }
 
     public:
         static ThreadPool& Get()
@@ -61,30 +82,8 @@ namespace Wanlix
     private:
         std::atomic_bool mKillFlag;
         std::condition_variable mCV;
-        std::mutex mQueueMutex;
+        mutable std::mutex mQueueMutex;
         std::deque<std::function<void()>> mTaskQueue;
         std::vector<std::shared_ptr<std::thread>> mThreads;
     };
-
-    void ThreadPool::Main()
-    {
-        std::mutex waitMutex;
-        while (!mKillFlag.load())
-        {
-            std::unique_lock<std::mutex> lock(waitMutex);
-            mCV.wait(lock,
-                     [] () {
-                         std::unique_lock<std::mutex> lock2(mQueueMutex);
-                         return mKillFlag.load() || !mTaskQueue.empty();
-                     });
-
-            {
-                std::unique_lock<std::mutex> lock2(mQueueMutex);
-                for (auto& func : mTaskQueue) {
-                    func();
-                }
-                mTaskQueue.clear();
-            }
-        }
-    }
 }

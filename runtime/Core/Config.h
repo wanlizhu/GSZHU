@@ -66,3 +66,13 @@
 #   define FORCEINLINE __attribute__((always_inline))
 #   define NOINLINE    __attribute__((noinline))
 #endif
+
+#ifdef _DEBUG
+#define DEFAULT_ENABLE_DEBUG_LAYER true
+#else
+#define DEFAULT_ENABLE_DEBUG_LAYER false
+#endif
+
+#if defined ENABLE_D3D12 && defined ENABLE_VULKAN
+#error "ENABLE_D3D12 and ENABLE_VULKAN can't be coexist"
+#endif

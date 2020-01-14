@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Config.h"
 #include "Common.h"
-#include "Utils/NonCopyable.h"
 #ifdef _WIN32
 #include <comdef.h>
 #endif
@@ -23,15 +21,10 @@ namespace Wanlix
         Bool resizable = true;
     };
 
-    class DLL_DECL Window : public NonCopyable
+    class Window
     {
         friend class GLFWCallbacks;
     public:
-        #ifdef _WIN32
-        using Handle = HWND;
-        #else
-        using Handle = void*;
-        #endif
         class ICallbacks
         {
         public:
@@ -50,18 +43,20 @@ namespace Wanlix
         void MessageLoop();
         void PollEvents();
         void SetTitle(const String& title);
-        inline Handle GetHandle() const { return mHandle; }
+        inline WindowHandle GetHandle() const { return mHandle; }
         inline Uint2 GetClientAreaSize() const { return { mDesc.width, mDesc.height }; }
         inline const WindowDesc& GetDesc() const { return mDesc; }
 
     private:
         Window(const WindowDesc& desc, ICallbacks* callbacks);
+        Window(const Window&) = delete;
+        Window& operator=(const Window&) = delete;
         void CheckWindowSize();
 
     private:
         WindowDesc mDesc;
         GLFWwindow* mGLFWwindow = nullptr;
-        Handle mHandle = nullptr;
+        WindowHandle mHandle = nullptr;
         Uint2 mMouseScale;
         ICallbacks* mCallbacks = nullptr;
     };

@@ -4,6 +4,15 @@
 
 namespace Wanlix
 {
+    enum class ESupportedFeatures
+    {
+        None = 0,
+        SamplePosPartial = 1,     // Allows one sample position to be set.
+        SamplePosFull = (1 << 1), // Allows up to 4 sample positions to be set.
+        Raytracing = (1 << 2),
+    };
+    ENUM_CLASS_OPERATORS(ESupportedFeatures)
+
     enum class EDataType
     {
         Undefined = 0,
@@ -264,6 +273,14 @@ namespace Wanlix
         Metal,
     };
 
+    enum class ECommandQueue
+    {
+        Copy = 0,
+        Compute,
+        Graphics,
+        Count,
+    };
+
     enum class EDrawFalgs
     {
         None,
@@ -408,5 +425,15 @@ namespace Wanlix
         TextureUAV,
         BufferUAV,
         Sampler,
+    };
+
+    enum class EShaderCompileFlags
+    {
+        None = 0,
+        TreatWarningsAsErrors = 1,
+        DumpIntermediates = (1 << 1),
+        FloatingPointModeFast = (1 << 2),
+        FloatingPointModePrecise = (1 << 3),
+        GenerateDebugInfo = (1 << 4),
     };
 }

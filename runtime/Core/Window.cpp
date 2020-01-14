@@ -324,8 +324,8 @@ namespace Wanlix
 
         mDesc.width = uint32_t(actualWidth);
         mDesc.height = uint32_t(actualHeight);
-        mMouseScale.x = 1.0f / (float)mDesc.width;
-        mMouseScale.y = 1.0f / (float)mDesc.height;
+        mMouseScale.x = (Uint)(1.0f / (float)mDesc.width);
+        mMouseScale.y = (Uint)(1.0f / (float)mDesc.height);
     }
 
     Window::~Window()

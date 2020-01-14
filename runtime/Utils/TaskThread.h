@@ -17,7 +17,28 @@ namespace Wanlix
     class TaskThread : public std::thread
     {
     private:
-        static void Main(TaskThread* self);
+        static void Main(TaskThread* self)
+        {
+            std::mutex waitMutex;
+            while (!self->mKillFlag.load())
+            {
+                std::unique_lock<std::mutex> lock(waitMutex);
+                self->mFreeFlag.store(true);
+                self->mCV.wait(lock,
+                               [self] () {
+                                   return self->HasTask() || self->IsKilled();
+                               });
+                self->mFreeFlag.store(false);
+
+                {
+                    std::unique_lock<std::mutex> lockData(self->mQueueMutex);
+                    for (auto& func : self->mTaskQueue) {
+                        func();
+                    }
+                    self->mTaskQueue.clear();
+                }
+            }
+        }
 
     public:
         TaskThread() noexcept
@@ -60,7 +81,7 @@ namespace Wanlix
         std::atomic_bool mFreeFlag = false;
 
         std::condition_variable mCV;
-        std::mutex mQueueMutex;
+        mutable std::mutex mQueueMutex;
         std::deque<std::function<void()>> mTaskQueue;
     };
 }

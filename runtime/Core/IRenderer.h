@@ -2,19 +2,15 @@
 
 #include "Core/Common.h"
 #include "Utils/UI/UserInput.h"
+#include "Utils/UI/UiData.h"
 
 namespace Wanlix
 {
-    class DLL_DECL IRenderer
+    class IRenderer
     {
     public:
-        IRenderer() = default;
-        IRenderer(const IRenderer&) = delete;
-        IRenderer& operator=(const IRenderer&) = delete;
-        virtual ~IRenderer() {}
-
-        virtual void OnInitialize(DrawContext* dc) = 0;
-        virtual void OnDraw(DrawContext* dc) = 0;
+        virtual void OnInitialize(IDrawContext* dc) = 0;
+        virtual void OnDraw(IDrawContext* dc) = 0;
         virtual void OnDrawUI(UiData* ui) = 0;
         virtual void OnDestroy() = 0;
         virtual void OnResize(Uint width, Uint height) = 0;
