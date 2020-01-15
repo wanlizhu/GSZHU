@@ -6,6 +6,11 @@ add_library(glm INTERFACE)
 add_library(PKG::glm ALIAS glm)
 target_include_directories(glm INTERFACE glm)
 
+# json
+add_library(json INTERFACE)
+add_library(PKG::json ALIAS json)
+target_include_directories(json INTERFACE nlohmann)
+
 # imgui
 add_library(imgui STATIC 
     imgui/imconfig.h
