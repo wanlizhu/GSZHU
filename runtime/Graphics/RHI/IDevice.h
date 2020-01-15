@@ -3,7 +3,6 @@
 #include "Core/Common.h"
 #include "Core/Window.h"
 #include "RHI/PixelFormat.h"
-#include "RHI/BasicTypes.h"
 
 namespace Wanlix
 {
