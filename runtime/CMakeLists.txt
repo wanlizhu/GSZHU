@@ -21,6 +21,7 @@ target_link_libraries(Wanlix PUBLIC PKG::glm)
 target_link_libraries(Wanlix PUBLIC PKG::imgui)
 target_link_libraries(Wanlix PUBLIC PKG::tinygltf)
 target_link_libraries(Wanlix PRIVATE PKG::glfw)
+target_link_libraries(Wanlix PRIVATE PKG::json)
 
 if (NOT PKG_DLLS)
     set(PKG_DLLS "${RSD}/LICENSE")

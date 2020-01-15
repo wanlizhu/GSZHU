@@ -22,7 +22,7 @@ set(WANLIX_ENABLE_D3D12     OFF CACHE BOOL "")
 set(RSD "${CMAKE_CURRENT_SOURCE_DIR}")
 set(RBD "${CMAKE_CURRENT_BINARY_DIR}")
 
-add_subdirectory(externals)
+add_subdirectory(thirdparty)
 add_subdirectory(runtime)
 if (WANLIX_BUILD_EDITOR)
     add_subdirectory(editor)
