@@ -24,7 +24,7 @@ namespace Wanlix
     String FileParentPath(const String& str);
     String Canonicalize(const String& str);
     String JoinPath(const String& dir, const String& name);
-    ByteArrayPtr ReadFile(const String& filename);
+    ByteArray ReadFile(const String& filename);
     DllHandle LoadDll(const String& filename, const StringArray& searchDirs = {});
     void* FindSymbolFromDll(DllHandle handle, const String& symbolName);
     void ReleaseDll(DllHandle handle);

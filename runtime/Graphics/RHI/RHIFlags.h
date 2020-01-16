@@ -172,6 +172,7 @@ namespace Wanlix
     enum class EResourceType
     {
         Undefined = 0,
+        Sampler,
         Buffer,
         Texture1D,
         Texture1DArray,
@@ -191,12 +192,10 @@ namespace Wanlix
         Staging,
     };
 
-    struct EMiscFlags
+    enum class EMiscFlags
     {
-        enum {
-            None = 0,
-            GenerateMips = 1,
-        };
+        None = 0,
+        GenerateMips = 1,
     };
 
     enum class EBufferViewType
@@ -389,6 +388,14 @@ namespace Wanlix
         MirrorOnce,
     };
 
+    enum class EShaderSource
+    {
+        None = 0,
+        SourceFile,
+        SourceCode,
+        ByteCode,
+    };
+
     enum class EShaderType
     {
         Unknown = 0,
@@ -435,5 +442,20 @@ namespace Wanlix
         FloatingPointModeFast = (1 << 2),
         FloatingPointModePrecise = (1 << 3),
         GenerateDebugInfo = (1 << 4),
+    };
+
+    enum class EScaling
+    {
+        Unspecified = 0,
+        Centered,
+        Stretched,
+    };
+
+    enum class EScanLineOrder
+    {
+        Unspecified = 0,
+        Progressive,
+        UpperFieldFirst,
+        LowerFieldFirst,
     };
 }

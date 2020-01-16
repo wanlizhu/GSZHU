@@ -349,7 +349,7 @@ namespace Wanlix
         return endSlash ? (dir + name) : (dir + "\\" + name);
     }
 
-    ByteArrayPtr ReadFile(const String& filename)
+    ByteArray ReadFile(const String& filename)
     {
         size_t size = GetFileSize(filename);
         HANDLE file = CreateFileA(filename.c_str(),
@@ -363,7 +363,7 @@ namespace Wanlix
             return 0;
         }
 
-        ByteArrayPtr buffer = std::make_shared<ByteArray>(size);
+        ByteArray buffer = std::make_shared<ByteArray>(size);
         assert(buffer->size() == size);
         DWORD readCount = 0;
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "RHI/IBuffer.h"
-#include "RHI/ITexture.h"
-#include "RHI/IFence.h"
+#include "Graphics/RHI/IBuffer.h"
+#include "Graphics/RHI/ITexture.h"
+#include "Graphics/RHI/IFence.h"
 
 namespace Wanlix
 {

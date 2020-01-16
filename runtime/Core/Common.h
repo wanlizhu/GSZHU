@@ -146,12 +146,10 @@ namespace Wanlix
     using StringMap = std::unordered_map<std::string, _Value_>;
     
     template<typename _Value_>
-    using Array = std::vector<_Value_>;
-    using ByteArray = std::vector<uint8_t>;
-    using ByteArrayPtr = std::shared_ptr<ByteArray>;
-    using Blob = std::shared_ptr<ByteArray>;
-    using StringArray = std::vector<std::string>;
-    using StringArrayPtr = std::shared_ptr<StringArray>;
+    using Array = std::shared_ptr<std::vector<_Value_>>;
+    using ByteArray = Array<Uint8>;
+    using Blob = ByteArray;
+    using StringArray = Array<String>;
 
     template<typename _Key_, typename _Value_>
     using HashMap = std::unordered_map<_Key_, _Value_>;

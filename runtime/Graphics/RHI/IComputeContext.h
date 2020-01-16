@@ -21,10 +21,10 @@ namespace Wanlix
         virtual void UpdateSubresource(const ITexture* texture, Uint subIndex, const Region& region, const void* data) = 0;
         virtual void UpdateBuffer(const IBuffer* buffer, const void* data) = 0;
         virtual void UpdateRange(const IBuffer* buffer, const Range& range, const void* data) = 0;
-        virtual ByteArrayPtr ReadTexture(const ITexture* texture) = 0;
-        virtual ByteArrayPtr ReadSubresource(const ITexture* texture, Uint subres, const Region& region) = 0;
-        virtual ByteArrayPtr ReadBuffer(const IBuffer* buffer) = 0;
-        virtual ByteArrayPtr ReadRange(const IBuffer* buffer, const Range& range) = 0;
+        virtual ByteArray ReadTexture(const ITexture* texture) = 0;
+        virtual ByteArray ReadSubresource(const ITexture* texture, Uint subres, const Region& region) = 0;
+        virtual ByteArray ReadBuffer(const IBuffer* buffer) = 0;
+        virtual ByteArray ReadRange(const IBuffer* buffer, const Range& range) = 0;
         virtual AsyncData ReadTextureAsync(const ITexture* texture) = 0;
         virtual AsyncData ReadSubresourceAsync(const ITexture* texture, Uint subres, const Region& region) = 0;
         virtual AsyncData ReadBufferAsync(const IBuffer* buffer) = 0;
