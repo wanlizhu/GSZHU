@@ -39,10 +39,8 @@ namespace Wanlix
     class IShader : public IDeviceObject
     {
     public:
-        virtual EShaderType GetShaderType() const = 0;
-        virtual Bool Compile(const ShaderCreateInfo& info) = 0;
         virtual Bool IsCompiled() const = 0;
-        virtual void BindResources(IResourceTable* table) = 0;
+        virtual void BindResources(IResourceTable* table, EBindResourceFlags flags) = 0;
         virtual Uint GetVariableCount() const = 0;
         virtual IShaderVariable* GetVariable(const String& name) = 0;
         virtual IShaderVariable* GetVariable(Uint index) = 0;

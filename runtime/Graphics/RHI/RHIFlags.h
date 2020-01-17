@@ -280,7 +280,7 @@ namespace Wanlix
         Count,
     };
 
-    enum class EDrawFalgs
+    enum class EDrawFlags
     {
         None,
         VerifyStates,
@@ -288,7 +288,7 @@ namespace Wanlix
         VerifyRenderTargets,
         VerifyAll = VerifyStates | VerifyParameters | VerifyRenderTargets,
     };
-    ENUM_CLASS_OPERATORS(EDrawFalgs)
+    ENUM_CLASS_OPERATORS(EDrawFlags)
 
     enum class EClearFlags
     {
@@ -345,6 +345,18 @@ namespace Wanlix
         All = Vertex | Fragment | Geometry | TessEval | TessCtrl | Compute,
     };
     ENUM_CLASS_OPERATORS(EShaderStages)
+
+    enum class EBindResourceFlags
+    {
+        None = 0,
+        UpdateStatic,
+        UpdateMutable,
+        UpdateDynamic,
+        UpdateAll,
+        KeepExisting,
+        ShouldAllResolved,
+    };
+    ENUM_CLASS_OPERATORS(EBindResourceFlags)
 
     enum class EFillMode
     {

@@ -10,9 +10,10 @@ namespace Wanlix
         ETextureViewType viewType = ETextureViewType::Undefined;
         EResourceType textureType = EResourceType::Undefined;
         EPixelFormat pixelFormat = EPixelFormat::Undefined;
-        Uint mostDetailedMip = 0;
-        Uint mipLevels = 0;
-        Subresource subresource;
+        Uint firstMipLevel = 0;
+        Uint mipLevelCount = 0;
+        Uint firstSlice = 0;
+        Uint sliceCount = 0;
         Uint accessFlags = 0;
     };
 

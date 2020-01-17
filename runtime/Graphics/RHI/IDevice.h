@@ -3,6 +3,7 @@
 #include "Core/Common.h"
 #include "Core/Window.h"
 #include "Graphics/RHI/PixelFormat.h"
+#include "Graphics/RHI/ForwardDecl.h"
 
 namespace Wanlix
 {
@@ -15,30 +16,17 @@ namespace Wanlix
         Bool enableVsync = false;
         Bool enableDebugLayer = DEFAULT_ENABLE_DEBUG_LAYER;
         Uint commandQueueNums[(int)ECommandQueue::Count] = { 0, 0, 1 };
-#ifdef ENABLE_D3D12
-        Array<UUID> features;
-#endif
     };
 
-    class DLL_DECL IDevice
+    class IDevice
     {
     public:
-        static SharedPtr<IDevice> Create(const DeviceDesc& desc, SharedPtr<Window> window);
-
-        virtual void Destroy() = 0;
-        virtual void EnableVsync(Bool flag) = 0;
-        virtual Bool IsWindowOccluded() const = 0;
-        virtual IDrawContext* GetDrawContext() const = 0;
-        virtual IFramebuffer* GetFramebuffer() const = 0;
-        virtual ICommandQueue* GetCommandQueue(ECommandQueue type, Uint index) const = 0;
-        virtual Handle ApiHandle() const = 0;
-        virtual void Present() = 0;
-        virtual void Flush(Bool wait = false) = 0;
-        virtual Bool IsVsyncEnabled() const = 0;
-        virtual void Resize(Uint width, Uint height) = 0;
-        virtual DeviceDesc& GetDesc() const = 0;
-        virtual IDescriptorPool* GetCPUDescriptorPool() const = 0;
-        virtual IDescriptorPool* GetGPUDescriptorPool() const = 0;
-        virtual Bool IsFeatureSupported(ESupportedFeatures flags) const = 0;
+        virtual SharedPtr<IBuffer> CreateBuffer(const BufferDesc& desc, const void* data = nullptr) = 0;
+        virtual SharedPtr<IShader> CreateShader(const ShaderCreateInfo& info) = 0;
+        virtual SharedPtr<ITexture> CreateTexture(const TextureDesc& desc, const void* data = nullptr) = 0;
+        virtual SharedPtr<ISampler> CreateSampler(const SamplerDesc& desc) = 0;
+        virtual SharedPtr<IPipelineState> CreatePipelineState(const PipelineStateDesc& desc) = 0;
+        virtual SharedPtr<IFence> CreateFence(const FenceDesc& desc) = 0;
+        virtual void ReleaseResources(Bool forceRelease = false) = 0;
     };
 }

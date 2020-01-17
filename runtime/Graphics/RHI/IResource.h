@@ -4,6 +4,20 @@
 
 namespace Wanlix
 {
+    struct StateTransitionDesc
+    {
+        ITexture* texture = nullptr;
+        IBuffer* buffer = nullptr;
+
+        Uint firstMipLevel = 0;
+        Uint mipLevelCount = (Uint)-1;
+        Uint firstSlice = 0;
+        Uint sliceCount = (Uint)-1;
+
+        EResourceState oldState = EResourceState::Unknown;
+        EResourceState newState = EResourceState::Unknown;
+    };
+
     struct ResourceDesc : public DeviceObjectDesc
     {};
 

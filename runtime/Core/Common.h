@@ -151,6 +151,12 @@ namespace Wanlix
     using Blob = ByteArray;
     using StringArray = Array<String>;
 
+    template<typename _Value_, typename... _Args_>
+    inline Array<_Value_> MakeArray(_Args_&&... args) 
+    {
+        return std::make_shared<std::vector<_Value_>>(std::forward<ARGS>(args)...);
+    }
+
     template<typename _Key_, typename _Value_>
     using HashMap = std::unordered_map<_Key_, _Value_>;
     
