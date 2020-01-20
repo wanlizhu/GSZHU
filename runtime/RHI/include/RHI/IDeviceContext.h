@@ -81,18 +81,27 @@ namespace Wanlix
     class IDeviceContext : public std::enable_shared_from_this<IDeviceContext>
     {
     public:
-        using Device = IDevice;
-
         virtual SharedPtr<IDeviceContext> GetSharedPtr() final { return shared_from_this(); };
-        virtual void SetPipelineState(IPipelineState* pso) = 0;
+        virtual Bool IsDeferred() const = 0;
         virtual void CommitShaderResources(IShaderResourceBinding* resourceBinding) = 0;
+        virtual IPipelineState* GetPipelineState() const = 0;
+        virtual Uint GetStencilRef() const = 0;
+        virtual const Float4& GetBlendFactor() const = 0;
+        virtual IBuffer* GetVertexBuffer(Uint slot) const = 0;
+        virtual IBuffer* GetIndexBuffer(Uint* offset = nullptr) const = 0;
+        virtual const Viewport& GetViewport(Uint index) const = 0;
+        virtual const Rect& GetScissor(Uint index) const = 0;
+        virtual ITextureView* GetRenderTarget(Uint index) const = 0;
+        virtual ISwapChain* GetSwapChain() const = 0;
+
+        virtual void SetPipelineState(IPipelineState* pso) = 0;
         virtual void SetStencilRef(Uint stencil) = 0;
         virtual void SetBlendFactors(const Float4& blendFactors) = 0;
         virtual void SetVertexBuffer(Uint slot, IBuffer* buffer) = 0;
         virtual void SetIndexBuffer(IBuffer* buffer, Uint offset = 0) = 0;
-        virtual void SetViewports(Array<Viewport> viewports) = 0;
-        virtual void SetScissors(Array<Rect> rects) = 0;
-        virtual void SetRenderTarget(Array<ITextureView> targets, ITextureView* depthStencil) = 0;
+        virtual void SetViewports(const Array<Viewport>& viewports) = 0;
+        virtual void SetScissors(const Array<Rect>& rects) = 0;
+        virtual void SetRenderTarget(const Array<ITextureView>& targets, ITextureView* depthStencil) = 0;
         virtual void SetSwapChain(ISwapChain* swapChain) = 0;
         
         virtual void UpdateBuffer(IBuffer* buffer, const Range& range, const void* data) = 0;

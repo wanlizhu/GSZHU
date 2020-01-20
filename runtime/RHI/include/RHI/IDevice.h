@@ -2,6 +2,7 @@
 
 #include "Core/Common.h"
 #include "Core/Window.h"
+#include "RHI/Constants.h"
 #include "RHI/PixelFormat.h"
 #include "RHI/ForwardDecl.h"
 

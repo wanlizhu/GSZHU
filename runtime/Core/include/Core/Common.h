@@ -164,10 +164,11 @@ namespace Wanlix
     using StringMap = std::unordered_map<std::string, _Value_>;
     
     template<typename _Value_>
-    using Array = std::shared_ptr<std::vector<_Value_>>;
+    using Array = std::vector<_Value_>;
     using ByteArray = Array<Uint8>;
-    using Blob = ByteArray;
+    using ByteArrayPtr = SharedPtr<Array<Uint8>>;
     using StringArray = Array<String>;
+    using StringArrayPtr = SharedPtr<Array<String>>;
 
     template<typename _Value_, typename... _Args_>
     inline Array<_Value_> MakeArray(_Args_&&... args) 

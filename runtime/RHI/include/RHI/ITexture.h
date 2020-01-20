@@ -40,9 +40,6 @@ namespace Wanlix
     class ITexture : public IResource
     {
     public:
-        using Desc = TextureDesc;
-        using View = ITextureView;
-
         virtual void GenerateMips() const = 0;
         virtual void SaveToFile(Uint mipLevel, Uint slice, const String& filename) = 0;
         virtual const String& GetSourceFile() const = 0;

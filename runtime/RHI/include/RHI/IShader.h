@@ -39,8 +39,6 @@ namespace Wanlix
     class IShader : public IDeviceObject
     {
     public:
-        using Desc = ShaderDesc;
-
         virtual Bool IsCompiled() const = 0;
         virtual void BindResources(IResourceTable* table, EBindResourceFlags flags) = 0;
         virtual Uint GetVariableCount() const = 0;

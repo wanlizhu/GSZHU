@@ -29,8 +29,6 @@ namespace Wanlix
     class ISampler : public IResource
     {
     public:
-        using Desc = SamplerDesc;
-
         virtual const SamplerDesc& GetDesc() const = 0;
     };
 }

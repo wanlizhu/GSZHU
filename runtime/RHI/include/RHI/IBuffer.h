@@ -18,15 +18,12 @@ namespace Wanlix
     class IBuffer : public IResource
     {
     public:
-        using Desc = BufferDesc;
-        using View = IBufferView;
-
         virtual bool UpdateData(const Range& range, const void* data) = 0;
         virtual void* Map(EMapType type, EMapFlags flags = EMapFlags::None) = 0;
         virtual void Unmap() = 0;
         virtual SharedPtr<IBufferView> CreateView(const BufferViewDesc& desc) = 0;
         virtual SharedPtr<IBufferView> GetDefaultView(EBufferViewType type) = 0;
-        virtual EResourceState SetState(EResourceState state) = 0;
+        virtual void SetState(EResourceState state) = 0;
         virtual EResourceState GetState() const = 0;
     };
 }
