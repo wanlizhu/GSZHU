@@ -1,0 +1,46 @@
+#pragma once
+
+#include "Core/Config.h"
+#include "Wanlix/Common.h"
+
+namespace Wanlix
+{
+    class Color
+    {
+    public:
+        constexpr Color() 
+            : packed(0)
+        {}
+        constexpr Color(float r, float g, float b, float a = 1.f)
+            : _r((int)std::clamp(r * 255.f, 0.f, 255.f))
+            , _g((int)std::clamp(g * 255.f, 0.f, 255.f))
+            , _b((int)std::clamp(b * 255.f, 0.f, 255.f))
+            , _a((int)std::clamp(a * 255.f, 0.f, 255.f))
+        {}
+        constexpr Color(int r, int g, int b, int a = 255)
+            : _r(r), _g(g), _b(b), _a(a)
+        {}
+
+        inline bool IsOpaque() const { return _a == 255; }
+        inline bool operator==(Color const& rhs) const { return packed == rhs.packed; }
+        inline bool operator!=(Color const& rhs) const { return !(*this == rhs); }
+        inline unsigned char& operator[](int i) { return array[i]; }
+        inline unsigned char const& operator[](int i) const { return array[i]; }
+
+        inline unsigned char& r() { return _r; }
+        inline unsigned char& g() { return _g; }
+        inline unsigned char& b() { return _b; }
+        inline unsigned char& a() { return _a; }
+        inline unsigned char const& r() const { return _r; }
+        inline unsigned char const& g() const { return _g; }
+        inline unsigned char const& b() const { return _b; }
+        inline unsigned char const& a() const { return _a; }
+
+    private:
+        union {
+            struct { unsigned char _r, _g, _b, _a; };
+            unsigned int packed;
+            unsigned char array[4];
+        };
+    };
+}
