@@ -7,6 +7,6 @@ namespace Wanlix
     class IResource : public IDeviceObject
     {
     public:
-        virtual EResourceType GetType() const = 0;
+        virtual EResourceType GetResourceType() const = 0;
     };
 }

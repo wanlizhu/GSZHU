@@ -5,7 +5,5 @@
 namespace Wanlix
 {
     class IResourceView : public IDeviceObject
-    {
-    public:
-    };
+    {};
 }

@@ -31,8 +31,6 @@ namespace Wanlix
     class ISwapChain : public IDeviceObject
     {
     public:
-        using Desc = SwapChainDesc;
-
         virtual void Present() = 0;
         virtual void Resize(Uint width, Uint height) = 0;
         virtual void SetDisplayMode(const DisplayMode& mode) = 0;

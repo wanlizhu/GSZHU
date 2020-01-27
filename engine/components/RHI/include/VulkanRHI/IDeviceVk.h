@@ -2,11 +2,12 @@
 
 #include "RHI/IDevice.h"
 #include "VulkanRHI/VkUtilities.h"
-#include "VulkanRHI/ITextureVk.h"
-#include "VulkanRHI/IBufferVk.h"
 
 namespace Wanlix
 {
+    class ITextureVk;
+    class IBufferVk;
+
     class IDeviceVk : public IDevice
     {
     public:

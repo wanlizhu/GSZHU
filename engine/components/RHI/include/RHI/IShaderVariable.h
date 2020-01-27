@@ -14,8 +14,6 @@ namespace Wanlix
     class IShaderVariable : public IDeviceObject
     {
     public:
-        using Desc = ShaderVariableDesc;
-
         virtual void Set(IResource* res) = 0;
         virtual void SetArray(const Array<IResource*>& array) = 0;
         virtual Uint GetIndex() const = 0;

@@ -21,10 +21,6 @@ namespace Wanlix
     class ITextureView : public IResourceView
     {
     public:
-        using Desc = TextureViewDesc;
-        using Texture = ITexture;
-        using Sampler = ISampler;
-
         virtual ITexture* GetTexture() const = 0;
         virtual void SetSampler(ISampler* sampler) = 0;
         virtual ISampler* GetSampler() const = 0;

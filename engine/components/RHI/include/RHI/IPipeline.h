@@ -82,9 +82,6 @@ namespace Wanlix
     class IPipeline : public IDeviceObject
     {
     public:
-        using Desc = PipelineDesc;
-        using Shader = IShader;
-
         virtual void BindResources(IResourceTable* table, EBindResourceFlags flags) = 0;
         virtual Bool IsCompatibleWith(const IPipeline* pso) const = 0;
         virtual SharedPtr<IShaderResourceBinding> GetShaderResourceBinding() = 0;

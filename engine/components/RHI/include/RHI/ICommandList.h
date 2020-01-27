@@ -10,8 +10,6 @@ namespace Wanlix
     class ICommandList : public IDeviceObject
     {
     public:
-        using Desc = CommandListDesc;
-
         virtual void Close() = 0;
     };
 }

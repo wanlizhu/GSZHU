@@ -23,9 +23,6 @@ namespace Wanlix
     class IBufferView : public IResourceView
     {
     public:
-        using Desc = BufferViewDesc;
-        using Buffer = IBuffer;
-
         virtual IBuffer* GetBuffer() const = 0;
     };
 }

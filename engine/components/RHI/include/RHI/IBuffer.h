@@ -16,14 +16,12 @@ namespace Wanlix
         EBufferMode bufferMode = EBufferMode::Undefined;
         Uint stride = 0;
         Uint64 queueMask = 0;
+        EResourceState initialState = EResourceState::Common;
     };
 
     class IBuffer : public IResource
     {
     public:
-        using Desc = BufferDesc;
-        using View = IBufferView;
-
         virtual bool UpdateData(const Range& range, const void* data) = 0;
         virtual void* Map(EMapType type, EMapFlags flags = EMapFlags::None) = 0;
         virtual void Unmap() = 0;

@@ -2,6 +2,7 @@
 
 #include "RHI/ICommandList.h"
 #include "VulkanRHI/VkUtilities.h"
+#include "VulkanRHI/IDeviceVk.h"
 
 namespace Wanlix
 {
