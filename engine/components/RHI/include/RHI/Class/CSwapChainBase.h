@@ -5,13 +5,14 @@
 
 namespace Wanlix
 {
-    class CSwapChainBase : public CDeviceObjectBase<ISwapChain>
+    template<typename _Interface_>
+    class CSwapChainBase : public CDeviceObjectBase<_Interface_>
     {
     protected:
         CSwapChainBase(IDevice* device,
                        const SwapChainDesc& desc,
                        const String& name)
-            : CDeviceObjectBase<ISwapChain>(device, desc, name)
+            : CDeviceObjectBase<_Interface_>(device, desc, name)
         {}
     };
 }

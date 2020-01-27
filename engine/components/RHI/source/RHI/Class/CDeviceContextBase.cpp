@@ -15,7 +15,7 @@ namespace Wanlix
 
     void CDeviceContextBase::SetPipeline(IPipeline* pipeline)
     {
-        mPipeline = pipeline->GetSharedPtr();
+        mPipeline = pipeline->GetSharedPtr<IPipeline>();
     }
 
     void CDeviceContextBase::SetStencilRef(Uint stencil)
@@ -31,12 +31,12 @@ namespace Wanlix
     void CDeviceContextBase::SetVertexBuffer(Uint slot, IBuffer* buffer)
     {
         assert(slot >= 0 && slot < MAX_NUM_BUFFER_SLOTS);
-        mVertexBuffers[slot] = buffer->GetSharedPtr();
+        mVertexBuffers[slot] = buffer->GetSharedPtr<IBuffer>();
     }
 
     void CDeviceContextBase::SetIndexBuffer(IBuffer* buffer, Uint offset)
     {
-        mIndexBuffer = buffer->GetSharedPtr();
+        mIndexBuffer = buffer->GetSharedPtr<IBuffer>();
         mIndexDataOffset = offset;
 #ifdef _DEBUG
         if (mIndexBuffer)
@@ -63,16 +63,16 @@ namespace Wanlix
 
     void CDeviceContextBase::SetRenderTarget(Uint index, ITextureView* target)
     {
-        mRenderTargets[index] = target->GetSharedPtr();
+        mRenderTargets[index] = target->GetSharedPtr<ITextureView>();
     }
 
     void CDeviceContextBase::SetDepthStencilTarget(ITextureView* view)
     {
-        mDepthStencil = view->GetSharedPtr();
+        mDepthStencil = view->GetSharedPtr<ITextureView>();
     }
 
     void CDeviceContextBase::SetSwapChain(ISwapChain* swapChain)
     {
-        mSwapChain = swapChain->GetSharedPtr();
+        mSwapChain = swapChain->GetSharedPtr<ISwapChain>();
     }
 }

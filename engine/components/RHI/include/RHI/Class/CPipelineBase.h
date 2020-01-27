@@ -5,20 +5,24 @@
 
 namespace Wanlix
 {
-    class CPipelineBase : public CDeviceObjectBase<IPipeline>
+    template<typename _Interface_>
+    class CPipelineBase : public CDeviceObjectBase<_Interface_>
     {
+        static_assert(std::is_base_of_v<IPipeline, _Interface_> || std::is_same_v<IPipeline, _Interface_>);
     public:
+        using Shader = typename _Interface_::Shader;
+
         inline Uint GetBufferStride(Uint slot) const { return ((Uint64)slot) < mBufferStrides.size() ? mBufferStrides.at(slot) : 0; }
         inline Uint GetNumBufferSlots() const { return (Uint)mBufferStrides.size(); }
-        inline Bool IsCompatibleWith(const IPipeline* pso) const { return mResourceLayoutHash == static_cast<const CPipelineBase*>(pso)->mResourceLayoutHash; }
+        inline Bool IsCompatibleWith(const _Interface_* pso) const { return mResourceLayoutHash == static_cast<const CPipelineBase*>(pso)->mResourceLayoutHash; }
 
-        inline IShader* GetVertexShader() const { return mVertexShader.get(); }
-        inline IShader* GetTessCtrlShader() const { return mVertexShader.get(); }
-        inline IShader* GetTessEvalShader() const { return mVertexShader.get(); }
-        inline IShader* GetGeometryShader() const { return mVertexShader.get(); }
-        inline IShader* GetFragmentShader() const { return mVertexShader.get(); }
-        inline IShader* GetComputeShader() const { return mVertexShader.get(); }
-        inline IShader* GetShader(EShaderType type) const
+        inline Shader* GetVertexShader() const { return mVertexShader.get(); }
+        inline Shader* GetTessCtrlShader() const { return mVertexShader.get(); }
+        inline Shader* GetTessEvalShader() const { return mVertexShader.get(); }
+        inline Shader* GetGeometryShader() const { return mVertexShader.get(); }
+        inline Shader* GetFragmentShader() const { return mVertexShader.get(); }
+        inline Shader* GetComputeShader() const { return mVertexShader.get(); }
+        inline Shader* GetShader(EShaderType type) const
         {
             switch (type)
             {
@@ -41,11 +45,11 @@ namespace Wanlix
         Uint64 mResourceLayoutHash = 0;
         Array<Uint> mBufferStrides;
 
-        SharedPtr<IShader> mVertexShader;
-        SharedPtr<IShader> mTessCtrlShader;
-        SharedPtr<IShader> mTessEvalShader;
-        SharedPtr<IShader> mGeometryShader;
-        SharedPtr<IShader> mFragmentShader;
-        SharedPtr<IShader> mComputeShader;
+        SharedPtr<Shader> mVertexShader;
+        SharedPtr<Shader> mTessCtrlShader;
+        SharedPtr<Shader> mTessEvalShader;
+        SharedPtr<Shader> mGeometryShader;
+        SharedPtr<Shader> mFragmentShader;
+        SharedPtr<Shader> mComputeShader;
     };
 }

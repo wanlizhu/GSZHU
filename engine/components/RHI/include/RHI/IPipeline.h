@@ -83,6 +83,7 @@ namespace Wanlix
     {
     public:
         using Desc = PipelineDesc;
+        using Shader = IShader;
 
         virtual void BindResources(IResourceTable* table, EBindResourceFlags flags) = 0;
         virtual Bool IsCompatibleWith(const IPipeline* pso) const = 0;

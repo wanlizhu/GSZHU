@@ -22,6 +22,7 @@ namespace Wanlix
     {
     public:
         using Desc = BufferDesc;
+        using View = IBufferView;
 
         virtual bool UpdateData(const Range& range, const void* data) = 0;
         virtual void* Map(EMapType type, EMapFlags flags = EMapFlags::None) = 0;

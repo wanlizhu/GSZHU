@@ -24,6 +24,7 @@ namespace Wanlix
     {
     public:
         using Desc = BufferViewDesc;
+        using Buffer = IBuffer;
 
         virtual IBuffer* GetBuffer() const = 0;
     };

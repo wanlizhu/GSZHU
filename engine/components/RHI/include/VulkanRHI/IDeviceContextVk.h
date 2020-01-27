@@ -2,13 +2,15 @@
 
 #include "RHI/IDeviceContext.h"
 #include "VulkanRHI/VkUtilities.h"
+#include "VulkanRHI/ITextureVk.h"
+#include "VulkanRHI/IBufferVk.h"
 
 namespace Wanlix
 {
     class IDeviceContextVk : public IDeviceContext
     {
     public:
-        virtual void TransitionImageLayout(ITexture* texture, VkImageLayout newLayout) = 0;
-        virtual void BufferMemoryBarrier(IBuffer* buffer, VkAccessFlags newFlags) = 0;
+        virtual void TransitionImageLayout(ITextureVk* texture, VkImageLayout newLayout) = 0;
+        virtual void BufferMemoryBarrier(IBufferVk* buffer, VkAccessFlags newFlags) = 0;
     };
 }

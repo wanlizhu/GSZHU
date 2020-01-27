@@ -54,6 +54,7 @@ namespace Wanlix
     {
     public:
         using Desc = TextureDesc;
+        using View = ITextureView;
 
         virtual SharedPtr<ITextureView> CreateView(const TextureViewDesc& desc) = 0;
         virtual SharedPtr<ITextureView> GetDefaultView(ETextureViewType viewType) = 0;

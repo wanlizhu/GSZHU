@@ -8,7 +8,7 @@ namespace Wanlix
     template<typename _Interface_>
     class CDeviceObjectBase : public _Interface_
     {
-        static_assert(std::is_base_of_v<IDeviceObject, _Interface_>);
+        static_assert(std::is_base_of_v<IDeviceObject, _Interface_> || std::is_same_v<IDeviceObject, _Interface_>);
     public:
         using Desc = typename _Interface_::Desc;
         using Device = typename _Interface_::Device;
@@ -23,7 +23,7 @@ namespace Wanlix
         CDeviceObjectBase(Device* device,
                           const Desc& desc,
                           const String& name)
-            : mDevice(device->GetSharedPtr())
+            : mDevice(device->GetSharedPtr<Device>())
             , mDesc(desc)
             , mObjectName(name)
         {}

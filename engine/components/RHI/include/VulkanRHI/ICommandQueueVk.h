@@ -12,6 +12,5 @@ namespace Wanlix
         virtual Uint64 Submit(const VkSubmitInfo& submitInfo) = 0;
         virtual VkResult Present(const VkPresentInfoKHR& presentInfo) = 0;
         virtual VkQueue GetVkQueue() = 0;
-        virtual Uint GetQueueFamilyIndex() const = 0;
     };
 }

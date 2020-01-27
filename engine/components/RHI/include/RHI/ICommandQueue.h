@@ -16,6 +16,7 @@ namespace Wanlix
 
         virtual Uint64 GetNextFenceValue() const = 0;
         virtual Uint64 GetCompletedFenceValue() const = 0;
+        virtual Uint GetQueueFamilyIndex() const = 0;
         virtual void SignalFence(IFence* fence, Uint64 value) = 0;
         virtual Uint64 WaitForIdle() = 0;
         virtual Uint64 Submit(ICommandList* commandList) = 0;

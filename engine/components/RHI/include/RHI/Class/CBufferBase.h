@@ -5,11 +5,15 @@
 
 namespace Wanlix
 {
-    class CBufferBase : public CDeviceObjectBase<IBuffer>
+    template<typename _Interface_>
+    class CBufferBase : public CDeviceObjectBase<_Interface_>
     {
+        static_assert(std::is_base_of_v<IBuffer, _Interface_> || std::is_same_v<IBuffer, _Interface_>);
     public:
-        virtual SharedPtr<IBufferView> CreateView(const BufferViewDesc& desc) override final;
-        virtual SharedPtr<IBufferView> GetDefaultView(EBufferViewType viewType) override final;
+        using View = typename _Interface_::View;
+
+        virtual SharedPtr<View> CreateView(const BufferViewDesc& desc) override final;
+        virtual SharedPtr<View> GetDefaultView(EBufferViewType viewType) override final;
         virtual void SetState(EResourceState state) override final;
         virtual EResourceState GetState() const override final;
         
@@ -20,15 +24,15 @@ namespace Wanlix
         CBufferBase(IDevice* device,
                     const BufferDesc& desc,
                     const String& name)
-            : CDeviceObjectBase<IBuffer>(device, desc, name)
+            : CDeviceObjectBase<_Interface_>(device, desc, name)
         {}
 
-        virtual SharedPtr<IBufferView> CreateViewInternal(const BufferViewDesc& viewDesc, Bool isDefault) = 0;
+        virtual SharedPtr<View> CreateViewInternal(const BufferViewDesc& viewDesc, Bool isDefault) = 0;
         void AdjustBufferViewDesc(BufferViewDesc& desc) const;
 
     protected:
         EResourceState mResourceState = EResourceState::Unknown;
-        SharedPtr<IBufferView> mDefaultUAV;
-        SharedPtr<IBufferView> mDefaultSRV;
+        SharedPtr<View> mDefaultUAV;
+        SharedPtr<View> mDefaultSRV;
     };
 }

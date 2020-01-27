@@ -5,26 +5,30 @@
 
 namespace Wanlix
 {
-    class CBufferViewBase : public CDeviceObjectBase<IBufferView>
+    template<typename _Interface_>
+    class CBufferViewBase : public CDeviceObjectBase<_Interface_>
     {
+        static_assert(std::is_base_of_v<IBufferView, _Interface_> || std::is_same_v<IBufferView, _Interface_>);
     public:
-        virtual IBuffer* GetBuffer() const override final { return mBuffer; }
+        using Buffer = typename _Interface_::Buffer;
+
+        virtual Buffer* GetBuffer() const override final { return mBuffer; }
 
     protected:
         CBufferViewBase(IDevice* device,
                         const BufferViewDesc& desc,
-                        IBuffer* buffer,
+                        Buffer* buffer,
                         Bool isDefaultView,
                         const String& name)
-            : CDeviceObjectBase<IBufferView>(device, desc, name)
+            : CDeviceObjectBase<_Interface_>(device, desc, name)
             , mBuffer(buffer)
-            , mBufferStrongRef(isDefaultView ? nullptr : buffer->GetSharedPtr<IBuffer>())
+            , mBufferStrongRef(isDefaultView ? nullptr : buffer->GetSharedPtr<Buffer>())
         {}
 
     protected:
-        IBuffer* mBuffer = nullptr;
+        Buffer* mBuffer = nullptr;
 
     private:
-        SharedPtr<IBuffer> mBufferStrongRef;
+        SharedPtr<Buffer> mBufferStrongRef;
     };
 }

@@ -7,30 +7,33 @@
 
 namespace Wanlix
 {
-    class CTextureViewBase : public CDeviceObjectBase<ITextureView>
+    template<typename _Interface_>
+    class CTextureViewBase : public CDeviceObjectBase<_Interface_>
     {
     public:
-        virtual ITexture* GetTexture() const override final { return mTexture; }
-        virtual void SetSampler(ISampler* sampler) override final { mSampler = sampler->GetShaderPtr(); }
-        virtual ISampler* GetSampler() const override final { return mSampler.get(); }
+        using Texture = typename _Interface_::Texture;
+        using Sampler = typename _Interface_::Sampler;
+
+        virtual Texture* GetTexture() const override final { return mTexture; }
+        virtual void SetSampler(Sampler* sampler) override final { mSampler = sampler->GetShaderPtr<Sampler>(); }
+        virtual Sampler* GetSampler() const override final { return mSampler.get(); }
 
     protected:
         CTextureViewBase(IDevice* device,
                          const TextureViewDesc& desc,
-                         ITexture* texture,
+                         Texture* texture,
                          Bool isDefaultView,
                          const String& name)
-            : CDeviceObjectBase<ITextureView>(device, desc, name)
+            : CDeviceObjectBase<_Interface_>(device, desc, name)
             , mTexture(texture)
-            , mTextureStrongRef(isDefaultView ? nullptr : texture->GetSharedPtr<ITexture>())
+            , mTextureStrongRef(isDefaultView ? nullptr : texture->GetSharedPtr<Texture>())
         {}
 
-
     protected:
-        ITexture* mTexture = nullptr;
-        SharedPtr<ISampler> mSampler;
+        Texture* mTexture = nullptr;
+        SharedPtr<Sampler> mSampler;
 
     private:
-        SharedPtr<ITexture> mTextureStrongRef;
+        SharedPtr<Texture> mTextureStrongRef;
     };
 }

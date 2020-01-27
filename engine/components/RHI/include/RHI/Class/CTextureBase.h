@@ -5,11 +5,14 @@
 
 namespace Wanlix
 {
-    class CTextureBase : public CDeviceObjectBase<ITexture>
+    template<typename _Interface_>
+    class CTextureBase : public CDeviceObjectBase<_Interface_>
     {
     public:
-        virtual SharedPtr<ITextureView> CreateView(const TextureViewDesc& desc) override final;
-        virtual SharedPtr<ITextureView> GetDefaultView(ETextureViewType viewType) override final;
+        using View = typename _Interface_::View;
+
+        virtual SharedPtr<View> CreateView(const TextureViewDesc& desc) override final;
+        virtual SharedPtr<View> GetDefaultView(ETextureViewType viewType) override final;
         virtual void SetState(EResourceState state) override final;
         virtual void SetSubresourceState(Uint mipLevel, Uint slice, EResourceState state) override final;
         virtual Optional<EResourceState> GetState() const override final;
@@ -22,17 +25,17 @@ namespace Wanlix
         CTextureBase(IDevice* device,
                      const TextureDesc& desc,
                      const String& name)
-            : CDeviceObjectBase<ITexture>(device, desc, name)
+            : CDeviceObjectBase<_Interface_>(device, desc, name)
         {}
 
-        virtual SharedPtr<ITextureView> CreateViewInternal(const TextureViewDesc& viewDesc) = 0;
+        virtual SharedPtr<View> CreateViewInternal(const TextureViewDesc& viewDesc) = 0;
 
     protected:
         EResourceState mResourceState = EResourceState::Unknown;
         HashMap<Subresource, EResourceState> mSubresourceStates;
-        SharedPtr<ITextureView> mDefaultUAV;
-        SharedPtr<ITextureView> mDefaultSRV;
-        SharedPtr<ITextureView> mDefaultRTV;
-        SharedPtr<ITextureView> mDefaultDSV;
+        SharedPtr<View> mDefaultUAV;
+        SharedPtr<View> mDefaultSRV;
+        SharedPtr<View> mDefaultRTV;
+        SharedPtr<View> mDefaultDSV;
     };
 }

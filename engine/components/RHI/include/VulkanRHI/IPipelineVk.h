@@ -1,11 +1,11 @@
 #pragma once
 
-#include "RHI/IPipelineState.h"
+#include "RHI/IPipeline.h"
 #include "VulkanRHI/VkUtilities.h"
 
 namespace Wanlix
 {
-    class IPipelineStateVk : public IPipelineState
+    class IPipelineVk : public IPipeline
     {
     public:
         virtual VkRenderPass GetVkRenderPass() const = 0;

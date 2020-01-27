@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Common.h"
+#include "Wanlix/Common.h"
 #include <vulkan/vulkan.h>
 
 namespace Wanlix

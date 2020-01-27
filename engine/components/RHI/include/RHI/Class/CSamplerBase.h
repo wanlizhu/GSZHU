@@ -5,13 +5,14 @@
 
 namespace Wanlix
 {
-    class CSamplerBase : public CDeviceObjectBase<ISampler>
+    template<typename _Interface_>
+    class CSamplerBase : public CDeviceObjectBase<_Interface_>
     {
     protected:
         CSamplerBase(IDevice* device,
                      const SamplerDesc& desc,
                      const String& name)
-            : CDeviceObjectBase<ISampler>(device, desc, name)
+            : CDeviceObjectBase<_Interface_>(device, desc, name)
         {}
     };
 }
