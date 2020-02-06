@@ -2,7 +2,6 @@
 /[Bb]uild*/
 
 # Temporary directories.
-.vscode/*
 .vs/*
 __pycache__/
 __cache__/
