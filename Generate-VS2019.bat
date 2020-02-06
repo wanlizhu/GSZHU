@@ -8,9 +8,9 @@ REM Generate for VS2019 Win64
 SET Compiler="Visual Studio 16 2019" -A x64
 SET BuildDir=build
 SET SourceDir=.
-SET CMakeDefines=-DWANLIX_ENABLE_VULKAN=ON ^
--DWANLIX_ENABLE_VULKAN=OFF ^
--DWANLIX_BUILD_EDITOR=ON
+SET CMakeDefines=-DWANLI_ENABLE_VULKAN=ON ^
+-DWANLI_ENABLE_D3D12=OFF ^
+-DWANLI_BUILD_EDITOR=ON
 
 cmake -B %BuildDir% -S %SourceDir% -G %Compiler% %CMakeDefines%
 

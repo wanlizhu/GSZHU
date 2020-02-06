@@ -1,3 +1,3 @@
 if (WIN32)
-    add_subdirectory(Win64)
+    add_subdirectory(Windows)
 endif()

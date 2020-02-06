@@ -12,3 +12,11 @@ function (SetOutputDirs
     set_target_properties(${_targetName_} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_MINISIZEREL    "${_libdir_}")
     set_target_properties(${_targetName_} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "${_libdir_}")
 endfunction()
+
+function(RemovePrefixStrings
+    _prefix_
+    _resultList_
+)
+    
+endfunction()
+
