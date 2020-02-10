@@ -1,5 +1,6 @@
 add_executable(WindowsEditor "${RSD}/dummy.cpp")
 SetOutputDirs(WindowsEditor)
+set_target_properties(WindowsEditor PROPERTIES FOLDER "Engine")
 
 set(CSD "${CMAKE_CURRENT_SOURCE_DIR}")
 file(GLOB_RECURSE _sourceFiles_ "${CSD}/*.cpp" "${CSD}/*.c")

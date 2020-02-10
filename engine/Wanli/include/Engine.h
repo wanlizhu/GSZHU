@@ -1,8 +1,9 @@
 #pragma once
 
-#include "VulkanRHI/VulkanRHI.h"
+#include "Graphics/VulkanRHI/VulkanRHI.h"
 #include "Application/Launch.h"
 #include "Utilities/CommandLineArgs.h"
+#include "Utilities/NonCopyable.h"
 #include <atomic>
 
 namespace Wanli
@@ -14,7 +15,7 @@ namespace Wanli
         VulkanRHICreateInfo vulkanInfo;
     };
 
-    class DLLDECL Engine
+    class DLLDECL Engine : public NonCopyable
     {
     public:
         static Engine* Get();
@@ -26,6 +27,7 @@ namespace Wanli
 
         VulkanRHI* GetVulkanRHI() const;
         IApplication* GetApplication() const;
+        CommandLineArgs GetCommandLineArgs() const;
 
         void AddRequiredInstanceExtensions(const char* name);
         void AddRequiredDeviceExtension(const char* name);

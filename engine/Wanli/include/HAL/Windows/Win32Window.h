@@ -9,7 +9,7 @@ struct GLFWwindow;
 
 namespace Wanli
 {
-    class Win32Window : public IWindow
+    class Win32Window final : public IWindow
     {
     public:
         Win32Window() = default;

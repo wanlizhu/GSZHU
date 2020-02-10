@@ -10,7 +10,7 @@ add_library(PKG::json INTERFACE IMPORTED GLOBAL)
 target_include_directories(PKG::json INTERFACE nlohmann)
 
 # imgui
-add_library(PKG::imgui STATIC IMPORTED GLOBAL
+add_library(imgui STATIC
     imgui/imconfig.h
     imgui/imgui.h
     imgui/imgui_internal.h
@@ -19,8 +19,9 @@ add_library(PKG::imgui STATIC IMPORTED GLOBAL
     imgui/imgui_draw.cpp
     imgui/imgui_widgets.cpp
 )
-target_include_directories(PKG::imgui INTERFACE imgui)
-set_target_properties(PKG::imgui PROPERTIES FOLDER "Externals")
+add_library(PKG::imgui ALIAS imgui)
+target_include_directories(imgui PUBLIC imgui)
+set_target_properties(imgui PROPERTIES FOLDER "ThirdParty")
 
 # tinygltf
 add_library(PKG::tinygltf INTERFACE IMPORTED GLOBAL)
@@ -37,3 +38,12 @@ endif()
 if (APPLE)
     list(APPEND PKG_BINS "${CSD}/glfw/lib-macos/libglfw.3.dylib")
 endif()
+
+# physfs
+add_subdirectory(physfs)
+target_include_directories(physfs-static PUBLIC physfs/src)
+target_include_directories(physfs PUBLIC physfs/src)
+set_target_properties(physfs PROPERTIES FOLDER "ThirdParty")
+set_target_properties(physfs-static PROPERTIES FOLDER "ThirdParty")
+set_target_properties(test_physfs PROPERTIES FOLDER "ThirdParty")
+add_library(PKG::physfs ALIAS physfs-static)

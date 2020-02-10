@@ -9,6 +9,8 @@
 #include <functional>
 #include <filesystem>
 #include <chrono>
+#include <optional>
+#include <glm/glm.hpp>
 #include "Config.h"
 
 namespace Wanli
@@ -44,6 +46,9 @@ namespace Wanli
 
     template<typename T>
     using UniquePtr = std::unique_ptr<T>;
+
+    template<typename T>
+    using Optional = std::optional<T>;
 
     struct Version
     {

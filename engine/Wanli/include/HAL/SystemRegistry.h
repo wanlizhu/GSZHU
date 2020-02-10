@@ -6,19 +6,20 @@
 
 namespace Wanli
 {
+    enum ERegValueType
+    {
+        RV_Uint,
+        RV_Uint64,
+        RV_String,
+        RV_ByteArray,
+    };
+
+    using RegValue = std::variant<Uint, Uint64, String, ByteArray>;
+
     class DLLDECL SystemRegistry
     {
     public:
-        using Value = std::variant<Uint, Uint64, String, ByteArray>;
-        enum EValueType
-        {
-            VT_Uint,
-            VT_Uint64,
-            VT_String,
-            VT_ByteArray,
-        };
-
-        static std::optional<Value> GetValue(const String& key, EValueType* type = nullptr);
-        static void SetValue(const String& key, const Value& value);
+        static std::optional<RegValue> GetValue(const String& key, ERegValueType* type = nullptr);
+        static void SetValue(const String& key, const RegValue& value);
     };
 }

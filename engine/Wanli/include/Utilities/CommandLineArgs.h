@@ -10,31 +10,19 @@
 
 namespace Wanli
 {
-    struct CommandLineArgsLayout
-    {
-        HashMap<String, int> argsNumMap;
-        StringArray requiredArgs;
-    };
-
     class DLLDECL CommandLineArgs
     {
     public:
         CommandLineArgs() = default;
-        CommandLineArgs(int argc, char** argv, const CommandLineArgsLayout& layout = {});
+        CommandLineArgs(int argc, char** argv);
 
-        bool HasArg(const String& name) const;
-        bool IsArgFlag(const String& name) const;
-        bool IsArgArray(const String& name) const;
+        inline int GetArgCount() const { (int)mArgs.size(); }
+        inline String operator[](int index) const { return mArgs[index]; }
 
-        bool GetArgFlag(const String& name) const;
-        const String& GetArg(const String& name) const;
-        const StringArray& GetArgArray(const String& name) const;
-        const StringArray& GetUnnamedArgs() const;
-
+        Optional<String> FindArg(const String& name) const;
+        Optional<StringArray> FindArgArray(const String& name) const;
+        
     private:
-        int argc = 0;
-        char** argv = nullptr;
-        HashMap<String, StringArray> mNamedArgs;
-        StringArray mUnnamedArgs;
+        StringArray mArgs;
     };
 }

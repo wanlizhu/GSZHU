@@ -3,7 +3,8 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
-#include <glm/glm.hpp>
+#include <glm/glm.h>
+#include "BasicTypes.h"
 
 namespace Wanli
 {
@@ -25,7 +26,7 @@ namespace Wanli
         int size = 0;
     };
 
-    class IMonitor
+    class DLLDECL IMonitor
     {
     public:
         virtual bool IsPrimary() const = 0;

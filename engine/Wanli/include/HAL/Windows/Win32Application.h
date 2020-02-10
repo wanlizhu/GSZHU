@@ -5,7 +5,7 @@
 
 namespace Wanli
 {
-    class Win32Application : public IApplication
+    class Win32Application final : public IApplication
     {
     public:
         Win32Application(HINSTANCE hInstance);
@@ -13,10 +13,10 @@ namespace Wanli
         Win32Application& operator=(const Win32Application&) = delete;
         virtual ~Win32Application();
 
-        virtual bool Initialize() override final;
+        virtual bool Initialize(const ApplicationCreateInfo& info) override final;
         virtual void Tick(double time, double delta) override final;
         virtual void Quit() override final;
-        virtual bool CreateCanvasWindow(const char* title, int width, int height, uint32_t flags = 0) override final;
+        virtual bool RecreateWindow(const WindowCreateInfo& info) override final;
         virtual Win32Monitor* GetPrimaryMonitor() const override final;
         virtual Win32Window* GetWindow() const override final;
 

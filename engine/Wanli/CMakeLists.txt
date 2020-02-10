@@ -8,8 +8,8 @@ SetOutputDirs(Wanli)
 set_target_properties(Wanli PROPERTIES FOLDER "Engine")
 find_package(Vulkan)
 
-file(GLOB_RECURSE _headerFiles_ "${CSD}/include/*.h" "${CSD}/include/*.inl")
-file(GLOB_RECURSE _sourceFiles_ "${CSD}/source/*.h" "${CSD}/source/*.inl" "${CSD}/source/*.cpp")
+file(GLOB_RECURSE _headerFiles_ "${CSD}/include/*.h" "${CSD}/include/*.h" "${CSD}/include/*.inl")
+file(GLOB_RECURSE _sourceFiles_ "${CSD}/source/*.h" "${CSD}/source/*.h" "${CSD}/source/*.inl" "${CSD}/source/*.cpp")
 file(GLOB_RECURSE _shaderFiles_ "${CSD}/shaders/*.glsl")
 
 source_group(TREE "${CSD}/include" PREFIX "Header Files" FILES ${_headerFiles_})
@@ -27,6 +27,7 @@ target_compile_definitions(Wanli PRIVATE $<$<BOOL:WANLI_ENABLE_D3D12>:"ENABLE_D3
 target_link_libraries(Wanli PUBLIC PKG::glm)
 target_link_libraries(Wanli PRIVATE PKG::imgui)
 target_link_libraries(Wanli PRIVATE PKG::tinygltf)
+target_link_libraries(Wanli PRIVATE PKG::physfs)
 target_link_libraries(Wanli PRIVATE $<$<BOOL:WANLI_ENABLE_VULKAN>:Vulkan::Vulkan>)
 
 if (WIN32)

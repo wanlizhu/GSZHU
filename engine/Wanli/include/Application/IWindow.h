@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <glm/glm.hpp>
+#include <glm/glm.h>
 #include "Application/IMonitor.h"
 #include "Application/IEventListener.h"
 

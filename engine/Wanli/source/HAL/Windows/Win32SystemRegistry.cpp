@@ -45,7 +45,82 @@ namespace Wanli
         return NULL;
     }
 
-    std::optional<SystemRegistry::Value> SystemRegistry::GetValue(const String& key, EValueType* type)
+    DWORD DetectValueType(const RegValue& value)
+    {
+        if (std::holds_alternative<Uint>(value))
+        {
+            return REG_DWORD;
+        }
+
+        if (std::holds_alternative<Uint64>(value))
+        {
+            return REG_QWORD;
+        }
+
+        if (std::holds_alternative<String>(value))
+        {
+            return REG_SZ;
+        }
+
+        if (std::holds_alternative<ByteArray>(value))
+        {
+            return REG_BINARY;
+        }
+
+        return 0;
+    }
+
+    const void* GetValueData(const RegValue& value)
+    {
+        if (std::holds_alternative<Uint>(value))
+        {
+            return &std::get<Uint>(value);
+        }
+
+        if (std::holds_alternative<Uint64>(value))
+        {
+            return &std::get<Uint64>(value);
+        }
+
+        if (std::holds_alternative<String>(value))
+        {
+            return std::get<String>(value).data();
+        }
+
+        if (std::holds_alternative<ByteArray>(value))
+        {
+            return std::get<ByteArray>(value).data();
+        }
+
+        return 0;
+    }
+
+    DWORD GetValueDataSize(const RegValue& value)
+    {
+        if (std::holds_alternative<Uint>(value))
+        {
+            return sizeof(Uint);
+        }
+
+        if (std::holds_alternative<Uint64>(value))
+        {
+            return sizeof(Uint64);
+        }
+
+        if (std::holds_alternative<String>(value))
+        {
+            return (DWORD)std::get<String>(value).size();
+        }
+
+        if (std::holds_alternative<ByteArray>(value))
+        {
+            return (DWORD)std::get<ByteArray>(value).size();
+        }
+
+        return 0;
+    }
+
+    std::optional<RegValue> SystemRegistry::GetValue(const String& key, ERegValueType* type)
     {
         HKEY hKey = GetHKey(key);
         if (hKey == NULL)
@@ -117,82 +192,7 @@ namespace Wanli
         }
     }
 
-    DWORD DetectValueType(const SystemRegistry::Value& value)
-    {
-        if (std::holds_alternative<Uint>(value))
-        {
-            return REG_DWORD;
-        }
-
-        if (std::holds_alternative<Uint64>(value))
-        {
-            return REG_QWORD;
-        }
-
-        if (std::holds_alternative<String>(value))
-        {
-            return REG_SZ;
-        }
-
-        if (std::holds_alternative<ByteArray>(value))
-        {
-            return REG_BINARY;
-        }
-
-        return 0;
-    }
-
-    const void* GetValueData(const SystemRegistry::Value& value)
-    {
-        if (std::holds_alternative<Uint>(value))
-        {
-            return &std::get<Uint>(value);
-        }
-
-        if (std::holds_alternative<Uint64>(value))
-        {
-            return &std::get<Uint64>(value);
-        }
-
-        if (std::holds_alternative<String>(value))
-        {
-            return std::get<String>(value).data();
-        }
-
-        if (std::holds_alternative<ByteArray>(value))
-        {
-            return std::get<ByteArray>(value).data();
-        }
-
-        return 0;
-    }
-
-    DWORD GetValueDataSize(const SystemRegistry::Value& value)
-    {
-        if (std::holds_alternative<Uint>(value))
-        {
-            return sizeof(Uint);
-        }
-
-        if (std::holds_alternative<Uint64>(value))
-        {
-            return sizeof(Uint64);
-        }
-
-        if (std::holds_alternative<String>(value))
-        {
-            return (DWORD)std::get<String>(value).size();
-        }
-
-        if (std::holds_alternative<ByteArray>(value))
-        {
-            return (DWORD)std::get<ByteArray>(value).size();
-        }
-
-        return 0;
-    }
-
-    void SystemRegistry::SetValue(const String& key, const SystemRegistry::Value& value)
+    void SystemRegistry::SetValue(const String& key, const RegValue& value)
     {
         HKEY hKey = GetHKey(key);
         if (hKey == NULL)

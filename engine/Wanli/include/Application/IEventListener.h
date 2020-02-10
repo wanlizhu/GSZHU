@@ -1,8 +1,8 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include "HAL/EKeyTypes.h"
-#include "HAL/EMouseTypes.h"
+#include <glm/glm.h>
+#include "HAL/EKeyType.h"
+#include "HAL/EMouseType.h"
 
 namespace Wanli
 {

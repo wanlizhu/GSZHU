@@ -7,7 +7,7 @@ struct GLFWmonitor;
 
 namespace Wanli
 {
-    class Win32Monitor : public IMonitor
+    class Win32Monitor final : public IMonitor
     {
     public:
         static int GetMonitors(std::vector<Win32Monitor>& monitors);

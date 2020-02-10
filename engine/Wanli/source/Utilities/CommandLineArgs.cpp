@@ -3,108 +3,59 @@
 
 namespace Wanli
 {
-    CommandLineArgs::CommandLineArgs(int argc, char** argv, const CommandLineArgsLayout& layout)
-        : argc(argc)
-        , argv(argv)
+    CommandLineArgs::CommandLineArgs(int argc, char** argv)
     {
-        String argName = "";
-        int count = 0;
-
         for (int i = 0; i < argc; i++)
         {
-            if (argv[i][0] == '-')
-            {
-                argName = argv[i];
-                argName.erase(0, argName.find_first_not_of("- \t"));
-                mNamedArgs[argName] = {};
-                count = 0;
-                continue;
-            }
-
-            if (argName.empty())
-            {
-                mUnnamedArgs.push_back(argv[i]);
-            }
-            else
-            {
-                mNamedArgs[argName].push_back(argv[i]);
-                if (layout.argsNumMap.find(argName) != layout.argsNumMap.end())
-                {
-                    if (count < layout.argsNumMap.at(argName))
-                    {
-                        count++;
-                    }
-                    else
-                    {
-                        argName = "";
-                        count = 0;
-                    }
-                }
-            }
+            mArgs.push_back(argv[i]);
         }
+    }
 
-        for (const auto& pair : layout.argsNumMap)
+    Optional<String> CommandLineArgs::FindArg(const String& name) const
+    {
+        int index = -1;
+        for (int i = 0; i < (int)mArgs.size() && index == -1; i++)
         {
-            if (HasArg(pair.first))
+            if (mArgs[i][0] == '-')
             {
-                if (mNamedArgs[pair.first].size() < pair.second)
-                {
-                    LOG_ERROR("There is no enough args for '%s'.\n", pair.first.c_str());
-                }
+                index = i;
             }
         }
 
-        for (const auto& name : layout.requiredArgs)
+        if (index >= 0)
         {
-            if (!HasArg(name))
+            if (index < ((int)mArgs.size() - 1) && mArgs[index + 1][0] != '-')
             {
-                LOG_ERROR("Missing required argument '%s'.\n", name.c_str());
+                return String("");
+            }
+            return mArgs[index + 1];
+        }
+
+        return std::nullopt;
+    }
+
+    Optional<StringArray> CommandLineArgs::FindArgArray(const String& name) const
+    {
+        int index = -1;
+        for (int i = 0; i < (int)mArgs.size() && index == -1; i++)
+        {
+            if (mArgs[i][0] == '-')
+            {
+                index = i;
             }
         }
-    }
 
-    bool CommandLineArgs::HasArg(const String& name) const
-    {
-        return mNamedArgs.find(name) != mNamedArgs.end();
-    }
-
-    bool CommandLineArgs::IsArgFlag(const String& name) const
-    {
-        auto it = mNamedArgs.find(name);
-        if (it != mNamedArgs.end())
+        if (index >= 0)
         {
-            return it->second.size() == 0;
+            StringArray result;
+            int j = index + 1;
+            while (j < (int)mArgs.size() && mArgs[j][0] != '-')
+            {
+                result.push_back(mArgs[j++]);
+            }
+            return result;
         }
-        return false;
-    }
 
-    bool CommandLineArgs::IsArgArray(const String& name) const
-    {
-        auto it = mNamedArgs.find(name);
-        if (it != mNamedArgs.end())
-        {
-            return it->second.size() > 1;
-        }
-        return false;
-    }
-
-    bool CommandLineArgs::GetArgFlag(const String& name) const
-    {
-        return IsArgFlag(name);
-    }
-
-    const String& CommandLineArgs::GetArg(const String& name) const
-    {
-        return mNamedArgs.at(name)[0];
-    }
-
-    const StringArray& CommandLineArgs::GetArgArray(const String& name) const
-    {
-        return mNamedArgs.at(name);
-    }
-
-    const StringArray& CommandLineArgs::GetUnnamedArgs() const
-    {
-        return mUnnamedArgs;
+        return std::nullopt;
     }
 }
