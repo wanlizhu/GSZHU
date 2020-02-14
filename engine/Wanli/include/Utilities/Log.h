@@ -60,33 +60,25 @@ namespace Wanli
 		template<typename... _Args_>
 		static inline void WriteAsync(const std::string_view& style,
 									  const std::string_view& color,
-									  const char* file,
-									  int line,
 									  _Args_... args)
 		{
 #ifdef ENABLE_ASYNC_LOG
-			ThreadPool::AddTask(std::bind(&Log::Write, this));
+			/*ThreadPool::Enqueue(
+				&Log::Write,
+				style,
+				color,
+				std::forward<_Args_>(args)...);*/
 #else
-			Write(style, color, file, line, std::forward<_Args_>(args)...);
+			Write(style, color, std::forward<_Args_>(args)...);
 #endif
 		}
 
 		template<typename... _Args_>
 		static inline void Write(const std::string_view& style,
 								 const std::string_view& color,
-								 const char* file,
-								 int line,
 								 _Args_... args)
 		{
-			std::unique_lock<std::mutex> lock(mWriteMutex);
-			std::string prefix = std::string(file) + "(" + std::to_string(line) + "): ";
-			if (prefix == mLastPrefix)
-			{
-				prefix.assign(prefix.size(), ' ');
-			}
-
 			SetStyleAndColor(style, color);
-			std::cout << prefix;
 			((std::cout << std::forward<_Args_>(args)), ...);
 			SetStyleAndColor();
 
@@ -107,8 +99,8 @@ namespace Wanli
 		static std::string mLastPrefix;
 	};
 
-#define LOG_ERROR(...)   Log::WriteAsync(LogStyle::Bold, LogColor::Red, __FILE__, __LINE__, __VA_ARGS__)
-#define LOG_WARNING(...) Log::WriteAsync(LogStyle::Default, LogColor::Yellow, __FILE__, __LINE__, __VA_ARGS__)
-#define	LOG_DEBUG(...)   Log::WriteAsync(LogStyle::Default, LogColor::Cyan, __FILE__, __LINE__, __VA_ARGS__)
-#define LOG_INFO(...)    Log::WriteAsync(LogStyle::Default, LogColor::Default, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_ERROR(...)   Log::WriteAsync(LogStyle::Bold, LogColor::Red, __VA_ARGS__)
+#define LOG_WARNING(...) Log::WriteAsync(LogStyle::Default, LogColor::Yellow, __VA_ARGS__)
+#define	LOG_DEBUG(...)   Log::WriteAsync(LogStyle::Default, LogColor::Cyan, __VA_ARGS__)
+#define LOG_INFO(...)    Log::WriteAsync(LogStyle::Default, LogColor::Default, __VA_ARGS__)
 }

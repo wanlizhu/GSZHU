@@ -16,7 +16,7 @@ namespace Wanli
         CommandLineArgs() = default;
         CommandLineArgs(int argc, char** argv);
 
-        inline int GetArgCount() const { (int)mArgs.size(); }
+        inline int GetArgCount() const { return (int)mArgs.size(); }
         inline String operator[](int index) const { return mArgs[index]; }
 
         Optional<String> FindArg(const String& name) const;
