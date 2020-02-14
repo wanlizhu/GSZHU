@@ -19,7 +19,7 @@ namespace Wanli
                             EDeviceType deviceType,
                             EFeatureFlags enabledFeatures,
                             Color backgroundColor,
-                            const Array<Path>& assertPaths,
+                            const Array<Path>& assetPaths,
                             ErrorCallback errorCallback)
     {
         return true;

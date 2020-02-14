@@ -2,13 +2,13 @@
 
 #include "BasicTypes.h"
 #include "IModule.h"
+#include "Plugin.h"
 #include "Utilities/CommandLineArgs.h"
 #include "Utilities/NonCopyable.h"
 #include "Utilities/ElapsedTime.h"
 #include "Utilities/ChangePerSecond.h"
 #include "Utilities/Future.h"
 #include "VulkanRHI/VulkanRHI.h"
-#include "Messages/MessageQueue.h"
 #include "HAL/NativeHandles.h"
 
 namespace Wanli
@@ -38,31 +38,18 @@ namespace Wanli
         using ErrorCallback = void(__stdcall*)(Uint, const char*);
 
         static Engine* Get();
+        
         ~Engine();
-        bool Initialize(CommandLineArgs commandLineArgs,
-                        WindowHandle window,
-                        EDeviceType deviceType,
-                        EFeatureFlags enabledFeatures,
-                        Color backgroundColor = Color_AutoCAD,
-                        const Array<Path>& assertPaths = {},
-                        ErrorCallback errorCallback = nullptr);
+        bool Initialize(const CommandLineArgs& commandLineArgs);
         int Run();
         Future<int> RunAsync();
 
-        inline void Shutdown() { mRunning = false; }
-        inline void SetFpsLimit(float limit) { mFpsLimit = limit; }
-
-        inline VulkanRHI* GetVulkanRHI() const { return mVulkanRHI.get(); }
-        inline Uint GetFps() const { return mFpsRecord.GetValue(); }
-        inline Uint GetUps() const { return mUpsRecord.GetValue(); }
-        inline Optional<float> GetFpsLimit() const { return mFpsLimit; }
-        inline bool IsRunning() const { return mRunning; }
         inline const Version& GetVersion() const { return mVersion; }
-        inline const String& GetAppName() const { return mAppName; }
-        inline const CommandLineArgs& GetCommandLineArgs() const { return mCommandLineArgs; }
-        inline WindowHandle GetWindowHandle() const { return mWindowHandle; }
+        inline Window* GetWindow() const { return mWindow.get(); }
+        inline IApplication* GetApp() const { return mApp.get(); }
+        inline VulkanRHI* GetVulkanRHI() const { return mVulkanRHI.get(); }
 
-    protected:
+    private:
         Engine();
         void Destroy();
         void LoadConfig();
@@ -72,14 +59,13 @@ namespace Wanli
     private:
         bool mRunning = false;
         Version mVersion;
-        String mAppName;
-        CommandLineArgs mCommandLineArgs;
+        UniquePtr<IApplication> mApp;
+        UniquePtr<Window> mWindow;
         UniquePtr<VulkanRHI> mVulkanRHI;
-        WindowHandle mWindowHandle = nullptr;
+        Array<UniquePtr<Plugin>> mPlugins;
 
         ElapsedTime mElapsedUpdate;
         ElapsedTime mElapsedRender;
-
         Optional<float> mFpsLimit;
         ChangePerSecond mFpsRecord;
         ChangePerSecond mUpsRecord;
