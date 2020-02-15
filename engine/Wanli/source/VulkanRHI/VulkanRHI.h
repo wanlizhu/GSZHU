@@ -1,28 +1,19 @@
 #pragma once
 
-#include "VulkanConfig.h"
-#include "VulkanError.h"
+#include "Core/BasicTypes.h"
+#include "Core/IModule.h"
+#include "VulkanRHI/RHIConfig.h"
+#include "Utilities/NonCopyable.h"
 
 namespace Wanli
 {
-    class VulkanInstance;
-    class VulkanPhysicalDevice;
-    class VulkanLogicalDevice;
-    class VulkanSurface;
-
-    class DLLDECL VulkanRHI : public NonCopyable
-        , public std::enable_shared_from_this<VulkanRHI>
+    struct VulkanRHICreateInfo
     {
-    public:
-        VulkanRHI(WindowHandle window);
-        virtual ~VulkanRHI() = default;
 
+    };
 
+    class DLLDECL VulkanRHI : public IModule
+    {
 
-    private:
-        UniquePtr<VulkanInstance> mInstance;
-        UniquePtr<VulkanPhysicalDevice> mPhysicalDevice;
-        UniquePtr<VulkanLogicalDevice> mLogicalDevice;
-        UniquePtr<VulkanSurface> mSurface;
     };
 }

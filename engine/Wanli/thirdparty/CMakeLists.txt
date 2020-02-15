@@ -39,11 +39,11 @@ if (APPLE)
     list(APPEND PKG_BINS "${CSD}/glfw/lib-macos/libglfw.3.dylib")
 endif()
 
-# physfs
-add_subdirectory(physfs)
-target_include_directories(physfs-static PUBLIC physfs/src)
-target_include_directories(physfs PUBLIC physfs/src)
-set_target_properties(physfs PROPERTIES FOLDER "ThirdParty")
-set_target_properties(physfs-static PROPERTIES FOLDER "ThirdParty")
-set_target_properties(test_physfs PROPERTIES FOLDER "ThirdParty")
-add_library(PKG::physfs ALIAS physfs-static)
+# LodePNG
+add_library(LodePNG STATIC "LodePNG/lodepng.cpp" "LodePNG/lodepng.h")
+add_library(PKG::LodePNG ALIAS LodePNG)
+set_target_properties(LodePNG PROPERTIES FOLDER "ThirdParty")
+target_include_directories(LodePNG PUBLIC "LodePNG")
+target_compile_options(LodePNG PRIVATE "/wd4551") # function call missing argument list
+target_compile_options(LodePNG PRIVATE "/wd4334") # '<<': result of 32-bit shift implicitly converted to 64 bits 
+target_compile_options(LodePNG PRIVATE "/wd4267") # '=': conversion from 'size_t' to 'unsigned short'
