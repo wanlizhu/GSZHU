@@ -12,3 +12,5 @@ target_sources(WindowsEditor PRIVATE ${_sourceFiles_} ${_headerFiles_})
 target_include_directories(WindowsEditor PRIVATE "${CSD}")
 target_link_libraries(WindowsEditor PRIVATE Wanli)
 target_compile_definitions(WindowsEditor PRIVATE "_UNICODE" "UNICODE")
+target_compile_definitions(WindowsEditor PRIVATE "PLATFORM_WINDOWS")
+target_compile_options(WindowsEditor PRIVATE "/wd4251") # members of exported class are not exported

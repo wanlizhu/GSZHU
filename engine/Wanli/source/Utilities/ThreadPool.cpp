@@ -2,56 +2,42 @@
 
 namespace Wanli
 {
-    ThreadPool::ThreadPool(int threads)
+    void ThreadPool::Main()
     {
-        mThreads.reserve(threads);
+        ThreadPool& pool = ThreadPool::Get();
+        std::mutex waitMutex;
 
-        for (int i = 0; i < threads; i++)
+        while (!pool.mKillFlag.load())
         {
-            mThreads.emplace_back([this] () {
-                while (true)
-                {
-                    std::function<void()> task;
+            std::unique_lock<std::mutex> lock(waitMutex);
+            pool.mCV.wait(lock,
+                [&]() {
+                    std::unique_lock<std::mutex> lock2(pool.mQueueMutex);
+                    return pool.mKillFlag.load() || !pool.mTaskQueue.empty();
+                });
 
-                    {
-                        std::unique_lock<std::mutex> lock(mMutex);
-                        mCV.wait(lock, [this] () {
-                            return mQuit.load() || !mTasks.empty();
-                        });
-
-                        if (mQuit.load() && mTasks.empty())
-                        {
-                            return;
-                        }
-
-                        task = std::move(mTasks.front());
-                        mTasks.pop();
-                    }
-                    task();
-                }
-            });
-        }
-    }
-
-    ThreadPool::~ThreadPool()
-    {
-        mQuit.store(true);
-        mCV.notify_all();
-
-        for (auto& thread : mThreads)
-        {
-            if (thread.joinable())
             {
-                thread.join();
+                std::unique_lock<std::mutex> lock2(pool.mQueueMutex);
+                for (auto& func : pool.mTaskQueue)
+                {
+                    func();
+                }
+                pool.mTaskQueue.clear();
             }
         }
     }
 
-    void ThreadPool::Wait()
+    ThreadPool::ThreadPool(int numThreads)
     {
-        std::unique_lock<std::mutex> lock(mMutex);
-        mCV.wait(lock, [this] () {
-            return mTasks.empty();
-        });
+        for (int i = 0; i < numThreads; i++)
+        {
+            mThreads.push_back(std::make_shared<std::thread>(&ThreadPool::Main));
+        }
+    }
+
+    ThreadPool& ThreadPool::Get()
+    {
+        static ThreadPool _instance(std::thread::hardware_concurrency());
+        return _instance;
     }
 }

@@ -9,7 +9,6 @@
 #include <thread>
 #include <queue>
 #include <iostream>
-#include "Core/Config.h"
 #include "Core/BasicTypes.h"
 #ifdef ENABLE_ASYNC_LOG
 #include "Utilities/ThreadPool.h"
@@ -57,35 +56,36 @@ namespace Wanli
 		static void OpenLog(const Path& path);
 		static void CloseLog();
 
-		template<typename... _Args_>
+		template<typename... Args>
 		static inline void WriteAsync(const std::string_view& style,
 									  const std::string_view& color,
-									  _Args_... args)
+			                          Args... args)
 		{
-#ifdef ENABLE_ASYNC_LOG
-			/*ThreadPool::Enqueue(
+#if 0//defined ENABLE_ASYNC_LOG
+			ThreadPool::Enqueue(
 				&Log::Write,
 				style,
 				color,
-				std::forward<_Args_>(args)...);*/
+				std::forward<Args>(args)...
+			);
 #else
-			Write(style, color, std::forward<_Args_>(args)...);
+			Write(style, color, std::forward<Args>(args)...);
 #endif
 		}
 
-		template<typename... _Args_>
+		template<typename... Args>
 		static inline void Write(const std::string_view& style,
 								 const std::string_view& color,
-								 _Args_... args)
+								 Args... args)
 		{
 			SetStyleAndColor(style, color);
-			((std::cout << std::forward<_Args_>(args)), ...);
+			((std::cout << std::forward<Args>(args)), ...);
 			SetStyleAndColor();
 
 			if (mFileStream.is_open())
 			{
-				mFileStream << prefix;
-				((mFileStream << std::forward<_Args_>(args)), ...);
+				//mFileStream << prefix;
+				((mFileStream << std::forward<Args>(args)), ...);
 			}
 		}
 

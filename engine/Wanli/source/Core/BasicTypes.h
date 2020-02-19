@@ -16,9 +16,18 @@
 #include <queue>
 #include <deque>
 #include <variant>
+#include <future>
+#include <any>
 #include <typeindex>
 #include "glm/glm.hpp"
-#include "Config.h"
+#include "glm/ext/quaternion_float.hpp"
+#include "glm/ext/quaternion_geometric.hpp"
+#include "glm/ext/quaternion_relational.hpp"
+#include "glm/ext/quaternion_transform.hpp"
+#include "Macros.h"
+#ifdef PLATFORM_WINDOWS
+#include <Windows.h>
+#endif
 
 #define Color_RED     glm::ivec4(255, 0, 0, 255)
 #define Color_GREEN   glm::ivec4(0, 255, 0, 255)
@@ -50,17 +59,20 @@ namespace Wanli
     using StringArray = std::vector<std::string>;
     using StringMap = std::unordered_map<std::string, std::string>;
     using StringArrayMap = std::unordered_map<std::string, std::vector<std::string>>;
+    using Color = glm::ivec4;
 
-    //using Color = glm::ivec4;
+#ifdef PLATFORM_WINDOWS
+    using WindowHandle = HWND;
+#endif
 
     template<typename T>
     using Array = std::vector<T>;
 
     template<typename K,
              typename V, 
-             typename _Hash_ = std::hash<K>, 
-             typename _Equal_ = std::equal_to<K>>
-    using HashMap = std::unordered_map<K, V, _Hash_, _Equal_>;
+             typename Hash = std::hash<K>, 
+             typename Equal = std::equal_to<K>>
+    using HashMap = std::unordered_map<K, V, Hash, Equal>;
 
     template<typename T>
     using SharedPtr = std::shared_ptr<T>;
@@ -80,4 +92,6 @@ namespace Wanli
         Uint8 minor = 0;
         Uint8 patch = 0;
     };
+
+    extern String gszLastErrorMsg;
 }

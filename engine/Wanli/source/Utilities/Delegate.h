@@ -22,13 +22,13 @@ namespace Wanli
         std::shared_ptr<bool> mValidFlag;
     };
 
-    template<typename _Return_, typename... _Args_>
+    template<typename ReturnType, typename... Args>
     class Invoker
     {
     public:
-        using AllReturns = std::vector<_Return_>;
+        using AllReturns = std::vector<ReturnType>;
 
-        static AllReturns Invoke(Delegate<_Return_(_Args_...)>& delegate, _Args_... args)
+        static AllReturns Invoke(Delegate<ReturnType(Args...)>& delegate, Args... args)
         {
             std::lock_guard<std::mutex> lock(delegate.mMutex);
             AllReturns results;
@@ -44,7 +44,7 @@ namespace Wanli
                         it = delegate.mConnections.erase(it);
                         continue;
                     }
-                    results.emplace_back(it->function(std::forward<_Args_>(args)...));
+                    results.emplace_back(it->function(std::forward<Args>(args)...));
                     it++;
                 }
             }
@@ -53,13 +53,13 @@ namespace Wanli
         }
     };
 
-    template<typename... _Args_>
-    class Invoker<void, _Args_...>
+    template<typename... Args>
+    class Invoker<void, Args...>
     {
     public:
         using AllReturns = void;
 
-        static void Invoke(Delegate<void(_Args_...)>& delegate, _Args_... args)
+        static void Invoke(Delegate<void(Args...)>& delegate, Args... args)
         {
             std::lock_guard<std::mutex> lock(delegate.mMutex);
 
@@ -74,19 +74,19 @@ namespace Wanli
                         it = delegate.mConnections.erase(it);
                         continue;
                     }
-                    it->function(std::forward<_Args_>(args)...);
+                    it->function(std::forward<Args>(args)...);
                     it++;
                 }
             }
         }
     };
 
-    template<typename _Return_, typename... _Args_>
-    class DLLDECL Delegate<_Return_(_Args_...)>
+    template<typename ReturnType, typename... Args>
+    class DLLDECL Delegate<ReturnType(Args...)>
     {
     public:
-        using Invoker = Wanli::Invoker<_Return_, _Args_...>;
-        using Function = std::function<_Return_(_Args_...)>;
+        using Invoker = Wanli::Invoker<ReturnType, Args...>;
+        using Function = std::function<ReturnType(Args...)>;
         using Observers = std::vector<std::weak_ptr<bool>>;
         friend class Invoker;
 
@@ -107,8 +107,8 @@ namespace Wanli
         Delegate() = default;
         virtual ~Delegate() = default;
 
-        template<typename... _Observers_>
-        Delegate& Add(Function&& function, _Observers_... observers)
+        template<typename... ObserverTypes>
+        Delegate& Add(Function&& function, ObserverTypes... observers)
         {
             std::lock_guard<std::mutex> lock(mMutex);
             Observers observerList;
@@ -136,8 +136,8 @@ namespace Wanli
             return *this;
         }
 
-        template<typename... _Observers_>
-        void RemoveObservers(_Observers_... observers)
+        template<typename... ObserverTypes>
+        void RemoveObservers(ObserverTypes... observers)
         {
             Observers removes;
 
@@ -209,9 +209,9 @@ namespace Wanli
             mConnections.clear();
         }
 
-        typename Invoker::AllReturns Invoke(_Args_... args)
+        typename Invoker::AllReturns Invoke(Args... args)
         {
-            return Invoker::Invoke(*this, std::forward<_Args_>(args)...);
+            return Invoker::Invoke(*this, std::forward<Args>(args)...);
         }
 
         Delegate& operator+=(Function&& function)
@@ -224,13 +224,40 @@ namespace Wanli
             return Remove(function);
         }
 
-        typename Invoker::AllReturns operator()(_Args_... args)
+        typename Invoker::AllReturns operator()(Args... args)
         {
-            return Invoker::Invoke(*this, std::forward<_Args_>(args)...);
+            return Invoker::Invoke(*this, std::forward<Args>(args)...);
         }
 
     protected:
         std::mutex mMutex;
         std::vector<Connection> mConnections;
+    };
+
+    template<typename T>
+    class DLLDECL DelegatedValue : public Delegate<void(T)>
+        , public NonCopyable
+    {
+    public:
+        template<typename... Args>
+        DelegatedValue(Args... args)
+            : mValue(std::forward<Args>(args)...)
+        {}
+        virtual ~DelegatedValue() = default;
+
+        DelegatedValue& operator=(T value)
+        {
+            mValue = value;
+            Invoke(mValue);
+            return *this;
+        }
+
+        inline operator const T& () const noexcept { return mValue; }
+        inline const T& Get() const { return mValue; }
+        inline const T& operator*() const { return mValue; }
+        inline const T* operator->() const { return &mValue; }
+
+    protected:
+        T mValue;
     };
 }

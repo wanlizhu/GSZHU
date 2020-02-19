@@ -5,12 +5,12 @@
 
 namespace Wanli
 {
-    template<typename _Base_>
+    template<typename BaseClass>
     class DLLDECL BitmapFactory
     {
     public:
-        using LoadMethod = std::function<void(_Base_*, const String&)>;
-        using WriteMethod = std::function<void(const _Base_*, const String&)>;
+        using LoadMethod = std::function<void(BaseClass*, const String&)>;
+        using WriteMethod = std::function<void(const BaseClass*, const String&)>;
         
         struct RegistryEntry 
         {
@@ -22,8 +22,8 @@ namespace Wanli
         class Registrar //: public _Base_
         {
         public:
-            template<typename... _Args_>
-            static bool Register(_Args_&&... names)
+            template<typename... Args>
+            static bool Register(Args&&... names)
             {
                 for (String&& name : { names ... })
                 {
@@ -49,7 +49,7 @@ namespace Wanli
     {
     public:
         Bitmap() = default;
-        explicit Bitmap(String path);
+        explicit Bitmap(const Path& path);
         explicit Bitmap(const glm::ivec2& size,
                         int bytesPerPixel = 4);
         explicit Bitmap(const glm::ivec2& size,
@@ -57,14 +57,14 @@ namespace Wanli
                         UniquePtr<Byte[]>&& data);
         virtual ~Bitmap() = default;
 
-        void Load(const String& path);
-        void Write(const String& path) const;
+        void Load(const Path& path);
+        void Write(const Path& path) const;
 
         inline operator bool() const noexcept { return !mData; }
         inline Uint GetSizeInBytes() const { return mSize.x * mSize.y * mBytesPerPixel; }
         
-        inline String GetPath() const { return mFilePath; }
-        inline void SetPath(const String& path) { mFilePath = path; }
+        inline Path GetPath() const { return mFilePath; }
+        inline void SetPath(const Path& path) { mFilePath = path; }
         
         inline const UniquePtr<Byte[]>& GetData() const { return mData; }
         inline UniquePtr<Byte[]>& GetData() { return mData; }
@@ -77,7 +77,7 @@ namespace Wanli
         inline void SetBytesPerPixel(int bytes) { mBytesPerPixel = bytes; }
 
     protected:
-        String mFilePath;
+        Path mFilePath;
         UniquePtr<Byte[]> mData;
         glm::ivec2 mSize = { 0, 0 };
         int mBytesPerPixel = 4;

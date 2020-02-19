@@ -1,6 +1,6 @@
 #include "Utilities/Bitmap.h"
 #include "Utilities/ElapsedTime.h"
-#include "HAL/File.h"
+#include "Utilities/File.h"
 #include "Utilities/Log.h"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -10,8 +10,8 @@
 
 namespace Wanli
 {
-    Bitmap::Bitmap(String path)
-        : mFilePath(std::move(path))
+    Bitmap::Bitmap(const Path& path)
+        : mFilePath(path)
     {
         Load(mFilePath);
     }
@@ -28,7 +28,7 @@ namespace Wanli
         , mBytesPerPixel(bytesPerPixel)
     {}
 
-    void Bitmap::Load(const String& path)
+    void Bitmap::Load(const Path& path)
     {
 #ifdef WANLI_DEBUG
         DeltaTime debugTimer;
@@ -36,7 +36,7 @@ namespace Wanli
         auto encoder = Registry().find(Path(path).extension().string());
         if (encoder != Registry().end())
         {
-            encoder->second.loadMethod(this, path);
+            encoder->second.loadMethod(this, path.string().c_str());
         }
         else // Fallback to stb_image
         {
@@ -64,7 +64,7 @@ namespace Wanli
 #endif
     }
 
-    void Bitmap::Write(const String& path) const
+    void Bitmap::Write(const Path& path) const
     {
 #ifdef WANLI_DEBUG
         DeltaTime debugTimer;
@@ -78,7 +78,7 @@ namespace Wanli
         if (auto it = Registry().find(Path(path).extension().string());
             it != Registry().end())
         {
-            it->second.writeMethod(this, path);
+            it->second.writeMethod(this, path.string().c_str());
         }
         else // Fallback to stb_image
         {

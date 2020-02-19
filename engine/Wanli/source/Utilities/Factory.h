@@ -7,22 +7,22 @@
 
 namespace Wanli
 {
-    template<typename _Base_, typename... _Args_>
+    template<typename BaseClass, typename... Args>
     class Factory
     {
     public:
-        using CreateReturn = std::unique_ptr<_Base_>;
-        using CreateMethod = std::function<CreateReturn(_Args_...)>;
+        using CreateReturn = std::unique_ptr<BaseClass>;
+        using CreateMethod = std::function<CreateReturn(Args...)>;
         using RegistryMap = std::unordered_map<std::string, CreateMethod>;
 
         template<typename T>
-        class Registrar : public _Base_
+        class Registrar : public BaseClass
         {
         public:
             static void Register(const std::string& name)
             {
-                Factory::Registry()[name] = [] (_Args_... args) -> CreateReturn {
-                    return std::make_unique<T>(std::forward<_Args_>(args)...);
+                Factory::Registry()[name] = [] (Args... args) -> CreateReturn {
+                    return std::make_unique<T>(std::forward<Args>(args)...);
                 };
             }
         };
@@ -31,7 +31,7 @@ namespace Wanli
         Factory() = default;
         virtual ~Factory() = default;
 
-        static CreateReturn Create(const std::string& name, _Args_&&... args)
+        static CreateReturn Create(const std::string& name, Args&&... args)
         {
             auto it = Registry().find(name);
             if (it == Registry().end())
@@ -39,7 +39,7 @@ namespace Wanli
                 LOG_ERROR("Failed to create \"%s\" from Factory.\n", name.c_str());
                 return nullptr;
             }
-            return it->second(std::forward<_Args_>(args)...);
+            return it->second(std::forward<Args>(args)...);
         }
 
         static RegistryMap& Registry()
