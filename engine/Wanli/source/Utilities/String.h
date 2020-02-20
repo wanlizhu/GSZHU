@@ -19,4 +19,25 @@ namespace Wanli
     void DLLDECL ReplaceAll(std::string& str, const std::string_view& token, const std::string_view& to);
     void DLLDECL Lowercase(std::string& str);
     void DLLDECL Uppercase(std::string& str);
+
+    template<typename... Args>
+    inline constexpr std::string 
+        FormatString(const char* format, Args... args)
+    {
+        constexpr size_t bufferLen = 1024;
+        static char buffer[bufferLen];
+
+        size_t newLen = snprintf(&buffer[0], bufferLen, format, args...);
+        newLen++; // include the '\0'
+
+        // stack buffer, create a heap buffer
+        if (newLen > bufferLen)
+        {
+            std::vector<char> buffer2(newLen);
+            snprintf(buffer2.data(), newLen, format, args...);
+            return std::string(buffer2.data());
+        }
+
+        return std::string(buffer);
+    }
 }

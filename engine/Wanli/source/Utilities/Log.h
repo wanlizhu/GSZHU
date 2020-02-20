@@ -9,10 +9,8 @@
 #include <thread>
 #include <queue>
 #include <iostream>
-#include "Core/BasicTypes.h"
-#ifdef ENABLE_ASYNC_LOG
-#include "Utilities/ThreadPool.h"
-#endif
+#include <future>
+#include "Utilities/String.h"
 
 namespace Wanli
 {
@@ -48,7 +46,7 @@ namespace Wanli
 		static constexpr const char* White = "\033[97m";
 	};
 
-    class DLLDECL Log
+    class Log
     {
     public:
 		static constexpr auto kTimestampFormat = "%H:%M:%S";
@@ -57,41 +55,39 @@ namespace Wanli
 		static void CloseLog();
 
 		template<typename... Args>
-		static inline void WriteAsync(const std::string_view& style,
-									  const std::string_view& color,
-			                          Args... args)
+		static inline void WriteAsync(
+			const char* style,
+			const char* color,
+			Args... args)
 		{
-#if 0//defined ENABLE_ASYNC_LOG
-			ThreadPool::Enqueue(
-				&Log::Write,
+			(void)std::async(
+				std::launch::async,
+				&Log::Write<Args...>,
 				style,
 				color,
-				std::forward<Args>(args)...
-			);
-#else
-			Write(style, color, std::forward<Args>(args)...);
-#endif
+				std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
-		static inline void Write(const std::string_view& style,
-								 const std::string_view& color,
-								 Args... args)
+		static inline void Write(
+			const char* style,
+			const char* color,
+			Args... args)
 		{
+			String finalMsg = FormatString(std::forward<Args>(args)...);
+
 			SetStyleAndColor(style, color);
-			((std::cout << std::forward<Args>(args)), ...);
+			std::cout << finalMsg;
 			SetStyleAndColor();
 
 			if (mFileStream.is_open())
 			{
-				//mFileStream << prefix;
-				((mFileStream << std::forward<Args>(args)), ...);
+				mFileStream << finalMsg;
 			}
 		}
 
 	private:
-		static void SetStyleAndColor(const std::string_view& style = LogStyle::Default,
-									 const std::string_view& color = LogColor::Default);
+		static void SetStyleAndColor(const char* style = LogStyle::Default, const char* color = LogColor::Default);
 
 	private:
 		static std::ofstream mFileStream;

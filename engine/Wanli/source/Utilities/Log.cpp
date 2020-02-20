@@ -30,8 +30,8 @@ namespace Wanli
 		mFileStream.close();
 	}
 
-	void Log::SetStyleAndColor(const std::string_view& style,
-							   const std::string_view& color)
+	void Log::SetStyleAndColor(const char* style,
+							   const char* color)
 	{
 		std::cout << style << color;
 	}

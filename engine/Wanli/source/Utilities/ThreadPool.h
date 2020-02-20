@@ -10,24 +10,13 @@
 #include <functional>
 #include <future>
 #include <deque>
-#include "Core/BasicTypes.h"
+#include <type_traits>
 
 namespace Wanli
 {
-    class DLLDECL ThreadPool final
+    class ThreadPool final
     {
     public:
-        static inline void Shutdown()
-        {
-            Get().mKillFlag.store(true);
-            for (auto& thread : Get().mThreads)
-            {
-                if (thread->joinable())
-                    thread->join();
-            }
-            Get().mThreads.clear();
-        }
-
         template<typename FuncType, typename... Args>
         static inline auto Enqueue(FuncType&& func, Args&&... args)
             -> std::future<std::invoke_result_t<FuncType, Args...>>
@@ -41,10 +30,54 @@ namespace Wanli
             return future;
         }
 
+        static inline void Shutdown()
+        {
+            Get().mKillFlag.store(true);
+            for (auto& thread : Get().mThreads)
+            {
+                if (thread->joinable())
+                    thread->join();
+            }
+            Get().mThreads.clear();
+        }
+
     private:
-        static void Main();
-        static ThreadPool& Get();
-        explicit ThreadPool(int numThreads);
+        explicit ThreadPool(int numThreads)
+        {
+            for (int i = 0; i < numThreads; i++)
+            {
+                mThreads.push_back(std::make_shared<std::thread>(&ThreadPool::Main));
+            }
+        }
+        static ThreadPool& Get()
+        {
+            static ThreadPool _instance(std::thread::hardware_concurrency());
+            return _instance;
+        }
+        static void Main()
+        {
+            ThreadPool& pool = ThreadPool::Get();
+            std::mutex waitMutex;
+
+            while (!pool.mKillFlag.load())
+            {
+                std::unique_lock<std::mutex> lock(waitMutex);
+                pool.mCV.wait(lock,
+                    [&]() {
+                        std::unique_lock<std::mutex> lock2(pool.mQueueMutex);
+                        return pool.mKillFlag.load() || !pool.mTaskQueue.empty();
+                    });
+
+                {
+                    std::unique_lock<std::mutex> lock2(pool.mQueueMutex);
+                    for (auto& func : pool.mTaskQueue)
+                    {
+                        func();
+                    }
+                    pool.mTaskQueue.clear();
+                }
+            }
+        }
         
     private:
         std::atomic_bool mKillFlag;
