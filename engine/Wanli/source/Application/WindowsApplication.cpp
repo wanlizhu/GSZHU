@@ -29,18 +29,18 @@ namespace Wanli
             throw std::runtime_error("GLFW failed to initialize");
         }
 
-        if (mInfo.supportAPI == WindowCreateInfo::EGraphicsAPI::Vulkan &&
+        if (mInfo.supportAPI == ERHIDevice::Vulkan &&
             glfwVulkanSupported() == GLFW_FALSE)
         {
             throw std::runtime_error("GLFW failed to find Vulkan support");
         }
 
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        glfwWindowHint(GLFW_CLIENT_API, mInfo.supportAPI == WindowCreateInfo::EGraphicsAPI::OpenGL ? GLFW_OPENGL_API : GLFW_NO_API);
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
         glfwWindowHint(GLFW_STENCIL_BITS, 8);
         glfwWindowHint(GLFW_STEREO, GLFW_FALSE);
 
-        mCurrentMonitor = Monitor(glfwGetPrimaryMonitor());
+        mCurrentMonitor = std::move(Monitor(glfwGetPrimaryMonitor()));
         auto videoMode = mCurrentMonitor.GetVideoMode();
 
         if (mInfo.size.x <= 0 || mInfo.size.y <= 0)
@@ -221,7 +221,7 @@ namespace Wanli
         glfwSetWindowAttrib(mWindowGLFW, GLFW_DECORATED, !borderless);
     }
     
-    void WindowsApplication::SetFullscreen(bool fullscreen, Optional<Monitor> monitor)
+    void WindowsApplication::SetFullscreen(bool fullscreen, const Optional<Monitor>& monitor)
     {
         mInfo.fullscreen = fullscreen;
 
@@ -256,6 +256,7 @@ namespace Wanli
         static WNDPROC glfwProc = nullptr;
         LRESULT CALLBACK windowProcNew(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         {
+            Menu::MessageProc(hwnd, msg, wParam, lParam);
             return glfwProc(hwnd, msg, wParam, lParam);
         }
     }
@@ -263,6 +264,66 @@ namespace Wanli
     void WindowsApplication::CreateMenu()
     {
         HWND hwnd = glfwGetWin32Window(mWindowGLFW);
+
+        mMenu.BeginHorizontalMenu(hwnd);
+
+        mMenu.BeginVerticalMenu("File");
+        mMenu.AddMenuItem("New", EMenuID::File_New);
+        mMenu.AddMenuItem("Open", EMenuID::File_Open);
+        mMenu.AddMenuItem("Create", EMenuID::File_Create);
+        mMenu.AddSeparator();
+        mMenu.AddMenuItem("Save", EMenuID::File_Save);
+        mMenu.AddMenuItem("SaveAs", EMenuID::File_SaveAs);
+        mMenu.AddSeparator();
+        mMenu.AddMenuItem("Perference", EMenuID::File_EditPerference);
+        mMenu.AddSeparator();
+        mMenu.AddMenuItem("Exit", EMenuID::File_Exit);
+        mMenu.EndVerticalMenu();
+
+        mMenu.BeginVerticalMenu("View");
+        mMenu.AddMenuItem("Wireframe", EMenuID::View_Wireframe);
+        mMenu.AddMenuItem("Solid", EMenuID::View_Solid);
+        mMenu.AddMenuItem("Debug", EMenuID::View_Debug);
+        mMenu.AddSeparator();
+
+        mMenu.BeginVerticalMenu("Select");
+        mMenu.AddMenuItem("Point", EMenuID::View_Select_Point);
+        mMenu.AddMenuItem("Line", EMenuID::View_Select_Line);
+        mMenu.AddMenuItem("Face", EMenuID::View_Select_Face);
+        mMenu.AddMenuItem("Mesh", EMenuID::View_Select_Object);
+        mMenu.AddMenuItem("Object", EMenuID::View_Select_Object);
+        mMenu.AddMenuItem("By Box", EMenuID::View_Select_ByBox);
+        mMenu.EndVerticalMenu();
+
+        mMenu.EndVerticalMenu();
+
+        mMenu.BeginVerticalMenu("Edit");
+        mMenu.AddMenuItem("Copy", EMenuID::Edit_Copy);
+        mMenu.AddMenuItem("Cut", EMenuID::Edit_Cut);
+        mMenu.AddMenuItem("Paste", EMenuID::Edit_Paste);
+        mMenu.AddSeparator();
+        
+        mMenu.BeginVerticalMenu("Add Primitive");
+        mMenu.AddMenuItem("Point", EMenuID::Edit_AddPrimitive_Point);
+        mMenu.AddMenuItem("Line", EMenuID::Edit_AddPrimitive_Line);
+        mMenu.AddMenuItem("Plane", EMenuID::Edit_AddPrimitive_Plane);
+        mMenu.AddMenuItem("Cube", EMenuID::Edit_AddPrimitive_Cube);
+        mMenu.AddMenuItem("Sphere", EMenuID::Edit_AddPrimitive_Sphere);
+        mMenu.AddMenuItem("Torus", EMenuID::Edit_AddPrimitive_Torus);
+        mMenu.EndVerticalMenu();
+
+        mMenu.BeginVerticalMenu("Add Model");
+        mMenu.AddMenuItem("Bunny", EMenuID::Edit_AddModel_Bunny);
+        mMenu.AddMenuItem("Dragon", EMenuID::Edit_AddModel_Dragon);
+        mMenu.EndVerticalMenu();
+
+        mMenu.EndVerticalMenu();
+
+        mMenu.BeginVerticalMenu("Tools");
+        mMenu.EndVerticalMenu();
+
+        mMenu.EndHorizontalMenu();
+        
         local::glfwProc = (WNDPROC)GetWindowLongPtrW(hwnd, GWLP_WNDPROC);
         SetWindowLongPtrW(hwnd, GWLP_WNDPROC, (LONG_PTR)local::windowProcNew);
     }

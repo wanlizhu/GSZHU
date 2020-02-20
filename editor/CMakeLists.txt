@@ -3,5 +3,5 @@ if (WIN32 AND WANLI_BUILD_WINDOWS)
 endif()
 
 if (WANLI_BUILD_ANDROID)
-    add_subdirectory(Android)
+    #add_subdirectory(Android)
 endif()

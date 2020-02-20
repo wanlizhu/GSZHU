@@ -15,6 +15,7 @@ namespace Wanli
         EVT_WindowPos,
         EVT_WindowFocus,
         EVT_WindowIconified,
+        EVT_WindowMenu,
         EVT_FramebufferSize,
         EVT_Keyboard,
         EVT_KeyboardChar,

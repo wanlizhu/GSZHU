@@ -1,5 +1,5 @@
 #pragma once
-
+#ifdef PLATFORM_WINDOWS
 #include <stdint.h>
 
 struct GLFWwindow;
@@ -14,3 +14,4 @@ namespace Wanli
     void OnWindowIconified_GLFW(GLFWwindow* window, int32_t iconified);
     void OnFramebufferSize_GLFW(GLFWwindow* window, int32_t width, int32_t height);
 }
+#endif

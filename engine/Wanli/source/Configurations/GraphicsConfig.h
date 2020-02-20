@@ -9,7 +9,7 @@ namespace Wanli
     enum class ERHIDevice
     {
         Vulkan = 0,
-        OpenGL,
+        D3D12,
     };
 
     class DLLDECL GraphicsConfig : public IConfig

@@ -1,3 +1,4 @@
+#ifdef PLATFORM_WINDOWS
 #include "Application/Windows/GLFWCallbacks.h"
 #include "Utilities/Log.h"
 #include "Events/Event.h"
@@ -40,3 +41,4 @@ namespace Wanli
         Event::Create(EVT_FramebufferSize, width, height)->PostEvent();
     }
 }
+#endif

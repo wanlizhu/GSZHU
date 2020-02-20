@@ -3,6 +3,7 @@
 
 #include "Application/IApplication.h"
 #include "Application/Windows/Monitor.h"
+#include "Application/Windows/Menu.h"
 #include "Utilities/Delegate.h"
 
 struct GLFWwindow;
@@ -37,7 +38,7 @@ namespace Wanli
         void SetFloating(bool floating);
         void SetResizable(bool resizable);
         void SetBorderless(bool borderless);
-        void SetFullscreen(bool fullscreen, Optional<Monitor> monitor = std::nullopt);
+        void SetFullscreen(bool fullscreen, const Optional<Monitor>& monitor = std::nullopt);
 
         inline const String& GetTitle() const { return mInfo.title; }
         inline bool IsFullscreen() const { return mInfo.fullscreen; }
@@ -54,6 +55,7 @@ namespace Wanli
         WindowCreateInfo mInfo;
         GLFWwindow* mWindowGLFW = nullptr;
         Monitor mCurrentMonitor;
+        Menu mMenu;
 
         bool mFocused = false;
         bool mIconified = false;
