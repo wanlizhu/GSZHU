@@ -1,6 +1,6 @@
-# Hardware Graphic System
+# Vulkan Graphic System
 
-**!! Currently Under Development !!**
+**!! Under Construction !!**
 
 A collection of source code for multithread rendering in Next-Gen API: D3D12, Metal or Vulkan.
 
@@ -8,4 +8,6 @@ The engine is written in C++ 17 and, as such, has portable access to standard co
 
 # Prerequisites
 
-* Install Git, CMake, Conan
+* Git
+* CMake
+* Python
