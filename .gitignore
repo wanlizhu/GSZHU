@@ -3,5 +3,10 @@
 
 # Temporary directories.
 .vs/*
+.gradle/
+.idea/
 __pycache__/
 __cache__/
+
+# Temporary files
+editor/Android/local.properties

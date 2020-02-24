@@ -5,7 +5,7 @@
 
 namespace Wanli
 {
-    class DLLDECL Frustum : public NonCopyable
+    class Frustum : public NonCopyable
     {
     public:
         void Update(const glm::mat4& view, const glm::mat4& proj);

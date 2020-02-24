@@ -10,7 +10,7 @@ SET BuildDir=build
 SET SourceDir=.
 SET CMakeDefines=-DWANLI_ENABLE_VULKAN=ON ^
 -DWANLI_ENABLE_D3D12=OFF ^
--DWANLI_BUILD_WINDOWS=ON
+-DWINDOWS=ON
 
 cmake -B %BuildDir% -S %SourceDir% -G %Compiler% %CMakeDefines%
 

@@ -5,7 +5,7 @@
 
 namespace Wanli
 {
-    class DLLDECL Skybox
+    class Skybox
     {
     public:
 

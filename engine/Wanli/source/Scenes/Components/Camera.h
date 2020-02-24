@@ -9,7 +9,7 @@
 
 namespace Wanli
 {
-    class DLLDECL Camera : public IComponent
+    class Camera : public IComponent
     {
     public:
         enum class EBackgroundType

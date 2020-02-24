@@ -4,7 +4,7 @@
 
 namespace Wanli
 {
-    class DLLDECL Animation : public IComponent
+    class Animation : public IComponent
     {
     public:
         using Function = std::function<void(float)>;

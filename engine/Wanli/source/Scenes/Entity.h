@@ -4,7 +4,7 @@
 
 namespace Wanli
 {
-    class DLLDECL Entity : public NonCopyable
+    class Entity : public NonCopyable
         , public std::enable_shared_from_this<Entity>
     {
     public:

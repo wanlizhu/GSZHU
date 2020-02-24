@@ -78,14 +78,14 @@ namespace Wanli
 
     void Menu::AddMenuItem(const String& name, const Callback& callback)
     {
-        DWORD menuId = GetNextMenuID();
+        SHORT menuId = GetNextMenuID();
         ::AppendMenuA(mCreateInfoStack.top().first, MF_STRING, menuId, name.c_str());
         mCallbackMap[menuId] = callback;
     }
 
     void Menu::AddMenuItem(const String& name, EMenuID id)
     {
-        DWORD menuId = GetNextMenuID();
+        SHORT menuId = GetNextMenuID();
         ::AppendMenuA(mCreateInfoStack.top().first, MF_STRING, menuId, name.c_str());
         mCallbackMap[menuId] = [=]() {
             Event::Create(EVT_WindowMenu, id)->PostEvent();

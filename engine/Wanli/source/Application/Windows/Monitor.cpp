@@ -102,6 +102,11 @@ namespace Wanli
         auto ramp = reinterpret_cast<const GLFWgammaramp*>(&gammaRamp);
         glfwSetGammaRamp(mMonitorGLFW, ramp);
     }
+
+    void Monitor::SetMonitor(GLFWmonitor* monitor)
+    {
+        mMonitorGLFW = monitor;
+    }
 }
 
 #endif

@@ -5,7 +5,7 @@
 
 namespace Wanli
 {
-    class DLLDECL Ray : public NonCopyable
+    class Ray : public NonCopyable
     {
     public:
 
