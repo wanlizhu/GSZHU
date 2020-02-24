@@ -1,0 +1,26 @@
+#pragma once
+
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <array>
+#include <memory>
+#include <algorithm>
+#include <functional>
+#include <filesystem>
+#include <chrono>
+#include <optional>
+#include <thread>
+#include <mutex>
+#include <any>
+#include <queue>
+#include <deque>
+#include <variant>
+#include <future>
+#include <any>
+#include <typeindex>
+#include "glm/glm.hpp"
+#include "glm/ext/quaternion_float.hpp"
+#include "glm/ext/quaternion_geometric.hpp"
+#include "glm/ext/quaternion_relational.hpp"
+#include "glm/ext/quaternion_transform.hpp"
