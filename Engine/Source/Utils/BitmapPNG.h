@@ -4,7 +4,7 @@
 
 namespace Wanli
 {
-    class BitmapPNG : public Bitmap::Registrar<BitmapPNG>
+    class WANLI_API BitmapPNG : public Bitmap::Registrar<BitmapPNG>
     {
     public:
         static void Load(Bitmap* bitmap, const String& path);

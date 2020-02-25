@@ -58,13 +58,13 @@ namespace Wanli
         };
     };
 
-    class IModule : public NonCopyable
+    class WANLI_API IModule : public NonCopyable
         , public ModuleFactory<IModule>
     {
     public:
         virtual ~IModule() = default;
 
-        virtual void Create() = 0;
+        virtual void Initialize() = 0;
         virtual void Update() = 0;
         virtual void Destroy() = 0;
     };

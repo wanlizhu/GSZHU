@@ -1,8 +1,7 @@
 #include "Utils/BitmapPNG.h"
-#include "Utils/File.h"
-#include "Utils/ElapsedTime.h"
+#include "Files/File.h"
 #include "Utils/Log.h"
-#include "LodePNG/lodepng.h"
+#include "lodepng.h"
 
 namespace Wanli
 {

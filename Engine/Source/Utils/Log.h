@@ -11,6 +11,7 @@
 #include <iostream>
 #include <future>
 #include "Utils/String.h"
+#include "Core/Common.h"
 
 namespace Wanli
 {
@@ -46,7 +47,7 @@ namespace Wanli
 		static constexpr const char* White = "\033[97m";
 	};
 
-    class Log
+    class WANLI_API Log
     {
     public:
 		static constexpr auto kTimestampFormat = "%H:%M:%S";

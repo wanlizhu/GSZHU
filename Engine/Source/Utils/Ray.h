@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Core/BasicTypes.h"
+#include "Core/Common.h"
 #include "Utils/NonCopyable.h"
 
 namespace Wanli
 {
-    class Ray : public NonCopyable
+    class WANLI_API Ray : public NonCopyable
     {
     public:
 

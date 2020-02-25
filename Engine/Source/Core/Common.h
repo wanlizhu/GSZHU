@@ -1,7 +1,26 @@
 #pragma once
 
-#include "stdafx.h"
-#include "WanliConfig.h"
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <array>
+#include <memory>
+#include <algorithm>
+#include <functional>
+#include <filesystem>
+#include <chrono>
+#include <optional>
+#include <thread>
+#include <mutex>
+#include <any>
+#include <queue>
+#include <deque>
+#include <variant>
+#include <future>
+#include <any>
+#include <typeindex>
+#include "Math3D.h"
+#include "CompileFlags.h"
 
 #define Color_RED     glm::ivec4(255, 0, 0, 255)
 #define Color_GREEN   glm::ivec4(0, 255, 0, 255)
@@ -25,6 +44,18 @@
 #endif
 #endif
 
+#define DECL_DATA_FIELD(name, type, value) \
+protected: \
+    type m##name = value; \
+public: \
+    inline const type& Get##name() const { return m##name; } \
+    inline type& Get##name() { return m##name; }\
+    inline void Set##name(const type& val) { m##name = val; }
+;
+
+#define SECOND(val) Duration_SEC(val)
+#define TO_SECOND(duration) std::chrono::duration_cast<Duration_SEC>(duration)
+
 namespace Wanli
 {
     using Uint = uint32_t;
@@ -37,9 +68,8 @@ namespace Wanli
     using Clock = std::chrono::system_clock;
     using TimePoint = std::chrono::system_clock::time_point;
     using Duration = std::chrono::system_clock::duration;
-    using Second = std::chrono::duration<double>;
-    using MilliSecond = std::chrono::duration<double, std::milli>;
     using FileTime = std::filesystem::file_time_type;
+    using Duration_SEC = std::chrono::duration<double>;
 
     using String = std::string;
     using ByteArray = std::vector<uint8_t>;

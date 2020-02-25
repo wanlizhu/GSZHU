@@ -2,73 +2,72 @@
 
 #ifdef PLATFORM_WINDOWS
 #include "Events/IEvent.h"
+#include "Window/Windows/GLFW_Types.h"
 
 namespace Wanli
 {
-    class WANLI_API MouseEvent : public IEvent
+    class WANLI_API IMouseEvent : public IEvent
     {
     public:
         friend class EventPool;
-        using PTR = std::shared_ptr<MouseEvent>;
+        using PTR = std::shared_ptr<IMouseEvent>;
 
     protected:
-        MouseEvent(const std::type_index& type, int size)
+        IMouseEvent(const std::type_index& type, int size)
             : IEvent(type, size)
         {}
     };
 
-    class WANLI_API MouseButtonDownEvent : public MouseEvent
+    class WANLI_API MouseButtonDownEvent : public IMouseEvent
     {
     public:
         friend class EventPool;
         using PTR = std::shared_ptr<MouseButtonDownEvent>;
 
         EMouseButton button;
-        Optional<KeyMods> mods;
+        KeyMods mods;
 
     protected:
-        MouseButtonDownEvent(EMouseButton button)
-            : MouseEvent(typeid(MouseButtonDownEvent), sizeof(MouseButtonDownEvent))
+        MouseButtonDownEvent(EMouseButton button, KeyMods mods)
+            : IMouseEvent(typeid(MouseButtonDownEvent), sizeof(MouseButtonDownEvent))
             , button(button)
-            , mods(std::nullopt)
+            , mods(mods)
         {}
     };
 
-    class WANLI_API MouseButtonUpEvent : public MouseEvent
+    class WANLI_API MouseButtonUpEvent : public IMouseEvent
     {
     public:
         friend class EventPool;
         using PTR = std::shared_ptr<MouseButtonUpEvent>;
 
         EMouseButton button;
-        Optional<KeyMods> mods;
+        KeyMods mods;
 
     protected:
-        MouseButtonUpEvent(EMouseButton button)
-            : MouseEvent(typeid(MouseButtonUpEvent), sizeof(MouseButtonUpEvent))
+        MouseButtonUpEvent(EMouseButton button, KeyMods mods)
+            : IMouseEvent(typeid(MouseButtonUpEvent), sizeof(MouseButtonUpEvent))
             , button(button)
-            , mods(std::nullopt)
+            , mods(mods)
         {}
     };
 
-    class WANLI_API MouseScrollEvent : public MouseEvent
+    class WANLI_API MouseScrollEvent : public IMouseEvent
     {
     public:
         friend class EventPool;
         using PTR = std::shared_ptr<MouseScrollEvent>;
 
         glm::vec2 delta;
-        Optional<KeyMods> mods;
 
     protected:
         explicit MouseScrollEvent(const glm::vec2& delta)
-            : MouseEvent(typeid(MouseScrollEvent), sizeof(MouseScrollEvent))
+            : IMouseEvent(typeid(MouseScrollEvent), sizeof(MouseScrollEvent))
             , delta(delta)
-            , mods(std::nullopt)
         {}
     };
 
-    class WANLI_API MouseMoveEvent : public MouseEvent
+    class WANLI_API MouseMoveEvent : public IMouseEvent
     {
     public:
         friend class EventPool;
@@ -78,12 +77,12 @@ namespace Wanli
 
     protected:
         explicit MouseMoveEvent(const glm::ivec2& pos)
-            : MouseEvent(typeid(MouseMoveEvent), sizeof(MouseMoveEvent))
+            : IMouseEvent(typeid(MouseMoveEvent), sizeof(MouseMoveEvent))
             , pos(pos)
         {}
     };
 
-    class WANLI_API MouseEnterEvent : public MouseEvent
+    class WANLI_API MouseEnterEvent : public IMouseEvent
     {
     public:
         friend class EventPool;
@@ -91,11 +90,11 @@ namespace Wanli
 
     protected:
         MouseEnterEvent()
-            : MouseEvent(typeid(MouseEnterEvent), sizeof(MouseEnterEvent))
+            : IMouseEvent(typeid(MouseEnterEvent), sizeof(MouseEnterEvent))
         {}
     };
 
-    class WANLI_API MouseLeaveEvent : public MouseEvent
+    class WANLI_API MouseLeaveEvent : public IMouseEvent
     {
     public:
         friend class EventPool;
@@ -103,11 +102,11 @@ namespace Wanli
 
     protected:
         MouseLeaveEvent()
-            : MouseEvent(typeid(MouseLeaveEvent), sizeof(MouseLeaveEvent))
+            : IMouseEvent(typeid(MouseLeaveEvent), sizeof(MouseLeaveEvent))
         {}
     };
 
-    class WANLI_API MouseFileDroppedEvent : public MouseEvent
+    class WANLI_API MouseFileDroppedEvent : public IMouseEvent
     {
     public:
         friend class EventPool;
@@ -117,7 +116,7 @@ namespace Wanli
 
     protected:
         explicit MouseFileDroppedEvent(const StringArray& paths)
-            : MouseEvent(typeid(MouseFileDroppedEvent), sizeof(MouseFileDroppedEvent))
+            : IMouseEvent(typeid(MouseFileDroppedEvent), sizeof(MouseFileDroppedEvent))
             , paths(paths)
         {}
     };

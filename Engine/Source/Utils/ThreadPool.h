@@ -14,7 +14,7 @@
 
 namespace Wanli
 {
-    class ThreadPool final
+    class WANLI_API ThreadPool final
     {
     public:
         template<typename FuncType, typename... Args>

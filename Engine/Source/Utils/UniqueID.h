@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Core/BasicTypes.h"
+#include "Core/Common.h"
 
 namespace Wanli
 {
-    Uint GetNextIdFor(std::type_index type);
+    Uint WANLI_API GetNextIdFor(std::type_index type);
     
     template<typename T>
     class UniqueID

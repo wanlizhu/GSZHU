@@ -9,6 +9,7 @@ namespace Wanli
     {
     public:
         friend class Engine;
+        using UPTR = std::unique_ptr<IApplication>;
 
         explicit IApplication(
             const String& name,
@@ -19,12 +20,12 @@ namespace Wanli
         {}
         virtual ~IApplication() = default;
 
-        virtual void Create() = 0;
+        virtual void Initialize() = 0;
         virtual void Update() = 0;
         virtual void Destroy() = 0;
 
-        inline const String& GetName() const { return mName; }
-        inline const Version& GetVersion() const { return mVersion; }
+        inline String const& GetName() const { return mName; }
+        inline Version const& GetVersion() const { return mVersion; }
         inline bool IsInited() const { return mInited; }
 
     protected:

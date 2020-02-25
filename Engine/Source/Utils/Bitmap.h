@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Core/BasicTypes.h"
+#include "Core/Common.h"
 #include "Utils/NonCopyable.h"
 
 namespace Wanli
 {
     template<typename BaseClass>
-    class BitmapFactory
+    class WANLI_API BitmapFactory
     {
     public:
         using LoadMethod = std::function<void(BaseClass*, const String&)>;
@@ -43,7 +43,7 @@ namespace Wanli
     };
 
 
-    class Bitmap : public NonCopyable
+    class WANLI_API Bitmap : public NonCopyable
         , public std::enable_shared_from_this<Bitmap>
         , public BitmapFactory<Bitmap>
     {
@@ -66,11 +66,11 @@ namespace Wanli
         inline Path GetPath() const { return mFilePath; }
         inline void SetPath(const Path& path) { mFilePath = path; }
         
-        inline const UniquePtr<Byte[]>& GetData() const { return mData; }
+        inline UniquePtr<Byte[]> const& GetData() const { return mData; }
         inline UniquePtr<Byte[]>& GetData() { return mData; }
         inline void SetData(UniquePtr<Byte[]>&& data) { mData = std::move(data); }
 
-        inline const glm::ivec2& GetSize() const { return mSize; }
+        inline glm::ivec2 const& GetSize() const { return mSize; }
         inline void SetSize(const glm::ivec2& size) { mSize = size; }
 
         inline int GetBytesPerPixel() const { return mBytesPerPixel; }

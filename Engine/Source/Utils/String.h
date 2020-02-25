@@ -6,19 +6,19 @@
 #include <locale>
 #include <algorithm>
 #include <sstream>
-#include "Core/BasicTypes.h"
+#include "Core/Common.h"
 
 namespace Wanli
 {
-    void ToString(const std::wstring_view& wstr, std::string& result);
-    void ToWstring(const std::string_view& str, std::wstring& result);
-    bool StartsWith(const std::string_view& str, const std::string_view& prefix);
-    bool EndsWith(const std::string_view& str, const std::string_view& suffix);
-    void Split(const std::string_view& str, char sep, std::vector<std::string>& result);
-    void Trim(std::string& str, const std::string_view& whites);
-    void ReplaceAll(std::string& str, const std::string_view& token, const std::string_view& to);
-    void Lowercase(std::string& str);
-    void Uppercase(std::string& str);
+    void WANLI_API ToString(const std::wstring_view& wstr, std::string& result);
+    void WANLI_API ToWstring(const std::string_view& str, std::wstring& result);
+    bool WANLI_API StartsWith(const std::string_view& str, const std::string_view& prefix);
+    bool WANLI_API EndsWith(const std::string_view& str, const std::string_view& suffix);
+    void WANLI_API Split(const std::string_view& str, char sep, std::vector<std::string>& result);
+    void WANLI_API Trim(std::string& str, const std::string_view& whites);
+    void WANLI_API ReplaceAll(std::string& str, const std::string_view& token, const std::string_view& to);
+    void WANLI_API Lowercase(std::string& str);
+    void WANLI_API Uppercase(std::string& str);
 
     template<typename... Args>
     inline constexpr std::string 

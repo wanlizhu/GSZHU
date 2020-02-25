@@ -1,5 +1,5 @@
 #include "Utils/UniqueID.h"
-#include "Core/BasicTypes.h"
+#include "Core/Common.h"
 
 namespace Wanli
 {

@@ -1,6 +1,16 @@
 #pragma once
 
-#include "Core/Common.h"
+#include <algorithm>
+#include <functional>
+#include <type_traits>
+#include <memory>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <mutex>
+#include <thread>
+#include <condition_variable>
+#include <chrono>
 
 namespace Wanli
 {

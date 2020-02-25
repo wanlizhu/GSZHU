@@ -1,25 +1,25 @@
 #pragma once
 
 #ifdef PLATFORM_WINDOWS
-
+#include "Window/Windows/GLFW_Types.h"
 #include "Events/IEvent.h"
 #include "Window/Windows/Menu.h"
 
 namespace Wanli
 {
-    class WANLI_API WindowEvent : public IEvent
+    class WANLI_API IWindowEvent : public IEvent
     {
     public:
         friend class EventPool;
-        using PTR = std::shared_ptr<WindowEvent>;
+        using PTR = std::shared_ptr<IWindowEvent>;
 
     protected:
-        WindowEvent(const std::type_index& type, int size)
+        IWindowEvent(const std::type_index& type, int size)
             : IEvent(type, size)
         {}
     };
 
-    class WANLI_API WindowCloseEvent : public WindowEvent
+    class WANLI_API WindowCloseEvent : public IWindowEvent
     {
     public:
         friend class EventPool;
@@ -27,11 +27,11 @@ namespace Wanli
 
     protected:
         WindowCloseEvent()
-            : WindowEvent(typeid(WindowCloseEvent), sizeof(WindowCloseEvent))
+            : IWindowEvent(typeid(WindowCloseEvent), sizeof(WindowCloseEvent))
         {}
     };
 
-    class WANLI_API WindowIconifiedEvent : public WindowEvent
+    class WANLI_API WindowIconifiedEvent : public IWindowEvent
     {
     public:
         friend class EventPool;
@@ -39,11 +39,11 @@ namespace Wanli
 
     protected:
         WindowIconifiedEvent()
-            : WindowEvent(typeid(WindowIconifiedEvent), sizeof(WindowIconifiedEvent))
+            : IWindowEvent(typeid(WindowIconifiedEvent), sizeof(WindowIconifiedEvent))
         {}
     };
 
-    class WANLI_API WindowPosEvent : public WindowEvent
+    class WANLI_API WindowPosEvent : public IWindowEvent
     {
     public:
         friend class EventPool;
@@ -53,12 +53,12 @@ namespace Wanli
 
     protected:
         explicit WindowPosEvent(const glm::ivec2& pos)
-            : WindowEvent(typeid(WindowPosEvent), sizeof(WindowPosEvent))
+            : IWindowEvent(typeid(WindowPosEvent), sizeof(WindowPosEvent))
             , pos(pos)
         {}
     };
 
-    class WANLI_API WindowResizeEvent : public WindowEvent
+    class WANLI_API WindowResizeEvent : public IWindowEvent
     {
     public:
         friend class EventPool;
@@ -68,12 +68,12 @@ namespace Wanli
 
     protected:
         explicit WindowResizeEvent(const glm::ivec2& size)
-            : WindowEvent(typeid(WindowResizeEvent), sizeof(WindowResizeEvent))
+            : IWindowEvent(typeid(WindowResizeEvent), sizeof(WindowResizeEvent))
             , size(size)
         {}
     };
 
-    class WANLI_API WindowRedrawEvent : public WindowEvent
+    class WANLI_API WindowRedrawEvent : public IWindowEvent
     {
     public:
         friend class EventPool;
@@ -81,11 +81,11 @@ namespace Wanli
 
     protected:
         WindowRedrawEvent()
-            : WindowEvent(typeid(WindowRedrawEvent), sizeof(WindowRedrawEvent))
+            : IWindowEvent(typeid(WindowRedrawEvent), sizeof(WindowRedrawEvent))
         {}
     };
 
-    class WANLI_API WindowMenuEvent : public WindowEvent
+    class WANLI_API WindowMenuEvent : public IWindowEvent
     {
     public:
         friend class EventPool;
@@ -95,7 +95,7 @@ namespace Wanli
 
     protected:
         explicit WindowMenuEvent(EMenuID id)
-            : WindowEvent(typeid(WindowMenuEvent), sizeof(WindowMenuEvent))
+            : IWindowEvent(typeid(WindowMenuEvent), sizeof(WindowMenuEvent))
             , menuId(id)
         {}
     };

@@ -15,7 +15,7 @@ namespace Wanli
         EventManager() = default;
         virtual ~EventManager() = default;
 
-        virtual void Create() override;
+        virtual void Initialize() override;
         virtual void Update() override;
         virtual void Destroy() override;
 

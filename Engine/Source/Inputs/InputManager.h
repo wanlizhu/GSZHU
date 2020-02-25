@@ -4,14 +4,29 @@
 
 namespace Wanli
 {
-    class WANLI_API InputManager : public IModule
+    class WANLI_API InputManagerImpl
     {
     public:
-        InputManager() = default;
-        virtual ~InputManager() = default;
+        InputManagerImpl() = default;
+        virtual ~InputManagerImpl() = default;
 
-        virtual void Create() override;
+        virtual void Initialize() = 0;
+        virtual void Update() = 0;
+        virtual void Destroy() = 0;
+    };
+
+    class WANLI_API InputManager 
+        : public IModule::Registrar<InputManager, EModuleStage::PreUpdate>
+    {
+    public:
+        InputManager();
+        virtual ~InputManager();
+
+        virtual void Initialize() override;
         virtual void Update() override;
         virtual void Destroy() override;
+
+    private:
+        UniquePtr<InputManagerImpl> mImpl;
     };
 }

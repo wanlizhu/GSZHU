@@ -8,7 +8,7 @@
 namespace Wanli
 {
     template<typename BaseClass, typename... Args>
-    class Factory
+    class WANLI_API Factory
     {
     public:
         using CreateReturn = std::unique_ptr<BaseClass>;
@@ -31,7 +31,7 @@ namespace Wanli
         Factory() = default;
         virtual ~Factory() = default;
 
-        static CreateReturn Create(const std::string& name, Args&&... args)
+        static CreateReturn Initialize(const std::string& name, Args&&... args)
         {
             auto it = Registry().find(name);
             if (it == Registry().end())

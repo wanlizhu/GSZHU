@@ -2,6 +2,9 @@
 
 namespace Wanli
 {
+    void EventManager::Initialize()
+    {}
+    
     void EventManager::Update()
     {
         while (!mEventQueue.empty())
@@ -14,6 +17,9 @@ namespace Wanli
             mEventQueue.pop();
         }
     }
+
+    void EventManager::Destroy()
+    {}
 
     void EventManager::PostEvent(const IEvent::PTR& event)
     {

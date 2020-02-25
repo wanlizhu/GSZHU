@@ -1,6 +1,5 @@
 #include "Utils/Bitmap.h"
-#include "Utils/ElapsedTime.h"
-#include "Utils/File.h"
+#include "Files/File.h"
 #include "Utils/Log.h"
 
 #define STB_IMAGE_IMPLEMENTATION

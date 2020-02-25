@@ -9,14 +9,14 @@ namespace Wanli
         EventPool::Free(shared_from_this());
     }
 
-    std::type_index IEvent::GetTypeIndex() const
-    {
-        return mTypeIndex;
-    }
-
     int IEvent::GetTypeSize() const
     {
         return mTypeSize;
+    }
+
+    std::type_index IEvent::GetTypeIndex() const
+    {
+        return mTypeIndex;
     }
 
     void IEvent::PostEvent()

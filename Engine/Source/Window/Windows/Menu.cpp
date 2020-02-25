@@ -15,7 +15,7 @@ namespace Wanli
 
     HashMap<HWND, Menu*> Menu::smInstanceMap;
 
-    LRESULT CALLBACK Menu::MessageProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+    LRESULT CALLBACK Menu::MenuMessageProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         auto it = smInstanceMap.find(hwnd);
         if (it != smInstanceMap.end())
@@ -89,7 +89,7 @@ namespace Wanli
         SHORT menuId = GetNextMenuID();
         ::AppendMenuA(mCreateInfoStack.top().first, MF_STRING, menuId, name.c_str());
         mCallbackMap[menuId] = [=]() {
-            EventPool::Allocate<WindowMenuEvent>(menuId)->PostEvent();
+            EventPool::Allocate<WindowMenuEvent>(id)->PostEvent();
         };
     }
 

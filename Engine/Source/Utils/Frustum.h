@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Core/BasicTypes.h"
+#include "Core/Common.h"
 #include "Utils/NonCopyable.h"
 
 namespace Wanli
 {
-    class Frustum : public NonCopyable
+    class WANLI_API Frustum : public NonCopyable
     {
     public:
         void Update(const glm::mat4& view, const glm::mat4& proj);

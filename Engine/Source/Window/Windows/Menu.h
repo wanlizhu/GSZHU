@@ -21,11 +21,10 @@ namespace Wanli
 
     class Menu : public NonCopyable
     {
+        friend class Window;
     public:
         using Callback = std::function<void()>;
 
-        static LRESULT CALLBACK MessageProc(HWND, UINT, WPARAM, LPARAM);
-        
         Menu() = default;
         Menu(Menu&& rhs);
         Menu& operator=(Menu&& rhs);
@@ -41,6 +40,9 @@ namespace Wanli
         
         HMENU GetHandle() const;
         void Destroy();
+
+    protected:
+        static LRESULT CALLBACK MenuMessageProc(HWND, UINT, WPARAM, LPARAM);
 
     protected:
         HWND mWindow = NULL;

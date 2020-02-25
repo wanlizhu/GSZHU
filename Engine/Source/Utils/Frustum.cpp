@@ -1,4 +1,4 @@
-#include "Scenes/Helpers/Frustum.h"
+#include "Utils/Frustum.h"
 
 namespace Wanli
 {

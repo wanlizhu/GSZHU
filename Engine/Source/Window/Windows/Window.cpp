@@ -1,9 +1,10 @@
 #ifdef PLATFORM_WINDOWS
 
 #include "Window/Windows/Window.h"
-#include "Window/Windows/GLFW_Callbacks.h"
+#include "Window/Windows/GLFW_WindowCallbacks.h"
 #include "Utils/Log.h"
 #include "Utils/Bitmap.h"
+#include "Configuration/Windows/WindowConfig.h"
 
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include "GLFW/glfw3.h"
@@ -12,8 +13,26 @@
 
 namespace Wanli
 {
-    void Window::Create(WindowCreateInfo& info)
+    static Window* local_windowInstance = nullptr;
+    static WNDPROC local_messageProcGLFW = nullptr;
+
+    LRESULT CALLBACK Window::WindowMessageProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
+        if (local_windowInstance)
+        {
+            for (const auto& hookProc : local_windowInstance->mMessageHooks)
+            {
+                hookProc(hwnd, msg, wParam, lParam);
+            }
+        }
+
+        return local_messageProcGLFW(hwnd, msg, wParam, lParam);
+    }
+
+    void Window::Initialize()
+    {
+        const auto& config = *WindowConfig::Get();
+
         glfwSetErrorCallback(OnError_GLFW);
         if (glfwInit() == GLFW_FALSE)
         {
@@ -35,16 +54,17 @@ namespace Wanli
         mMonitor.SetMonitor(glfwGetPrimaryMonitor());
         auto videoMode = mMonitor.GetVideoMode();
 
-        if (info.size.x <= 0 || info.size.y <= 0)
+        glm::ivec2 size = config.GetSize();
+        if (size.x <= 0 || size.y <= 0)
         {
-            info.size.x = (int)(videoMode.width / 1.414);
-            info.size.y = (int)(videoMode.height / 1.414);
+            size.x = (int)(videoMode.width / 1.414);
+            size.y = (int)(videoMode.height / 1.414);
         }
 
         mWindowGLFW = glfwCreateWindow(
-            info.size.x,
-            info.size.y,
-            info.title.c_str(),
+            size.x,
+            size.y,
+            config.GetTitle().c_str(),
             nullptr,
             nullptr);
         if (mWindowGLFW == nullptr)
@@ -53,21 +73,23 @@ namespace Wanli
             throw std::runtime_error("GLFW failed to create window");
         }
 
-        if (info.createMenu)
-        {
-            CreateMenu();
-        }
+        mHwnd = glfwGetWin32Window(mWindowGLFW);
+        local_windowInstance = this;
+        local_messageProcGLFW = (WNDPROC)GetWindowLongPtrW(mHwnd, GWLP_WNDPROC);
+        SetWindowLongPtrW(mHwnd, GWLP_WNDPROC, (LONG_PTR)&Window::WindowMessageProc);
+        CreateMenu();
 
         glfwSetWindowUserPointer(mWindowGLFW, this);
-        glfwSetWindowAttrib(mWindowGLFW, GLFW_DECORATED, !info.attribs.borderless);
-        glfwSetWindowAttrib(mWindowGLFW, GLFW_RESIZABLE, info.attribs.resizable);
-        glfwSetWindowAttrib(mWindowGLFW, GLFW_FLOATING, info.attribs.floating);
+        glfwSetWindowAttrib(mWindowGLFW, GLFW_DECORATED, !config.GetAttribs().borderless);
+        glfwSetWindowAttrib(mWindowGLFW, GLFW_RESIZABLE, config.GetAttribs().resizable);
+        glfwSetWindowAttrib(mWindowGLFW, GLFW_FLOATING, config.GetAttribs().floating);
 
-        info.pos.x = info.pos.x < 0 ? ((videoMode.width - info.size.x) / 2) : info.pos.x;
-        info.pos.y = info.pos.y < 0 ? ((videoMode.height - info.size.y) / 2) : info.pos.y;
-        glfwSetWindowPos(mWindowGLFW, info.pos.x, info.pos.y);
+        glm::ivec2 pos = config.GetPos();
+        pos.x = pos.x < 0 ? ((videoMode.width - size.x) / 2) : pos.x;
+        pos.y = pos.y < 0 ? ((videoMode.height - size.y) / 2) : pos.y;
+        glfwSetWindowPos(mWindowGLFW, pos.x, pos.y);
 
-        if (info.attribs.fullscreen)
+        if (config.GetAttribs().fullscreen)
         {
             SetFullscreen(true);
         }
@@ -82,17 +104,23 @@ namespace Wanli
 
     Window::~Window()
     {
-        if (mWindowGLFW)
-        {
-            glfwDestroyWindow(mWindowGLFW);
-            mWindowGLFW = nullptr;
-            glfwTerminate();
-        }
+        Destroy();
     }
 
     void Window::Update()
     {
         glfwPollEvents();
+    }
+
+    void Window::Destroy()
+    {
+        if (mWindowGLFW)
+        {
+            glfwDestroyWindow(mWindowGLFW);
+            mWindowGLFW = nullptr;
+            local_windowInstance = nullptr;
+            glfwTerminate();
+        }
     }
 
     void Window::Show()
@@ -133,6 +161,11 @@ namespace Wanli
     Menu& Window::GetMenu()
     {
         return mMenu;
+    }
+
+    HWND Window::GetHwnd() const
+    {
+        return mHwnd;
     }
 
     glm::ivec2 Window::GetSize() const
@@ -230,24 +263,21 @@ namespace Wanli
         glfwSetWindowAttrib(mWindowGLFW, attrib, value);
     }
 
-    static WNDPROC glfwProc = nullptr;
-    LRESULT CALLBACK windowProcNew(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+    void Window::AddMessageHook(const MessageHook& hook)
     {
-        return glfwProc(hwnd, msg, wParam, lParam);
+        mMessageHooks.emplace_back(hook);
     }
 
     void Window::CreateMenu()
     {
-        HWND hwnd = glfwGetWin32Window(mWindowGLFW);
-        glfwProc = (WNDPROC)GetWindowLongPtrW(hwnd, GWLP_WNDPROC);
-        SetWindowLongPtrW(hwnd, GWLP_WNDPROC, (LONG_PTR)windowProcNew);
-    
-        mMenu.BeginHorizontalMenu(hwnd);
+        mMessageHooks.emplace_back(&Menu::MenuMessageProc);
+
+        mMenu.BeginHorizontalMenu(mHwnd);
 
         mMenu.BeginVerticalMenu("File");
         mMenu.AddMenuItem("New", EMenuID::File_New);
         mMenu.AddMenuItem("Open", EMenuID::File_Open);
-        mMenu.AddMenuItem("Create", EMenuID::File_Create);
+        mMenu.AddMenuItem("Initialize", EMenuID::File_Create);
         mMenu.AddSeparator();
         mMenu.AddMenuItem("Save", EMenuID::File_Save);
         mMenu.AddMenuItem("Save As", EMenuID::File_SaveAs);

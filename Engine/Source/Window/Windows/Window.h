@@ -14,35 +14,19 @@ struct GLFWwindow;
 
 namespace Wanli
 {
-    struct WindowAttrbutes
-    {
-        bool fullscreen = false;
-        bool resizable = true;
-        bool borderless = false;
-        bool floating = false;
-    };
-
-    struct WindowCreateInfo
-    {
-        String title = "Wanli Engine";
-        glm::ivec2 pos = { -1, -1 };
-        glm::ivec2 size = { 0 , 0 };
-
-        bool createMenu = true;
-        WindowAttrbutes attribs = {};
-    };
-
     class Window : public IModule::Registrar<Window, EModuleStage::PreUpdate>
     {
     public:
         using PTR = std::shared_ptr<Window>;
+        using MessageHook = std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)>;
 
         Window() = default;
         virtual ~Window();
-
+        
+        virtual void Initialize() override;
         virtual void Update() override;
+        virtual void Destroy() override;
 
-        void Create(WindowCreateInfo& info);
         void Show();
         void Hide();
         void Close();
@@ -52,6 +36,7 @@ namespace Wanli
         Monitor& GetMonitor();
         Cursor& GetCursor();
         Menu& GetMenu();
+        HWND GetHwnd() const;
         glm::ivec2 GetSize() const;
         glm::ivec2 GetPos() const;
         int GetAttribute(int attrib) const;
@@ -62,8 +47,10 @@ namespace Wanli
         void SetIcons(const Array<Path>& paths);
         void SetFullscreen(bool value);
         void SetAttribute(int attrib,int value);
+        void AddMessageHook(const MessageHook& hook);
 
     protected:
+        static LRESULT CALLBACK WindowMessageProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
         void CreateMenu();
 
     protected:
@@ -71,6 +58,8 @@ namespace Wanli
         Monitor mMonitor;
         Cursor mCursor;
         Menu mMenu;
+        HWND mHwnd = 0;
+        Array<MessageHook> mMessageHooks;
 
         bool mFullscreen = false;
         glm::ivec2 mRestorePos;

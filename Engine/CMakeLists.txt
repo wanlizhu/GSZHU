@@ -66,6 +66,7 @@ if (WINDOWS OR (WIN32 AND NOT ANDROID))
 
     set(WindowsCompileOptions
         "/wd4251" # members of exported class are not exported
+        "/wd4275" # non dll-interface class used as base for dll-interface class
         "/wd4996" # when using std::codecvt_utf8_utf16<wchar_t>
     )
     target_compile_options(Wanli PRIVATE ${WindowsCompileOptions}) 
@@ -78,7 +79,7 @@ else()
     message(FATAL_ERROR "!!! Undefined target platform !!!")
 endif()
 
-if (MSVC)
+if (MSVC AND ENABLE_PCH)
     set(_PCH_HeaderFile_ "stdafx.h")
     set(_PCH_SourceFile_ "${CSD}/Source/stdafx.cpp")
 
@@ -88,11 +89,20 @@ if (MSVC)
         COMPILE_FLAGS "/Yc${_PCH_HeaderFile_}")
 endif()
 
+if (PKG_BINS)
+    add_custom_command(
+        TARGET Wanli
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${PKG_BINS}  "${Output_DIR}"
+        WORKING_DIRECTORY "${CSD}"
+    )
+endif()
+
 add_custom_command(
     TARGET Wanli
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${ConfigFiles}  "${Output_DIR}"
-    COMMAND ${CMAKE_COMMAND} -E copy ${PKG_BINS}  "${Output_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "Assets" "${Output_DIR}"
     WORKING_DIRECTORY "${CSD}"
 )
 

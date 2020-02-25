@@ -5,16 +5,22 @@
 
 namespace Wanli
 {
-    class IEvent : public std::enable_shared_from_this<IEvent>
+    class WANLI_API IEvent : public std::enable_shared_from_this<IEvent>
     {
     public:
         using PTR = std::shared_ptr<IEvent>;
 
         virtual ~IEvent();
-        std::type_index GetTypeIndex() const;;
         int GetTypeSize() const;
+        std::type_index GetTypeIndex() const;
         void PostEvent();
         void SendEvent();
+
+        template<typename T>
+        inline bool IsInstanceOf()
+        {
+            return std::type_index(typeid(T)) == mTypeIndex;
+        }
 
     protected:
         IEvent(const std::type_index& type, int size) noexcept
