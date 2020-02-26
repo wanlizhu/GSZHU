@@ -1,4 +1,4 @@
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 #include "Core/Common.h"
 #include "Window/Windows/GLFW_WindowCallbacks.h"
 #include "Utils/Log.h"

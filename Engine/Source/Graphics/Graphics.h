@@ -1,18 +1,18 @@
 #pragma once
 
 #include "Core/IModule.h"
+#include "Configuration/Windows/GraphicsConfig.h"
 
 namespace Wanli
 {
     class WANLI_API Graphics
-        : public IModule::Registrar<Graphics, EModuleStage::Render>
+        : public IModule::Registrar<Graphics, GraphicsConfig, EModuleStage::Render>
     {
     public:
-        Graphics() = default;
+        Graphics();
         virtual ~Graphics();
 
-        virtual void Initialize() override;
         virtual void Update() override;
-        virtual void Destroy() override;
+
     };
 }

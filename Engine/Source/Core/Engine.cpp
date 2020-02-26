@@ -1,8 +1,8 @@
 #include "Engine.h"
 #include "Utils/Log.h"
 #include "Window/Window.h"
-#include "Inputs/InputManager.h"
-#include "Events/EventManager.h"
+#include "Inputs/Inputs.h"
+#include "Events/Events.h"
 #include "Graphics/Graphics.h"
 #include "Files/Files.h"
 #include "Timers/Timers.h"
@@ -25,8 +25,6 @@ namespace Wanli
             {
                 if (mApp)
                 {
-                    if (!mApp->IsInited())
-                        mApp->Initialize();
                     mApp->Update();
                 }
 
@@ -120,32 +118,39 @@ namespace Wanli
 
     void Engine::Initialize()
     {
-        const auto& config = *EngineConfig::Get();
+        auto& config = *EngineConfig::Get();
+        assert(config.IsDependencyResolved());
 
         mArgList = config.GetArgList();
         mPrioritizeUpdateOverRender = config.GetPrioritizeUpdateOverRender();
         mFrameRate.SetFPSLimit(config.GetFPSLimit());
         mFrameRate.SetUPSLimit(config.GetUPSLimit());
+        config.OnCompleted();
 
-        Window::Register();
-        InputManager::Register();
-        EventManager::Register();
+        // 'Window' has to be the first to register
+        Window::Register(); 
+        Inputs::Register();
+        Events::Register();
         Graphics::Register();
         Files::Register();
         Timers::Register();
-        
-        for (const auto& [stage, module] : IModule::GetRegistry())
+
+        auto searchPath = mArgList["search-path"];
+        if (searchPath.has_value())
         {
-            module->Initialize();
+            Files::Get()->AddSearchPath(searchPath.value());
         }
+
+        Events::Get()->AddCallback<WindowCloseEvent>(
+            [](IEvent::PTR) {
+                Engine::Get()->Quit();
+            });
     }
 
     void Engine::Destroy()
     {
-        for (const auto& [stage, module] : IModule::GetRegistry())
-        {
-            module->Destroy();
-        }
+        LOG_DEBUG("[Engine] Destructor\n");
+        mApp = nullptr;
         IModule::GetRegistry().clear();
     }
 

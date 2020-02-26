@@ -1,4 +1,4 @@
 #pragma once
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 
 #endif

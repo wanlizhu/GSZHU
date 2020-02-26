@@ -1,13 +1,16 @@
 #include "Events/IEvent.h"
 #include "Events/EventPool.h"
-#include "Events/EventManager.h"
+#include "Events/Events.h"
 
 namespace Wanli
 {
+    IEvent::IEvent(const std::type_index& type, int size)
+        : mTypeIndex(type)
+        , mTypeSize(size)
+    {}
+
     IEvent::~IEvent()
-    {
-        EventPool::Free(shared_from_this());
-    }
+    {}
 
     int IEvent::GetTypeSize() const
     {
@@ -21,11 +24,17 @@ namespace Wanli
 
     void IEvent::PostEvent()
     {
-        EventManager::Get()->PostEvent(shared_from_this());
+        if (Events::Get())
+        {
+            Events::Get()->PostEvent(shared_from_this());
+        }
     }
 
     void IEvent::SendEvent()
     {
-        EventManager::Get()->SendEvent(shared_from_this());
+        if (Events::Get())
+        {
+            Events::Get()->SendEvent(shared_from_this());
+        }
     }
 }

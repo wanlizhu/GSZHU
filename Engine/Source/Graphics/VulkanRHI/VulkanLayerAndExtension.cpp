@@ -3,12 +3,12 @@
 
 namespace Wanli
 {
-    VkInstance VulkanLayerAndExtension::Instance = VK_NULL_HANDLE;
-    VkPhysicalDevice VulkanLayerAndExtension::PhysicalDevice = VK_NULL_HANDLE;
-    std::vector<const char*> VulkanLayerAndExtension::InstanceLayers = {};
-    std::vector<const char*> VulkanLayerAndExtension::InstanceExtensions = {};
-    std::vector<const char*> VulkanLayerAndExtension::DeviceLayers = {};
-    std::vector<const char*> VulkanLayerAndExtension::DeviceExtensions = {};
+    VkInstance VulkanLayerAndExtension::instance = VK_NULL_HANDLE;
+    VkPhysicalDevice VulkanLayerAndExtension::physicalDevice = VK_NULL_HANDLE;
+    std::vector<const char*> VulkanLayerAndExtension::instanceLayers = {};
+    std::vector<const char*> VulkanLayerAndExtension::instanceExtensions = {};
+    std::vector<const char*> VulkanLayerAndExtension::deviceLayers = {};
+    std::vector<const char*> VulkanLayerAndExtension::deviceExtensions = {};
 
     void ChangeLayerLoadingOrder(std::vector<const char*>& layers)
     {
@@ -66,12 +66,12 @@ namespace Wanli
         vkEnumerateInstanceLayerProperties(&count, nullptr);
         if (count)
         {
-            InstanceLayers.resize(count);
+            instanceLayers.resize(count);
             std::vector<VkLayerProperties> props(count);
             vkEnumerateInstanceLayerProperties(&count, props.data());
             for (const auto& prop : props)
             {
-                InstanceLayers.push_back(prop.layerName);
+                instanceLayers.push_back(prop.layerName);
             }
         }
 
@@ -79,15 +79,15 @@ namespace Wanli
         vkEnumerateInstanceExtensionProperties(nullptr, &count, nullptr);
         if (count)
         {
-            InstanceExtensions.reserve(count);
+            instanceExtensions.reserve(count);
             std::vector<VkExtensionProperties> props(count);
             vkEnumerateInstanceExtensionProperties(nullptr, &count, props.data());
             for (const auto& prop : props)
             {
-                InstanceExtensions.push_back(prop.extensionName);
+                instanceExtensions.push_back(prop.extensionName);
             }
 
-            for (const auto& layer : InstanceLayers)
+            for (const auto& layer : instanceLayers)
             {
                 count = 0;
                 vkEnumerateInstanceExtensionProperties(layer, &count, nullptr);
@@ -97,41 +97,41 @@ namespace Wanli
                     vkEnumerateInstanceExtensionProperties(layer, &count, props.data());
                     for (const auto& prop : props)
                     {
-                        InstanceExtensions.push_back(prop.extensionName);
+                        instanceExtensions.push_back(prop.extensionName);
                     }
                 }
             }
         }
 
-        UniqueArray(InstanceLayers);
-        UniqueArray(InstanceExtensions);
-        ChangeLayerLoadingOrder(InstanceLayers);
+        UniqueArray(instanceLayers);
+        UniqueArray(instanceExtensions);
+        ChangeLayerLoadingOrder(instanceLayers);
         isLoaded = true;
     }
 
-    void VulkanLayerAndExtension::LoadFromDeviceLevel(VkPhysicalDevice physicalDevice)
+    void VulkanLayerAndExtension::LoadFromDeviceLevel(VkPhysicalDevice device)
     {
         static bool isLoaded = false;
         if (isLoaded)
             return;
 
-        if (physicalDevice == VK_NULL_HANDLE)
+        if (device == VK_NULL_HANDLE)
             return;
 
-        PhysicalDevice = physicalDevice;
+        physicalDevice = device;
         uint32_t count;
 
         count = 0;
-        vkEnumerateDeviceLayerProperties(PhysicalDevice, &count, nullptr);
+        vkEnumerateDeviceLayerProperties(physicalDevice, &count, nullptr);
         if (count)
         {
             uint32_t deviceLayerCount = count;
-            DeviceLayers.resize(count);
+            deviceLayers.resize(count);
             std::vector<VkLayerProperties> props(count);
             vkEnumerateDeviceLayerProperties(physicalDevice, &count, props.data());
             for (const auto& prop : props)
             {
-                DeviceLayers.push_back(prop.layerName);
+                deviceLayers.push_back(prop.layerName);
             }
 
             // validation layer for device only report out for one layer,
@@ -140,74 +140,74 @@ namespace Wanli
             // assume all instance layers are also implemented for device layers
             if (deviceLayerCount == 1)
             {
-                DeviceLayers.clear();
-                DeviceLayers = InstanceLayers;
+                deviceLayers.clear();
+                deviceLayers = instanceLayers;
             }
         }
 
         count = 0;
-        vkEnumerateDeviceExtensionProperties(PhysicalDevice, nullptr, &count, nullptr);
+        vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &count, nullptr);
         if (count)
         {
-            DeviceExtensions.reserve(count);
+            deviceExtensions.reserve(count);
             std::vector<VkExtensionProperties> props(count);
-            vkEnumerateDeviceExtensionProperties(PhysicalDevice, nullptr, &count, props.data());
+            vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &count, props.data());
             for (const auto& prop : props)
             {
-                DeviceExtensions.push_back(prop.extensionName);
+                deviceExtensions.push_back(prop.extensionName);
             }
 
-            for (const auto& layer : DeviceLayers)
+            for (const auto& layer : deviceLayers)
             {
                 count = 0;
-                vkEnumerateDeviceExtensionProperties(PhysicalDevice, layer, &count, nullptr);
+                vkEnumerateDeviceExtensionProperties(physicalDevice, layer, &count, nullptr);
                 if (count)
                 {
                     std::vector<VkExtensionProperties> props(count);
-                    vkEnumerateDeviceExtensionProperties(PhysicalDevice, layer, &count, props.data());
+                    vkEnumerateDeviceExtensionProperties(physicalDevice, layer, &count, props.data());
                     for (const auto& prop : props)
                     {
-                        DeviceExtensions.push_back(prop.extensionName);
+                        deviceExtensions.push_back(prop.extensionName);
                     }
                 }
             }
         }
 
-        UniqueArray(DeviceLayers);
-        UniqueArray(DeviceExtensions);
-        ChangeLayerLoadingOrder(DeviceLayers);
+        UniqueArray(deviceLayers);
+        UniqueArray(deviceExtensions);
+        ChangeLayerLoadingOrder(deviceLayers);
         isLoaded = true;
     }
 
     bool VulkanLayerAndExtension::HasInstanceLayer(const char* name)
     {
-        return std::find_if(InstanceLayers.begin(), InstanceLayers.end(), 
+        return std::find_if(instanceLayers.begin(), instanceLayers.end(), 
             [&](const char* item) {
                 return strcmp(item, name) == 0;
-            }) != InstanceLayers.end();
+            }) != instanceLayers.end();
     }
 
     bool VulkanLayerAndExtension::HasInstanceExtension(const char* name)
     {
-        return std::find_if(InstanceExtensions.begin(), InstanceExtensions.end(),
+        return std::find_if(instanceExtensions.begin(), instanceExtensions.end(),
             [&](const char* item) {
                 return strcmp(item, name) == 0;
-            }) != InstanceExtensions.end();
+            }) != instanceExtensions.end();
     }
 
     bool VulkanLayerAndExtension::HasDeviceLayer(const char* name)
     {
-        return std::find_if(DeviceLayers.begin(), DeviceLayers.end(),
+        return std::find_if(deviceLayers.begin(), deviceLayers.end(),
             [&](const char* item) {
                 return strcmp(item, name) == 0;
-            }) != DeviceLayers.end();
+            }) != deviceLayers.end();
     }
 
     bool VulkanLayerAndExtension::HasDeviceExtension(const char* name)
     {
-        return std::find_if(DeviceExtensions.begin(), DeviceExtensions.end(),
+        return std::find_if(deviceExtensions.begin(), deviceExtensions.end(),
             [&](const char* item) {
                 return strcmp(item, name) == 0;
-            }) != DeviceExtensions.end();
+            }) != deviceExtensions.end();
     }
 }

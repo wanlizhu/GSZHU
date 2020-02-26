@@ -14,21 +14,24 @@ namespace Wanli
         {
             if (smEventCaches[sizeof(T)].empty())
             {
-                return SharedPtr<T>(new T(std::forward<Args>(args)...));
+                return SharedPtr<T>(new T(std::forward<Args>(args)...), 
+                    [&](T* ptr) {
+                        ptr->~T();
+                        smEventCaches[sizeof(T)].push_back(ptr);
+                    });
             }
-
-            auto& list = smEventCaches[sizeof(T)];
-            auto event = std::static_pointer_cast<T>(list.front());
-            list.pop_front();
-            
-            new(event.get()) T(std::forward<Args>(args)...);
-
-            return event;
+            else
+            {
+                IEvent* mem = static_cast<T*>(smEventCaches[sizeof(T)].front());
+                smEventCaches[sizeof(T)].pop_front();
+                T* ptr = new(mem) T(std::forward<Args>(args)...);
+                return SharedPtr<T>(ptr);
+            }
         }
 
-        static void Free(SharedPtr<IEvent> event);
+        static void Clear();
 
     private:
-        static HashMap<size_t, std::list<SharedPtr<IEvent>>> smEventCaches;
+        static HashMap<size_t, std::list<IEvent*>> smEventCaches;
     };
 }

@@ -1,5 +1,5 @@
 #pragma once
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 
 #include "Core/Common.h"
 #include "Utils/NonCopyable.h"
@@ -26,7 +26,7 @@ namespace Wanli
         Uint size = 0;
     };
 
-    class Monitor : public NonCopyable
+    class WANLI_API Monitor : public NonCopyable
     {
     public:
         Monitor() = default;

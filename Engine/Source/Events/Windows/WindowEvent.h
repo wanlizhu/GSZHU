@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 #include "Window/Windows/GLFW_Types.h"
 #include "Events/IEvent.h"
 #include "Window/Windows/Menu.h"

@@ -5,11 +5,12 @@
 namespace Wanli
 {
     class WANLI_API Timers
-        : public IModule::Registrar<Timers, EModuleStage::Render>
+        : public IModule::Registrar<Timers, void, EModuleStage::Render>
     {
     public:
-        virtual void Initialize() override;
+        Timers();
+        virtual ~Timers();
+
         virtual void Update() override;
-        virtual void Destroy() override;
     };
 }

@@ -28,44 +28,37 @@
 #include <stdexcept>
 #include <exception>
 
-#define VK_SUCCEEDED(code) VkResult _error = code; _error == VK_SUCCESS 
-#define VK_FAILED(code) VkResult _error = code; _error != VK_SUCCESS
-#define VK_THROW_LAST_ERROR() if (_error != VK_SUCCESS) { throw VulkanError(_error); }
+#define VK_SUCCEEDED(error) error == VK_SUCCESS 
+#define VK_FAILED(error) error != VK_SUCCESS
+#define VK_CHECK(error) if (error != VK_SUCCESS) { throw VulkanError(error); }
 
 namespace Wanli
 {
     class VulkanError : public std::runtime_error
     {
     public:
-        VulkanError(VkResult code)
-            : std::runtime_error(std::to_string((int)code))
-        {}
-    };
+        static std::string ToString(VkResult error);
 
-    class EngineError : public std::runtime_error
-    {
-        char buffer[1024];
-    public:
-        template<typename... Args>
-        EngineError(const char* format, Args... args)
-            : std::runtime_error((snprintf(buffer, 1024, format, args...), buffer))
+        VulkanError(VkResult error)
+            : std::runtime_error("Vulkan Error: " + VulkanError::ToString(error))
         {}
     };
 
     struct VulkanConfig
     {
-        static const char* AppName;
-        static const char* EngineName;
-        static uint32_t APIVersion;
+        static const char* appName;
+        static const char* engineName;
+        static uint32_t ApiVersion;
 
-        static bool Vsync;
-        static bool UseVMA;
-        static bool EnableValidationLayer;
-        static int BackbufferCount;
+        static bool useVMA;
+        static bool enableVsync;
+        static bool enableAsyncSubmit;
+        static bool enableValidationLayer;
+        static int  backbufferCount;
 
-        static std::vector<const char*> RequiredInstanceExtensions;
-        static std::vector<const char*> RequiredInstanceLayers;
-        static std::vector<const char*> RequiredDeviceExtensions;
-        static std::vector<const char*> RequiredDeviceLayers;
+        static std::vector<const char*> requiredInstanceExtensions;
+        static std::vector<const char*> requiredInstanceLayers;
+        static std::vector<const char*> requiredDeviceExtensions;
+        static std::vector<const char*> requiredDeviceLayers;
     };
 }

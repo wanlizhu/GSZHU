@@ -13,7 +13,7 @@ namespace Wanli
         Removed,
     };
 
-    class FileObserver : public NonCopyable
+    class WANLI_API FileObserver : public NonCopyable
     {
     public:
         FileObserver(const Path& path, const Duration_SEC& delay);

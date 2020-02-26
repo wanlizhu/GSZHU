@@ -3,16 +3,7 @@
 
 namespace Wanli
 {
-    const char* VulkanConfig::AppName = "Unnamed";
-    const char* VulkanConfig::EngineName = "Wanli";
-    uint32_t VulkanConfig::APIVersion = VK_API_VERSION_1_2;
-
-    bool VulkanConfig::Vsync = true;
-    bool VulkanConfig::UseVMA = true;
-    bool VulkanConfig::EnableValidationLayer = (bool)_DEBUG;
-    int VulkanConfig::BackbufferCount = 2;
-
-    std::vector<const char*> VulkanConfig::RequiredInstanceExtensions =
+    std::vector<const char*> VulkanConfig::requiredInstanceExtensions =
     {
         VK_KHR_SWAPCHAIN_EXTENSION_NAME,
         VK_KHR_SAMPLER_MIRROR_CLAMP_TO_EDGE_EXTENSION_NAME,
@@ -22,7 +13,7 @@ namespace Wanli
 #endif
     };
 
-    std::vector<const char*> VulkanConfig::RequiredInstanceLayers = 
+    std::vector<const char*> VulkanConfig::requiredInstanceLayers = 
     {
         "VK_LAYER_GOOGLE_threading",
         "VK_LAYER_LUNARG_parameter_validation",
@@ -32,8 +23,8 @@ namespace Wanli
         "VK_LAYER_GOOGLE_unique_objects",
     };
 
-    std::vector<const char*> VulkanConfig::RequiredDeviceExtensions = {};
+    std::vector<const char*> VulkanConfig::requiredDeviceExtensions = {};
 
-    std::vector<const char*> VulkanConfig::RequiredDeviceLayers = {};
+    std::vector<const char*> VulkanConfig::requiredDeviceLayers = {};
 }
 #endif

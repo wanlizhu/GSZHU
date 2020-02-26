@@ -23,10 +23,7 @@ namespace Wanli
         }
 
     protected:
-        IEvent(const std::type_index& type, int size) noexcept
-            : mTypeIndex(type)
-            , mTypeSize(size)
-        {}
+        IEvent(const std::type_index& type, int size);
 
     protected:
         const std::type_index mTypeIndex;

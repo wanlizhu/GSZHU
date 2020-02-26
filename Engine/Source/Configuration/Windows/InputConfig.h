@@ -1,5 +1,5 @@
 #pragma once
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 
 #include "Configuration/IConfig.h"
 
@@ -7,9 +7,9 @@ namespace Wanli
 {
     class Window;
 
-    class WANLI_API InputConfig : public IConfig::Registrar<InputConfig>
+    class WANLI_API InputConfig : public IConfig
     {
-        DECL_DATA_FIELD(Window, SharedPtr<Window>, nullptr);
+        DECL_SINGLETON_GET(InputConfig);
     };
 }
 

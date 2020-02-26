@@ -2,6 +2,7 @@
 
 #include "Core/Common.h"
 #include "Utils/NonCopyable.h"
+#include "Configuration/IConfig.h"
 
 namespace Wanli
 {
@@ -15,10 +16,10 @@ namespace Wanli
     };
 
     template<typename BaseClass>
-    class ModuleFactory
+    class WANLI_API ModuleFactory
     {
     public:
-        using RegistryType = std::unordered_multimap<EModuleStage, std::unique_ptr<BaseClass>>;
+        using RegistryType = std::unordered_multimap<EModuleStage, std::shared_ptr<BaseClass>>;
 
         static inline RegistryType& GetRegistry() 
         {
@@ -27,8 +28,8 @@ namespace Wanli
         }
 
     public:
-        template<typename T, EModuleStage Stage>
-        class Registrar : public BaseClass
+        template<typename T, typename Config, EModuleStage Stage>
+        class WANLI_API Registrar : public BaseClass
         {
         private:
             static inline T* mInstance = nullptr;
@@ -37,8 +38,20 @@ namespace Wanli
             static inline T* Get() { return mInstance; }
             static inline bool Register() 
             {
-                auto it = GetRegistry().insert({ Stage, std::make_unique<T>() });
+                if constexpr (std::is_base_of_v<IConfig, Config>)
+                {
+                    assert(Config::Get()->IsDependencyResolved());
+                }
+
+                T* module = new T();
+                auto it = GetRegistry().insert(std::make_pair(Stage, std::shared_ptr<BaseClass>(module)));
                 mInstance = dynamic_cast<T*>(it->second.get());
+                
+                if constexpr (std::is_base_of_v<IConfig, Config>)
+                {
+                    Config::Get()->OnCompleted();
+                }
+
                 return true;
             }
             static inline bool Deregister() 
@@ -62,10 +75,9 @@ namespace Wanli
         , public ModuleFactory<IModule>
     {
     public:
+        IModule() = default;
         virtual ~IModule() = default;
 
-        virtual void Initialize() = 0;
         virtual void Update() = 0;
-        virtual void Destroy() = 0;
     };
 }

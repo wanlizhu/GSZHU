@@ -6,7 +6,7 @@
 
 namespace Wanli
 {
-    class File : public std::enable_shared_from_this<File>
+    class WANLI_API File : public std::enable_shared_from_this<File>
     {
     public:
         class FoundData;

@@ -4,15 +4,20 @@
 
 namespace Wanli
 {
-    class VulkanPhysicalDevice final
+    struct VulkanPhysicalDevice
     {
-    public:
-        VkPhysicalDevice PhysicalDevice = VK_NULL_HANDLE;
-        VkPhysicalDeviceProperties Props = {};
-        VkPhysicalDeviceFeatures Features = {};
-        VkPhysicalDeviceMemoryProperties MemoryProps = {};
+        VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+        VkPhysicalDeviceProperties props = {};
+        VkPhysicalDeviceFeatures supportedFeatures = {};
+        VkPhysicalDeviceMemoryProperties memoryProps = {};
+        std::vector<const char*> supportedExtensions = {};
 
-        VulkanPhysicalDevice(VkPhysicalDevice physicalDevice);
-        int EvaluateRank() const;
+        VulkanPhysicalDevice(VkPhysicalDevice device);
+        ~VulkanPhysicalDevice();
+
+        inline operator const VkPhysicalDevice&() const { return physicalDevice; }
+        int EvaluateScore() const;
+        bool HasExtension(const char* name) const;
+        void LogDeviceInfo() const;
     };
 }

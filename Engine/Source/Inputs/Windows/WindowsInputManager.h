@@ -1,19 +1,17 @@
 #pragma once
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 
-#include "Inputs/InputManager.h"
+#include "Inputs/Inputs.h"
 
 namespace Wanli
 {
     class WANLI_API WindowsInputManager final : public InputManagerImpl
     {
     public:
-        WindowsInputManager() = default;
+        WindowsInputManager();
         virtual ~WindowsInputManager();
 
-        virtual void Initialize() override final;
         virtual void Update() override final;
-        virtual void Destroy() override final;
 
     private:
         static LRESULT CALLBACK InputMessageProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

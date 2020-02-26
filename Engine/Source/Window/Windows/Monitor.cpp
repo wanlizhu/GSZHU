@@ -1,4 +1,4 @@
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 #include "Window/Windows/Monitor.h"
 #include "GLFW/glfw3.h"
 

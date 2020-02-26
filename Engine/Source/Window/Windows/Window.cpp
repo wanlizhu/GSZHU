@@ -1,4 +1,4 @@
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 
 #include "Window/Windows/Window.h"
 #include "Window/Windows/GLFW_WindowCallbacks.h"
@@ -29,7 +29,7 @@ namespace Wanli
         return local_messageProcGLFW(hwnd, msg, wParam, lParam);
     }
 
-    void Window::Initialize()
+    Window::Window()
     {
         const auto& config = *WindowConfig::Get();
 
@@ -104,16 +104,7 @@ namespace Wanli
 
     Window::~Window()
     {
-        Destroy();
-    }
-
-    void Window::Update()
-    {
-        glfwPollEvents();
-    }
-
-    void Window::Destroy()
-    {
+        LOG_DEBUG("[IModule] Window Destroy\n");
         if (mWindowGLFW)
         {
             glfwDestroyWindow(mWindowGLFW);
@@ -121,6 +112,11 @@ namespace Wanli
             local_windowInstance = nullptr;
             glfwTerminate();
         }
+    }
+
+    void Window::Update()
+    {
+        glfwPollEvents();
     }
 
     void Window::Show()
@@ -277,7 +273,7 @@ namespace Wanli
         mMenu.BeginVerticalMenu("File");
         mMenu.AddMenuItem("New", EMenuID::File_New);
         mMenu.AddMenuItem("Open", EMenuID::File_Open);
-        mMenu.AddMenuItem("Initialize", EMenuID::File_Create);
+        mMenu.AddMenuItem("Create", EMenuID::File_Create);
         mMenu.AddSeparator();
         mMenu.AddMenuItem("Save", EMenuID::File_Save);
         mMenu.AddMenuItem("Save As", EMenuID::File_SaveAs);

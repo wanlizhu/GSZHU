@@ -14,7 +14,6 @@
 #define LOG_DEBUG(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, "Vulkan", __VA_ARGS__))
 #define LOG_ERROR(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "Vulkan", __VA_ARGS__))
 
-
 namespace Wanli
 {
     extern android_app* gpAndroidApp;

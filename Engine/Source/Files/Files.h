@@ -5,14 +5,18 @@
 namespace Wanli
 {
     class WANLI_API Files
-        : public IModule::Registrar<Files, EModuleStage::Render>
+        : public IModule::Registrar<Files, void, EModuleStage::Render>
     {
     public:
-        Files() = default;
+        Files();
         virtual ~Files();
 
-        virtual void Initialize() override;
         virtual void Update() override;
-        virtual void Destroy() override;
+
+        void AddSearchPath(const Path& path);
+        void ClearSearchPath();
+
+    private:
+        Array<Path> mSearchPaths;
     };
 }

@@ -3,10 +3,10 @@
 
 namespace Wanli
 {
-    HashMap<size_t, std::list<SharedPtr<IEvent>>> EventPool::smEventCaches;
+    HashMap<size_t, std::list<IEvent*>> EventPool::smEventCaches;
 
-    void EventPool::Free(SharedPtr<IEvent> event)
+    void EventPool::Clear()
     {
-        smEventCaches[event->GetTypeSize()].emplace_back(event);
+        smEventCaches.clear();
     }
 }

@@ -1,18 +1,26 @@
 #include "Files.h"
+#include "Utils/Log.h"
 
 namespace Wanli
 {
+    Files::Files()
+    {}
+
     Files::~Files()
     {
-        Destroy();
+        LOG_DEBUG("[IModule] Files Destroy\n");
     }
-
-    void Files::Initialize()
-    {}
 
     void Files::Update()
     {}
 
-    void Files::Destroy()
-    {}
+    void Files::AddSearchPath(const Path& path)
+    {
+        mSearchPaths.push_back(path);
+    }
+
+    void Files::ClearSearchPath()
+    {
+        mSearchPaths.clear();
+    }
 }

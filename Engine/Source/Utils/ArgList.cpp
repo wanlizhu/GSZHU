@@ -2,6 +2,9 @@
 
 namespace Wanli
 {
+    ArgList::ArgList()
+    {}
+
     ArgList::ArgList(int argc, char** argv)
     {
         mArgs.reserve(argc);

@@ -1,5 +1,5 @@
 #pragma once
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 
 #include "Core/Common.h"
 #include "Utils/NonCopyable.h"
@@ -19,7 +19,7 @@ namespace Wanli
         File_Exit,
     };
 
-    class Menu : public NonCopyable
+    class WANLI_API Menu : public NonCopyable
     {
         friend class Window;
     public:

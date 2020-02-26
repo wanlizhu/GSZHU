@@ -5,8 +5,8 @@
 
 namespace Wanli
 {
-    VkInstance VulkanInstance::Instance = VK_NULL_HANDLE;
-    
+    VkInstance VulkanInstance::globalInstance = VK_NULL_HANDLE;
+
     static bool _isDebugPrepared = false;
     static bool _isDebugCreated = false;
     static bool _isMessengerSupported = false;
@@ -40,70 +40,7 @@ namespace Wanli
         return VK_TRUE;
     }
 
-    void VulkanInstance::Initialize()
-    {
-        VulkanLayerAndExtension::LoadFromInstanceLevel();
-
-        VkApplicationInfo appInfo = {};
-        appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-        appInfo.pNext = nullptr;
-        appInfo.pApplicationName = VulkanConfig::AppName;
-        appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.pEngineName = VulkanConfig::EngineName;
-        appInfo.engineVersion = VulkanConfig::APIVersion;
-
-        VkInstanceCreateInfo instanceInfo = {};
-        instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-        instanceInfo.pNext = nullptr;
-        instanceInfo.pApplicationInfo = &appInfo;
-        instanceInfo.enabledExtensionCount = (uint32_t)VulkanLayerAndExtension::InstanceExtensions.size();
-        instanceInfo.ppEnabledExtensionNames = VulkanLayerAndExtension::InstanceExtensions.data();
-        if (VulkanConfig::EnableValidationLayer)
-        {
-            instanceInfo.enabledLayerCount = (uint32_t)VulkanLayerAndExtension::InstanceLayers.size();
-            instanceInfo.ppEnabledLayerNames = VulkanLayerAndExtension::InstanceLayers.data();
-            PrepareDebugCallback(instanceInfo);
-        }
-        else
-        {
-            instanceInfo.enabledLayerCount = 0;
-            instanceInfo.ppEnabledLayerNames = 0;
-        }
-
-        if (VK_SUCCEEDED(vkCreateInstance(&instanceInfo, nullptr, &Instance)))
-        {
-            CreateDebugCallback();
-        }
-    }
-
-    void* VulkanInstance::LoadFunction(const char* name)
-    {
-        return vkGetInstanceProcAddr(Instance, name);
-    }
-
-    void* VulkanInstance::LoadFunction2(const char* name)
-    {
-        auto func = LoadFunction(name);
-        if (func == nullptr)
-        {
-            throw EngineError("Failed to load function '%s'", name);
-        }
-        return func;
-    }
-
-    std::vector<VulkanPhysicalDevice> VulkanInstance::GetPhysicalDevices()
-    {
-        return {};
-    }
-
-    void VulkanInstance::Destroy()
-    {
-        DestroyDebugCallback();
-        vkDestroyInstance(Instance, nullptr);
-        Instance = VK_NULL_HANDLE;
-    }
-
-    void VulkanInstance::DestroyDebugCallback()
+    void DestroyDebugCallback()
     {
         if (!_isDebugCreated)
             return;
@@ -113,7 +50,7 @@ namespace Wanli
             auto func = LOAD_FUNC(vkDestroyDebugUtilsMessengerEXT);
             if (func)
             {
-                func(Instance, _debugMessenger, nullptr);
+                func(VulkanInstance::globalInstance, _debugMessenger, nullptr);
             }
             _debugMessenger = VK_NULL_HANDLE;
         }
@@ -122,7 +59,7 @@ namespace Wanli
             auto func = LOAD_FUNC(vkDestroyDebugReportCallbackEXT);
             if (func)
             {
-                func(Instance, _debugReport, nullptr);
+                func(VulkanInstance::globalInstance, _debugReport, nullptr);
             }
             _debugReport = VK_NULL_HANDLE;
         }
@@ -130,13 +67,13 @@ namespace Wanli
         _isDebugCreated = false;
     }
 
-    void VulkanInstance::PrepareDebugCallback(VkInstanceCreateInfo& instanceInfo)
+    void PrepareDebugCallback(VkInstanceCreateInfo& instanceInfo)
     {
         if (_isDebugPrepared)
             return;
 
         _isMessengerSupported = VulkanLayerAndExtension::HasInstanceLayer(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-        
+
         if (_isMessengerSupported)
         {
             _debugMessengerInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
@@ -161,7 +98,7 @@ namespace Wanli
         _isDebugPrepared = true;
     }
 
-    void VulkanInstance::CreateDebugCallback()
+    void CreateDebugCallback()
     {
         if (_isDebugCreated)
             return;
@@ -171,7 +108,7 @@ namespace Wanli
             auto func = LOAD_FUNC(vkCreateDebugUtilsMessengerEXT);
             if (func)
             {
-                func(Instance, &_debugMessengerInfo, nullptr, &_debugMessenger);
+                func(VulkanInstance::globalInstance, &_debugMessengerInfo, nullptr, &_debugMessenger);
             }
         }
         else
@@ -179,10 +116,77 @@ namespace Wanli
             auto func = LOAD_FUNC(vkCreateDebugReportCallbackEXT);
             if (func)
             {
-                func(Instance, &_debugReportInfo, nullptr, &_debugReport);
+                func(VulkanInstance::globalInstance, &_debugReportInfo, nullptr, &_debugReport);
             }
         }
 
         _isDebugCreated = true;
+    }
+
+    VulkanInstance::VulkanInstance()
+    {
+        VulkanLayerAndExtension::LoadFromInstanceLevel();
+
+        VkApplicationInfo appInfo = {};
+        appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+        appInfo.pNext = nullptr;
+        appInfo.pApplicationName = VulkanConfig::appName;
+        appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+        appInfo.pEngineName = VulkanConfig::engineName;
+        appInfo.engineVersion = VulkanConfig::ApiVersion;
+
+        VkInstanceCreateInfo instanceInfo = {};
+        instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+        instanceInfo.pNext = nullptr;
+        instanceInfo.pApplicationInfo = &appInfo;
+        instanceInfo.enabledExtensionCount = (uint32_t)VulkanLayerAndExtension::instanceExtensions.size();
+        instanceInfo.ppEnabledExtensionNames = VulkanLayerAndExtension::instanceExtensions.data();
+        if (VulkanConfig::enableValidationLayer)
+        {
+            instanceInfo.enabledLayerCount = (uint32_t)VulkanLayerAndExtension::instanceLayers.size();
+            instanceInfo.ppEnabledLayerNames = VulkanLayerAndExtension::instanceLayers.data();
+            PrepareDebugCallback(instanceInfo);
+        }
+        else
+        {
+            instanceInfo.enabledLayerCount = 0;
+            instanceInfo.ppEnabledLayerNames = 0;
+        }
+
+        if (VK_SUCCEEDED(vkCreateInstance(&instanceInfo, nullptr, &instance)))
+        {
+            globalInstance = instance;
+            CreateDebugCallback();
+        }
+    }
+
+    VulkanInstance::~VulkanInstance()
+    {
+        if (instance)
+        {
+            DestroyDebugCallback();
+            vkDestroyInstance(instance, nullptr);
+            instance = VK_NULL_HANDLE;
+        }
+    }
+
+    void* VulkanInstance::LoadFunction(const char* name)
+    {
+        return vkGetInstanceProcAddr(instance, name);
+    }
+
+    void* VulkanInstance::LoadFunction2(const char* name)
+    {
+        auto func = LoadFunction(name);
+        if (func == nullptr)
+        {
+            throw EngineError("Failed to load function '%s'", name);
+        }
+        return func;
+    }
+
+    std::vector<VulkanPhysicalDevice> VulkanInstance::GetPhysicalDevices()
+    {
+        return {};
     }
 }

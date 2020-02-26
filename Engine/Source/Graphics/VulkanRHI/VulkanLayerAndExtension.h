@@ -4,17 +4,17 @@
 
 namespace Wanli
 {
-    struct VulkanLayerAndExtension final
+    struct VulkanLayerAndExtension
     {
-        static VkInstance Instance;
-        static VkPhysicalDevice PhysicalDevice;
-        static std::vector<const char*> InstanceLayers;
-        static std::vector<const char*> InstanceExtensions;
-        static std::vector<const char*> DeviceLayers;
-        static std::vector<const char*> DeviceExtensions;
+        static VkInstance instance;
+        static VkPhysicalDevice physicalDevice;
+        static std::vector<const char*> instanceLayers;
+        static std::vector<const char*> instanceExtensions;
+        static std::vector<const char*> deviceLayers;
+        static std::vector<const char*> deviceExtensions;
 
         static void LoadFromInstanceLevel();
-        static void LoadFromDeviceLevel(VkPhysicalDevice physicalDevice);
+        static void LoadFromDeviceLevel(VkPhysicalDevice device);
 
         static bool HasInstanceLayer(const char* name);
         static bool HasInstanceExtension(const char* name);

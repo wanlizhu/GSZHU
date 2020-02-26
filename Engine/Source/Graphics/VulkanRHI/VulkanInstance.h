@@ -2,27 +2,23 @@
 
 #include "VulkanConfig.h"
 
-#define LOAD_FUNC(name) (PFN_##name)VulkanInstance::LoadFunction(#name)
-#define MUST_LOAD_FUNC(name) (PFN_##name)VulkanInstance::LoadFunction2(#name)
+#define LOAD_FUNC(name) (PFN_##name)vkGetInstanceProcAddr(VulkanInstance::globalInstance, #name)
 
 namespace Wanli
 {
-    class VulkanPhysicalDevice;
+    struct VulkanPhysicalDevice;
 
-    class VulkanInstance final
+    struct VulkanInstance
     {
-    public:
-        static VkInstance Instance;
+        static VkInstance globalInstance;
+        VkInstance instance = VK_NULL_HANDLE;
 
-        static void Initialize();
-        static void Destroy();
-        static void* LoadFunction(const char* name);
-        static void* LoadFunction2(const char* name);
-        static std::vector<VulkanPhysicalDevice> GetPhysicalDevices();
+        VulkanInstance();
+        ~VulkanInstance();
 
-    private:
-        static void PrepareDebugCallback(VkInstanceCreateInfo& instanceInfo);
-        static void CreateDebugCallback();
-        static void DestroyDebugCallback();
+        inline operator const VkInstance& () const { return instance; }
+        void* LoadFunction(const char* name);
+        void* LoadFunction2(const char* name);
+        std::vector<VulkanPhysicalDevice> GetPhysicalDevices();
     };
 }

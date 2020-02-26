@@ -21,7 +21,7 @@
 #   endif 
 #endif
 
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 #include "Windows/WindowsConfig.h"
 #elif defined(PLATFORM_ANDROID)
 #include "Windows/AndroidConfig.h"

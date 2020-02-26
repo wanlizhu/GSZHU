@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 #include <Windows.h>
 
 namespace Wanli

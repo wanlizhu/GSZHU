@@ -1,8 +1,9 @@
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 #include "WindowsInputManager.h"
 #include "Configuration/Windows/InputConfig.h"
 #include "Window/Windows/Window.h"
 #include "GLFW_InputCallbacks.h"
+#include "Utils/Log.h"
 
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include "GLFW/glfw3.h"
@@ -16,16 +17,11 @@ namespace Wanli
         return 0;
     }
 
-    WindowsInputManager::~WindowsInputManager()
-    {
-        Destroy();
-    }
-
-    void WindowsInputManager::Initialize()
+    WindowsInputManager::WindowsInputManager()
     {
         const auto& config = *InputConfig::Get();
-        GLFWwindow* windowGLFW = config.GetWindow()->GetGLFW();
-        HWND hwnd = config.GetWindow()->GetHwnd();
+        GLFWwindow* windowGLFW = Window::Get()->GetGLFW();
+        HWND hwnd = Window::Get()->GetHwnd();
 
         glfwSetKeyCallback(windowGLFW, OnKey_GLFW);
         glfwSetMouseButtonCallback(windowGLFW, OnMouseButton_GLFW);
@@ -34,13 +30,13 @@ namespace Wanli
         glfwSetCursorEnterCallback(windowGLFW, OnCursorEnter_GLFW);
         glfwSetDropCallback(windowGLFW, OnDrop_GLFW);
 
-        config.GetWindow()->AddMessageHook(&WindowsInputManager::InputMessageProc);
+        Window::Get()->AddMessageHook(&WindowsInputManager::InputMessageProc);
     }
 
-    void WindowsInputManager::Update()
+    WindowsInputManager::~WindowsInputManager()
     {}
 
-    void WindowsInputManager::Destroy()
+    void WindowsInputManager::Update()
     {}
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 #include "Windows/EngineConfig.h"
 #include "Windows/WindowConfig.h"
 #include "Windows/InputConfig.h"

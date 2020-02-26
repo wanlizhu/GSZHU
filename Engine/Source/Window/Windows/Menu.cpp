@@ -1,6 +1,6 @@
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 #include "Window/Windows/Menu.h"
-#include "Events/EventManager.h"
+#include "Events/Events.h"
 #include "Events/Windows/WindowEvent.h"
 
 namespace Wanli

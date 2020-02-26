@@ -44,6 +44,10 @@
 #endif
 #endif
 
+#define DECL_SINGLETON_GET(T) \
+public: \
+    static T* Get() { static T _instance; return &_instance;}
+
 #define DECL_DATA_FIELD(name, type, value) \
 protected: \
     type m##name = value; \
@@ -51,7 +55,6 @@ public: \
     inline const type& Get##name() const { return m##name; } \
     inline type& Get##name() { return m##name; }\
     inline void Set##name(const type& val) { m##name = val; }
-;
 
 #define SECOND(val) Duration_SEC(val)
 #define TO_SECOND(duration) std::chrono::duration_cast<Duration_SEC>(duration)

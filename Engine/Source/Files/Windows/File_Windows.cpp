@@ -1,4 +1,4 @@
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 #include "Files/File.h"
 #include "Utils/String.h"
 #include "Utils/Log.h"

@@ -25,11 +25,11 @@ set_target_properties(Wanli PROPERTIES FOLDER "Engine")
 
 file(GLOB_RECURSE ConfigFiles "${CSD}/Config/*.ini")
 file(GLOB_RECURSE SourceFiles "${CSD}/Source/*.h" "${CSD}/Source/*.cpp")
-file(GLOB_RECURSE ShaderFiles "${CSD}/Shaders/*.glsl")
+file(GLOB_RECURSE ShaderFiles "${CSD}/Shaders/Assets/*.glsl")
 
 source_group(TREE "${CSD}/Config" PREFIX "Config Files" FILES ${ConfigFiles})
 source_group(TREE "${CSD}/Source" PREFIX "Source Files" FILES ${SourceFiles})
-source_group(TREE "${CSD}/Shaders" PREFIX "Shader Files" FILES ${ShaderFiles})
+source_group(TREE "${CSD}/Assets/Shaders" PREFIX "Shader Files" FILES ${ShaderFiles})
 
 target_sources(Wanli PRIVATE ${ConfigFiles} ${SourceFiles} ${ShaderFiles})
 
@@ -38,6 +38,7 @@ target_include_directories(Wanli PRIVATE "${ThirdParty_DIR}")
 
 target_compile_definitions(Wanli PRIVATE "_UNICODE" "UNICODE")
 target_compile_definitions(Wanli PRIVATE "ENABLE_ASYNC_LOG")
+target_compile_definitions(Wanli PRIVATE "WANLI_BUILD_SHARED_LIB")
 
 target_link_libraries(Wanli PUBLIC PKG::glm)
 target_link_libraries(Wanli PRIVATE PKG::imgui)
@@ -45,17 +46,14 @@ target_link_libraries(Wanli PRIVATE PKG::glfw)
 target_link_libraries(Wanli PRIVATE PKG::tinygltf)
 target_link_libraries(Wanli PRIVATE PKG::LodePNG)
 
-target_compile_definitions(Wanli PRIVATE "WANLI_BUILD_SHARED_LIB")
-
 if (ENABLE_VULKAN)
     target_compile_definitions(Wanli PRIVATE "ENABLE_VULKAN")
 
     target_link_libraries(Wanli PRIVATE Vulkan::Vulkan)
 endif()
 
-if (WINDOWS OR (WIN32 AND NOT ANDROID))
+if (WIN32 AND NOT ANDROID)
     set(WindowsCompileDefinitions
-        "PLATFORM_WINDOWS=1"
         "WIN32_LEAN_AND_MEAN"
         "_SCL_SECURE_NO_WARNINGS"
         "_CRT_SECURE_NO_WARNINGS"
@@ -89,6 +87,7 @@ if (MSVC AND ENABLE_PCH)
         COMPILE_FLAGS "/Yc${_PCH_HeaderFile_}")
 endif()
 
+# Copy dependent .dll files
 if (PKG_BINS)
     add_custom_command(
         TARGET Wanli
@@ -98,17 +97,22 @@ if (PKG_BINS)
     )
 endif()
 
-add_custom_command(
-    TARGET Wanli
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${ConfigFiles}  "${Output_DIR}"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "Assets" "${Output_DIR}"
-    WORKING_DIRECTORY "${CSD}"
-)
+# Copy Engine configuration files
+if (ConfigFiles)
+    add_custom_command(
+        TARGET Wanli
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${ConfigFiles}  "${Output_DIR}"
+        WORKING_DIRECTORY "${CSD}"
+    )
+endif()
 
-add_custom_command(
-    TARGET Wanli
-    POST_BUILD
-    COMMAND python SPIRV-Compile.py --glsl --reflect --output "${Output_DIR}/Shaders" "${CSD}/Shaders"
-    WORKING_DIRECTORY "${CSD}"
-)
+# Compile SPIRV shaders
+if (PRECOMPILE_SHADER)
+    add_custom_command(
+        TARGET Wanli
+        POST_BUILD
+        COMMAND python SPIRV-Compile.py --glsl "${CSD}/Assets/Shaders" --output "${CSD}/Assets/Shaders-SPIRV"
+        WORKING_DIRECTORY "${CSD}"
+    )
+endif()

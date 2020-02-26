@@ -7,7 +7,7 @@ namespace Wanli
     class WANLI_API ArgList
     {
     public:
-        ArgList() = default;
+        ArgList();
         ArgList(int argc, char** argv);
 
         int GetArgCount() const;

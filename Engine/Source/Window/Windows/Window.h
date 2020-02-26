@@ -1,5 +1,5 @@
 #pragma once
-#ifdef PLATFORM_WINDOWS
+#ifndef __ANDROID__
 
 #include "Window/Windows/Monitor.h"
 #include "Window/Windows/Menu.h"
@@ -9,23 +9,21 @@
 #include "Events/Windows/MouseEvent.h"
 #include "Utils/Delegate.h"
 #include "Core/IModule.h"
+#include "Configuration/Windows/WindowConfig.h"
 
 struct GLFWwindow;
 
 namespace Wanli
 {
-    class Window : public IModule::Registrar<Window, EModuleStage::PreUpdate>
+    class WANLI_API Window : public IModule::Registrar<Window, WindowConfig, EModuleStage::PreUpdate>
     {
     public:
-        using PTR = std::shared_ptr<Window>;
         using MessageHook = std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)>;
 
-        Window() = default;
+        Window();
         virtual ~Window();
         
-        virtual void Initialize() override;
         virtual void Update() override;
-        virtual void Destroy() override;
 
         void Show();
         void Hide();
