@@ -1,3 +1,5 @@
+*Angone wants to cooperate with me on this project, don't hesitate to email me: sinoxavier@outlook.com*
+
 # Graphics Engine
 
 A collection of source code for multithread rendering in Next-Gen API: D3D12 and Vulkan.
