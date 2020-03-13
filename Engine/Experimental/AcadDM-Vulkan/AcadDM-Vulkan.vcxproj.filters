@@ -159,6 +159,9 @@
     <ClCompile Include="GIComputePipelineVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
+    <ClCompile Include="GIRenderStatesVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="AcadDM-Vulkan Class Diagram.cd">

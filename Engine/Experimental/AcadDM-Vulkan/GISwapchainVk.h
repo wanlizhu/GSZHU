@@ -61,6 +61,7 @@ namespace AutoCAD::Graphics::Engine
     {
     public:
         GISwapchainBuilderVk(SharedPtr<GIDeviceVk> device);
+        
         GISwapchainBuilderVk& SetWindow(void* window);
         GISwapchainBuilderVk& SetExtent(VkExtent2D extent, bool compulsory = false);
         GISwapchainBuilderVk& AcquireNextImageAsync(bool value);
@@ -70,6 +71,7 @@ namespace AutoCAD::Graphics::Engine
         GISwapchainBuilderVk& SetPreTransform(VkSurfaceTransformFlagBitsKHR preTransform);
         GISwapchainBuilderVk& SetComponentMapping(VkComponentMapping componentMapping);
         GISwapchainBuilderVk& SetOldSwapchain(VkSwapchainKHR oldSwapchain);
+        
         SharedPtr<GISwapchainVk> Build();
 
     private:

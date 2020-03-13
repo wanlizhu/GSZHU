@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GIPlatformVk.h"
+#include "GICommonVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
@@ -20,26 +20,13 @@ namespace AutoCAD::Graphics::Engine
     class GIIRenderStateVk
     {
     public:
-        virtual ~GIIRenderStateVk() = default;
-        virtual bool IsDynamic() const = 0;
         virtual ERenderState GetStateType() const = 0;
-
-    protected:
-        GIIRenderStateVk() = default;
-        GIIRenderStateVk(const GIIRenderStateVk&) = delete;
-        GIIRenderStateVk(GIIRenderStateVk&&) = default;
-        GIIRenderStateVk& operator=(const GIIRenderStateVk&) = delete;
-        GIIRenderStateVk& operator=(GIIRenderStateVk&&) = default;
     };
 
     class GIVertexInputStateVk : public GIIRenderStateVk
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        static SharedPtr<GIVertexInputStateVk> Create();
-
-        virtual ~GIVertexInputStateVk();
-        virtual bool IsDynamic() const override final;
         virtual ERenderState GetStateType() const override final;
 
         GIVertexInputStateVk& AddInputAttribute(const VkVertexInputAttributeDescription& attrib);
@@ -54,10 +41,6 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        static SharedPtr<GIVertexInputStateVk> Create();
-
-        virtual ~GIInputAssemblyStateVk();
-        virtual bool IsDynamic() const override final;
         virtual ERenderState GetStateType() const override final;
 
         GIInputAssemblyStateVk& SetPrimitiveTopology(VkPrimitiveTopology topology);
@@ -72,10 +55,6 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        static SharedPtr<GITessellationStateVk> Create();
-
-        virtual ~GITessellationStateVk();
-        virtual bool IsDynamic() const override final;
         virtual ERenderState GetStateType() const override final;
 
         GITessellationStateVk& SetPatchControlPoint(uint32_t points);
@@ -88,10 +67,6 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        static SharedPtr<GIViewportStateVk> Create();
-
-        virtual ~GIViewportStateVk();
-        virtual bool IsDynamic() const override final;
         virtual ERenderState GetStateType() const override final;
 
         GIViewportStateVk& AddViewport(const VkViewport& viewport);
@@ -106,10 +81,6 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        static SharedPtr<GIRasterizationStateVk> Create();
-
-        virtual ~GIRasterizationStateVk();
-        virtual bool IsDynamic() const override final;
         virtual ERenderState GetStateType() const override final;
 
         GIRasterizationStateVk& EnableDepthClamp(bool enable = true);
@@ -124,26 +95,22 @@ namespace AutoCAD::Graphics::Engine
         GIRasterizationStateVk& SetLineWidth(float width);
 
     private:
-        VkBool32 depthClampEnable = VK_FALSE;
-        VkBool32 rasterizerDiscardEnable = VK_FALSE;
-        VkPolygonMode polygonMode = VK_POLYGON_MODE_FILL;
-        VkCullModeFlags cullMode = VK_CULL_MODE_BACK_BIT;
-        VkFrontFace frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
-        VkBool32 depthBiasEnable = VK_FALSE;
-        float depthBiasConstantFactor;
-        float depthBiasClamp;
-        float depthBiasSlopeFactor;
-        float lineWidth = 1.0f;
+        VkBool32 mDepthClampEnable = VK_FALSE;
+        VkBool32 mRasterizerDiscardEnable = VK_FALSE;
+        VkPolygonMode mPolygonMode = VK_POLYGON_MODE_FILL;
+        VkCullModeFlags mCullMode = VK_CULL_MODE_BACK_BIT;
+        VkFrontFace mFrontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
+        VkBool32 mDepthBiasEnable = VK_FALSE;
+        float mDepthBiasConstantFactor;
+        float mDepthBiasClamp;
+        float mDepthBiasSlopeFactor;
+        float mLineWidth = 1.0f;
     };
 
     class GIMultisampleStateVk : public GIIRenderStateVk
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        static SharedPtr<GIMultisampleStateVk> Create();
-
-        virtual ~GIMultisampleStateVk();
-        virtual bool IsDynamic() const override final;
         virtual ERenderState GetStateType() const override final;
 
         GIMultisampleStateVk& SetSampleCount(VkSampleCountFlagBits count);
@@ -166,10 +133,6 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        static SharedPtr<GIDepthStencilStateVk> Create();
-
-        virtual ~GIDepthStencilStateVk();
-        virtual bool IsDynamic() const override final;
         virtual ERenderState GetStateType() const override final;
 
         GIDepthStencilStateVk& EnableDepthTest(bool enable = true);
@@ -198,10 +161,6 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        static SharedPtr<GIColorBlendStateVk> Create();
-
-        virtual ~GIColorBlendStateVk();
-        virtual bool IsDynamic() const override final;
         virtual ERenderState GetStateType() const override final;
 
         GIColorBlendStateVk& EnableLogicOp(bool enable = true);

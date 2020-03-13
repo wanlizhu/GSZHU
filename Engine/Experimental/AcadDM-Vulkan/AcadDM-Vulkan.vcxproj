@@ -124,6 +124,7 @@
     <ClCompile Include="GIDeviceVk.cpp" />
     <ClCompile Include="GIFramebufferVk.cpp" />
     <ClCompile Include="GIRenderPassVk.cpp" />
+    <ClCompile Include="GIRenderStatesVk.cpp" />
     <ClCompile Include="GISwapchainVk.cpp" />
     <ClCompile Include="GICommonVk.cpp" />
     <ClCompile Include="GIWindowsPlatformVk.cpp" />

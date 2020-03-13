@@ -2,19 +2,10 @@
 
 #include "GIIPipelineVk.h"
 #include "GIDeviceObjectVk.h"
+#include "GIRenderStatesVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
-    class GIIRenderStateVk;
-    class GIVertexInputStateVk;
-    class GIInputAssemblyStateVk;
-    class GITessellationStateVk;
-    class GIViewportStateVk;
-    class GIRasterizationStateVk;
-    class GIMultisampleStateVk;
-    class GIDepthStencilStateVk;
-    class GIColorBlendStateVk;
-
     class GIGraphicsPipelineVk
         : public GIDeviceObjectVk
         , public GIIPipelineVk
@@ -41,25 +32,35 @@ namespace AutoCAD::Graphics::Engine
     {
     public:
         GIGraphicsPipelineBuilderVk(SharedPtr<GIDeviceVk> device);
+        
         GIGraphicsPipelineBuilderVk& SetBasePipeline(SharedPtr<GIGraphicsPipelineVk> pipeline);
         GIGraphicsPipelineBuilderVk& AddCreateFlag(VkPipelineCreateFlagBits flag);
         GIGraphicsPipelineBuilderVk& SetShaderProgram(SharedPtr<GIShaderProgramVk> shaderProgram);
         GIGraphicsPipelineBuilderVk& SetRenderPass(VkRenderPass renderPass, uint32_t subpass);
-        GIGraphicsPipelineBuilderVk& SetStaticState(SharedPtr<GIIRenderStateVk> state);
-        GIGraphicsPipelineBuilderVk& SetDynamicState(SharedPtr<GIIRenderStateVk> state);
+     
+        GIGraphicsPipelineBuilderVk& SetVertexInputState(const GIIRenderStateVk& state);
+        GIGraphicsPipelineBuilderVk& SetInputAssemblyState(const GIInputAssemblyStateVk& state);
+        GIGraphicsPipelineBuilderVk& SetTessellationState(const GITessellationStateVk& state);
+        GIGraphicsPipelineBuilderVk& SetViewportState(const GIViewportStateVk& state);
+        GIGraphicsPipelineBuilderVk& SetRasterizationState(const GIRasterizationStateVk& state);
+        GIGraphicsPipelineBuilderVk& SetMultisampleState(const GIMultisampleStateVk& state);
+        GIGraphicsPipelineBuilderVk& SetDepthStencilState(const GIDepthStencilStateVk& state);
+        GIGraphicsPipelineBuilderVk& SetColorBlendState(const GIColorBlendStateVk& state);
+        GIGraphicsPipelineBuilderVk& AddDynamicState(VkDynamicState dynamicState);
+
         SharedPtr<GIGraphicsPipelineVk> Build();
 
     private:
         SharedPtr<GIDeviceVk> mDevice;
         VkGraphicsPipelineCreateInfo mCreateInfo = {};
 
-        SharedPtr<GIVertexInputStateVk> mVertexInputState;
-        SharedPtr<GIInputAssemblyStateVk> mInputAssemblyState;
-        SharedPtr<GITessellationStateVk> mTessellationState;
-        SharedPtr<GIViewportStateVk> mViewportState;
-        SharedPtr<GIRasterizationStateVk> mRasterizationState;
-        SharedPtr<GIMultisampleStateVk> mMultisampleState;
-        SharedPtr<GIDepthStencilStateVk> mDepthStencilState;
-        SharedPtr<GIColorBlendStateVk> mColorBlendState;
+        std::optional<GIVertexInputStateVk> mVertexInputState;
+        std::optional<GIInputAssemblyStateVk> mInputAssemblyState;
+        std::optional<GITessellationStateVk> mTessellationState;
+        std::optional<GIViewportStateVk> mViewportState;
+        std::optional<GIRasterizationStateVk> mRasterizationState;
+        std::optional<GIMultisampleStateVk> mMultisampleState;
+        std::optional<GIDepthStencilStateVk> mDepthStencilState;
+        std::optional<GIColorBlendStateVk> mColorBlendState;
     };
 }

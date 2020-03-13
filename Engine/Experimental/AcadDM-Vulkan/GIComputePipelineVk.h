@@ -32,8 +32,10 @@ namespace AutoCAD::Graphics::Engine
     {
     public:
         GIComputePipelineBuilderVk(SharedPtr<GIDeviceVk> device);
+        
         GIComputePipelineBuilderVk& SetBasePipeline(SharedPtr<GIComputePipelineVk> pipeline);
         GIComputePipelineBuilderVk& SetShaderProgram(SharedPtr<GIShaderProgramVk> shaderProgram);
+        
         SharedPtr<GIComputePipelineVk> Build();
 
     private:

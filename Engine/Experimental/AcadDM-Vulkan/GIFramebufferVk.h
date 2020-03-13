@@ -39,8 +39,10 @@ namespace AutoCAD::Graphics::Engine
     {
     public:
         GIFramebufferBuilderVk(SharedPtr<GIRenderPassVk> renderPass);
+        
         GIFramebufferBuilderVk& SetExtent(VkExtent2D extent);
         GIFramebufferBuilderVk& AddAttachment(VkImageView imageView);
+        
         SharedPtr<GIFramebufferVk> Build();
 
     private:
