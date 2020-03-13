@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <AcadDMThirdParty>$(SolutionDir)ThirdParty</AcadDMThirdParty>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>AcadDM-Vulkan Configuration</_PropertySheetDisplayName>
+    <OutDir>$(SolutionDir)BIN\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir).INT\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(AcadDMThirdParty)\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PreBuildEvent>
+      <Command>echo ====================
+echo $(ProjectName): [$(ConfigurationType), $(Platform), $(Configuration)]
+echo OutDir: "$(OutDir)"
+echo VULKAN_SDK: "$(VULKAN_SDK)"
+echo ====================
+</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="AcadDMThirdParty">
+      <Value>$(AcadDMThirdParty)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

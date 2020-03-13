@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AutoCAD::Graphics::Engine::GIAndroidPlatformVk" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQIAAQAABAAAACAAAAEAAAAAAAAAFgAAAAAAA=</HashCode>
+      <FileName>GIAndroidPlatformVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIGenericPlatformVk" Collapsed="true">
+    <Position X="2" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAQAABAAAACAAAAEAAAAAAAAAFgAAAAAAA=</HashCode>
+      <FileName>GIGenericPlatformVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIWindowsPlatformVk" Collapsed="true">
+    <Position X="3" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQIAAQAABAAAACAAAAEAAAAAAAAAFgAAAAAAA=</HashCode>
+      <FileName>GIWindowsPlatformVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GICommandPoolVk" Collapsed="true">
+    <Position X="32.75" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACEAgAAAABIIAwAAAAAAAAAAAAAAoAgEABAAAA=</HashCode>
+      <FileName>GICommandPoolVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIRenderPassVk" Collapsed="true">
+    <Position X="35.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIIIAAAAgCAABAAQBgAEIAAAAAAAAAAAgAgAAAAAAA=</HashCode>
+      <FileName>GIRenderPassVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GICommandBufferVk" Collapsed="true">
+    <Position X="45" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAJAAEAQCgAGgEAAAAwAQCCAAAEAENQBggAgEQBAAAQ=</HashCode>
+      <FileName>GICommandBufferVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIDeviceQueueVk" Collapsed="true">
+    <Position X="42.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAgACBAQgAAgAAAABQAAIAAAAAgAhAABAAAA=</HashCode>
+      <FileName>GIDeviceQueueVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIComputePipelineVk" Collapsed="true">
+    <Position X="18.75" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAgAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>GIComputePipelineVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIDeviceContextVk" Collapsed="true">
+    <Position X="49.5" Y="2" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQBAAAAAAAAAAAAIAAAAAAAAAEAAAAAgYAAIECA=</HashCode>
+      <FileName>GIDeviceContextVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIDeviceVk" Collapsed="true">
+    <Position X="51.25" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EIAAAAAAACQIggRgAQgAEoAEBBAACAEIAAAgAACAAEA=</HashCode>
+      <FileName>GIDeviceVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIIDebugObjectVk" Collapsed="true">
+    <Position X="21" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAgAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>GIDeviceObjectVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIDeviceObjectVk" Collapsed="true">
+    <Position X="18.25" Y="3.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAQAAAgAAAAgIAAgAgA=</HashCode>
+      <FileName>GIDeviceObjectVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIWeakDeviceObjectVk" Collapsed="true">
+    <Position X="43.25" Y="3.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAUAAAgAAAAgIAAAAgA=</HashCode>
+      <FileName>GIDeviceObjectVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIDeviceBuilderVk" Collapsed="true">
+    <Position X="47.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEAAAEABAggBaAQAIAKAAAAABAAgAAAAAIAAAAAAIA=</HashCode>
+      <FileName>GIDeviceVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIFramebufferVk" Collapsed="true">
+    <Position X="21.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAEAgAAAAAgAAgACAAAAQAAAAAQCgAgEAAAgAA=</HashCode>
+      <FileName>GIFramebufferVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIFramebufferBuilderVk" Collapsed="true">
+    <Position X="47.75" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAgAAAIEAAAAAAQgAAAAAACAAAAAAA=</HashCode>
+      <FileName>GIFramebufferVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIGraphicsPipelineVk" Collapsed="true">
+    <Position X="15.75" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AEAAIIAAAgAAAIAAAAgAAAAAACAAAAAAAgABAAAAACA=</HashCode>
+      <FileName>GIGraphicsPipelineVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIGraphicsPipelineBuilderVk" Collapsed="true">
+    <Position X="49.5" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAQBAAAAAAAAIAABAAAAUgAAAAAEAIAAAAAA=</HashCode>
+      <FileName>GIGraphicsPipelineVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIShaderProgramVk" Collapsed="true">
+    <Position X="39.75" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GIShaderProgramVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIIPipelineVk" Collapsed="true">
+    <Position X="4.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAIAAAAAAAAAAACAAAAAAAAIBAAAAACA=</HashCode>
+      <FileName>GIIPipelineVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIRenderPassBuilderVk" Collapsed="true">
+    <Position X="51.25" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAACBAgAAAIEAAhAAAAgAAAAAAAIEEAAAA=</HashCode>
+      <FileName>GIRenderPassVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIShaderModuleVk" Collapsed="true">
+    <Position X="25.75" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GIShaderModuleVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GISwapchainVk" Collapsed="true">
+    <Position X="28.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BIIAAEBAAgAAhBAAAGgAAgARAQBCAQAAAgggAAEBgAA=</HashCode>
+      <FileName>GISwapchainVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GISwapchainBuilderVk" Collapsed="true">
+    <Position X="47.75" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAIAEAIAAAQAAQSoAAAAAABIAgAAAE=</HashCode>
+      <FileName>GISwapchainVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::VKInstance" Collapsed="true">
+    <Position X="49.5" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>VAAAAAEBAAAAABAAAAgAAoACCABAAAACAAAgSACAABA=</HashCode>
+      <FileName>VKInstance.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::VKInstanceBuilder" Collapsed="true">
+    <Position X="51.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAIAAEDAAAAgAAABAEACACEAIA=</HashCode>
+      <FileName>VKInstance.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIBufferViewVk" Collapsed="true">
+    <Position X="7" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GIBufferViewVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIBufferVk" Collapsed="true">
+    <Position X="21.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GIBufferVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIDescriptorPoolVk" Collapsed="true">
+    <Position X="16.25" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAACAgAAAAAAAAAAAAAAgAgAAAAACA=</HashCode>
+      <FileName>GIDescriptorPoolVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIDescriptorSetVk" Collapsed="true">
+    <Position X="30.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GIDescriptorSetVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIIDescriptorVk" Collapsed="true">
+    <Position X="22" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GIIDescriptorVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GIIDeviceMemoryVk" Collapsed="true">
+    <Position X="15.5" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>GIIDeviceMemoryVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GISamplerVk" Collapsed="true">
+    <Position X="37.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GISamplerVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GITextureVk" Collapsed="true">
+    <Position X="18.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GITextureVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoCAD::Graphics::Engine::GITextureViewVk" Collapsed="true">
+    <Position X="11.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GITextureViewVk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="AutoCAD::Graphics::Engine::OptionalDeviceExtensions" Collapsed="true">
+    <Position X="47.75" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GIDeviceVk.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="AutoCAD::Graphics::Engine::EGPUVendorID" Collapsed="true">
+    <Position X="47.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAQBAAAIAAAAAAAgIAAAAAAAAAEBA=</HashCode>
+      <FileName>GIGenericPlatformVk.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

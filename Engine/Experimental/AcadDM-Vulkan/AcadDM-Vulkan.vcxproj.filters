@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\GI_INC">
+      <UniqueIdentifier>{768ac71e-3a36-45e2-9893-e7d587b53c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GI_SRC">
+      <UniqueIdentifier>{9b8ba16d-4f3d-482e-abbb-b424fbf4bec7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GI_INC_BACKLOG">
+      <UniqueIdentifier>{e8645bd8-e052-4f9e-9bbd-a49c10b6a351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Class Diagram">
+      <UniqueIdentifier>{874141c8-0f96-49d1-b9b9-1b27e442506a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GI_INC\PLATFORM">
+      <UniqueIdentifier>{9ebfe9f9-2555-4867-980f-9b59469d21c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GI_SRC\PLATFORM">
+      <UniqueIdentifier>{0d8edcce-8cb3-44b9-9a69-0890fb2fa8d4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GIBufferViewVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="GIBufferVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="GIDescriptorSetVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="GISamplerVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="GITextureViewVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="GITextureVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="GIDescriptorPoolVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="GIIDescriptorVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="GIIDeviceMemoryVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="GICommandBufferVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GICommandPoolVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GICommonVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIComputePipelineVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIDeviceContextVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIDeviceObjectVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIDeviceQueueVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIDeviceVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIFramebufferVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIGraphicsPipelineVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIIPipelineVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIRenderPassVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIShaderModuleVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIShaderProgramVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GISwapchainVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="VKInstance.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIPlatformVk.h">
+      <Filter>Source Files\GI_INC\PLATFORM</Filter>
+    </ClInclude>
+    <ClInclude Include="GIWindowsPlatformVk.h">
+      <Filter>Source Files\GI_INC\PLATFORM</Filter>
+    </ClInclude>
+    <ClInclude Include="GIGenericPlatformVk.h">
+      <Filter>Source Files\GI_INC\PLATFORM</Filter>
+    </ClInclude>
+    <ClInclude Include="GIAndroidPlatformVk.h">
+      <Filter>Source Files\GI_INC\PLATFORM</Filter>
+    </ClInclude>
+    <ClInclude Include="GIRenderStatesVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GIDeviceObjectVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GIDeviceVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GISwapchainVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GIDeviceContextVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GIFramebufferVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GIDeviceQueueVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GIAndroidPlatformVk.cpp">
+      <Filter>Source Files\GI_SRC\PLATFORM</Filter>
+    </ClCompile>
+    <ClCompile Include="GICommandBufferVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GICommandPoolVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GIRenderPassVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="VKInstance.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GICommonVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="GIWindowsPlatformVk.cpp">
+      <Filter>Source Files\GI_SRC\PLATFORM</Filter>
+    </ClCompile>
+    <ClCompile Include="GIComputePipelineVk.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AcadDM-Vulkan Class Diagram.cd">
+      <Filter>Class Diagram</Filter>
+    </None>
+  </ItemGroup>
+</Project>

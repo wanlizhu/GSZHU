@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F}</ProjectGuid>
+    <RootNamespace>AcadDMVulkan</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>AcadDM-Vulkan</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="AcadDM-Vulkan Configuration.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="AcadDM-Vulkan Configuration.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="GIAndroidPlatformVk.h" />
+    <ClInclude Include="GIBufferViewVk.h" />
+    <ClInclude Include="GIBufferVk.h" />
+    <ClInclude Include="GICommandBufferVk.h" />
+    <ClInclude Include="GICommandPoolVk.h" />
+    <ClInclude Include="GIComputePipelineVk.h" />
+    <ClInclude Include="GIDescriptorPoolVk.h" />
+    <ClInclude Include="GIDescriptorSetVk.h" />
+    <ClInclude Include="GIDeviceContextVk.h" />
+    <ClInclude Include="GIDeviceObjectVk.h" />
+    <ClInclude Include="GIDeviceQueueVk.h" />
+    <ClInclude Include="GIDeviceVk.h" />
+    <ClInclude Include="GIGenericPlatformVk.h" />
+    <ClInclude Include="GIGraphicsPipelineVk.h" />
+    <ClInclude Include="GIIDescriptorVk.h" />
+    <ClInclude Include="GIIDeviceMemoryVk.h" />
+    <ClInclude Include="GIFramebufferVk.h" />
+    <ClInclude Include="GIIPipelineVk.h" />
+    <ClInclude Include="GIPlatformVk.h" />
+    <ClInclude Include="GIRenderPassVk.h" />
+    <ClInclude Include="GIRenderStatesVk.h" />
+    <ClInclude Include="GISamplerVk.h" />
+    <ClInclude Include="GIShaderModuleVk.h" />
+    <ClInclude Include="GIShaderProgramVk.h" />
+    <ClInclude Include="GISwapchainVk.h" />
+    <ClInclude Include="GITextureViewVk.h" />
+    <ClInclude Include="GITextureVk.h" />
+    <ClInclude Include="GIWindowsPlatformVk.h" />
+    <ClInclude Include="GICommonVk.h" />
+    <ClInclude Include="VKInstance.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GIAndroidPlatformVk.cpp" />
+    <ClCompile Include="GICommandBufferVk.cpp" />
+    <ClCompile Include="GICommandPoolVk.cpp" />
+    <ClCompile Include="GIComputePipelineVk.cpp" />
+    <ClCompile Include="GIDeviceContextVk.cpp" />
+    <ClCompile Include="GIDeviceObjectVk.cpp" />
+    <ClCompile Include="GIDeviceQueueVk.cpp" />
+    <ClCompile Include="GIDeviceVk.cpp" />
+    <ClCompile Include="GIFramebufferVk.cpp" />
+    <ClCompile Include="GIRenderPassVk.cpp" />
+    <ClCompile Include="GISwapchainVk.cpp" />
+    <ClCompile Include="GICommonVk.cpp" />
+    <ClCompile Include="GIWindowsPlatformVk.cpp" />
+    <ClCompile Include="VKInstance.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AcadDM-Vulkan Class Diagram.cd" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
