@@ -46,9 +46,6 @@
     <ClInclude Include="GIDescriptorPoolVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="GIIDescriptorVk.h">
-      <Filter>Source Files\GI_INC_BACKLOG</Filter>
-    </ClInclude>
     <ClInclude Include="GIIDeviceMemoryVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
@@ -88,12 +85,6 @@
     <ClInclude Include="GIRenderPassVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIShaderModuleVk.h">
-      <Filter>Source Files\GI_INC</Filter>
-    </ClInclude>
-    <ClInclude Include="GIShaderProgramVk.h">
-      <Filter>Source Files\GI_INC</Filter>
-    </ClInclude>
     <ClInclude Include="GISwapchainVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
@@ -114,6 +105,15 @@
     </ClInclude>
     <ClInclude Include="GIRenderStatesVk.h">
       <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="SPIRVShaderProgram.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="SPIRVShaderVariables.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="GIIDescriptorVk.h">
+      <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

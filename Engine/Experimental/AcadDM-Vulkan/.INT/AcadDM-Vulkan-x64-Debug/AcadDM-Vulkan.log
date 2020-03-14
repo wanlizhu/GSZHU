@@ -1,0 +1,22 @@
+﻿  ====================
+  AcadDM-Vulkan: [StaticLibrary, x64, Debug]
+  OutDir: "E:\GraphicsEngine\Engine\Experimental\AcadDM-Vulkan\BIN\AcadDM-Vulkan-x64-Debug\"
+  VULKAN_SDK: "D:\VulkanSDK\1.2.131.2"
+  ====================
+  GIAndroidPlatformVk.cpp
+  GICommandBufferVk.cpp
+  GICommandPoolVk.cpp
+  GIComputePipelineVk.cpp
+  GIDeviceContextVk.cpp
+  GIDeviceObjectVk.cpp
+  GIDeviceQueueVk.cpp
+  GIDeviceVk.cpp
+  GIFramebufferVk.cpp
+  GIRenderPassVk.cpp
+  GIRenderStatesVk.cpp
+  GISwapchainVk.cpp
+  GICommonVk.cpp
+  GIWindowsPlatformVk.cpp
+  VKInstance.cpp
+  Generating Code...
+  AcadDM-Vulkan.vcxproj -> E:\GraphicsEngine\Engine\Experimental\AcadDM-Vulkan\BIN\AcadDM-Vulkan-x64-Debug\AcadDM-Vulkan.lib

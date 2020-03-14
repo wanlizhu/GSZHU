@@ -17,15 +17,30 @@ namespace AutoCAD::Graphics::Engine
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
         virtual void SetDebugTag(const DebugTag& tag) const override final;
-        virtual SharedPtr<GIShaderProgramVk> GetShaderProgram() const override final;
+        virtual SharedPtr<SPIRVShaderProgram> GetShaderProgram() const override final;
         virtual VkDescriptorSetLayout GetDescriptorSetLayout() const override final;
         virtual VkDescriptorPool GetDescriptorPool() const override final;
         virtual VkPipelineLayout GetPipelineLayout() const override final;
         virtual VkPipelineBindPoint GetPipelineBindPoint() const override final;
 
+    protected:
+        GIGraphicsPipelineVk(
+            SharedPtr<GIDeviceVk> device,
+            SharedPtr<SPIRVShaderProgram> program,
+            const VkGraphicsPipelineCreateInfo& createInfo);
+
+        GIGraphicsPipelineVk(const GIGraphicsPipelineVk&) = delete;
+        GIGraphicsPipelineVk(GIGraphicsPipelineVk&&) = default;
+        GIGraphicsPipelineVk& operator=(const GIGraphicsPipelineVk&) = delete;
+        GIGraphicsPipelineVk& operator=(GIGraphicsPipelineVk&&) = default;
+
     private:
         VkPipeline mPipeline = VK_NULL_HANDLE;
-        SharedPtr<GIShaderProgramVk> mShaderProgram;
+        VkPipelineLayout mPipelineLayout = VK_NULL_HANDLE;
+        VkDescriptorSetLayout mDescriptorSetLayout = VK_NULL_HANDLE;
+        VkDescriptorPool mDescriptorPool = VK_NULL_HANDLE;
+
+        SharedPtr<SPIRVShaderProgram> mShaderProgram;
     };
 
     class GIGraphicsPipelineBuilderVk
@@ -35,9 +50,9 @@ namespace AutoCAD::Graphics::Engine
         
         GIGraphicsPipelineBuilderVk& SetBasePipeline(SharedPtr<GIGraphicsPipelineVk> pipeline);
         GIGraphicsPipelineBuilderVk& AddCreateFlag(VkPipelineCreateFlagBits flag);
-        GIGraphicsPipelineBuilderVk& SetShaderProgram(SharedPtr<GIShaderProgramVk> shaderProgram);
         GIGraphicsPipelineBuilderVk& SetRenderPass(VkRenderPass renderPass, uint32_t subpass);
-     
+        GIGraphicsPipelineBuilderVk& SetShaderProgram(SharedPtr<SPIRVShaderProgram> program);
+
         GIGraphicsPipelineBuilderVk& SetVertexInputState(const GIIRenderStateVk& state);
         GIGraphicsPipelineBuilderVk& SetInputAssemblyState(const GIInputAssemblyStateVk& state);
         GIGraphicsPipelineBuilderVk& SetTessellationState(const GITessellationStateVk& state);
@@ -52,6 +67,7 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         SharedPtr<GIDeviceVk> mDevice;
+        SharedPtr<SPIRVShaderProgram> mShaderProgram;
         VkGraphicsPipelineCreateInfo mCreateInfo = {};
 
         std::optional<GIVertexInputStateVk> mVertexInputState;
@@ -62,5 +78,6 @@ namespace AutoCAD::Graphics::Engine
         std::optional<GIMultisampleStateVk> mMultisampleState;
         std::optional<GIDepthStencilStateVk> mDepthStencilState;
         std::optional<GIColorBlendStateVk> mColorBlendState;
+        std::optional<std::vector<VkDynamicState>> mDynamicStates;
     };
 }

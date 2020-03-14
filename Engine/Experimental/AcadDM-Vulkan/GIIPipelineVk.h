@@ -4,13 +4,13 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class GIShaderProgramVk;
+    class SPIRVShaderProgram;
 
     class GIIPipelineVk 
     {
     public:
         virtual ~GIIPipelineVk() = default;
-        virtual SharedPtr<GIShaderProgramVk> GetShaderProgram() const = 0;
+        virtual SharedPtr<SPIRVShaderProgram> GetShaderProgram() const = 0;
         
         virtual VkDescriptorSetLayout GetDescriptorSetLayout() const = 0;
         virtual VkDescriptorPool GetDescriptorPool() const = 0;

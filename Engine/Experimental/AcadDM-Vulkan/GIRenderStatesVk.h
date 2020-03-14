@@ -4,6 +4,8 @@
 
 namespace AutoCAD::Graphics::Engine
 {
+    class SPIRVShaderProgram;
+
     enum class ERenderState
     {
         Undefined = 0,
@@ -20,14 +22,18 @@ namespace AutoCAD::Graphics::Engine
     class GIIRenderStateVk
     {
     public:
-        virtual ERenderState GetStateType() const = 0;
+        virtual ERenderState GetRenderStateType() const = 0;
     };
 
     class GIVertexInputStateVk : public GIIRenderStateVk
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        virtual ERenderState GetStateType() const override final;
+        // Add vertex input manually later
+        GIVertexInputStateVk(); 
+        // Add vertex input from shader reflection
+        GIVertexInputStateVk(SharedPtr<SPIRVShaderProgram> program);
+        virtual ERenderState GetRenderStateType() const override final;
 
         GIVertexInputStateVk& AddInputAttribute(const VkVertexInputAttributeDescription& attrib);
         GIVertexInputStateVk& AddInputBinding(const VkVertexInputBindingDescription& binding);
@@ -41,7 +47,7 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        virtual ERenderState GetStateType() const override final;
+        virtual ERenderState GetRenderStateType() const override final;
 
         GIInputAssemblyStateVk& SetPrimitiveTopology(VkPrimitiveTopology topology);
         GIInputAssemblyStateVk& EnablePrimitiveRestart(bool enable = true);
@@ -55,7 +61,7 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        virtual ERenderState GetStateType() const override final;
+        virtual ERenderState GetRenderStateType() const override final;
 
         GITessellationStateVk& SetPatchControlPoint(uint32_t points);
 
@@ -67,7 +73,7 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        virtual ERenderState GetStateType() const override final;
+        virtual ERenderState GetRenderStateType() const override final;
 
         GIViewportStateVk& AddViewport(const VkViewport& viewport);
         GIViewportStateVk& AddScissor(const VkRect2D& scissor);
@@ -81,7 +87,7 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        virtual ERenderState GetStateType() const override final;
+        virtual ERenderState GetRenderStateType() const override final;
 
         GIRasterizationStateVk& EnableDepthClamp(bool enable = true);
         GIRasterizationStateVk& EnableRasterizerDiscard(bool enable = true);
@@ -111,7 +117,7 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        virtual ERenderState GetStateType() const override final;
+        virtual ERenderState GetRenderStateType() const override final;
 
         GIMultisampleStateVk& SetSampleCount(VkSampleCountFlagBits count);
         GIMultisampleStateVk& EnableSampleShading(bool enable = true);
@@ -133,7 +139,7 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        virtual ERenderState GetStateType() const override final;
+        virtual ERenderState GetRenderStateType() const override final;
 
         GIDepthStencilStateVk& EnableDepthTest(bool enable = true);
         GIDepthStencilStateVk& EnableDepthWrite(bool enable = true);
@@ -161,7 +167,7 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIGraphicsPipelineBuilderVk;
     public:
-        virtual ERenderState GetStateType() const override final;
+        virtual ERenderState GetRenderStateType() const override final;
 
         GIColorBlendStateVk& EnableLogicOp(bool enable = true);
         GIColorBlendStateVk& SetLogicalOp(VkLogicOp logicOp);

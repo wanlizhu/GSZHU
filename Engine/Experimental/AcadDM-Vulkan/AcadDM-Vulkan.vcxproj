@@ -104,13 +104,13 @@
     <ClInclude Include="GIRenderPassVk.h" />
     <ClInclude Include="GIRenderStatesVk.h" />
     <ClInclude Include="GISamplerVk.h" />
-    <ClInclude Include="GIShaderModuleVk.h" />
-    <ClInclude Include="GIShaderProgramVk.h" />
+    <ClInclude Include="SPIRVShaderProgram.h" />
     <ClInclude Include="GISwapchainVk.h" />
     <ClInclude Include="GITextureViewVk.h" />
     <ClInclude Include="GITextureVk.h" />
     <ClInclude Include="GIWindowsPlatformVk.h" />
     <ClInclude Include="GICommonVk.h" />
+    <ClInclude Include="SPIRVShaderVariables.h" />
     <ClInclude Include="VKInstance.h" />
   </ItemGroup>
   <ItemGroup>

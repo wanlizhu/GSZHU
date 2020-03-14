@@ -1,12 +1,12 @@
 #pragma once
 
-#include "GIPlatformVk.h"
+#include "GICommonVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
     class GIIDescriptorVk
     {
     public:
-        virtual ~GIIDescriptorVk() = default;
+
     };
 }

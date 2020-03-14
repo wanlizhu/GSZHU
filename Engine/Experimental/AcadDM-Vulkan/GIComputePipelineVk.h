@@ -18,7 +18,11 @@ namespace AutoCAD::Graphics::Engine
         virtual void SetDebugTag(const DebugTag& tag) const override final;
 
     protected:
-        GIComputePipelineVk(SharedPtr<GIDeviceVk> device, const VkComputePipelineCreateInfo& createInfo);
+        GIComputePipelineVk(
+            SharedPtr<GIDeviceVk> device,
+            SharedPtr<SPIRVShaderProgram> program,
+            const VkComputePipelineCreateInfo& createInfo);
+        
         GIComputePipelineVk(const GIComputePipelineVk&) = delete;
         GIComputePipelineVk(GIComputePipelineVk&&) = default;
         GIComputePipelineVk& operator=(const GIComputePipelineVk&) = delete;
@@ -26,6 +30,7 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         VkPipeline mPipeline = VK_NULL_HANDLE;
+        SharedPtr<SPIRVShaderProgram> mShaderProgram;
     };
 
     class GIComputePipelineBuilderVk
@@ -34,12 +39,13 @@ namespace AutoCAD::Graphics::Engine
         GIComputePipelineBuilderVk(SharedPtr<GIDeviceVk> device);
         
         GIComputePipelineBuilderVk& SetBasePipeline(SharedPtr<GIComputePipelineVk> pipeline);
-        GIComputePipelineBuilderVk& SetShaderProgram(SharedPtr<GIShaderProgramVk> shaderProgram);
+        GIComputePipelineBuilderVk& SetShaderProgram(SharedPtr<SPIRVShaderProgram> shaderProgram);
         
         SharedPtr<GIComputePipelineVk> Build();
 
     private:
         SharedPtr<GIDeviceVk> mDevice;
+        SharedPtr<SPIRVShaderProgram> mShaderProgram;
         VkComputePipelineCreateInfo mCreateInfo = {};
     };
 }

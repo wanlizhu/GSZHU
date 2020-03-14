@@ -5,9 +5,11 @@ namespace AutoCAD::Graphics::Engine
 {
     GIComputePipelineVk::GIComputePipelineVk(
         SharedPtr<GIDeviceVk> device,
+        SharedPtr<SPIRVShaderProgram> program,
         const VkComputePipelineCreateInfo& createInfo
     )
         : GIDeviceObjectVk(device)
+        , mShaderProgram(program)
     {}
 
     GIComputePipelineVk::~GIComputePipelineVk()

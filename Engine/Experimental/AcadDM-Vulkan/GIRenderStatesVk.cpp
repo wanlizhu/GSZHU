@@ -1,8 +1,17 @@
 #include "GIRenderStatesVk.h"
+#include "SPIRVShaderProgram.h"
 
 namespace AutoCAD::Graphics::Engine
 {
-    ERenderState GIVertexInputStateVk::GetStateType() const
+    GIVertexInputStateVk::GIVertexInputStateVk()
+    {}
+
+    GIVertexInputStateVk::GIVertexInputStateVk(SharedPtr<SPIRVShaderProgram> program)
+    {
+        // TODO
+    }
+
+    ERenderState GIVertexInputStateVk::GetRenderStateType() const
     {
         return ERenderState::VertexInput;
     }
@@ -19,7 +28,7 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    ERenderState GIInputAssemblyStateVk::GetStateType() const
+    ERenderState GIInputAssemblyStateVk::GetRenderStateType() const
     {
         return ERenderState::InputAssembly;
     }
@@ -36,7 +45,7 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    ERenderState GITessellationStateVk::GetStateType() const
+    ERenderState GITessellationStateVk::GetRenderStateType() const
     {
         return ERenderState::Tessellation;
     }
@@ -47,7 +56,7 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    ERenderState GIViewportStateVk::GetStateType() const
+    ERenderState GIViewportStateVk::GetRenderStateType() const
     {
         return ERenderState::Viewport;
     }
@@ -55,14 +64,16 @@ namespace AutoCAD::Graphics::Engine
     GIViewportStateVk& GIViewportStateVk::AddViewport(const VkViewport& viewport)
     {
         mViewports.push_back(viewport);
+        return *this;
     }
 
     GIViewportStateVk& GIViewportStateVk::AddScissor(const VkRect2D& scissor)
     {
         mScissors.push_back(scissor);
+        return *this;
     }
 
-    ERenderState GIRasterizationStateVk::GetStateType() const
+    ERenderState GIRasterizationStateVk::GetRenderStateType() const
     {
         return ERenderState::Rasterization;
     }
@@ -127,7 +138,7 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    ERenderState GIMultisampleStateVk::GetStateType() const
+    ERenderState GIMultisampleStateVk::GetRenderStateType() const
     {
         return ERenderState::Multisample;
     }
@@ -168,7 +179,7 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    ERenderState GIDepthStencilStateVk::GetStateType() const
+    ERenderState GIDepthStencilStateVk::GetRenderStateType() const
     {
         return ERenderState::DepthStencil;
     }
@@ -227,7 +238,7 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    ERenderState GIColorBlendStateVk::GetStateType() const
+    ERenderState GIColorBlendStateVk::GetRenderStateType() const
     {
         return ERenderState::ColorBlend;
     }
