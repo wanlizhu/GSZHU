@@ -3,6 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <AcadDMThirdParty>$(SolutionDir)ThirdParty</AcadDMThirdParty>
+    <SPIRV_CROSS_DIR>$(SolutionDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)</SPIRV_CROSS_DIR>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>AcadDM-Vulkan Configuration</_PropertySheetDisplayName>
@@ -12,24 +13,32 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(AcadDMThirdParty)\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(SPIRV_CROSS_DIR)\include;$(ProjectDir)INC;$(ProjectDir)SRC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;spirv-cross-core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;$(SPIRV_CROSS_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>echo ====================
 echo $(ProjectName): [$(ConfigurationType), $(Platform), $(Configuration)]
 echo OutDir: "$(OutDir)"
 echo VULKAN_SDK: "$(VULKAN_SDK)"
+echo SPIRV-Cross Install Dir: "$(SPIRV_CROSS_DIR)"  
 echo ====================
-</Command>
+
+cmake -S "$(SolutionDir)SPIRV-Cross" -B "$(SolutionDir).INT\SPIRV-Cross" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="$(SPIRV_CROSS_DIR)"  -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF -DSPIRV_CROSS_ENABLE_C_API=OFF -DSPIRV_CROSS_ENABLE_GLSL=OFF -DSPIRV_CROSS_ENABLE_HLSL=OFF -DSPIRV_CROSS_ENABLE_MSL=OFF -DSPIRV_CROSS_ENABLE_REFLECT=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_UTIL=OFF 
+cmake --build "$(SolutionDir).INT\SPIRV-Cross"
+cmake --install "$(SolutionDir).INT\SPIRV-Cross"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <BuildMacro Include="AcadDMThirdParty">
       <Value>$(AcadDMThirdParty)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="SPIRV_CROSS_DIR">
+      <Value>$(SPIRV_CROSS_DIR)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>

@@ -25,141 +25,141 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GIBufferViewVk.h">
+    <ClInclude Include="INC\GIBufferViewVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="GIBufferVk.h">
+    <ClInclude Include="INC\GIBufferVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="GIDescriptorSetVk.h">
+    <ClInclude Include="INC\GIDescriptorSetVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="GISamplerVk.h">
+    <ClInclude Include="INC\GISamplerVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="GITextureViewVk.h">
+    <ClInclude Include="INC\GITextureViewVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="GITextureVk.h">
+    <ClInclude Include="INC\GITextureVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="GIDescriptorPoolVk.h">
+    <ClInclude Include="INC\GIDescriptorPoolVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="GIIDeviceMemoryVk.h">
+    <ClInclude Include="INC\GIIDeviceMemoryVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="GICommandBufferVk.h">
+    <ClInclude Include="INC\GICommandBufferVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GICommandPoolVk.h">
+    <ClInclude Include="INC\GICommandPoolVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GICommonVk.h">
+    <ClInclude Include="INC\GICommonVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIComputePipelineVk.h">
+    <ClInclude Include="INC\GIComputePipelineVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIDeviceContextVk.h">
+    <ClInclude Include="INC\GIDeviceContextVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIDeviceObjectVk.h">
+    <ClInclude Include="INC\GIDeviceObjectVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIDeviceQueueVk.h">
+    <ClInclude Include="INC\GIDeviceQueueVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIDeviceVk.h">
+    <ClInclude Include="INC\GIDeviceVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIFramebufferVk.h">
+    <ClInclude Include="INC\GIFramebufferVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIGraphicsPipelineVk.h">
+    <ClInclude Include="INC\GIGraphicsPipelineVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIIPipelineVk.h">
+    <ClInclude Include="INC\GIIPipelineVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIRenderPassVk.h">
+    <ClInclude Include="INC\GIRenderPassVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GISwapchainVk.h">
+    <ClInclude Include="INC\GISwapchainVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="VKInstance.h">
+    <ClInclude Include="INC\VKInstance.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIPlatformVk.h">
+    <ClInclude Include="INC\GIPlatformVk.h">
       <Filter>Source Files\GI_INC\PLATFORM</Filter>
     </ClInclude>
-    <ClInclude Include="GIWindowsPlatformVk.h">
+    <ClInclude Include="INC\GIWindowsPlatformVk.h">
       <Filter>Source Files\GI_INC\PLATFORM</Filter>
     </ClInclude>
-    <ClInclude Include="GIGenericPlatformVk.h">
+    <ClInclude Include="INC\GIGenericPlatformVk.h">
       <Filter>Source Files\GI_INC\PLATFORM</Filter>
     </ClInclude>
-    <ClInclude Include="GIAndroidPlatformVk.h">
+    <ClInclude Include="INC\GIAndroidPlatformVk.h">
       <Filter>Source Files\GI_INC\PLATFORM</Filter>
     </ClInclude>
-    <ClInclude Include="GIRenderStatesVk.h">
+    <ClInclude Include="INC\GIRenderStatesVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="SPIRVShaderProgram.h">
+    <ClInclude Include="INC\SPIRVShaderProgram.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="SPIRVShaderVariables.h">
+    <ClInclude Include="INC\SPIRVShaderVariables.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="GIIDescriptorVk.h">
+    <ClInclude Include="INC\GIIDescriptorVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GIDeviceObjectVk.cpp">
+    <ClCompile Include="SRC\GIDeviceObjectVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GIDeviceVk.cpp">
+    <ClCompile Include="SRC\GIDeviceVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GISwapchainVk.cpp">
+    <ClCompile Include="SRC\GISwapchainVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GIDeviceContextVk.cpp">
+    <ClCompile Include="SRC\GIDeviceContextVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GIFramebufferVk.cpp">
+    <ClCompile Include="SRC\GIFramebufferVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GIDeviceQueueVk.cpp">
+    <ClCompile Include="SRC\GIDeviceQueueVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GIAndroidPlatformVk.cpp">
+    <ClCompile Include="SRC\GIAndroidPlatformVk.cpp">
       <Filter>Source Files\GI_SRC\PLATFORM</Filter>
     </ClCompile>
-    <ClCompile Include="GICommandBufferVk.cpp">
+    <ClCompile Include="SRC\GICommandBufferVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GICommandPoolVk.cpp">
+    <ClCompile Include="SRC\GICommandPoolVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GIRenderPassVk.cpp">
+    <ClCompile Include="SRC\GIRenderPassVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="VKInstance.cpp">
+    <ClCompile Include="SRC\VKInstance.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GICommonVk.cpp">
+    <ClCompile Include="SRC\GICommonVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GIWindowsPlatformVk.cpp">
+    <ClCompile Include="SRC\GIWindowsPlatformVk.cpp">
       <Filter>Source Files\GI_SRC\PLATFORM</Filter>
     </ClCompile>
-    <ClCompile Include="GIComputePipelineVk.cpp">
+    <ClCompile Include="SRC\GIComputePipelineVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="GIRenderStatesVk.cpp">
+    <ClCompile Include="SRC\GIRenderStatesVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
   </ItemGroup>
