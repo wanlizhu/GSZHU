@@ -1,5 +1,9 @@
 # Binary directories.
 /[Bb]uild*/
+/BIN
+/.INT
+/Engine/Experimental/AcadDM-Vulkan/BIN
+/Engine/Experimental/AcadDM-Vulkan/.INT
 
 # Temporary directories.
 .vs/
