@@ -2,7 +2,7 @@
 /[Bb]uild*/
 
 # Temporary directories.
-.vs/*
+.vs/
 .gradle/
 .idea/
 __pycache__/
