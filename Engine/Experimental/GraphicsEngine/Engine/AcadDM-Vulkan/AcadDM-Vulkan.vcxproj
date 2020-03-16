@@ -70,7 +70,7 @@
     </Link>
     <PreBuildEvent />
     <Lib>
-      <AdditionalDependencies>vulkan-1.lib;spirv-cross-cored.lib;glslangd.lib</AdditionalDependencies>
+      <AdditionalDependencies>vulkan-1.lib;spirv-cross-cored.lib;glslangd.lib;SPIRVd.lib;OGLCompilerd.lib;OSDependentd.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;$(SPIRV_CROSS_DIR)\lib;$(GLSLANG_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -95,7 +95,7 @@
     </Link>
     <PreBuildEvent />
     <Lib>
-      <AdditionalDependencies>vulkan-1.lib;spirv-cross-core.lib;glslang.lib</AdditionalDependencies>
+      <AdditionalDependencies>vulkan-1.lib;spirv-cross-core.lib;glslang.lib;SPIRV.lib;OGLCompiler.lib;OSDependent.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;$(SPIRV_CROSS_DIR)\lib;$(GLSLANG_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -120,6 +120,7 @@
     <ClInclude Include="INC\GIIDeviceMemoryVk.h" />
     <ClInclude Include="INC\GIFramebufferVk.h" />
     <ClInclude Include="INC\GIIPipelineVk.h" />
+    <ClInclude Include="INC\GIPipelineCachesVk.h" />
     <ClInclude Include="INC\GIPlatformVk.h" />
     <ClInclude Include="INC\GIRenderPassVk.h" />
     <ClInclude Include="INC\GIRenderStatesVk.h" />
@@ -143,11 +144,13 @@
     <ClCompile Include="SRC\GIDeviceQueueVk.cpp" />
     <ClCompile Include="SRC\GIDeviceVk.cpp" />
     <ClCompile Include="SRC\GIFramebufferVk.cpp" />
+    <ClCompile Include="SRC\GIGraphicsPipelineVk.cpp" />
     <ClCompile Include="SRC\GIRenderPassVk.cpp" />
     <ClCompile Include="SRC\GIRenderStatesVk.cpp" />
     <ClCompile Include="SRC\GISwapchainVk.cpp" />
     <ClCompile Include="SRC\GICommonVk.cpp" />
     <ClCompile Include="SRC\GIWindowsPlatformVk.cpp" />
+    <ClCompile Include="SRC\SPIRVShaderProgram.cpp" />
     <ClCompile Include="SRC\VKInstance.cpp" />
   </ItemGroup>
   <ItemGroup>

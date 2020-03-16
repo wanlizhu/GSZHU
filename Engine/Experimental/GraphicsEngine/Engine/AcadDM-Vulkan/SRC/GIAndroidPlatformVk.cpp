@@ -85,8 +85,15 @@ namespace AutoCAD::Graphics::Engine
         VK_CHECK(vkCreateAndroidSurfaceKHR(instance, &createInfo, nullptr, surface));
     }
 
-    void GIAndroidPlatformVk::PrePresent(VkQueue queue, VkPresentInfoKHR& presentInfo)
-    {}
+    uint32_t GIAndroidPlatformVk::FindFiles(
+        const std::filesystem::path& root,
+        const std::filesystem::path& filename,
+        bool recursive,
+        bool findFirst,
+        std::vector<std::filesystem::path>& results)
+    {
+        return 0;
+    }
 
     void GIAndroidPlatformVk::LoadVulkanFunctions()
     {

@@ -93,7 +93,7 @@ set BinaryDir="$(IntDir)glslang-BUILD"
 set InstallDir="$(GLSLANG_DIR)"
 
 if not exist "%SourceDir%" (git clone --recursive --branch $(GLSLANG_VERSION)  https://github.com/KhronosGroup/glslang.git "%SourceDir%")
-cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%" -DBUILD_SHARED_LIBS=OFF  -DBUILD_EXTERNAL=OFF -DBUILD_TESTING=OFF -DENABLE_CTEST=OFF -DENABLE_GLSLANG_BINARIES=OFF -DENABLE_SPVREMAPPER=OFF
+cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%" -DBUILD_SHARED_LIBS=OFF  -DBUILD_EXTERNAL=OFF -DBUILD_TESTING=OFF -DENABLE_CTEST=OFF -DENABLE_GLSLANG_BINARIES=OFF -DENABLE_SPVREMAPPER=OFF -DENABLE_HLSL=OFF
 cmake --build "%BinaryDir%"
 cmake --install "%BinaryDir%"</Command>
     </PreBuildEvent>
@@ -141,7 +141,7 @@ set BinaryDir="$(IntDir)glslang-BUILD"
 set InstallDir="$(GLSLANG_DIR)"
 
 if not exist "%SourceDir%" (git clone --recursive --branch $(GLSLANG_VERSION)  https://github.com/KhronosGroup/glslang.git "%SourceDir%")
-cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%" -DBUILD_SHARED_LIBS=OFF  -DBUILD_EXTERNAL=OFF -DBUILD_TESTING=OFF -DENABLE_CTEST=OFF -DENABLE_GLSLANG_BINARIES=OFF -DENABLE_SPVREMAPPER=OFF
+cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%" -DBUILD_SHARED_LIBS=OFF  -DBUILD_EXTERNAL=OFF -DBUILD_TESTING=OFF -DENABLE_CTEST=OFF -DENABLE_GLSLANG_BINARIES=OFF -DENABLE_SPVREMAPPER=OFF -DENABLE_HLSL=OFF
 cmake --build "%BinaryDir%"
 cmake --install "%BinaryDir%"</Command>
     </PreBuildEvent>

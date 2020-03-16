@@ -12,6 +12,9 @@ namespace AutoCAD::Graphics::Engine
     {
         DECL_DEVICE_OBJECT(GIGraphicsPipelineVk)
     public:
+        using CacheKey = std::wstring;
+
+        static SharedPtr<GIGraphicsPipelineVk> FindCache(CacheKey key);
         virtual ~GIGraphicsPipelineVk();
 
         virtual bool IsValid() const override final;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GICommonVk.h"
+#include "GIDeviceObjectVk.h"
 #include "SPIRVShaderVariables.h"
 #include <filesystem>
 
@@ -8,38 +8,47 @@ namespace AutoCAD::Graphics::Engine
 {
     namespace fs = std::filesystem;
 
+    class SPIRVShaderStage : public GIDeviceObjectVk
+    {
+    public:
+        static SharedPtr<SPIRVShaderStage> Create(SharedPtr<GIDeviceVk> device, const std::wstring& filename);
+        static void AddSearchPath(const fs::path& path);
+        virtual ~SPIRVShaderStage();
+
+        virtual bool IsValid() const override final;
+        virtual void SetDebugName(const char* name) const override final;
+        virtual void SetDebugTag(const DebugTag& tag) const override final;
+
+        void SetEntryPoint(const std::string& name);
+        void SetStageFlag(VkShaderStageFlagBits flag);
+        void SetSpecializationInfo(const VkSpecializationInfo& info);
+
+        VkShaderStageFlagBits GetStageFlag() const;
+        VkShaderModule GetShaderModule() const;
+        std::string const& GetEntryPoint() const;
+        std::optional<VkSpecializationInfo> const& GetSpecializationInfo() const;
+
+    protected:
+        SPIRVShaderStage(SharedPtr<GIDeviceVk> device, std::vector<char>&& source);
+        SPIRVShaderStage(const SPIRVShaderStage&) = delete;
+        SPIRVShaderStage(SPIRVShaderStage&&) = default;
+        SPIRVShaderStage& operator=(const SPIRVShaderStage&) = delete;
+        SPIRVShaderStage& operator=(SPIRVShaderStage&&) = default;
+
+    private:
+        static std::vector<fs::path> smSearchPaths;
+
+        VkShaderStageFlagBits mStageFlag = VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM;
+        VkShaderModule mShaderModule = VK_NULL_HANDLE;
+        std::string mEntryPoint = "main";
+        std::optional<VkSpecializationInfo> mSpecializationInfo;
+        std::vector<char> mSourceCode;
+    };
+
     class SPIRVShaderProgram
     {
         friend class SPIRVShaderProgramBuilder;
     public:
-        class SPIRVShaderStage
-        {
-        public:
-            static SharedPtr<SPIRVShaderStage> CreateFromFile(const fs::path& path);
-            static SharedPtr<SPIRVShaderStage> CreateFromMemory(VkShaderStageFlagBits stage, const void* data, uint32_t size);
-            virtual ~SPIRVShaderStage();
-
-            bool IsValid() const;
-            void SetEntryPoint(const std::string& entryPoint);
-            void SetSpecializationInfo(const VkSpecializationInfo& info);
-
-            VkShaderStageFlagBits GetStageFlag() const;
-            VkShaderModule GetShaderModule() const;
-            std::string const& GetEntryPoint() const;
-            std::optional<VkSpecializationInfo> const& GetSpecializationInfo() const;
-
-        protected:
-            SPIRVShaderStage() = default;
-            void CreateReflectionRT(); // Create SPIR-V shader reflection at runtime (requires linking to SPIRV-Cross)
-            void LoadReflectionJSON(); // Load precompiled reflection info from JSON file (no external library dependency)
-
-        private:
-            VkShaderStageFlagBits mStageFlag;
-            VkShaderModule mShaderModule = VK_NULL_HANDLE;
-            std::string mEntryPoint = "main";
-            std::optional<VkSpecializationInfo> mSpecializationInfo;
-        };
-
         static SharedPtr<SPIRVShaderProgram> Create();
         virtual ~SPIRVShaderProgram();
         
@@ -70,6 +79,10 @@ namespace AutoCAD::Graphics::Engine
         SPIRVShaderProgram(SPIRVShaderProgram&&) = default;
         SPIRVShaderProgram& operator=(const SPIRVShaderProgram&) = delete;
         SPIRVShaderProgram& operator=(SPIRVShaderProgram&&) = default;
+
+        void Reflect(const std::vector<char>& source);
+        void ReflectSPIRV(const std::vector<char>& source);
+        void ReflectGLSL(const std::vector<char>& source);
 
     private:
         std::vector<SharedPtr<SPIRVShaderStage>> mShaderStages;

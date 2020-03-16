@@ -89,6 +89,44 @@ namespace AutoCAD::Graphics::Engine
         createInfo.hwnd = (HWND)window;
         VK_CHECK(vkCreateWin32SurfaceKHR(instance, &createInfo, nullptr, surface));
     }
+
+    uint32_t GIWindowsPlatformVk::FindFiles(
+        const std::filesystem::path& root,
+        const std::filesystem::path& filename,
+        bool recursive,
+        bool findFirst,
+        std::vector<std::filesystem::path>& results)
+    {
+        std::wstring searchPath = (root / filename).wstring();
+        WIN32_FIND_DATAW findData = {};
+        HANDLE findHandle = ::FindFirstFileW(searchPath.c_str(), &findData);
+
+        if (findHandle != INVALID_HANDLE_VALUE)
+        {
+            do
+            {
+                if (wcscmp(findData.cFileName, L".") || wcscmp(findData.cFileName, L".."))
+                    continue;
+
+                if (findFirst && !results.empty())
+                    break;
+
+                results.emplace_back(root / findData.cFileName);
+
+                if (recursive && (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+                {
+                    auto subdir = root / findData.cFileName;
+                    std::vector<std::filesystem::path> subset;
+                    if(FindFiles(subdir, filename, recursive, findFirst, subset))
+                        results.insert(results.end(), subset.begin(), subset.end());
+                }
+            } while (::FindNextFileW(findHandle, &findData));
+
+            ::FindClose(findHandle);
+        }
+
+        return (uint32_t)results.size();
+    }
 }
 
 #endif
