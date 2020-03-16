@@ -42,8 +42,6 @@ namespace AutoCAD::Graphics::Engine
         VkPipelineLayout mPipelineLayout = VK_NULL_HANDLE;
         VkDescriptorSetLayout mDescriptorSetLayout = VK_NULL_HANDLE;
         VkDescriptorPool mDescriptorPool = VK_NULL_HANDLE;
-
-        SharedPtr<SPIRVShaderProgram> mShaderProgram;
     };
 
     class GIGraphicsPipelineBuilderVk
