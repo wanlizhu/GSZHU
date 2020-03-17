@@ -54,25 +54,29 @@ namespace AutoCAD::Graphics::Engine
         
         bool IsValid() const;
         void AddShaderStage(SharedPtr<SPIRVShaderStage> stage);
-
         std::vector<SPIRVShaderStage> const& GetShaderStages() const;
-        std::vector<VkDescriptorSetLayoutBinding> const& GetDescriptorSetLayoutBindings() const;
+
+        /*
+         * The set of sets that are accessible to a pipeline are grouped into another object: the pipeline layout.
+         * A descriptor set is a set of resources that are bound into the pipeline as a group. 
+         * Multiple sets can be bound to a pipeline at a time. 
+         * Each set has a layout, which describes the order and types of resources in the set. 
+         * Two sets with the same layout are considered to be compatible and interchangeable. 
+         * The descriptor set layout is represented by an object, and sets are created with respect to this object. 
+        */
+        std::vector<uint32_t> GetDescriptorSetLayoutIndices() const;
+        std::vector<VkDescriptorSetLayoutBinding> const& GetDescriptorSetLayoutBindings(uint32_t setIndex) const;
         std::vector<VkDescriptorPoolSize> const& GetDescriptorPoolSizes() const;
-        std::unordered_map<std::string, SPIRVAttribute> const& GetVertexAttributes() const;
-        std::unordered_map<std::string, SPIRVUniformVariable> const& GetUniformVariables() const;
-        std::unordered_map<std::string, SPIRVStorageVariable> const& GetStorageVariables() const;
-        std::unordered_map<std::string, SPIRVUniformBlock> const& GetUniformBlocks() const;
-        std::unordered_map<std::string, SPIRVStorageBlock> const& GetStorageBlocks() const;
-        std::unordered_map<std::string, SPIRVPushConstant> const& GetPushConstants() const;
 
         std::optional<SPIRVShaderStage> GetShaderStage(VkShaderStageFlagBits stageFlag) const;
-        std::optional<SPIRVAttribute> GetVertexAttribute(const std::string& name) const;
-        std::optional<SPIRVUniformVariable> GetUniformVariable(const std::string& name) const;
-        std::optional<SPIRVStorageVariable> GetStorageVariable(const std::string& name) const;
-        std::optional<SPIRVUniformBlock> GetUniformBlock(const std::string& name) const;
-        std::optional<SPIRVStorageBlock> GetStorageBlock(const std::string& name) const;
-        std::optional<SPIRVPushConstant> GetPushConstant(const std::string& name) const;
-    
+        std::optional<SPIRVAttribute> GetVertexAttribute(const std::wstring& name) const;
+        std::optional<SPIRVUniformVariable> GetUniformVariable(const std::wstring& name) const;
+        std::optional<SPIRVStorageVariable> GetStorageVariable(const std::wstring& name) const;
+        std::optional<SPIRVUniformBlock> GetUniformBlock(const std::wstring& name) const;
+        std::optional<SPIRVStorageBlock> GetStorageBlock(const std::wstring& name) const;
+        std::optional<SPIRVPushConstant> GetPushConstant(const std::wstring& name) const;
+        std::vector<VkPushConstantRange> GetPushConstantRanges() const;
+
     protected:
         SPIRVShaderProgram();
         SPIRVShaderProgram(const SPIRVShaderProgram&) = delete;
@@ -89,11 +93,11 @@ namespace AutoCAD::Graphics::Engine
         std::vector<VkDescriptorSetLayoutBinding> mDescriptorSetLayoutBindings;
         std::vector<VkDescriptorPoolSize> mDescriptorPoolSizes;
 
-        std::unordered_map<std::string, SPIRVAttribute> mVertexAttributes;
-        std::unordered_map<std::string, SPIRVUniformVariable> mUniformVariables;
-        std::unordered_map<std::string, SPIRVStorageVariable> mStorageVariables;
-        std::unordered_map<std::string, SPIRVUniformBlock> mUniformBlocks;
-        std::unordered_map<std::string, SPIRVStorageBlock> mStorageBlocks;
-        std::unordered_map<std::string, SPIRVPushConstant> mPushConstants;
+        std::unordered_map<std::wstring, SPIRVAttribute> mVertexAttributes;
+        std::unordered_map<std::wstring, SPIRVUniformVariable> mUniformVariables;
+        std::unordered_map<std::wstring, SPIRVStorageVariable> mStorageVariables;
+        std::unordered_map<std::wstring, SPIRVUniformBlock> mUniformBlocks;
+        std::unordered_map<std::wstring, SPIRVStorageBlock> mStorageBlocks;
+        std::unordered_map<std::wstring, SPIRVPushConstant> mPushConstants;
     };
 }

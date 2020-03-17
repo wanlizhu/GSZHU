@@ -5,10 +5,11 @@
 namespace AutoCAD::Graphics::Engine
 {
     /*
-     * This object will accelerate pipeline creation after the first successful loading.
-     * Note: pipeline caches will have the same lifecycle with the hosting application, 
-     * dont't clean pipeline caches when destroying GIDeviceVk, it is the application's decision to
-     * whether store these pipeline caches into file system.
+     * Once created, a pipeline cache can be passed to the vkCreateGraphicsPipelines and vkCreateComputePipelines commands. 
+     * If the pipeline cache passed into these commands is not VK_NULL_HANDLE, 
+     * the implementation will query it for possible reuse opportunities and update it with new content. 
+     * The use of the pipeline cache object in these commands is internally synchronized, 
+     * and the same pipeline cache object can be used in multiple threads simultaneously.
     */
     class GIPipelineCachesVk
     {

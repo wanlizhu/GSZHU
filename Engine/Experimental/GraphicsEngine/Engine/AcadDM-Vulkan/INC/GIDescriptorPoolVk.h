@@ -4,6 +4,13 @@
 
 namespace AutoCAD::Graphics::Engine
 {
+    /*
+     * Regardless of whether sets are individually freed by calling vkFreeDescriptorSets() or freed
+     * in bulk by calling vkResetDescriptorPool(), care must be taken to ensure that sets are not
+     * referenced after they have been freed. In particular, any command buffer containing commands that
+     * might reference descriptor sets that are to be freed should either have completed execution or should
+     * be discarded without submission.
+    */
     class GIDescriptorPoolVk : public GIDeviceObjectVk
     {
         DECL_DEVICE_OBJECT(GIDescriptorPoolVk)
