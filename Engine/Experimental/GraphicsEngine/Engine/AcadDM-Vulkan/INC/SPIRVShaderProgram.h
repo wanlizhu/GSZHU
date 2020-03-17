@@ -54,8 +54,7 @@ namespace AutoCAD::Graphics::Engine
         
         bool IsValid() const;
         void AddShaderStage(SharedPtr<SPIRVShaderStage> stage);
-        std::vector<SPIRVShaderStage> const& GetShaderStages() const;
-
+        
         /*
          * The set of sets that are accessible to a pipeline are grouped into another object: the pipeline layout.
          * A descriptor set is a set of resources that are bound into the pipeline as a group. 
@@ -67,6 +66,9 @@ namespace AutoCAD::Graphics::Engine
         std::vector<uint32_t> GetDescriptorSetLayoutIndices() const;
         std::vector<VkDescriptorSetLayoutBinding> const& GetDescriptorSetLayoutBindings(uint32_t setIndex) const;
         std::vector<VkDescriptorPoolSize> const& GetDescriptorPoolSizes() const;
+        std::vector<VkPushConstantRange> GetPushConstantRanges() const;
+        std::vector<VkVertexInputAttributeDescription> GetVertexAttributes() const;
+        std::vector<VkPipelineShaderStageCreateInfo> GetShaderStageCreateInfos() const;
 
         std::optional<SPIRVShaderStage> GetShaderStage(VkShaderStageFlagBits stageFlag) const;
         std::optional<SPIRVAttribute> GetVertexAttribute(const std::wstring& name) const;
@@ -75,8 +77,8 @@ namespace AutoCAD::Graphics::Engine
         std::optional<SPIRVUniformBlock> GetUniformBlock(const std::wstring& name) const;
         std::optional<SPIRVStorageBlock> GetStorageBlock(const std::wstring& name) const;
         std::optional<SPIRVPushConstant> GetPushConstant(const std::wstring& name) const;
-        std::vector<VkPushConstantRange> GetPushConstantRanges() const;
-
+        std::optional<SPIRVShaderStage> GetShaderStage(VkShaderStageFlagBits stage) const;
+        
     protected:
         SPIRVShaderProgram();
         SPIRVShaderProgram(const SPIRVShaderProgram&) = delete;

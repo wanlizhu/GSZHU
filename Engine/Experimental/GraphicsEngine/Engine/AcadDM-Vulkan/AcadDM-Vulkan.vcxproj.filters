@@ -103,9 +103,6 @@
     <ClInclude Include="INC\GIAndroidPlatformVk.h">
       <Filter>Source Files\GI_INC\PLATFORM</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIRenderStatesVk.h">
-      <Filter>Source Files\GI_INC</Filter>
-    </ClInclude>
     <ClInclude Include="INC\SPIRVShaderProgram.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
@@ -160,9 +157,6 @@
       <Filter>Source Files\GI_SRC\PLATFORM</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GIComputePipelineVk.cpp">
-      <Filter>Source Files\GI_SRC</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIRenderStatesVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
     <ClCompile Include="SRC\SPIRVShaderProgram.cpp">

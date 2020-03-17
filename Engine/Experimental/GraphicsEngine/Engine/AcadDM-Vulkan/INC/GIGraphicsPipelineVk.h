@@ -2,7 +2,6 @@
 
 #include "GIIPipelineVk.h"
 #include "GIDeviceObjectVk.h"
-#include "GIRenderStatesVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
@@ -70,14 +69,20 @@ namespace AutoCAD::Graphics::Engine
         GIGraphicsPipelineBuilderVk& AddShaderStages(const std::vector<std::wstring>& paths);
         GIGraphicsPipelineBuilderVk& UsePushDescriptorSetFor(uint32_t setIndex);
 
-        GIGraphicsPipelineBuilderVk& SetVertexInputState(const GIIRenderStateVk& state);
-        GIGraphicsPipelineBuilderVk& SetInputAssemblyState(const GIInputAssemblyStateVk& state);
-        GIGraphicsPipelineBuilderVk& SetTessellationState(const GITessellationStateVk& state);
-        GIGraphicsPipelineBuilderVk& SetViewportState(const GIViewportStateVk& state);
-        GIGraphicsPipelineBuilderVk& SetRasterizationState(const GIRasterizationStateVk& state);
-        GIGraphicsPipelineBuilderVk& SetMultisampleState(const GIMultisampleStateVk& state);
-        GIGraphicsPipelineBuilderVk& SetDepthStencilState(const GIDepthStencilStateVk& state);
-        GIGraphicsPipelineBuilderVk& SetColorBlendState(const GIColorBlendStateVk& state);
+        GIGraphicsPipelineBuilderVk& SetInputAssemblyState(VkPrimitiveTopology topology, bool primitiveRestart);
+        GIGraphicsPipelineBuilderVk& SetPatchControlPoints(uint32_t count);
+        GIGraphicsPipelineBuilderVk& AddViewport(const VkViewport& viewport);
+        GIGraphicsPipelineBuilderVk& AddScissor(const VkRect2D& scissor);
+        GIGraphicsPipelineBuilderVk& EnableDepthClamp(bool value);
+        GIGraphicsPipelineBuilderVk& EnableRasterizerDiscard(bool value);
+        GIGraphicsPipelineBuilderVk& SetPolygonMode(VkPolygonMode polygonMode);
+        GIGraphicsPipelineBuilderVk& SetCullMode(VkCullModeFlags cullMode);
+        GIGraphicsPipelineBuilderVk& SetFrontFace(VkFrontFace frontFace);
+        GIGraphicsPipelineBuilderVk& EnableDepthBias(bool value);
+        GIGraphicsPipelineBuilderVk& SetDepthBiasConstantFactor(float value);
+        GIGraphicsPipelineBuilderVk& SetDepthBiasClamp(float value);
+        GIGraphicsPipelineBuilderVk& SetDepthBiasSlopeFactor(float value);
+        GIGraphicsPipelineBuilderVk& SetLineWidth(float value);
         GIGraphicsPipelineBuilderVk& AddDynamicState(VkDynamicState dynamicState);
 
         SharedPtr<GIGraphicsPipelineVk> Build();
@@ -88,15 +93,38 @@ namespace AutoCAD::Graphics::Engine
         std::vector<uint32_t> mPushDescriptorSets;
         VkGraphicsPipelineCreateInfo mCreateInfo = {};
 
-        // These variables can't be released until .Build() returns 
-        std::optional<GIVertexInputStateVk> mVertexInputState;
-        std::optional<GIInputAssemblyStateVk> mInputAssemblyState;
-        std::optional<GITessellationStateVk> mTessellationState;
-        std::optional<GIViewportStateVk> mViewportState;
-        std::optional<GIRasterizationStateVk> mRasterizationState;
-        std::optional<GIMultisampleStateVk> mMultisampleState;
-        std::optional<GIDepthStencilStateVk> mDepthStencilState;
-        std::optional<GIColorBlendStateVk> mColorBlendState;
-        std::optional<std::vector<VkDynamicState>> mDynamicStates;
+        // Vertex input(attribute and its vertex-buffer-binding) state
+        std::vector<VkVertexInputAttributeDescription> mVertexAttributes;
+        std::vector<VkVertexInputBindingDescription> mVertexBindings;
+        VkPipelineVertexInputStateCreateInfo mVertexInputState = {};
+
+        // Input assembly state
+        VkPipelineInputAssemblyStateCreateInfo mInputAssemblyState;
+
+        // Tessellation state
+        std::optional<VkPipelineTessellationStateCreateInfo> mTessellationState;
+
+        // Viewport state
+        std::vector<VkViewport> mViewports;
+        std::vector<VkRect2D> mScissors;
+        VkPipelineViewportStateCreateInfo mViewportState;
+
+        // Rasterization state
+        VkPipelineRasterizationStateCreateInfo mRasterizationState = {};
+
+        // Multisample state
+        VkSampleMask mSampleMask = 0;
+        std::optional<VkPipelineMultisampleStateCreateInfo> mMultisampleState;
+
+        // Depth-stencil state
+        std::optional<VkPipelineDepthStencilStateCreateInfo> mDepthStencilState;
+
+        // Color blend state
+        std::vector<VkPipelineColorBlendAttachmentState> mAttachmentColorBlends;
+        std::optional<VkPipelineColorBlendStateCreateInfo> mColorBlendState;
+
+        // Dynamic states
+        std::vector<VkDynamicState> mDynamicStates;
+        std::optional<VkPipelineDynamicStateCreateInfo> mDynamicState;
     };
 }

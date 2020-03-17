@@ -123,7 +123,6 @@
     <ClInclude Include="INC\GIPipelineCachesVk.h" />
     <ClInclude Include="INC\GIPlatformVk.h" />
     <ClInclude Include="INC\GIRenderPassVk.h" />
-    <ClInclude Include="INC\GIRenderStatesVk.h" />
     <ClInclude Include="INC\GISamplerVk.h" />
     <ClInclude Include="INC\SPIRVShaderProgram.h" />
     <ClInclude Include="INC\GISwapchainVk.h" />
@@ -146,7 +145,6 @@
     <ClCompile Include="SRC\GIFramebufferVk.cpp" />
     <ClCompile Include="SRC\GIGraphicsPipelineVk.cpp" />
     <ClCompile Include="SRC\GIRenderPassVk.cpp" />
-    <ClCompile Include="SRC\GIRenderStatesVk.cpp" />
     <ClCompile Include="SRC\GISwapchainVk.cpp" />
     <ClCompile Include="SRC\GICommonVk.cpp" />
     <ClCompile Include="SRC\GIWindowsPlatformVk.cpp" />

@@ -177,10 +177,44 @@ namespace AutoCAD::Graphics::Engine
 
     GIGraphicsPipelineBuilderVk::GIGraphicsPipelineBuilderVk(SharedPtr<GIDeviceVk> device)
         : mDevice(device)
+        , mShaderProgram(nullptr)
     {
         mCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
         mCreateInfo.pNext = nullptr;
         mCreateInfo.flags = 0;
+
+        mVertexInputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+        mVertexInputState.pNext = nullptr;
+        mVertexInputState.flags = 0;
+        mVertexInputState.vertexAttributeDescriptionCount = 0;
+        mVertexInputState.pVertexAttributeDescriptions = nullptr;
+        mVertexInputState.vertexBindingDescriptionCount = 0;
+        mVertexInputState.pVertexBindingDescriptions = nullptr;
+
+        mInputAssemblyState.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+        mInputAssemblyState.pNext = nullptr;
+        mInputAssemblyState.flags = 0;
+        mInputAssemblyState.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+        mInputAssemblyState.primitiveRestartEnable = VK_FALSE;
+
+        mViewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+        mViewportState.pNext = nullptr;
+        mViewportState.flags = 0;
+        mViewportState.viewportCount = 0;
+        mViewportState.pViewports = nullptr;
+        mViewportState.scissorCount = 0;
+        mViewportState.pScissors = nullptr;
+
+        mRasterizationState.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+        mRasterizationState.pNext = nullptr;
+        mRasterizationState.flags = 0;
+        mRasterizationState.depthClampEnable = VK_FALSE;
+        mRasterizationState.rasterizerDiscardEnable = VK_FALSE;
+        mRasterizationState.polygonMode = VK_POLYGON_MODE_FILL;
+        mRasterizationState.cullMode = VK_CULL_MODE_NONE;
+        mRasterizationState.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
+        mRasterizationState.depthBiasEnable = VK_FALSE;
+        mRasterizationState.lineWidth = 1.0f;
     }
 
     /* A pipeline derivative is a child pipeline created from a parent pipeline, 
@@ -238,18 +272,123 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetVertexInputState(const GIIRenderStateVk& state)
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetInputAssemblyState(VkPrimitiveTopology topology, bool primitiveRestart)
     {
-        
+        mInputAssemblyState.topology = topology;
+        mInputAssemblyState.primitiveRestartEnable = primitiveRestart ? VK_TRUE : VK_FALSE;
+        return *this;
     }
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetInputAssemblyState(const GIInputAssemblyStateVk& state);
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetTessellationState(const GITessellationStateVk& state);
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetViewportState(const GIViewportStateVk& state);
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetRasterizationState(const GIRasterizationStateVk& state);
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetMultisampleState(const GIMultisampleStateVk& state);
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetDepthStencilState(const GIDepthStencilStateVk& state);
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetColorBlendState(const GIColorBlendStateVk& state);
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddDynamicState(VkDynamicState dynamicState);
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetPatchControlPoints(uint32_t count)
+    {
+        if (!mTessellationState)
+        {
+            mTessellationState = VkPipelineTessellationStateCreateInfo();
+            mTessellationState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_TESSELLATION_STATE_CREATE_INFO;
+            mTessellationState.value().pNext = nullptr;
+            mTessellationState.value().flags = 0;
+        }
+
+        mTessellationState.value().patchControlPoints = count;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddViewport(const VkViewport& viewport)
+    {
+        mViewports.push_back(viewport);
+        
+        mViewportState.viewportCount = (uint32_t)mViewports.size();
+        mViewportState.pViewports = mViewports.data();
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddScissor(const VkRect2D& scissor)
+    {
+        mScissors.push_back(scissor);
+
+        mViewportState.scissorCount = (uint32_t)mViewports.size();
+        mViewportState.pScissors = mScissors.data();
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::EnableDepthClamp(bool value)
+    {
+        mRasterizationState.depthClampEnable = value ? VK_TRUE : VK_FALSE;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::EnableRasterizerDiscard(bool value)
+    {
+        mRasterizationState.rasterizerDiscardEnable = value ? VK_TRUE : VK_FALSE;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetPolygonMode(VkPolygonMode polygonMode)
+    {
+        mRasterizationState.polygonMode = polygonMode;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetCullMode(VkCullModeFlags cullMode)
+    {
+        mRasterizationState.cullMode = cullMode;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetFrontFace(VkFrontFace frontFace)
+    {
+        mRasterizationState.frontFace = frontFace;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::EnableDepthBias(bool value)
+    {
+        mRasterizationState.depthBiasEnable = value ? VK_TRUE : VK_FALSE;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetDepthBiasConstantFactor(float value)
+    {
+        mRasterizationState.depthBiasConstantFactor = value;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetDepthBiasClamp(float value)
+    {
+        mRasterizationState.depthBiasClamp = value;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetDepthBiasSlopeFactor(float value)
+    {
+        mRasterizationState.depthBiasSlopeFactor = value;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetLineWidth(float value)
+    {
+        mRasterizationState.lineWidth = value;
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddDynamicState(VkDynamicState dynamicState)
+    {
+        if (mDynamicState)
+        {
+            mDynamicState = VkPipelineDynamicStateCreateInfo();
+            mDynamicState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+            mDynamicState.value().pNext = nullptr;
+            mDynamicState.value().flags = 0;
+            mDynamicState.value().dynamicStateCount = 0;
+            mDynamicState.value().pDynamicStates = nullptr;
+        }
+
+        mDynamicStates.push_back(dynamicState);
+
+        mDynamicState.value().dynamicStateCount = (uint32_t)mDynamicStates.size();
+        mDynamicState.value().pDynamicStates = mDynamicStates.data();
+        return *this;
+    }
 
     SharedPtr<GIGraphicsPipelineVk> GIGraphicsPipelineBuilderVk::Build()
     {
