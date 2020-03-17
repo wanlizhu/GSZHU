@@ -10,19 +10,23 @@ namespace AutoCAD::Graphics::Engine
         : public GIDeviceObjectVk
         , public GIIPipelineVk
     {
+        friend class GIGraphicsPipelineBuilderVk;
         DECL_DEVICE_OBJECT(GIGraphicsPipelineVk)
     public:
-        using CacheKey = std::wstring;
-
-        static SharedPtr<GIGraphicsPipelineVk> FindCache(CacheKey key);
         virtual ~GIGraphicsPipelineVk();
 
+        operator const VkPipeline& () const;
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
         virtual void SetDebugTag(const DebugTag& tag) const override final;
+        virtual void SetPipelineName(const std::wstring& name) override final;
+        virtual const std::wstring& GetPipelineName() const override final;
+
         virtual SharedPtr<SPIRVShaderProgram> GetShaderProgram() const override final;
-        virtual VkDescriptorSetLayout GetDescriptorSetLayout() const override final;
-        virtual VkDescriptorPool GetDescriptorPool() const override final;
+        virtual std::vector<uint32_t> GetDescriptorSetLayoutIndices() const override final;
+        virtual bool IsPushDescriptorSet(uint32_t setIndex) const override final;
+        virtual std::optional<VkDescriptorSetLayout> GetDescriptorSetLayout(uint32_t setIndex) const override final;
+        virtual VkDescriptorPool GetDescriptorPool() override final;
         virtual VkPipelineLayout GetPipelineLayout() const override final;
         virtual VkPipelineBindPoint GetPipelineBindPoint() const override final;
 
@@ -30,29 +34,41 @@ namespace AutoCAD::Graphics::Engine
         GIGraphicsPipelineVk(
             SharedPtr<GIDeviceVk> device,
             SharedPtr<SPIRVShaderProgram> program,
-            const VkGraphicsPipelineCreateInfo& createInfo);
+            const std::vector<uint32_t>& pushDescriptorSets,
+            const VkGraphicsPipelineCreateInfo& createInfo,
+            VkPipelineCache cache);
 
         GIGraphicsPipelineVk(const GIGraphicsPipelineVk&) = delete;
         GIGraphicsPipelineVk(GIGraphicsPipelineVk&&) = default;
         GIGraphicsPipelineVk& operator=(const GIGraphicsPipelineVk&) = delete;
         GIGraphicsPipelineVk& operator=(GIGraphicsPipelineVk&&) = default;
 
+        void CreatePipelineLayout(const SharedPtr<SPIRVShaderProgram>& program);
+        void CreateDescriptorPool(const SharedPtr<SPIRVShaderProgram>& program);
+
     private:
+        std::wstring mPipelineName;
         VkPipeline mPipeline = VK_NULL_HANDLE;
         VkPipelineLayout mPipelineLayout = VK_NULL_HANDLE;
-        VkDescriptorSetLayout mDescriptorSetLayout = VK_NULL_HANDLE;
-        VkDescriptorPool mDescriptorPool = VK_NULL_HANDLE;
+        SharedPtr<SPIRVShaderProgram> mShaderProgram;
+
+        std::unordered_map<uint32_t, VkDescriptorSetLayout> mDescriptorSetLayouts;
+        std::unordered_map<uint32_t, bool> mIsPushDescriptorSets;
+        std::unordered_map<std::thread::id, VkDescriptorPool> mDescriptorPools; // Must be "thread_local" or "lock" involved
     };
 
+    // TODO: create from pipeline cache
     class GIGraphicsPipelineBuilderVk
     {
     public:
         GIGraphicsPipelineBuilderVk(SharedPtr<GIDeviceVk> device);
         
-        GIGraphicsPipelineBuilderVk& SetBasePipeline(SharedPtr<GIGraphicsPipelineVk> pipeline);
+        GIGraphicsPipelineBuilderVk& SetBasePipeline(VkPipeline pipeline);
         GIGraphicsPipelineBuilderVk& AddCreateFlag(VkPipelineCreateFlagBits flag);
         GIGraphicsPipelineBuilderVk& SetRenderPass(VkRenderPass renderPass, uint32_t subpass);
-        GIGraphicsPipelineBuilderVk& SetShaderProgram(SharedPtr<SPIRVShaderProgram> program);
+        GIGraphicsPipelineBuilderVk& AddShaderStage(const std::wstring& path);
+        GIGraphicsPipelineBuilderVk& AddShaderStages(const std::vector<std::wstring>& paths);
+        GIGraphicsPipelineBuilderVk& UsePushDescriptorSetFor(uint32_t setIndex);
 
         GIGraphicsPipelineBuilderVk& SetVertexInputState(const GIIRenderStateVk& state);
         GIGraphicsPipelineBuilderVk& SetInputAssemblyState(const GIInputAssemblyStateVk& state);
@@ -69,8 +85,10 @@ namespace AutoCAD::Graphics::Engine
     private:
         SharedPtr<GIDeviceVk> mDevice;
         SharedPtr<SPIRVShaderProgram> mShaderProgram;
+        std::vector<uint32_t> mPushDescriptorSets;
         VkGraphicsPipelineCreateInfo mCreateInfo = {};
 
+        // These variables can't be released until .Build() returns 
         std::optional<GIVertexInputStateVk> mVertexInputState;
         std::optional<GIInputAssemblyStateVk> mInputAssemblyState;
         std::optional<GITessellationStateVk> mTessellationState;
