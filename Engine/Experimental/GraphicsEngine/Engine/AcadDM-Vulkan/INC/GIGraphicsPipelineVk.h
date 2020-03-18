@@ -5,6 +5,8 @@
 
 namespace AutoCAD::Graphics::Engine
 {
+    class SPIRVShaderProgram;
+
     class GIGraphicsPipelineVk
         : public GIDeviceObjectVk
         , public GIIPipelineVk
@@ -56,6 +58,31 @@ namespace AutoCAD::Graphics::Engine
         std::unordered_map<std::thread::id, VkDescriptorPool> mDescriptorPools; // Must be "thread_local" or "lock" involved
     };
 
+    // TODO: move this into GIVertexBufferVk.h
+    class GIVertexAttributeBindingVk
+    {
+    public:
+        GIVertexAttributeBindingVk(
+            const std::wstring& name,
+            uint32_t binding,
+            uint32_t offset,
+            uint32_t stride,
+            VkVertexInputRate inputRate = VK_VERTEX_INPUT_RATE_VERTEX);
+
+        std::wstring const& GetName() const;
+        uint32_t GetBinding() const;
+        uint32_t GetOffset() const;
+        uint32_t GetStride() const;
+        VkVertexInputRate GetInputRate() const;
+
+    private:
+        std::wstring mAttributeName;
+        uint32_t mVertexBufferBindingID = 0;  // From which bound vertex buffer this attribute gets its data
+        uint32_t mOffset = 0;  // A byte offset of this attribute relative to the start of an element (usually vertex) in the vertex buffer
+        uint32_t mStride = 0;  // The distance in bytes between two consecutive elements (usually vertex) within the vertex buffer
+        VkVertexInputRate mInputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+    };
+
     // TODO: create from pipeline cache
     class GIGraphicsPipelineBuilderVk
     {
@@ -67,6 +94,8 @@ namespace AutoCAD::Graphics::Engine
         GIGraphicsPipelineBuilderVk& SetRenderPass(VkRenderPass renderPass, uint32_t subpass);
         GIGraphicsPipelineBuilderVk& AddShaderStage(const std::wstring& path);
         GIGraphicsPipelineBuilderVk& AddShaderStages(const std::vector<std::wstring>& paths);
+        GIGraphicsPipelineBuilderVk& AddVertexAttributeBinding(const GIVertexAttributeBindingVk& attributeBinding);
+        GIGraphicsPipelineBuilderVk& AddVertexAttributeBindings(const std::vector<GIVertexAttributeBindingVk>& attributeBindings);
         GIGraphicsPipelineBuilderVk& UsePushDescriptorSetFor(uint32_t setIndex);
 
         GIGraphicsPipelineBuilderVk& SetInputAssemblyState(VkPrimitiveTopology topology, bool primitiveRestart);
@@ -94,8 +123,8 @@ namespace AutoCAD::Graphics::Engine
         VkGraphicsPipelineCreateInfo mCreateInfo = {};
 
         // Vertex input(attribute and its vertex-buffer-binding) state
-        std::vector<VkVertexInputAttributeDescription> mVertexAttributes;
-        std::vector<VkVertexInputBindingDescription> mVertexBindings;
+        std::vector<VkVertexInputAttributeDescription> mVertexInputAttributes;
+        std::vector<VkVertexInputBindingDescription> mVertexInputBindings;
         VkPipelineVertexInputStateCreateInfo mVertexInputState = {};
 
         // Input assembly state

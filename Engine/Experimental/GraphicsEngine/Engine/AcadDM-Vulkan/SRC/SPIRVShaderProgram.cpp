@@ -37,42 +37,27 @@ namespace AutoCAD::Graphics::Engine
 
     SharedPtr<SPIRVShaderStage> SPIRVShaderStage::Create(SharedPtr<GIDeviceVk> device, const std::wstring& filename)
     {
-        for (const fs::path& root : smSearchPaths)
+        std::ifstream ifs(filename.c_str(), std::ios::binary);
+        if (ifs.is_open())
         {
-            std::vector<fs::path> path;
-            if (GIPlatformVk::FindFiles(root, filename, true, true, path))
-            {
-                std::ifstream ifs(path[0].wstring().c_str(), std::ios::binary);
-                if (ifs.is_open())
-                {
-                    ifs.seekg(0, std::ios::end);
-                    size_t size = ifs.tellg();
-                    ifs.seekg(0, std::ios::beg);
+            ifs.seekg(0, std::ios::end);
+            size_t size = ifs.tellg();
+            ifs.seekg(0, std::ios::beg);
 
-                    std::vector<char> buffer(size, 0);
-                    ifs.read(buffer.data(), size);
-                    ifs.close();
+            std::vector<char> buffer(size, 0); // This will be std::move() into SPIRVShaderStage
+            ifs.read(buffer.data(), size);
+            ifs.close();
 
-                    auto shaderStage = SharedPtr<SPIRVShaderStage>(new SPIRVShaderStage(
-                        device,
-                        std::move(buffer)));
-                    shaderStage->SetStageFlag(GetShaderStageFlag(path[0]));
+            auto shaderStage = SharedPtr<SPIRVShaderStage>(new SPIRVShaderStage(
+                device,
+                std::move(buffer)));
+            shaderStage->SetStageFlag(GetShaderStageFlag(fs::path(filename)));
 
-                    assert(shaderStage->IsValid());
-                    return shaderStage;
-                }
-            }
+            assert(shaderStage->IsValid());
+            return shaderStage;
         }
 
         return nullptr;
-    }
-
-    void SPIRVShaderStage::AddSearchPath(const fs::path& path)
-    {
-        if (std::find(smSearchPaths.begin(), smSearchPaths.end(), path) == smSearchPaths.end())
-        {
-            smSearchPaths.push_back(path);
-        }
     }
 
     SPIRVShaderStage::SPIRVShaderStage(SharedPtr<GIDeviceVk> device, std::vector<char>&& source)
@@ -81,7 +66,7 @@ namespace AutoCAD::Graphics::Engine
     {
         /*
          * If pCode points to SPIR-V code, codeSize must be a multiple of 4.
-         * pCode must point to either valid SPIR-V code, formatted and packed as described by the Khronos SPIR-V Specification 
+         * pCode must point to either valid SPIR-V code, formatted and packed as described by the Khronos SPIR-V Specification
          * or valid GLSL code which must be written to the GL_KHR_vulkan_glsl (specified in shader source) extension specification
         */
         VkShaderModuleCreateInfo createInfo = {};
@@ -116,7 +101,7 @@ namespace AutoCAD::Graphics::Engine
             name);
     }
 
-    void SPIRVShaderStage::SetDebugTag(const DebugTag& tag) const 
+    void SPIRVShaderStage::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
             mShaderModule,
@@ -158,4 +143,94 @@ namespace AutoCAD::Graphics::Engine
     {
         return mSpecializationInfo;
     }
+
+    std::vector<char> const& SPIRVShaderStage::GetSourceCode() const
+    {
+        return mSourceCode;
+    }
+
+    SharedPtr<SPIRVShaderProgram> SPIRVShaderProgram::Create()
+    {
+        return SharedPtr<SPIRVShaderProgram>(new SPIRVShaderProgram());
+    }
+
+    SPIRVShaderProgram::SPIRVShaderProgram()
+    {}
+
+    SPIRVShaderProgram::~SPIRVShaderProgram()
+    {}
+
+    bool SPIRVShaderProgram::IsValid() const
+    {
+        return !mShaderStages.empty() && std::all_of(
+            mShaderStages.begin(),
+            mShaderStages.end(), 
+            [&](const SharedPtr<SPIRVShaderStage>& stage) {
+                return stage != nullptr;
+            });
+    }
+
+    void SPIRVShaderProgram::AddShaderStage(SharedPtr<SPIRVShaderStage> stage)
+    {
+        mShaderStages.push_back(stage);
+        CreateReflection(stage->GetSourceCode());
+    }
+
+    void SPIRVShaderProgram::AddShaderStages(const std::vector<SharedPtr<SPIRVShaderStage>>& stages)
+    {
+        for (const auto& stage : stages)
+        {
+            AddShaderStage(stage);
+        }
+    }
+
+    std::vector<uint32_t> SPIRVShaderProgram::GetDescriptorSetLayoutIndices() const
+    {
+        std::vector<uint32_t> indices;
+
+        for (const auto& [index, setLayoutBindings] : mDescriptorSetLayouts)
+        {
+            indices.push_back(index);
+        }
+
+        return indices;
+    }
+
+    std::vector<VkDescriptorSetLayoutBinding> const& SPIRVShaderProgram::GetDescriptorSetLayoutBindings(uint32_t setIndex) const
+    {
+        const auto& it = mDescriptorSetLayouts.find(setIndex);
+        if (it == mDescriptorSetLayouts.end())
+            return {};
+        else
+            return it->second;
+    }
+
+    std::vector<VkDescriptorPoolSize> const& SPIRVShaderProgram::GetDescriptorPoolSizes() const
+    {
+        return mDescriptorPoolSizes;
+    }
+
+    std::vector<VkPushConstantRange> SPIRVShaderProgram::GetPushConstantRanges() const
+    {
+        std::vector<VkPushConstantRange> ranges;
+
+        for (const auto& [name, pushConstant] : mPushConstants)
+        {
+            ranges.push_back(*mPushConstants);
+        }
+
+        return ranges;
+    }
+
+    std::vector<VkVertexInputAttributeDescription> SPIRVShaderProgram::GetVertexAttributes() const;
+    std::vector<VkPipelineShaderStageCreateInfo> SPIRVShaderProgram::GetShaderStageCreateInfos() const;
+
+    std::optional<SPIRVShaderStage> SPIRVShaderProgram::GetShaderStage(VkShaderStageFlagBits stageFlag) const;
+    std::optional<SPIRVAttribute> SPIRVShaderProgram::GetVertexAttribute(const std::wstring& name) const;
+    std::optional<SPIRVUniformVariable> SPIRVShaderProgram::GetUniformVariable(const std::wstring& name) const;
+    std::optional<SPIRVStorageVariable> SPIRVShaderProgram::GetStorageVariable(const std::wstring& name) const;
+    std::optional<SPIRVUniformBlock> SPIRVShaderProgram::GetUniformBlock(const std::wstring& name) const;
+    std::optional<SPIRVStorageBlock> SPIRVShaderProgram::GetStorageBlock(const std::wstring& name) const;
+    std::optional<SPIRVPushConstant> SPIRVShaderProgram::GetPushConstant(const std::wstring& name) const;
+    std::optional<SPIRVShaderStage> SPIRVShaderProgram::GetShaderStage(VkShaderStageFlagBits stage) const;
 }

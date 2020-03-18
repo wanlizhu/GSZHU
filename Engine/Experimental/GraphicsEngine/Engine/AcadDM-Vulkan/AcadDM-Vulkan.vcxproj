@@ -110,7 +110,6 @@
     <ClInclude Include="INC\GIComputePipelineVk.h" />
     <ClInclude Include="INC\GIDescriptorPoolVk.h" />
     <ClInclude Include="INC\GIDescriptorSetVk.h" />
-    <ClInclude Include="INC\GIDeviceContextVk.h" />
     <ClInclude Include="INC\GIDeviceObjectVk.h" />
     <ClInclude Include="INC\GIDeviceQueueVk.h" />
     <ClInclude Include="INC\GIDeviceVk.h" />
@@ -138,7 +137,6 @@
     <ClCompile Include="SRC\GICommandBufferVk.cpp" />
     <ClCompile Include="SRC\GICommandPoolVk.cpp" />
     <ClCompile Include="SRC\GIComputePipelineVk.cpp" />
-    <ClCompile Include="SRC\GIDeviceContextVk.cpp" />
     <ClCompile Include="SRC\GIDeviceObjectVk.cpp" />
     <ClCompile Include="SRC\GIDeviceQueueVk.cpp" />
     <ClCompile Include="SRC\GIDeviceVk.cpp" />

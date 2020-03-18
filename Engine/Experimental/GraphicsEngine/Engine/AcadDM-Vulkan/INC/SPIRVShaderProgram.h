@@ -12,7 +12,6 @@ namespace AutoCAD::Graphics::Engine
     {
     public:
         static SharedPtr<SPIRVShaderStage> Create(SharedPtr<GIDeviceVk> device, const std::wstring& filename);
-        static void AddSearchPath(const fs::path& path);
         virtual ~SPIRVShaderStage();
 
         virtual bool IsValid() const override final;
@@ -27,6 +26,7 @@ namespace AutoCAD::Graphics::Engine
         VkShaderModule GetShaderModule() const;
         std::string const& GetEntryPoint() const;
         std::optional<VkSpecializationInfo> const& GetSpecializationInfo() const;
+        std::vector<char> const& GetSourceCode() const;
 
     protected:
         SPIRVShaderStage(SharedPtr<GIDeviceVk> device, std::vector<char>&& source);
@@ -36,8 +36,6 @@ namespace AutoCAD::Graphics::Engine
         SPIRVShaderStage& operator=(SPIRVShaderStage&&) = default;
 
     private:
-        static std::vector<fs::path> smSearchPaths;
-
         VkShaderStageFlagBits mStageFlag = VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM;
         VkShaderModule mShaderModule = VK_NULL_HANDLE;
         std::string mEntryPoint = "main";
@@ -54,6 +52,7 @@ namespace AutoCAD::Graphics::Engine
         
         bool IsValid() const;
         void AddShaderStage(SharedPtr<SPIRVShaderStage> stage);
+        void AddShaderStages(const std::vector<SharedPtr<SPIRVShaderStage>>& stages);
         
         /*
          * The set of sets that are accessible to a pipeline are grouped into another object: the pipeline layout.
@@ -86,13 +85,13 @@ namespace AutoCAD::Graphics::Engine
         SPIRVShaderProgram& operator=(const SPIRVShaderProgram&) = delete;
         SPIRVShaderProgram& operator=(SPIRVShaderProgram&&) = default;
 
-        void Reflect(const std::vector<char>& source);
-        void ReflectSPIRV(const std::vector<char>& source);
-        void ReflectGLSL(const std::vector<char>& source);
+        void CreateReflection(const std::vector<char>& source);
+        void CreateReflectionSPIRV(const std::vector<char>& source);
+        void CreateReflectionGLSL(const std::vector<char>& source);
 
     private:
         std::vector<SharedPtr<SPIRVShaderStage>> mShaderStages;
-        std::vector<VkDescriptorSetLayoutBinding> mDescriptorSetLayoutBindings;
+        std::unordered_map<uint32_t, std::vector<VkDescriptorSetLayoutBinding>> mDescriptorSetLayouts; // A pipeline could contain multiple descriptor sets
         std::vector<VkDescriptorPoolSize> mDescriptorPoolSizes;
 
         std::unordered_map<std::wstring, SPIRVAttribute> mVertexAttributes;

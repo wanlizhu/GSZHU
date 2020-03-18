@@ -89,7 +89,7 @@ namespace AutoCAD::Graphics::Engine
         createInfo.hwnd = (HWND)window;
         VK_CHECK(vkCreateWin32SurfaceKHR(instance, &createInfo, nullptr, surface));
     }
-
+    /*
     uint32_t GIWindowsPlatformVk::FindFiles(
         const std::filesystem::path& root,
         const std::filesystem::path& filename,
@@ -126,7 +126,7 @@ namespace AutoCAD::Graphics::Engine
         }
 
         return (uint32_t)results.size();
-    }
+    }*/
 }
 
 #endif

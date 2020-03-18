@@ -61,9 +61,6 @@
     <ClInclude Include="INC\GIComputePipelineVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIDeviceContextVk.h">
-      <Filter>Source Files\GI_INC</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIDeviceObjectVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
@@ -124,9 +121,6 @@
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GISwapchainVk.cpp">
-      <Filter>Source Files\GI_SRC</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIDeviceContextVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GIFramebufferVk.cpp">

@@ -266,6 +266,74 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddVertexAttributeBinding(const GIVertexAttributeBindingVk& attributeBinding)
+    {
+        VkVertexInputBindingDescription* currentInputBinding = nullptr;
+        VkVertexInputAttributeDescription* currentInputAttribute = nullptr;
+
+        const auto& attrib = mShaderProgram->GetVertexAttribute(attributeBinding.GetName());
+        assert(attrib.has_value());
+        assert(attrib.value().GetLocation() != (uint32_t)-1);
+        assert(attrib.value().GetSize() <= attributeBinding.GetStride());
+
+        // Find the same vertex input binding added before
+        const auto& oldInputBinding = std::find_if(
+            mVertexInputBindings.begin(),
+            mVertexInputBindings.end(),
+            [&](const VkVertexInputBindingDescription& desc) {
+                return desc.binding == attributeBinding.GetBinding();
+            });
+        if (oldInputBinding != mVertexInputBindings.end())
+        {
+            assert(oldInputBinding->stride == attributeBinding.GetStride());
+            assert(oldInputBinding->inputRate == attributeBinding.GetInputRate());
+            currentInputBinding = &(*oldInputBinding);
+        }
+        else
+        {
+            mVertexInputBindings.emplace_back();
+            currentInputBinding = &mVertexInputBindings.back();
+
+            currentInputBinding->binding = attributeBinding.GetBinding();
+            currentInputBinding->stride = attributeBinding.GetStride();
+            currentInputBinding->inputRate = attributeBinding.GetInputRate();
+        }
+
+        // Find the same vertex attribute added before. (Normally, there shouldn't be one)
+        const auto& inputAttribute = std::find_if(
+            mVertexInputAttributes.begin(),
+            mVertexInputAttributes.end(),
+            [&](const VkVertexInputAttributeDescription& desc) {
+                return desc.location == attrib.value().GetLocation();
+            });
+        if (inputAttribute != mVertexInputAttributes.end())
+        {
+            LOG_WARNING("Vertex input attribute (%d) exists, do you want to override it?\n");
+            currentInputAttribute = &(*inputAttribute);
+        }
+        else
+        {
+            mVertexInputAttributes.emplace_back();
+            currentInputAttribute = &mVertexInputAttributes.back();
+        }
+
+        currentInputAttribute->binding = attributeBinding.GetBinding();
+        currentInputAttribute->location = attrib.value().GetLocation();
+        currentInputAttribute->offset = attributeBinding.GetOffset();
+        currentInputAttribute->format = attrib.value().GetFormat();
+
+        return *this;
+    }
+
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddVertexAttributeBindings(const std::vector<GIVertexAttributeBindingVk>& attributeBindings)
+    {
+        for (const auto& attributeBinding : attributeBindings)
+        {
+            AddVertexAttributeBinding(attributeBinding);
+        }
+        return *this;
+    }
+
     GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::UsePushDescriptorSetFor(uint32_t setIndex)
     {
         mPushDescriptorSets.push_back(setIndex);

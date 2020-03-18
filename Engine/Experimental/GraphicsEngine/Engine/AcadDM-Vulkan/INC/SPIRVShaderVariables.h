@@ -4,51 +4,94 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class SPIRVShaderVariable
+    class SPIRVPipelineInput
     {
+        friend class SPIRVShaderProgram;
     public:
-        virtual const std::string& GetName() const = 0;
-        virtual uint32_t GetDescriptorSetID() const = 0;
-        virtual uint32_t GetBindingID() const = 0;
-        virtual uint32_t GetLocation() const = 0; // Only for in/out variables
-        virtual uint32_t GetOffset() const = 0;
-        virtual uint32_t GetSize() const = 0;
-        virtual VkDescriptorType GetDescriptorType() const = 0;
-        virtual VkPipelineStageFlagBits GetVisibleStages() const = 0;
+        std::wstring const& GetName() const;
+        uint32_t GetLocation() const;
+        uint32_t GetSize() const;
+        VkFormat GetFormat() const;
+
+    private:
+        SPIRVPipelineInput(
+            const std::wstring& name,
+            uint32_t location,
+            VkFormat format);
+
+    private:
+        std::wstring mName;
+        uint32_t mLocation = 0; // Input variable specified in vertex shader
+        uint32_t mSize = 0;
+        VkFormat mFormat = VK_FORMAT_UNDEFINED;
     };
 
-    class SPIRVAttribute : public SPIRVShaderVariable
+    class SPIRVPipelineOutput
     {
+        friend class SPIRVShaderProgram;
     public:
+        std::wstring const& GetName() const;
+        uint32_t GetLocation() const;
+        uint32_t GetSize() const;
+        VkFormat GetFormat() const;
+
+    private:
+        SPIRVPipelineOutput(
+            const std::wstring& name,
+            uint32_t location,
+            VkFormat format);
+
+    private:
+        std::wstring mName;
+        uint32_t mLocation = 0; // Input variable specified in vertex shader
+        uint32_t mSize = 0;
+        VkFormat mFormat = VK_FORMAT_UNDEFINED;
     };
 
-    class SPIRVUniformVariable : public SPIRVShaderVariable
+    class SPIRVUniformVariable
     {
+        friend class SPIRVShaderProgram;
     public:
+        std::wstring const& GetName() const;
+        uint32_t GetDescriptorSetID() const;
+        uint32_t GetBindingID() const;
+        uint32_t GetOffset() const;
+        uint32_t GetSize() const;
+        VkFormat GetFormat() const;
+        VkShaderStageFlagBits GetStageFlags() const;
+
+    private:
+        std::wstring mName;
+        uint32_t mDescriptorSetID = 0;
+        uint32_t mBindingID = 0;
+        uint32_t mOffset = 0;
+        uint32_t mSize = 0;
+        VkFormat mFormat = VK_FORMAT_UNDEFINED;
+        VkShaderStageFlagBits mStageFlags = VK_SHADER_STAGE_ALL;
+    };
+
+    class SPIRVUniformBlock
+    {
 
     };
 
-    class SPIRVUniformBlock : public SPIRVShaderVariable
+    class SPIRVStorageVariable
     {
-    public:
 
     };
 
-    class SPIRVPushConstant : public SPIRVShaderVariable
+    class SPIRVStorageBlock
     {
-    public:
 
     };
 
-    class SPIRVStorageVariable : public SPIRVShaderVariable
+    class SPIRVPushConstant
     {
-    public:
 
     };
 
-    class SPIRVStorageBlock : public SPIRVShaderVariable
+    class SPIRVAtomicCounter
     {
-    public:
 
     };
 }

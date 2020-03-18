@@ -36,13 +36,6 @@ namespace AutoCAD::Graphics::Engine
         static void CreateSurface(VkInstance instance, void* window, VkSurfaceKHR* surface);
         static void PrePresent(VkQueue queue, VkPresentInfoKHR& presentInfo);
 
-        static uint32_t FindFiles(
-            const std::filesystem::path& root,
-            const std::filesystem::path& filename,
-            bool recursive,
-            bool findFirst,
-            std::vector<std::filesystem::path>& results);
-
     private:
         static void* libvulkan;
     };
