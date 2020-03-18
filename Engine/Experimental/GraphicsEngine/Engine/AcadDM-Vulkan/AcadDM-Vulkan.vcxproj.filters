@@ -100,16 +100,13 @@
     <ClInclude Include="INC\GIAndroidPlatformVk.h">
       <Filter>Source Files\GI_INC\PLATFORM</Filter>
     </ClInclude>
-    <ClInclude Include="INC\SPIRVShaderProgram.h">
-      <Filter>Source Files\GI_INC</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\SPIRVShaderVariables.h">
-      <Filter>Source Files\GI_INC</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIIDescriptorVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
     <ClInclude Include="INC\GIPipelineCachesVk.h">
+      <Filter>Source Files\GI_INC</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\SPIRVReflection.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
   </ItemGroup>
@@ -153,10 +150,10 @@
     <ClCompile Include="SRC\GIComputePipelineVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\SPIRVShaderProgram.cpp">
+    <ClCompile Include="SRC\GIGraphicsPipelineVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\GIGraphicsPipelineVk.cpp">
+    <ClCompile Include="SRC\SPIRVReflection.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
   </ItemGroup>

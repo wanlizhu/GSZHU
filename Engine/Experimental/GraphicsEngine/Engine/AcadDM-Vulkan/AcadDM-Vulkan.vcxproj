@@ -123,13 +123,12 @@
     <ClInclude Include="INC\GIPlatformVk.h" />
     <ClInclude Include="INC\GIRenderPassVk.h" />
     <ClInclude Include="INC\GISamplerVk.h" />
-    <ClInclude Include="INC\SPIRVShaderProgram.h" />
+    <ClInclude Include="INC\SPIRVReflection.h" />
     <ClInclude Include="INC\GISwapchainVk.h" />
     <ClInclude Include="INC\GITextureViewVk.h" />
     <ClInclude Include="INC\GITextureVk.h" />
     <ClInclude Include="INC\GIWindowsPlatformVk.h" />
     <ClInclude Include="INC\GICommonVk.h" />
-    <ClInclude Include="INC\SPIRVShaderVariables.h" />
     <ClInclude Include="INC\VKInstance.h" />
   </ItemGroup>
   <ItemGroup>
@@ -146,7 +145,7 @@
     <ClCompile Include="SRC\GISwapchainVk.cpp" />
     <ClCompile Include="SRC\GICommonVk.cpp" />
     <ClCompile Include="SRC\GIWindowsPlatformVk.cpp" />
-    <ClCompile Include="SRC\SPIRVShaderProgram.cpp" />
+    <ClCompile Include="SRC\SPIRVReflection.cpp" />
     <ClCompile Include="SRC\VKInstance.cpp" />
   </ItemGroup>
   <ItemGroup>

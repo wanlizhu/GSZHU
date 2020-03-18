@@ -4,7 +4,7 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class SPIRVShaderProgram;
+    class SPIRVReflection;
 
     class GIIPipelineVk 
     {
@@ -12,7 +12,7 @@ namespace AutoCAD::Graphics::Engine
         virtual ~GIIPipelineVk() = default;
 
         // Query shader resource variable from it by name
-        virtual SharedPtr<SPIRVShaderProgram> GetShaderProgram() const = 0;
+        virtual const SPIRVReflection& GetShaderReflection() const = 0;
 
         // The pipeline name could be used for searching pipeline cache
         virtual void SetPipelineName(const std::wstring& name) = 0;

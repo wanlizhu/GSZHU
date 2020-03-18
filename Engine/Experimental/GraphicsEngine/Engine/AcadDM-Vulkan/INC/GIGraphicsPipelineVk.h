@@ -5,8 +5,6 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class SPIRVShaderProgram;
-
     class GIGraphicsPipelineVk
         : public GIDeviceObjectVk
         , public GIIPipelineVk
@@ -23,7 +21,7 @@ namespace AutoCAD::Graphics::Engine
         virtual void SetPipelineName(const std::wstring& name) override final;
         virtual const std::wstring& GetPipelineName() const override final;
 
-        virtual SharedPtr<SPIRVShaderProgram> GetShaderProgram() const override final;
+        virtual const SPIRVReflection& GetShaderReflection() const override final;
         virtual std::vector<uint32_t> GetDescriptorSetLayoutIndices() const override final;
         virtual bool IsPushDescriptorSet(uint32_t setIndex) const override final;
         virtual std::optional<VkDescriptorSetLayout> GetDescriptorSetLayout(uint32_t setIndex) const override final;
@@ -34,7 +32,7 @@ namespace AutoCAD::Graphics::Engine
     protected:
         GIGraphicsPipelineVk(
             SharedPtr<GIDeviceVk> device,
-            SharedPtr<SPIRVShaderProgram> program,
+            SharedPtr<SPIRVReflection> reflection,
             const std::vector<uint32_t>& pushDescriptorSets,
             const VkGraphicsPipelineCreateInfo& createInfo,
             VkPipelineCache cache);
@@ -44,14 +42,14 @@ namespace AutoCAD::Graphics::Engine
         GIGraphicsPipelineVk& operator=(const GIGraphicsPipelineVk&) = delete;
         GIGraphicsPipelineVk& operator=(GIGraphicsPipelineVk&&) = default;
 
-        void CreatePipelineLayout(const SharedPtr<SPIRVShaderProgram>& program);
-        void CreateDescriptorPool(const SharedPtr<SPIRVShaderProgram>& program);
+        void CreatePipelineLayout();
+        void CreateDescriptorPool();
 
     private:
         std::wstring mPipelineName;
         VkPipeline mPipeline = VK_NULL_HANDLE;
         VkPipelineLayout mPipelineLayout = VK_NULL_HANDLE;
-        SharedPtr<SPIRVShaderProgram> mShaderProgram;
+        SharedPtr<SPIRVReflection> mReflection;
 
         std::unordered_map<uint32_t, VkDescriptorSetLayout> mDescriptorSetLayouts;
         std::unordered_map<uint32_t, bool> mIsPushDescriptorSets;
@@ -118,7 +116,7 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         SharedPtr<GIDeviceVk> mDevice;
-        SharedPtr<SPIRVShaderProgram> mShaderProgram;
+        SharedPtr<SPIRVReflection> mReflection;
         std::vector<uint32_t> mPushDescriptorSets;
         VkGraphicsPipelineCreateInfo mCreateInfo = {};
 
