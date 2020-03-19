@@ -1,50 +1,52 @@
 #pragma once
 
 #include "GICommonVk.h"
+#include "spirv_cross/spirv_glsl.hpp"
 
 namespace AutoCAD::Graphics::Engine
 {
-    class SPIRVReflectObject : public std::enable_shared_from_this<SPIRVReflectObject>
+    enum class SPIRVType
     {
-    public:
-        virtual ~SPIRVReflectObject() = default;
-        virtual operator bool() const = 0;
-        virtual const std::string& GetName() const = 0;
-        virtual VkShaderStageFlags GetStageFlags() const = 0;
-        virtual uint32_t GetSize() const = 0;
-
-        template<typename T>
-        SharedPtr<T> As() 
-        {
-            static_assert(std::is_base_of_v<SPIRVReflectObject, T>);
-            auto ptr = std::dynamic_pointer_cast<T>(shared_from_this());
-            assert(ptr != nullptr);
-            return ptr;
-        }
+        Scalar,
+        Block,
+        Array,
     };
 
-    class SPIRVShaderVariable : public SPIRVReflectObject
+    struct SPIRVResource
     {
-    public:
-        virtual bool IsPushConstant() const = 0;
-        virtual bool IsUniform() const = 0;
-        virtual bool IsStorage() const = 0;
-        virtual bool IsSampler() const = 0;
-        virtual bool IsImage() const = 0;
-        virtual bool IsSampledImage() const = 0;
-        virtual bool IsAtomicCounter() const = 0;
+        std::string name;
+        uint32_t size = 0;
+        SPIRVType type = SPIRVType::Scalar;
+        VkFormat format = VK_FORMAT_UNDEFINED;
+        VkShaderStageFlags stages = 0;
+        bool writable = false;
+
+        std::optional<uint32_t> locationId;       // For shader stage input and output variable
+        std::optional<uint32_t> constantId;       // For specialization constant
+        std::optional<uint32_t> descriptorSetId;  // For buffer and image binding block
+        std::optional<uint32_t> bindingId;        // For buffer and image binding block
+        std::optional<uint32_t> offset;           // For block member
+        std::optional<std::string> typeName;      // For Scalar, this is std::nullopt
     };
 
-    class SPIRVShaderBlock : public SPIRVReflectObject
+    struct SPIRVBlock : public SPIRVResource
     {
-
+        std::unordered_map<std::string, SPIRVResource> members;
     };
 
-    class SPIRVShaderArray : public SPIRVReflectObject
+    struct SPIRVArray : public SPIRVResource
     {
+        SPIRVType elementType = SPIRVType::Scalar;
+        std::optional<VkFormat> elementTypeFormat;
+        std::optional<std::string> elementTypeName;
 
+        uint32_t stride = 0;
+        uint32_t length = 0;
+        bool isLengthLiteral = true;
     };
-    
+
+    /* 'non-opaque uniforms outside a block' : not allowed when using GLSL for Vulkan
+    */
     class SPIRVReflection
     {
     public:
@@ -54,8 +56,10 @@ namespace AutoCAD::Graphics::Engine
         void AddShaderStage(const std::wstring& stage);
         void AddShaderStages(const std::vector<std::wstring>& stages);
 
-        std::optional<SharedPtr<SPIRVShaderVariable>> Get(const std::string& name) const;
-
+        const std::optional<SPIRVResource>& GetVariable(const std::string& name) const;
+        const std::optional<SPIRVBlock>& GetBlock(const std::string& typeName) const;
+        const std::optional<SPIRVArray>& GetArray(const std::string& typeName) const;
+        
         /*
          * The set of sets that are accessible to a pipeline are grouped into another object: the pipeline layout.
          * A descriptor set is a set of resources that are bound into the pipeline as a group. 
@@ -67,20 +71,23 @@ namespace AutoCAD::Graphics::Engine
         std::vector<uint32_t> GetDescriptorSetLayoutIndices() const;
         std::vector<VkDescriptorSetLayoutBinding> const& GetDescriptorSetLayoutBindings(uint32_t setIndex) const;
         std::vector<VkDescriptorPoolSize> const& GetDescriptorPoolSizes() const;
-        std::vector<VkPushConstantRange> GetPushConstantRanges() const;
+        std::vector<VkPushConstantRange> const& GetPushConstantRanges() const;
 
     protected:
-        SPIRVReflection();
+        SPIRVReflection() = default;
         SPIRVReflection(const SPIRVReflection&) = delete;
         SPIRVReflection(SPIRVReflection&&) = default;
         SPIRVReflection& operator=(const SPIRVReflection&) = delete;
         SPIRVReflection& operator=(SPIRVReflection&&) = default;
 
     private:
-        std::unordered_map<std::string, SharedPtr<SPIRVShaderVariable>> mShaderVariables;
-
         // A pipeline could contain multiple descriptor sets
         std::unordered_map<uint32_t, std::vector<VkDescriptorSetLayoutBinding>> mDescriptorSetLayouts; 
         std::vector<VkDescriptorPoolSize> mDescriptorPoolSizes;
+        std::vector<VkPushConstantRange> mPushConstantRanges;
+
+        std::unordered_map<std::string, SPIRVResource> mVariables;
+        std::unordered_map<std::string, SPIRVBlock> mBlocks;
+        std::unordered_map<std::string, SPIRVArray> mArrays;
     };
 }

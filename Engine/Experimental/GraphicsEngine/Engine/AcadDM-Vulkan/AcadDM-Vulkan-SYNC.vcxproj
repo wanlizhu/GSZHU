@@ -67,8 +67,7 @@
     </Link>
     <PreBuildEvent>
       <Command>echo ====================
-echo AcadDM-Vulkan SYNC
-echo Syncing SPIRV-Cross:  [$(Platform), $(Configuration)]
+echo SPIRV-Cross:  [$(Platform), $(Configuration)]
 echo SPIRV-Cross Version: $(SPIRV_CROSS_VERSION) 
 ====================
 
@@ -77,25 +76,10 @@ set BinaryDir="$(IntDir)SPIRV-Cross-BUILD"
 set InstallDir="$(SPIRV_CROSS_DIR)"
 
 if not exist "%SourceDir%" (git clone --recursive --branch $(SPIRV_CROSS_VERSION) https://github.com/KhronosGroup/SPIRV-Cross.git "%SourceDir%")
-cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%"  -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF -DSPIRV_CROSS_ENABLE_C_API=OFF -DSPIRV_CROSS_ENABLE_GLSL=OFF -DSPIRV_CROSS_ENABLE_HLSL=OFF -DSPIRV_CROSS_ENABLE_MSL=OFF -DSPIRV_CROSS_ENABLE_REFLECT=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_UTIL=OFF 
+cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%"  -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF -DSPIRV_CROSS_ENABLE_C_API=OFF -DSPIRV_CROSS_ENABLE_HLSL=OFF -DSPIRV_CROSS_ENABLE_MSL=OFF -DSPIRV_CROSS_ENABLE_REFLECT=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_UTIL=OFF 
 cmake --build "%BinaryDir%"
 cmake --install "%BinaryDir%"
-
-
-echo ====================
-echo AcadDM-Vulkan SYNC
-echo Syncing glslang:  [$(Platform), $(Configuration)]
-echo glslang Version: $(GLSLANG_VERSION) 
-====================
-
-set SourceDir="$(IntDir)glslang"
-set BinaryDir="$(IntDir)glslang-BUILD"
-set InstallDir="$(GLSLANG_DIR)"
-
-if not exist "%SourceDir%" (git clone --recursive --branch $(GLSLANG_VERSION)  https://github.com/KhronosGroup/glslang.git "%SourceDir%")
-cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%" -DBUILD_SHARED_LIBS=OFF  -DBUILD_EXTERNAL=OFF -DBUILD_TESTING=OFF -DENABLE_CTEST=OFF -DENABLE_GLSLANG_BINARIES=OFF -DENABLE_SPVREMAPPER=OFF -DENABLE_HLSL=OFF
-cmake --build "%BinaryDir%"
-cmake --install "%BinaryDir%"</Command>
+</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -115,8 +99,7 @@ cmake --install "%BinaryDir%"</Command>
     </Link>
     <PreBuildEvent>
       <Command>echo ====================
-echo AcadDM-Vulkan SYNC
-echo Syncing SPIRV-Cross:  [$(Platform), $(Configuration)]
+echo SPIRV-Cross:  [$(Platform), $(Configuration)]
 echo SPIRV-Cross Version: $(SPIRV_CROSS_VERSION) 
 ====================
 
@@ -125,25 +108,10 @@ set BinaryDir="$(IntDir)SPIRV-Cross-BUILD"
 set InstallDir="$(SPIRV_CROSS_DIR)"
 
 if not exist "%SourceDir%" (git clone --recursive --branch $(SPIRV_CROSS_VERSION) https://github.com/KhronosGroup/SPIRV-Cross.git "%SourceDir%")
-cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%"  -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF -DSPIRV_CROSS_ENABLE_C_API=OFF -DSPIRV_CROSS_ENABLE_GLSL=OFF -DSPIRV_CROSS_ENABLE_HLSL=OFF -DSPIRV_CROSS_ENABLE_MSL=OFF -DSPIRV_CROSS_ENABLE_REFLECT=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_UTIL=OFF 
+cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%"  -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF -DSPIRV_CROSS_ENABLE_C_API=OFF -DSPIRV_CROSS_ENABLE_HLSL=OFF -DSPIRV_CROSS_ENABLE_MSL=OFF -DSPIRV_CROSS_ENABLE_REFLECT=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_UTIL=OFF 
 cmake --build "%BinaryDir%"
 cmake --install "%BinaryDir%"
-
-
-echo ====================
-echo AcadDM-Vulkan SYNC
-echo Syncing glslang:  [$(Platform), $(Configuration)]
-echo glslang Version: $(GLSLANG_VERSION) 
-====================
-
-set SourceDir="$(IntDir)glslang"
-set BinaryDir="$(IntDir)glslang-BUILD"
-set InstallDir="$(GLSLANG_DIR)"
-
-if not exist "%SourceDir%" (git clone --recursive --branch $(GLSLANG_VERSION)  https://github.com/KhronosGroup/glslang.git "%SourceDir%")
-cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%" -DBUILD_SHARED_LIBS=OFF  -DBUILD_EXTERNAL=OFF -DBUILD_TESTING=OFF -DENABLE_CTEST=OFF -DENABLE_GLSLANG_BINARIES=OFF -DENABLE_SPVREMAPPER=OFF -DENABLE_HLSL=OFF
-cmake --build "%BinaryDir%"
-cmake --install "%BinaryDir%"</Command>
+</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

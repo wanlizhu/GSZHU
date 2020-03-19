@@ -34,4 +34,37 @@ namespace AutoCAD::Graphics::Engine
         return VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM;
     }
 
+    SharedPtr<SPIRVReflection> SPIRVReflection::Create()
+    {
+        return SharedPtr<SPIRVReflection>(new SPIRVReflection());
+    }
+
+    SPIRVReflection::~SPIRVReflection()
+    {}
+
+    void SPIRVReflection::AddShaderStage(const std::wstring& stage)
+    {
+    
+    }
+
+    void SPIRVReflection::AddShaderStages(const std::vector<std::wstring>& stages)
+    {
+        for (const auto& stage : stages)
+        {
+            AddShaderStage(stage);
+        }
+    }
+
+    const std::optional<SPIRVBlock>& SPIRVReflection::GetBlock(const std::string& typeName) const
+    {
+        
+    }
+
+    const std::optional<SPIRVArray>& SPIRVReflection::GetArray(const std::string& typeName) const;
+    const std::optional<SPIRVResource>& SPIRVReflection::GetVariable(const std::string& name) const;
+
+    std::vector<uint32_t> SPIRVReflection::GetDescriptorSetLayoutIndices() const;
+    std::vector<VkDescriptorSetLayoutBinding> const& SPIRVReflection::GetDescriptorSetLayoutBindings(uint32_t setIndex) const;
+    std::vector<VkDescriptorPoolSize> const& SPIRVReflection::GetDescriptorPoolSizes() const;
+    std::vector<VkPushConstantRange> const& SPIRVReflection::GetPushConstantRanges() const;
 }

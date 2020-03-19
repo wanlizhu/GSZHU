@@ -124,32 +124,24 @@ namespace AutoCAD::Graphics::Engine
         std::vector<VkVertexInputAttributeDescription> mVertexInputAttributes;
         std::vector<VkVertexInputBindingDescription> mVertexInputBindings;
         VkPipelineVertexInputStateCreateInfo mVertexInputState = {};
-
         // Input assembly state
         VkPipelineInputAssemblyStateCreateInfo mInputAssemblyState;
-
         // Tessellation state
         std::optional<VkPipelineTessellationStateCreateInfo> mTessellationState;
-
         // Viewport state
         std::vector<VkViewport> mViewports;
         std::vector<VkRect2D> mScissors;
         VkPipelineViewportStateCreateInfo mViewportState;
-
         // Rasterization state
         VkPipelineRasterizationStateCreateInfo mRasterizationState = {};
-
         // Multisample state
         VkSampleMask mSampleMask = 0;
         std::optional<VkPipelineMultisampleStateCreateInfo> mMultisampleState;
-
         // Depth-stencil state
         std::optional<VkPipelineDepthStencilStateCreateInfo> mDepthStencilState;
-
         // Color blend state
         std::vector<VkPipelineColorBlendAttachmentState> mAttachmentColorBlends;
         std::optional<VkPipelineColorBlendStateCreateInfo> mColorBlendState;
-
         // Dynamic states
         std::vector<VkDynamicState> mDynamicStates;
         std::optional<VkPipelineDynamicStateCreateInfo> mDynamicState;
