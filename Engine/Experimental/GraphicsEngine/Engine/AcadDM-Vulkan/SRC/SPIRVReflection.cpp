@@ -1,3 +1,4 @@
+#include "spirv_cross/spirv_glsl.hpp"
 #include "SPIRVReflection.h"
 #include "GIDeviceVk.h"
 #include <fstream>
@@ -55,16 +56,59 @@ namespace AutoCAD::Graphics::Engine
         }
     }
 
-    const std::optional<SPIRVBlock>& SPIRVReflection::GetBlock(const std::string& typeName) const
+    std::optional<SPIRVBlock> SPIRVReflection::GetBlock(const std::string& typeName) const
     {
-        
+        const auto& it = mBlocks.find(typeName);
+        if (it == mBlocks.end())
+            return std::nullopt;
+        else
+            return it->second;
     }
 
-    const std::optional<SPIRVArray>& SPIRVReflection::GetArray(const std::string& typeName) const;
-    const std::optional<SPIRVResource>& SPIRVReflection::GetVariable(const std::string& name) const;
+    std::optional<SPIRVArray> SPIRVReflection::GetArray(const std::string& typeName) const
+    {
+        const auto& it = mArrays.find(typeName);
+        if (it == mArrays.end())
+            return std::nullopt;
+        else
+            return it->second;
+    }
 
-    std::vector<uint32_t> SPIRVReflection::GetDescriptorSetLayoutIndices() const;
-    std::vector<VkDescriptorSetLayoutBinding> const& SPIRVReflection::GetDescriptorSetLayoutBindings(uint32_t setIndex) const;
-    std::vector<VkDescriptorPoolSize> const& SPIRVReflection::GetDescriptorPoolSizes() const;
-    std::vector<VkPushConstantRange> const& SPIRVReflection::GetPushConstantRanges() const;
+    std::optional<SPIRVResource> SPIRVReflection::GetVariable(const std::string& name) const
+    {
+        const auto& it = mVariables.find(name);
+        if (it == mVariables.end())
+            return std::nullopt;
+        else
+            return it->second;
+    }
+
+    std::vector<uint32_t> SPIRVReflection::GetDescriptorSetLayoutIndices() const
+    {
+        std::vector<uint32_t> indices;
+        for (const auto& [index, layoutBindings] : mDescriptorSetLayouts)
+        {
+            indices.push_back(index);
+        }
+        return indices;
+    }
+
+    std::vector<VkDescriptorSetLayoutBinding> const& SPIRVReflection::GetDescriptorSetLayoutBindings(uint32_t setIndex) const
+    {
+        const auto& it = mDescriptorSetLayouts.find(setIndex);
+        if (it == mDescriptorSetLayouts.end())
+            return {};
+        else
+            return it->second;
+    }
+
+    std::vector<VkDescriptorPoolSize> const& SPIRVReflection::GetDescriptorPoolSizes() const
+    {
+        return mDescriptorPoolSizes;
+    }
+
+    std::vector<VkPushConstantRange> const& SPIRVReflection::GetPushConstantRanges() const
+    {
+        return mPushConstantRanges;
+    }
 }

@@ -1,25 +1,26 @@
 #include "GIGraphicsPipelineVk.h"
 #include "GIDeviceVk.h"
-#include "SPIRVShaderProgram.h"
+#include "SPIRVReflection.h"
 
 namespace AutoCAD::Graphics::Engine
 {
     GIGraphicsPipelineVk::GIGraphicsPipelineVk(
         SharedPtr<GIDeviceVk> device,
-        SharedPtr<SPIRVShaderProgram> program,
+        SharedPtr<SPIRVReflection> reflection,
         const std::vector<uint32_t>& pushDescriptorSets,
         const VkGraphicsPipelineCreateInfo& createInfo,
         VkPipelineCache cache
     )
         : GIDeviceObjectVk(device)
+        , mReflection(reflection)
     {
         VK_CHECK(vkCreateGraphicsPipelines(*mDevice, cache, 1, &createInfo, nullptr, &mPipeline));
 
         for (const auto& index : pushDescriptorSets)
             mIsPushDescriptorSets[index] = true;
         
-        CreatePipelineLayout(program);
-        CreateDescriptorPool(program);
+        CreatePipelineLayout();
+        CreateDescriptorPool();
     }
 
     GIGraphicsPipelineVk::~GIGraphicsPipelineVk()
@@ -31,15 +32,15 @@ namespace AutoCAD::Graphics::Engine
         }
     }
 
-    void GIGraphicsPipelineVk::CreatePipelineLayout(const SharedPtr<SPIRVShaderProgram>& program)
+    void GIGraphicsPipelineVk::CreatePipelineLayout()
     {
-        const auto& setIndices = program->GetDescriptorSetLayoutIndices();
+        const auto& setIndices = mReflection->GetDescriptorSetLayoutIndices();
         std::vector<VkDescriptorSetLayout> setLayouts;
 
         for (uint32_t index : setIndices)
         {
             mIsPushDescriptorSets[index] = IsPushDescriptorSet(index);
-            const auto& setLayoutBindings = program->GetDescriptorSetLayoutBindings(index);
+            const auto& setLayoutBindings = mReflection->GetDescriptorSetLayoutBindings(index);
 
             VkDescriptorSetLayout setLayout = VK_NULL_HANDLE;
             VkDescriptorSetLayoutCreateInfo createInfo = {};
@@ -54,7 +55,7 @@ namespace AutoCAD::Graphics::Engine
             setLayouts.push_back(setLayout);
         }
 
-        auto pushConstantRanges = program->GetPushConstantRanges();
+        auto pushConstantRanges = mReflection->GetPushConstantRanges();
 
         VkPipelineLayoutCreateInfo createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -67,11 +68,11 @@ namespace AutoCAD::Graphics::Engine
         VK_CHECK(vkCreatePipelineLayout(*mDevice, &createInfo, nullptr, &mPipelineLayout));
     }
 
-    void GIGraphicsPipelineVk::CreateDescriptorPool(const SharedPtr<SPIRVShaderProgram>& program)
+    void GIGraphicsPipelineVk::CreateDescriptorPool()
     {
         if (mDescriptorPools.find(std::this_thread::get_id()) == mDescriptorPools.end())
         {
-            const auto& poolSizes = program->GetDescriptorPoolSizes();
+            const auto& poolSizes = mReflection->GetDescriptorPoolSizes();
 
             VkDescriptorPool pool = VK_NULL_HANDLE;
             VkDescriptorPoolCreateInfo createInfo = {};
@@ -122,9 +123,9 @@ namespace AutoCAD::Graphics::Engine
         return mPipelineName;
     }
 
-    SharedPtr<SPIRVShaderProgram> GIGraphicsPipelineVk::GetShaderProgram() const
+    SharedPtr<SPIRVReflection> GIGraphicsPipelineVk::GetShaderReflection() const
     {
-        return mShaderProgram;
+        return mReflection;
     }
 
     std::vector<uint32_t> GIGraphicsPipelineVk::GetDescriptorSetLayoutIndices() const
@@ -159,7 +160,7 @@ namespace AutoCAD::Graphics::Engine
     {
         if (mDescriptorPools.find(std::this_thread::get_id()) == mDescriptorPools.end())
         {
-            CreateDescriptorPool(mShaderProgram);
+            CreateDescriptorPool();
         }
 
         return mDescriptorPools[std::this_thread::get_id()];
@@ -177,7 +178,7 @@ namespace AutoCAD::Graphics::Engine
 
     GIGraphicsPipelineBuilderVk::GIGraphicsPipelineBuilderVk(SharedPtr<GIDeviceVk> device)
         : mDevice(device)
-        , mShaderProgram(nullptr)
+        , mReflection(nullptr)
     {
         mCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
         mCreateInfo.pNext = nullptr;
@@ -245,15 +246,12 @@ namespace AutoCAD::Graphics::Engine
 
     GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddShaderStage(const std::wstring& path)
     {
-        if (mShaderProgram == nullptr)
+        if (mReflection == nullptr)
         {
-            mShaderProgram = SPIRVShaderProgram::Create();
+            mReflection = SPIRVReflection::Create();
         }
 
-        auto stage = SPIRVShaderStage::Create(mDevice, path);
-        assert(stage->IsValid());
-        mShaderProgram->AddShaderStage(stage);
-
+        mReflection->AddShaderStage(path);
         return *this;
     }
 
@@ -271,10 +269,10 @@ namespace AutoCAD::Graphics::Engine
         VkVertexInputBindingDescription* currentInputBinding = nullptr;
         VkVertexInputAttributeDescription* currentInputAttribute = nullptr;
 
-        const auto& attrib = mShaderProgram->GetVertexAttribute(attributeBinding.GetName());
+        const auto& attrib = mReflection->GetVariable(attributeBinding.GetName());
         assert(attrib.has_value());
-        assert(attrib.value().GetLocation() != (uint32_t)-1);
-        assert(attrib.value().GetSize() <= attributeBinding.GetStride());
+        assert(attrib.value().locationId.value() != (uint32_t)-1);
+        assert(attrib.value().size <= attributeBinding.GetStride());
 
         // Find the same vertex input binding added before
         const auto& oldInputBinding = std::find_if(
@@ -304,11 +302,11 @@ namespace AutoCAD::Graphics::Engine
             mVertexInputAttributes.begin(),
             mVertexInputAttributes.end(),
             [&](const VkVertexInputAttributeDescription& desc) {
-                return desc.location == attrib.value().GetLocation();
+                return desc.location == attrib.value().locationId.value();
             });
         if (inputAttribute != mVertexInputAttributes.end())
         {
-            LOG_WARNING("Vertex input attribute (%d) exists, do you want to override it?\n");
+            LOG_WARNING("Vertex input attribute (%d) exists, do you want to override it?\n", inputAttribute->location);
             currentInputAttribute = &(*inputAttribute);
         }
         else
@@ -318,9 +316,9 @@ namespace AutoCAD::Graphics::Engine
         }
 
         currentInputAttribute->binding = attributeBinding.GetBinding();
-        currentInputAttribute->location = attrib.value().GetLocation();
+        currentInputAttribute->location = attrib.value().locationId.value();
         currentInputAttribute->offset = attributeBinding.GetOffset();
-        currentInputAttribute->format = attrib.value().GetFormat();
+        currentInputAttribute->format = attrib.value().format;
 
         return *this;
     }
@@ -462,7 +460,7 @@ namespace AutoCAD::Graphics::Engine
     {
         auto pipeline = SharedPtr<GIGraphicsPipelineVk>(new GIGraphicsPipelineVk(
             mDevice,
-            mShaderProgram,
+            mReflection,
             mPushDescriptorSets,
             mCreateInfo,
             VK_NULL_HANDLE));

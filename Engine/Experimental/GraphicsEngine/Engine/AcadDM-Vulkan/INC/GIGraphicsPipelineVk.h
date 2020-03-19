@@ -21,7 +21,7 @@ namespace AutoCAD::Graphics::Engine
         virtual void SetPipelineName(const std::wstring& name) override final;
         virtual const std::wstring& GetPipelineName() const override final;
 
-        virtual const SPIRVReflection& GetShaderReflection() const override final;
+        virtual SharedPtr<SPIRVReflection> GetShaderReflection() const override final;
         virtual std::vector<uint32_t> GetDescriptorSetLayoutIndices() const override final;
         virtual bool IsPushDescriptorSet(uint32_t setIndex) const override final;
         virtual std::optional<VkDescriptorSetLayout> GetDescriptorSetLayout(uint32_t setIndex) const override final;
@@ -61,20 +61,20 @@ namespace AutoCAD::Graphics::Engine
     {
     public:
         GIVertexAttributeBindingVk(
-            const std::wstring& name,
+            const std::string& name,
             uint32_t binding,
             uint32_t offset,
             uint32_t stride,
             VkVertexInputRate inputRate = VK_VERTEX_INPUT_RATE_VERTEX);
 
-        std::wstring const& GetName() const;
+        std::string const& GetName() const;
         uint32_t GetBinding() const;
         uint32_t GetOffset() const;
         uint32_t GetStride() const;
         VkVertexInputRate GetInputRate() const;
 
     private:
-        std::wstring mAttributeName;
+        std::string mAttributeName;
         uint32_t mVertexBufferBindingID = 0;  // From which bound vertex buffer this attribute gets its data
         uint32_t mOffset = 0;  // A byte offset of this attribute relative to the start of an element (usually vertex) in the vertex buffer
         uint32_t mStride = 0;  // The distance in bytes between two consecutive elements (usually vertex) within the vertex buffer

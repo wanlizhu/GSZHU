@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GICommonVk.h"
-#include "spirv_cross/spirv_glsl.hpp"
 
 namespace AutoCAD::Graphics::Engine
 {
@@ -19,7 +18,9 @@ namespace AutoCAD::Graphics::Engine
         SPIRVType type = SPIRVType::Scalar;
         VkFormat format = VK_FORMAT_UNDEFINED;
         VkShaderStageFlags stages = 0;
-        bool writable = false;
+        bool isWritable = false;
+        bool isPushConstant = false;
+        bool isSpecializationConstant = false;
 
         std::optional<uint32_t> locationId;       // For shader stage input and output variable
         std::optional<uint32_t> constantId;       // For specialization constant
@@ -45,7 +46,9 @@ namespace AutoCAD::Graphics::Engine
         bool isLengthLiteral = true;
     };
 
-    /* 'non-opaque uniforms outside a block' : not allowed when using GLSL for Vulkan
+    /* 'non-opaque uniforms outside a block' : not allowed when using GLSL for Vulkan.
+     * 'sampler2D' : sampler/image types can only be used in uniform variables or function parameters.
+     * 'buffer' : buffers can be declared only as blocks.
     */
     class SPIRVReflection
     {
@@ -56,9 +59,9 @@ namespace AutoCAD::Graphics::Engine
         void AddShaderStage(const std::wstring& stage);
         void AddShaderStages(const std::vector<std::wstring>& stages);
 
-        const std::optional<SPIRVResource>& GetVariable(const std::string& name) const;
-        const std::optional<SPIRVBlock>& GetBlock(const std::string& typeName) const;
-        const std::optional<SPIRVArray>& GetArray(const std::string& typeName) const;
+        std::optional<SPIRVResource> GetVariable(const std::string& name) const;
+        std::optional<SPIRVBlock> GetBlock(const std::string& typeName) const;
+        std::optional<SPIRVArray> GetArray(const std::string& typeName) const;
         
         /*
          * The set of sets that are accessible to a pipeline are grouped into another object: the pipeline layout.
