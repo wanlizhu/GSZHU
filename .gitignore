@@ -2,6 +2,7 @@
 [Bb]uild*/
 BIN/
 .INT/
+x64/
 
 # Temporary directories.
 .vs/
