@@ -19,7 +19,9 @@
 #include <functional>
 #include <unordered_map>
 #include <algorithm>
+#include <filesystem>
 #include <sstream>
+#include <fstream>
 #include <stdint.h>
 #include <assert.h>
 #include "GIPlatformVk.h"
@@ -84,4 +86,16 @@ namespace AutoCAD::Graphics::Engine
 
     const char* GIErrorDescVk(VkResult error);
     const char* GIFormatToStringVk(VkFormat format);
+}
+
+namespace std
+{
+    template <>
+    struct hash<std::filesystem::path>
+    {
+        std::size_t operator()(const std::filesystem::path& key) const
+        {
+            return std::hash<std::wstring>()(key.wstring());
+        }
+    };
 }

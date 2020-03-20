@@ -103,10 +103,10 @@
     <ClInclude Include="INC\GIIDescriptorVk.h">
       <Filter>Source Files\GI_INC_BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIPipelineCachesVk.h">
+    <ClInclude Include="INC\SPIRVReflection.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
-    <ClInclude Include="INC\SPIRVReflection.h">
+    <ClInclude Include="INC\GIPipelineCacheVk.h">
       <Filter>Source Files\GI_INC</Filter>
     </ClInclude>
   </ItemGroup>
@@ -154,6 +154,9 @@
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
     <ClCompile Include="SRC\SPIRVReflection.cpp">
+      <Filter>Source Files\GI_SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIPipelineCacheVk.cpp">
       <Filter>Source Files\GI_SRC</Filter>
     </ClCompile>
   </ItemGroup>

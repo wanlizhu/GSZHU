@@ -56,8 +56,8 @@ namespace AutoCAD::Graphics::Engine
         static SharedPtr<SPIRVReflection> Create();
         virtual ~SPIRVReflection();
 
-        void AddShaderStage(const std::wstring& stage);
-        void AddShaderStages(const std::vector<std::wstring>& stages);
+        void AddShaderStage(const std::filesystem::path& stage);
+        void AddShaderStages(const std::vector<std::filesystem::path>& stages);
 
         std::optional<SPIRVResource> GetVariable(const std::string& name) const;
         std::optional<SPIRVBlock> GetBlock(const std::string& typeName) const;

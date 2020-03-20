@@ -19,10 +19,13 @@ namespace AutoCAD::Graphics::Engine
         virtual const std::wstring& GetPipelineName() const = 0;
         
         // One pipeline layout could contain multiple descriptor-set-layouts 
-        // Use vkCmdPushDescriptorSetKHR for frequenct updated resources
+        // Push descriptors are mainly intended for texture/sampler/image bindings, which don't have a convenient mechanism 
+        // like dynamic offsets that would allow you to quickly switch which image/sampler you're using. 
+        // That being said, push descriptors are a useful concept even for UBO/SSBOs. 
+        // Whether they are faster than dynamic descriptors is a matter of profiling.
         virtual std::vector<uint32_t> GetDescriptorSetLayoutIndices() const = 0;
-        virtual bool IsPushDescriptorSet(uint32_t setIndex) const = 0;
-        virtual std::optional<VkDescriptorSetLayout> GetDescriptorSetLayout(uint32_t setIndex) const = 0;
+        virtual bool IsPushDescriptorSet(uint32_t setId) const = 0;
+        virtual std::optional<VkDescriptorSetLayout> GetDescriptorSetLayout(uint32_t setId) const = 0;
         virtual VkDescriptorPool GetDescriptorPool() = 0; // return a "thread_local" pool
         
         // Pipeline layout is required for binding/pushing descriptor-set and pushing constants

@@ -23,7 +23,7 @@ namespace AutoCAD::Graphics::Engine
 
         virtual SharedPtr<SPIRVReflection> GetShaderReflection() const override final;
         virtual std::vector<uint32_t> GetDescriptorSetLayoutIndices() const override final;
-        virtual bool IsPushDescriptorSet(uint32_t setIndex) const override final;
+        virtual bool IsPushDescriptorSet(uint32_t setId) const override final;
         virtual std::optional<VkDescriptorSetLayout> GetDescriptorSetLayout(uint32_t setIndex) const override final;
         virtual VkDescriptorPool GetDescriptorPool() override final;
         virtual VkPipelineLayout GetPipelineLayout() const override final;
@@ -33,7 +33,8 @@ namespace AutoCAD::Graphics::Engine
         GIGraphicsPipelineVk(
             SharedPtr<GIDeviceVk> device,
             SharedPtr<SPIRVReflection> reflection,
-            const std::vector<uint32_t>& pushDescriptorSets,
+            const std::vector<uint32_t>& pushSetIds, // Used to prime VkDescriptorSetLayoutCreateInfo.flag
+            const std::vector<std::filesystem::path>& stages,
             const VkGraphicsPipelineCreateInfo& createInfo,
             VkPipelineCache cache);
 
@@ -42,6 +43,7 @@ namespace AutoCAD::Graphics::Engine
         GIGraphicsPipelineVk& operator=(const GIGraphicsPipelineVk&) = delete;
         GIGraphicsPipelineVk& operator=(GIGraphicsPipelineVk&&) = default;
 
+        void CreateShaderProgram();
         void CreatePipelineLayout();
         void CreateDescriptorPool();
 
@@ -51,6 +53,7 @@ namespace AutoCAD::Graphics::Engine
         VkPipelineLayout mPipelineLayout = VK_NULL_HANDLE;
         SharedPtr<SPIRVReflection> mReflection;
 
+        std::unordered_map<std::filesystem::path, VkShaderModule> mShaderModules;
         std::unordered_map<uint32_t, VkDescriptorSetLayout> mDescriptorSetLayouts;
         std::unordered_map<uint32_t, bool> mIsPushDescriptorSets;
         std::unordered_map<std::thread::id, VkDescriptorPool> mDescriptorPools; // Must be "thread_local" or "lock" involved
@@ -88,13 +91,14 @@ namespace AutoCAD::Graphics::Engine
         GIGraphicsPipelineBuilderVk(SharedPtr<GIDeviceVk> device);
         
         GIGraphicsPipelineBuilderVk& SetBasePipeline(VkPipeline pipeline);
+        GIGraphicsPipelineBuilderVk& SetPipelineCache(VkPipelineCache cache);
         GIGraphicsPipelineBuilderVk& AddCreateFlag(VkPipelineCreateFlagBits flag);
         GIGraphicsPipelineBuilderVk& SetRenderPass(VkRenderPass renderPass, uint32_t subpass);
-        GIGraphicsPipelineBuilderVk& AddShaderStage(const std::wstring& path);
-        GIGraphicsPipelineBuilderVk& AddShaderStages(const std::vector<std::wstring>& paths);
+        GIGraphicsPipelineBuilderVk& AddShaderStage(const std::filesystem::path& path);
+        GIGraphicsPipelineBuilderVk& AddShaderStages(const std::vector<std::filesystem::path>& paths);
         GIGraphicsPipelineBuilderVk& AddVertexAttributeBinding(const GIVertexAttributeBindingVk& attributeBinding);
         GIGraphicsPipelineBuilderVk& AddVertexAttributeBindings(const std::vector<GIVertexAttributeBindingVk>& attributeBindings);
-        GIGraphicsPipelineBuilderVk& UsePushDescriptorSetFor(uint32_t setIndex);
+        GIGraphicsPipelineBuilderVk& PushDescriptorSet(uint32_t setId);
 
         GIGraphicsPipelineBuilderVk& SetInputAssemblyState(VkPrimitiveTopology topology, bool primitiveRestart);
         GIGraphicsPipelineBuilderVk& SetPatchControlPoints(uint32_t count);
@@ -117,31 +121,41 @@ namespace AutoCAD::Graphics::Engine
     private:
         SharedPtr<GIDeviceVk> mDevice;
         SharedPtr<SPIRVReflection> mReflection;
-        std::vector<uint32_t> mPushDescriptorSets;
+        std::vector<std::filesystem::path> mShaderStages;
+        std::vector<uint32_t> mPushDescriptorSetIds;
+        VkPipelineCache mPipelineCache = VK_NULL_HANDLE;
         VkGraphicsPipelineCreateInfo mCreateInfo = {};
 
         // Vertex input(attribute and its vertex-buffer-binding) state
         std::vector<VkVertexInputAttributeDescription> mVertexInputAttributes;
         std::vector<VkVertexInputBindingDescription> mVertexInputBindings;
         VkPipelineVertexInputStateCreateInfo mVertexInputState = {};
+
         // Input assembly state
         VkPipelineInputAssemblyStateCreateInfo mInputAssemblyState;
+
         // Tessellation state
         std::optional<VkPipelineTessellationStateCreateInfo> mTessellationState;
+
         // Viewport state
         std::vector<VkViewport> mViewports;
         std::vector<VkRect2D> mScissors;
         VkPipelineViewportStateCreateInfo mViewportState;
+
         // Rasterization state
         VkPipelineRasterizationStateCreateInfo mRasterizationState = {};
+
         // Multisample state
         VkSampleMask mSampleMask = 0;
         std::optional<VkPipelineMultisampleStateCreateInfo> mMultisampleState;
+
         // Depth-stencil state
         std::optional<VkPipelineDepthStencilStateCreateInfo> mDepthStencilState;
+
         // Color blend state
         std::vector<VkPipelineColorBlendAttachmentState> mAttachmentColorBlends;
         std::optional<VkPipelineColorBlendStateCreateInfo> mColorBlendState;
+
         // Dynamic states
         std::vector<VkDynamicState> mDynamicStates;
         std::optional<VkPipelineDynamicStateCreateInfo> mDynamicState;

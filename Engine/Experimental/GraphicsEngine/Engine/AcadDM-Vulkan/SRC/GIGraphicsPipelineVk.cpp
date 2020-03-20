@@ -7,28 +7,82 @@ namespace AutoCAD::Graphics::Engine
     GIGraphicsPipelineVk::GIGraphicsPipelineVk(
         SharedPtr<GIDeviceVk> device,
         SharedPtr<SPIRVReflection> reflection,
-        const std::vector<uint32_t>& pushDescriptorSets,
+        const std::vector<uint32_t>& pushSetIds,
+        const std::vector<std::filesystem::path>& stages,
         const VkGraphicsPipelineCreateInfo& createInfo,
         VkPipelineCache cache
     )
         : GIDeviceObjectVk(device)
         , mReflection(reflection)
     {
-        VK_CHECK(vkCreateGraphicsPipelines(*mDevice, cache, 1, &createInfo, nullptr, &mPipeline));
+        for (const auto& path : stages)
+            mShaderModules[path] = VK_NULL_HANDLE;
 
-        for (const auto& index : pushDescriptorSets)
-            mIsPushDescriptorSets[index] = true;
-        
+        for (const auto& setId : pushSetIds)
+            mIsPushDescriptorSets[setId] = true;
+
+        CreateShaderProgram();
         CreatePipelineLayout();
         CreateDescriptorPool();
+        
+        VK_CHECK(vkCreateGraphicsPipelines(*mDevice, cache, 1, &createInfo, nullptr, &mPipeline));
     }
 
     GIGraphicsPipelineVk::~GIGraphicsPipelineVk()
     {
         if (IsValid())
         {
+            for (const auto& [threadId, pool] : mDescriptorPools)
+            {
+                vkDestroyDescriptorPool(*mDevice, pool, nullptr);
+            }
+
+            for (const auto& [setId, setLayout] : mDescriptorSetLayouts)
+            {
+                vkDestroyDescriptorSetLayout(*mDevice, setLayout, nullptr);
+            }
+
+            for (const auto& [path, module] : mShaderModules)
+            {
+                vkDestroyShaderModule(*mDevice, module, nullptr);
+            }
+
+            vkDestroyPipelineLayout(*mDevice, mPipelineLayout, nullptr);
             vkDestroyPipeline(*mDevice, mPipeline, nullptr);
+
             mPipeline = VK_NULL_HANDLE;
+            mShaderModules.clear();
+            mDescriptorPools.clear();
+            mDescriptorSetLayouts.clear();
+        }
+    }
+
+    void GIGraphicsPipelineVk::CreateShaderProgram()
+    {
+        std::vector<char> buffer;
+
+        for (auto& [path, module] : mShaderModules)
+        {
+            std::ifstream input(path.wstring(), std::ios::binary);
+            input.seekg(0, std::ios::end);
+            buffer.resize(input.tellg(), 0);
+            input.seekg(0, std::ios::beg);
+            input.read(buffer.data(), buffer.size());
+            input.close();
+
+            VkShaderModuleCreateInfo createInfo = {};
+            createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+            createInfo.pNext = nullptr;
+            createInfo.flags = 0;
+            createInfo.codeSize = buffer.size();
+            createInfo.pCode = (const uint32_t*)buffer.data();
+            
+            VK_CHECK(vkCreateShaderModule(*mDevice, &createInfo, nullptr, &module));
+        }
+
+        for (auto& [path, module] : mShaderModules)
+        {
+            assert(module != VK_NULL_HANDLE);
         }
     }
 
@@ -138,9 +192,9 @@ namespace AutoCAD::Graphics::Engine
         return indices;
     }
 
-    bool GIGraphicsPipelineVk::IsPushDescriptorSet(uint32_t setIndex) const
+    bool GIGraphicsPipelineVk::IsPushDescriptorSet(uint32_t setId) const
     {
-        auto it = mIsPushDescriptorSets.find(setIndex);
+        auto it = mIsPushDescriptorSets.find(setId);
         if (it == mIsPushDescriptorSets.end())
             return false;
         else
@@ -178,7 +232,6 @@ namespace AutoCAD::Graphics::Engine
 
     GIGraphicsPipelineBuilderVk::GIGraphicsPipelineBuilderVk(SharedPtr<GIDeviceVk> device)
         : mDevice(device)
-        , mReflection(nullptr)
     {
         mCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
         mCreateInfo.pNext = nullptr;
@@ -232,6 +285,12 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::SetPipelineCache(VkPipelineCache cache)
+    {
+        mPipelineCache = cache;
+        return *this;
+    }
+
     GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddCreateFlag(VkPipelineCreateFlagBits flag)
     {
         mCreateInfo.flags |= flag;
@@ -244,18 +303,18 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddShaderStage(const std::wstring& path)
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddShaderStage(const std::filesystem::path& path)
     {
         if (mReflection == nullptr)
         {
             mReflection = SPIRVReflection::Create();
         }
-
         mReflection->AddShaderStage(path);
+        mShaderStages.push_back(path);
         return *this;
     }
 
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddShaderStages(const std::vector<std::wstring>& paths)
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::AddShaderStages(const std::vector<std::filesystem::path>& paths)
     {
         for (const auto& path : paths)
         {
@@ -332,9 +391,9 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::UsePushDescriptorSetFor(uint32_t setIndex)
+    GIGraphicsPipelineBuilderVk& GIGraphicsPipelineBuilderVk::PushDescriptorSet(uint32_t setId)
     {
-        mPushDescriptorSets.push_back(setIndex);
+        mPushDescriptorSetIds.push_back(setId);
         return *this;
     }
 
@@ -461,11 +520,52 @@ namespace AutoCAD::Graphics::Engine
         auto pipeline = SharedPtr<GIGraphicsPipelineVk>(new GIGraphicsPipelineVk(
             mDevice,
             mReflection,
-            mPushDescriptorSets,
+            mPushDescriptorSetIds,
+            mShaderStages,
             mCreateInfo,
-            VK_NULL_HANDLE));
+            mPipelineCache));
         assert(pipeline->IsValid());
 
         return pipeline;
     }
+
+    GIVertexAttributeBindingVk::GIVertexAttributeBindingVk(
+        const std::string& name,
+        uint32_t binding,
+        uint32_t offset,
+        uint32_t stride,
+        VkVertexInputRate inputRate
+    )
+        : mAttributeName(name)
+        , mVertexBufferBindingID(binding)
+        , mOffset(offset)
+        , mStride(stride)
+        , mInputRate(inputRate)
+    {}
+
+    std::string const& GIVertexAttributeBindingVk::GetName() const
+    {
+        return mAttributeName;
+    }
+
+    uint32_t GIVertexAttributeBindingVk::GetBinding() const
+    {
+        return mVertexBufferBindingID;
+    }
+
+    uint32_t GIVertexAttributeBindingVk::GetOffset() const
+    {
+        return mOffset;
+    }
+
+    uint32_t GIVertexAttributeBindingVk::GetStride() const
+    {
+        return mStride;
+    }
+
+    VkVertexInputRate GIVertexAttributeBindingVk::GetInputRate() const
+    {
+        return mInputRate;
+    }
+
 }

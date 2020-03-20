@@ -119,7 +119,7 @@
     <ClInclude Include="INC\GIIDeviceMemoryVk.h" />
     <ClInclude Include="INC\GIFramebufferVk.h" />
     <ClInclude Include="INC\GIIPipelineVk.h" />
-    <ClInclude Include="INC\GIPipelineCachesVk.h" />
+    <ClInclude Include="INC\GIPipelineCacheVk.h" />
     <ClInclude Include="INC\GIPlatformVk.h" />
     <ClInclude Include="INC\GIRenderPassVk.h" />
     <ClInclude Include="INC\GISamplerVk.h" />
@@ -141,6 +141,7 @@
     <ClCompile Include="SRC\GIDeviceVk.cpp" />
     <ClCompile Include="SRC\GIFramebufferVk.cpp" />
     <ClCompile Include="SRC\GIGraphicsPipelineVk.cpp" />
+    <ClCompile Include="SRC\GIPipelineCacheVk.cpp" />
     <ClCompile Include="SRC\GIRenderPassVk.cpp" />
     <ClCompile Include="SRC\GISwapchainVk.cpp" />
     <ClCompile Include="SRC\GICommonVk.cpp" />

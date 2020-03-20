@@ -43,12 +43,12 @@ namespace AutoCAD::Graphics::Engine
     SPIRVReflection::~SPIRVReflection()
     {}
 
-    void SPIRVReflection::AddShaderStage(const std::wstring& stage)
+    void SPIRVReflection::AddShaderStage(const std::filesystem::path& stage)
     {
-    
+        // TODO: shader reflection
     }
 
-    void SPIRVReflection::AddShaderStages(const std::vector<std::wstring>& stages)
+    void SPIRVReflection::AddShaderStages(const std::vector<std::filesystem::path>& stages)
     {
         for (const auto& stage : stages)
         {
