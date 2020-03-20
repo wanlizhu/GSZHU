@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F}</ProjectGuid>
+    <RootNamespace>AcadRHIVulkan</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>AcadRHI-Vulkan</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="AcadRHI-Vulkan-UserMacros.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="AcadRHI-Vulkan-UserMacros.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)BIN\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir).INT\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)BIN\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir).INT\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(SPIRV_CROSS_DIR)\include;$(ProjectDir)INC;$(ProjectDir)SRC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent />
+    <Lib>
+      <AdditionalDependencies>vulkan-1.lib;spirv-cross-cored.lib;glslangd.lib;SPIRVd.lib;OGLCompilerd.lib;OSDependentd.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;$(SPIRV_CROSS_DIR)\lib;$(GLSLANG_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PreBuildEvent>
+      <Command>echo ====================
+echo SPIRV-Cross:  [$(Platform), $(Configuration)]
+echo SPIRV-Cross Version: $(SPIRV_CROSS_VERSION) 
+====================
+
+set SourceDir="$(IntDir)SPIRV-Cross"
+set BinaryDir="$(IntDir)SPIRV-Cross-BUILD"
+set InstallDir="$(SPIRV_CROSS_DIR)"
+
+if not exist "%SourceDir%" (
+    git clone --recursive --branch $(SPIRV_CROSS_VERSION) https://github.com/KhronosGroup/SPIRV-Cross.git "%SourceDir%"
+) 
+
+if not exist "%InstallDir%" ( 
+    cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%"  -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF -DSPIRV_CROSS_ENABLE_C_API=OFF -DSPIRV_CROSS_ENABLE_HLSL=OFF -DSPIRV_CROSS_ENABLE_MSL=OFF -DSPIRV_CROSS_ENABLE_REFLECT=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_UTIL=OFF 
+    cmake --build "%BinaryDir%"
+    cmake --install "%BinaryDir%"
+)</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(SPIRV_CROSS_DIR)\include;$(ProjectDir)INC;$(ProjectDir)SRC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent />
+    <Lib>
+      <AdditionalDependencies>vulkan-1.lib;spirv-cross-core.lib;glslang.lib;SPIRV.lib;OGLCompiler.lib;OSDependent.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;$(SPIRV_CROSS_DIR)\lib;$(GLSLANG_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PreBuildEvent>
+      <Command>echo ====================
+echo SPIRV-Cross:  [$(Platform), $(Configuration)]
+echo SPIRV-Cross Version: $(SPIRV_CROSS_VERSION) 
+====================
+
+set SourceDir="$(IntDir)SPIRV-Cross"
+set BinaryDir="$(IntDir)SPIRV-Cross-BUILD"
+set InstallDir="$(SPIRV_CROSS_DIR)"
+
+if not exist "%SourceDir%" (
+    git clone --recursive --branch $(SPIRV_CROSS_VERSION) https://github.com/KhronosGroup/SPIRV-Cross.git "%SourceDir%"
+) 
+
+if not exist "%InstallDir%" ( 
+    cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%"  -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF -DSPIRV_CROSS_ENABLE_C_API=OFF -DSPIRV_CROSS_ENABLE_HLSL=OFF -DSPIRV_CROSS_ENABLE_MSL=OFF -DSPIRV_CROSS_ENABLE_REFLECT=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_UTIL=OFF 
+    cmake --build "%BinaryDir%"
+    cmake --install "%BinaryDir%"
+)</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="INC\GIAndroidPlatformVk.h" />
+    <ClInclude Include="INC\GIBufferViewVk.h" />
+    <ClInclude Include="INC\GIBufferVk.h" />
+    <ClInclude Include="INC\GICommandBufferVk.h" />
+    <ClInclude Include="INC\GICommandPoolVk.h" />
+    <ClInclude Include="INC\GIComputePipelineVk.h" />
+    <ClInclude Include="INC\GIDescriptorPoolVk.h" />
+    <ClInclude Include="INC\GIDescriptorSetVk.h" />
+    <ClInclude Include="INC\GIDeviceObjectVk.h" />
+    <ClInclude Include="INC\GIDeviceQueueVk.h" />
+    <ClInclude Include="INC\GIDeviceVk.h" />
+    <ClInclude Include="INC\GIGenericPlatformVk.h" />
+    <ClInclude Include="INC\GIGraphicsPipelineVk.h" />
+    <ClInclude Include="INC\GIIDescriptorVk.h" />
+    <ClInclude Include="INC\GIIDeviceMemoryVk.h" />
+    <ClInclude Include="INC\GIFramebufferVk.h" />
+    <ClInclude Include="INC\GIIPipelineVk.h" />
+    <ClInclude Include="INC\GIPipelineCacheVk.h" />
+    <ClInclude Include="INC\GIPlatformVk.h" />
+    <ClInclude Include="INC\GIRenderPassVk.h" />
+    <ClInclude Include="INC\GISamplerVk.h" />
+    <ClInclude Include="INC\SPIRVReflection.h" />
+    <ClInclude Include="INC\GISwapchainVk.h" />
+    <ClInclude Include="INC\GITextureViewVk.h" />
+    <ClInclude Include="INC\GITextureVk.h" />
+    <ClInclude Include="INC\GIWindowsPlatformVk.h" />
+    <ClInclude Include="INC\GICommonVk.h" />
+    <ClInclude Include="INC\VKInstance.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SRC\GIAndroidPlatformVk.cpp" />
+    <ClCompile Include="SRC\GICommandBufferVk.cpp" />
+    <ClCompile Include="SRC\GICommandPoolVk.cpp" />
+    <ClCompile Include="SRC\GIComputePipelineVk.cpp" />
+    <ClCompile Include="SRC\GIDeviceObjectVk.cpp" />
+    <ClCompile Include="SRC\GIDeviceQueueVk.cpp" />
+    <ClCompile Include="SRC\GIDeviceVk.cpp" />
+    <ClCompile Include="SRC\GIFramebufferVk.cpp" />
+    <ClCompile Include="SRC\GIGraphicsPipelineVk.cpp" />
+    <ClCompile Include="SRC\GIPipelineCacheVk.cpp" />
+    <ClCompile Include="SRC\GIRenderPassVk.cpp" />
+    <ClCompile Include="SRC\GISwapchainVk.cpp" />
+    <ClCompile Include="SRC\GICommonVk.cpp" />
+    <ClCompile Include="SRC\GIWindowsPlatformVk.cpp" />
+    <ClCompile Include="SRC\SPIRVReflection.cpp" />
+    <ClCompile Include="SRC\VKInstance.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AcadRHI-Vulkan Class Diagram.cd" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

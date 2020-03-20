@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadDM-Vulkan", "Engine\AcadDM-Vulkan\AcadDM-Vulkan.vcxproj", "{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadRHI-Vulkan", "Engine\AcadRHI-Vulkan\AcadRHI-Vulkan.vcxproj", "{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadDM-Vulkan-SYNC", "Engine\AcadDM-Vulkan\AcadDM-Vulkan-SYNC.vcxproj", "{8EA4F2AE-DF06-4FF9-B7CA-00627FCE5191}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadDM-Vulkan-WindowsHost", "UnitTest\WindowsHost\AcadDM-Vulkan-WindowsHost.vcxproj", "{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadRHI-Vulkan-WindowsHost", "UnitTest\WindowsHost\AcadRHI-Vulkan-WindowsHost.vcxproj", "{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadEditor", "Editor\AcadEditor.vcxproj", "{9116605D-75BF-4EF8-98DF-6FBF36E000C1}"
 EndProject
@@ -21,10 +19,6 @@ Global
 		{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F}.Debug|x64.Build.0 = Debug|x64
 		{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F}.Release|x64.ActiveCfg = Release|x64
 		{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F}.Release|x64.Build.0 = Release|x64
-		{8EA4F2AE-DF06-4FF9-B7CA-00627FCE5191}.Debug|x64.ActiveCfg = Debug|x64
-		{8EA4F2AE-DF06-4FF9-B7CA-00627FCE5191}.Debug|x64.Build.0 = Debug|x64
-		{8EA4F2AE-DF06-4FF9-B7CA-00627FCE5191}.Release|x64.ActiveCfg = Release|x64
-		{8EA4F2AE-DF06-4FF9-B7CA-00627FCE5191}.Release|x64.Build.0 = Release|x64
 		{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}.Debug|x64.ActiveCfg = Debug|x64
 		{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}.Debug|x64.Build.0 = Debug|x64
 		{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}.Release|x64.ActiveCfg = Release|x64
