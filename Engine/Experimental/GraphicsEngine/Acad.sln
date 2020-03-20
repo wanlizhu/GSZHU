@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadDM-Vulkan-SYNC", "Engin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadDM-Vulkan-WindowsHost", "UnitTest\WindowsHost\AcadDM-Vulkan-WindowsHost.vcxproj", "{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadEditor", "Editor\AcadEditor.vcxproj", "{9116605D-75BF-4EF8-98DF-6FBF36E000C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -27,6 +29,10 @@ Global
 		{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}.Debug|x64.Build.0 = Debug|x64
 		{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}.Release|x64.ActiveCfg = Release|x64
 		{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}.Release|x64.Build.0 = Release|x64
+		{9116605D-75BF-4EF8-98DF-6FBF36E000C1}.Debug|x64.ActiveCfg = Debug|x64
+		{9116605D-75BF-4EF8-98DF-6FBF36E000C1}.Debug|x64.Build.0 = Debug|x64
+		{9116605D-75BF-4EF8-98DF-6FBF36E000C1}.Release|x64.ActiveCfg = Release|x64
+		{9116605D-75BF-4EF8-98DF-6FBF36E000C1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

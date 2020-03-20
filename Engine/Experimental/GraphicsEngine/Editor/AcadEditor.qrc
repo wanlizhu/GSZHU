@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>RES/logo64x64.bmp</file>
+        <file>RES/ic_create_new_folder_black_48dp.png</file>
+        <file>RES/ic_exit_to_app_black_48dp.png</file>
+        <file>RES/ic_folder_open_black_48dp.png</file>
+        <file>RES/ic_history_black_48dp.png</file>
+        <file>RES/ic_save_black_48dp.png</file>
+    </qresource>
+</RCC>
