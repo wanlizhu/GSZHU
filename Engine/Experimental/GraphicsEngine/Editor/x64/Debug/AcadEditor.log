@@ -1,5 +1,0 @@
-﻿  uic AcadEditor.ui
-  AcadEditor.cpp
-  main.cpp
-  moc_AcadEditor.cpp
-  AcadEditor.vcxproj -> E:\GraphicsEngine\Engine\Experimental\GraphicsEngine\x64\Debug\AcadEditor.exe
