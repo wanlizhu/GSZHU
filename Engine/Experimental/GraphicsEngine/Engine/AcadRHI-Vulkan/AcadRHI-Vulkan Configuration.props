@@ -2,27 +2,32 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <ACADRHI_VULKAN_DIR>$(SolutionDir)Engine\AcadRHI-Vulkan</ACADRHI_VULKAN_DIR>
+    <ACADRHI_VULKAN_INC>$(SolutionDir)Engine\AcadRHI-Vulkan\INC</ACADRHI_VULKAN_INC>
+    <ACADRHI_VULKAN_LIB>$(SolutionDir)Engine\AcadRHI-Vulkan\BIN\AcadRHI-Vulkan-$(Platform)-$(Configuration)\AcadRHI-Vulkan.lib</ACADRHI_VULKAN_LIB>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>AcadRHI-Vulkan Configuration</_PropertySheetDisplayName>
-    <OutDir>$(ProjectDir)BIN\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir).INT\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(ACADRHI_VULKAN_DIR)\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(ACADRHI_VULKAN_INC);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>AcadDM-Vulkan.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ACADRHI_VULKAN_DIR)\BIN\AcadRHI-Vulkan-$(Platform)-$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(ACADRHI_VULKAN_LIB);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent />
+    <Lib>
+      <AdditionalDependencies>$(ACADRHI_VULKAN_LIB);%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <BuildMacro Include="ACADDM_VULKAN_DIR">
-      <Value>$(ACADRHI_VULKAN_DIR)</Value>
+    <BuildMacro Include="ACADRHI_VULKAN_INC">
+      <Value>$(ACADRHI_VULKAN_INC)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="ACADRHI_VULKAN_LIB">
+      <Value>$(ACADRHI_VULKAN_LIB)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>

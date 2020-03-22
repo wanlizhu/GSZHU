@@ -4,46 +4,48 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    enum class SPIRVType
-    {
-        Scalar,
-        Block,
-        Array,
-    };
-
-    struct SPIRVResource
+    struct SPIRVAttribute
     {
         std::string name;
+        uint32_t locationId = 0;
         uint32_t size = 0;
-        SPIRVType type = SPIRVType::Scalar;
-        VkFormat format = VK_FORMAT_UNDEFINED;
-        VkShaderStageFlags stages = 0;
-        bool isWritable = false;
+        VkFormat format = VK_FORMAT_UNDEFINED; // VK_FORMAT_UNDEFINED for block and array type
+        std::optional<uint32_t> arrayLength;
+    };
+
+    struct SPIRVBlock
+    {
+        struct Field
+        {
+            std::string name;
+            uint32_t offset = 0;
+            uint32_t size = 0;
+            VkFormat format = VK_FORMAT_UNDEFINED; // VK_FORMAT_UNDEFINED for array type here (nested block is not allowed)
+            std::optional<uint32_t> arrayLength;
+        };
+
+        std::string name;
+        uint32_t setId = 0;
+        uint32_t bindingId = 0;
+        uint32_t size = 0;
         bool isPushConstant = false;
-        bool isSpecializationConstant = false;
+        bool isWritable = false;
+        VkShaderStageFlags stageFlags = 0;
 
-        std::optional<uint32_t> locationId;       // For shader stage input and output variable
-        std::optional<uint32_t> constantId;       // For specialization constant
-        std::optional<uint32_t> descriptorSetId;  // For buffer and image binding block
-        std::optional<uint32_t> bindingId;        // For buffer and image binding block
-        std::optional<uint32_t> offset;           // For block member
-        std::optional<std::string> typeName;      // For Scalar, this is std::nullopt
+        std::unordered_map<std::string, Field> members;
     };
 
-    struct SPIRVBlock : public SPIRVResource
+    struct SPIRVArray
     {
-        std::unordered_map<std::string, SPIRVResource> members;
-    };
-
-    struct SPIRVArray : public SPIRVResource
-    {
-        SPIRVType elementType = SPIRVType::Scalar;
-        std::optional<VkFormat> elementTypeFormat;
-        std::optional<std::string> elementTypeName;
-
-        uint32_t stride = 0;
-        uint32_t length = 0;
+        std::string name;
+        uint32_t setId = 0;
+        uint32_t bindingId = 0;
+        uint32_t size = 0;
+        uint32_t arrayLength = 0;
         bool isLengthLiteral = true;
+        bool isWritable = false;
+        VkShaderStageFlags stageFlags = 0;
+        VkFormat elementType = VK_FORMAT_UNDEFINED; // VK_FORMAT_UNDEFINED for block type here (nested array is not recommended)
     };
 
     /* 'non-opaque uniforms outside a block' : not allowed when using GLSL for Vulkan.
@@ -58,10 +60,11 @@ namespace AutoCAD::Graphics::Engine
 
         void AddShaderStage(const std::filesystem::path& stage);
         void AddShaderStages(const std::vector<std::filesystem::path>& stages);
+        void AddPushDescriptorSet(uint32_t setId); // This information can only be specified from application, instead of shader
 
-        std::optional<SPIRVResource> GetVariable(const std::string& name) const;
-        std::optional<SPIRVBlock> GetBlock(const std::string& typeName) const;
-        std::optional<SPIRVArray> GetArray(const std::string& typeName) const;
+        std::unordered_map<std::string, SPIRVAttribute> const& GetAttributes() const;
+        std::unordered_map<std::string, SPIRVBlock> const& GetBlocks() const;
+        std::unordered_map<std::string, SPIRVArray> const& GetArrays() const;
         
         /*
          * The set of sets that are accessible to a pipeline are grouped into another object: the pipeline layout.
@@ -71,10 +74,10 @@ namespace AutoCAD::Graphics::Engine
          * Two sets with the same layout are considered to be compatible and interchangeable. 
          * The descriptor set layout is represented by an object, and sets are created with respect to this object. 
         */
-        std::vector<uint32_t> GetDescriptorSetLayoutIndices() const;
-        std::vector<VkDescriptorSetLayoutBinding> const& GetDescriptorSetLayoutBindings(uint32_t setIndex) const;
+        std::unordered_map<uint32_t, std::vector<VkDescriptorSetLayoutBinding>> const& GetDescriptorSetLayoutsBindings() const;
         std::vector<VkDescriptorPoolSize> const& GetDescriptorPoolSizes() const;
         std::vector<VkPushConstantRange> const& GetPushConstantRanges() const;
+        bool IsPushDescriptorSet(uint32_t setId) const;
 
     protected:
         SPIRVReflection() = default;
@@ -83,14 +86,20 @@ namespace AutoCAD::Graphics::Engine
         SPIRVReflection& operator=(const SPIRVReflection&) = delete;
         SPIRVReflection& operator=(SPIRVReflection&&) = default;
 
+        void CompileToGLSL(const std::filesystem::path& spirvPath); // Convert SPIRV binary code to GLSL for reflection
+        void LoadJSON(const std::filesystem::path& jsonPath); // Load precompiled reflection info from file
+
     private:
         // A pipeline could contain multiple descriptor sets
-        std::unordered_map<uint32_t, std::vector<VkDescriptorSetLayoutBinding>> mDescriptorSetLayouts; 
+        std::unordered_map<uint32_t, std::vector<VkDescriptorSetLayoutBinding>> mDescriptorSetLayouts;
+        std::unordered_map<uint32_t, bool> mIsPushDescriptorSets;
         std::vector<VkDescriptorPoolSize> mDescriptorPoolSizes;
-        std::vector<VkPushConstantRange> mPushConstantRanges;
+        std::vector<VkPushConstantRange> mPushConstantRanges; // Only one push_constant block is allowed per stage.
 
-        std::unordered_map<std::string, SPIRVResource> mVariables;
+        std::unordered_map<std::string, SPIRVAttribute> mAttributes;
         std::unordered_map<std::string, SPIRVBlock> mBlocks;
         std::unordered_map<std::string, SPIRVArray> mArrays;
     };
+
+
 }

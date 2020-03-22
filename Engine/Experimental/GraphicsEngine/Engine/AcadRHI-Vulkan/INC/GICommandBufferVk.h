@@ -9,6 +9,7 @@ namespace AutoCAD::Graphics::Engine
 
     class GICommandBufferVk : public GIWeakDeviceObjectVk
     {
+        friend class GICommandPoolVk;
         DECL_WEAK_DEVICE_OBJECT(GICommandBufferVk)
     public:
         enum class EState
@@ -21,9 +22,7 @@ namespace AutoCAD::Graphics::Engine
             Submitted,
         };
 
-        static SharedPtr<GICommandBufferVk> Create(SharedPtr<GICommandPoolVk> pool, bool secondary = false);
         virtual ~GICommandBufferVk();
-
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
         virtual void SetDebugTag(const DebugTag& tag) const override final;

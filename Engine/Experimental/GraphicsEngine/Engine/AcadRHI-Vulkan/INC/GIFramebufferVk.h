@@ -10,7 +10,6 @@ namespace AutoCAD::Graphics::Engine
         DECL_DEVICE_OBJECT(GIFramebufferVk)
     public:
         virtual ~GIFramebufferVk();
-
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
         virtual void SetDebugTag(const DebugTag& tag) const override final;

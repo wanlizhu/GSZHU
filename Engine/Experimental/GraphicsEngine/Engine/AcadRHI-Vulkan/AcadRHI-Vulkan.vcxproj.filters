@@ -43,9 +43,6 @@
     <ClInclude Include="INC\GICommonVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIComputePipelineVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIDeviceObjectVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -56,12 +53,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\GIFramebufferVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIGraphicsPipelineVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIIPipelineVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\GIPipelineCacheVk.h">
@@ -85,15 +76,6 @@
     <ClInclude Include="INC\GIBufferVk.h">
       <Filter>BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIDescriptorPoolVk.h">
-      <Filter>BACKLOG</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDescriptorSetVk.h">
-      <Filter>BACKLOG</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIIDescriptorVk.h">
-      <Filter>BACKLOG</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIIDeviceMemoryVk.h">
       <Filter>BACKLOG</Filter>
     </ClInclude>
@@ -104,6 +86,27 @@
       <Filter>BACKLOG</Filter>
     </ClInclude>
     <ClInclude Include="INC\GITextureVk.h">
+      <Filter>BACKLOG</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDescriptorPoolVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDescriptorSetVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDeviceContextVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIPipelineVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIPipelineLayoutVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDescriptorSetLayoutVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDescriptorResourceVk.h">
       <Filter>BACKLOG</Filter>
     </ClInclude>
   </ItemGroup>
@@ -123,9 +126,6 @@
     <ClCompile Include="SRC\GICommonVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\GIComputePipelineVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SRC\GIDeviceObjectVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -136,9 +136,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GIFramebufferVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIGraphicsPipelineVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GIPipelineCacheVk.cpp">
@@ -154,6 +151,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\VKInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIPipelineVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIDescriptorSetLayoutVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIPipelineLayoutVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIDescriptorSetVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIDescriptorPoolVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

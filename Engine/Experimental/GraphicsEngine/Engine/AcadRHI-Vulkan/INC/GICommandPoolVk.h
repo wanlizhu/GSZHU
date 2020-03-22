@@ -1,11 +1,11 @@
 #pragma once
 
 #include "GIDeviceObjectVk.h"
-#include "GICommandBufferVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
     class GIDeviceQueueVk;
+    class GICommandBufferVk;
 
     class GICommandPoolVk : public GIDeviceObjectVk
     {

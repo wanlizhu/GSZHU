@@ -5,9 +5,13 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadRHI-Vulkan", "Engine\AcadRHI-Vulkan\AcadRHI-Vulkan.vcxproj", "{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadRHI-Vulkan-WindowsHost", "UnitTest\WindowsHost\AcadRHI-Vulkan-WindowsHost.vcxproj", "{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadDM-WindowsHost", "UnitTest\WindowsHost\AcadDM-WindowsHost.vcxproj", "{9FC389AF-EA6D-4928-AFFA-3E5E7438CFAE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadEditor", "Editor\AcadEditor.vcxproj", "{9116605D-75BF-4EF8-98DF-6FBF36E000C1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AcadDM-Core2D", "Engine\AcadDM-Core2D\AcadDM-Core2D.vcxproj", "{7A89283F-EBC9-49F5-8973-72C00B87B6B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{3D593CAC-C744-46CC-A726-6389D7CD3E6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +31,17 @@ Global
 		{9116605D-75BF-4EF8-98DF-6FBF36E000C1}.Debug|x64.Build.0 = Debug|x64
 		{9116605D-75BF-4EF8-98DF-6FBF36E000C1}.Release|x64.ActiveCfg = Release|x64
 		{9116605D-75BF-4EF8-98DF-6FBF36E000C1}.Release|x64.Build.0 = Release|x64
+		{7A89283F-EBC9-49F5-8973-72C00B87B6B3}.Debug|x64.ActiveCfg = Debug|x64
+		{7A89283F-EBC9-49F5-8973-72C00B87B6B3}.Debug|x64.Build.0 = Debug|x64
+		{7A89283F-EBC9-49F5-8973-72C00B87B6B3}.Release|x64.ActiveCfg = Release|x64
+		{7A89283F-EBC9-49F5-8973-72C00B87B6B3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F} = {3D593CAC-C744-46CC-A726-6389D7CD3E6E}
+		{7A89283F-EBC9-49F5-8973-72C00B87B6B3} = {3D593CAC-C744-46CC-A726-6389D7CD3E6E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A820349-D2F7-4ECD-A913-E227E3D979F0}

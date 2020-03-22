@@ -4,7 +4,7 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class GIIDescriptorVk
+    class GIDescriptorResourceVk
     {
     public:
 

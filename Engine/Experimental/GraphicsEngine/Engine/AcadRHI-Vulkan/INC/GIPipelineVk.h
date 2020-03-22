@@ -1,0 +1,157 @@
+#pragma once
+
+#include "GIDeviceObjectVk.h"
+
+namespace AutoCAD::Graphics::Engine
+{
+    class SPIRVReflection;
+    class GIDescriptorSetLayoutVk;
+    class GIPipelineLayoutVk;
+
+    class GIPipelineVk : public GIDeviceObjectVk
+    {
+        friend class GIPipelineBuilderVk;
+        DECL_DEVICE_OBJECT(GIPipelineVk)
+    public:
+        virtual ~GIPipelineVk();
+        virtual bool IsValid() const override final;
+        virtual void SetDebugName(const char* name) const override final;
+        virtual void SetDebugTag(const DebugTag& tag) const override final;
+        
+        operator const VkPipeline& () const;
+        void SetPipelineName(const std::wstring& name);
+        const std::wstring& GetPipelineName() const;
+        SharedPtr<SPIRVReflection> GetShaderReflection() const;
+        SharedPtr<GIPipelineLayoutVk> GetPipelineLayout() const;
+        VkPipelineBindPoint GetPipelineBindPoint() const;
+
+    protected:
+        GIPipelineVk(
+            SharedPtr<GIDeviceVk> device,
+            SharedPtr<SPIRVReflection> reflection,
+            const VkGraphicsPipelineCreateInfo& createInfo,
+            VkPipelineCache cache);
+
+        GIPipelineVk(const GIPipelineVk&) = delete;
+        GIPipelineVk(GIPipelineVk&&) = default;
+        GIPipelineVk& operator=(const GIPipelineVk&) = delete;
+        GIPipelineVk& operator=(GIPipelineVk&&) = default;
+
+        void CreatePipelineLayout();
+
+    private:
+        std::wstring mPipelineName;
+        VkPipeline mPipeline = VK_NULL_HANDLE;
+        VkPipelineBindPoint mPipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+
+        SharedPtr<GIPipelineLayoutVk> mPipelineLayout;
+        SharedPtr<SPIRVReflection> mReflection;
+    };
+
+    // TODO: move this into GIVertexBufferVk.h
+    class GIVertexAttributeBindingVk
+    {
+    public:
+        GIVertexAttributeBindingVk(
+            const std::string& name,
+            uint32_t binding,
+            uint32_t offset,
+            uint32_t stride,
+            VkVertexInputRate inputRate = VK_VERTEX_INPUT_RATE_VERTEX);
+
+        std::string const& GetName() const;
+        uint32_t GetBinding() const;
+        uint32_t GetOffset() const;
+        uint32_t GetStride() const;
+        VkVertexInputRate GetInputRate() const;
+
+    private:
+        std::string mAttributeName;
+        uint32_t mVertexBufferBindingID = 0;  // From which bound vertex buffer this attribute gets its data
+        uint32_t mOffset = 0;  // A byte offset of this attribute relative to the start of an element (usually vertex) in the vertex buffer
+        uint32_t mStride = 0;  // The distance in bytes between two consecutive elements (usually vertex) within the vertex buffer
+        VkVertexInputRate mInputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+    };
+
+    class GIPipelineBuilderVk
+    {
+    public:
+        GIPipelineBuilderVk(SharedPtr<GIDeviceVk> device);
+        ~GIPipelineBuilderVk();
+
+        GIPipelineBuilderVk& SetBasePipeline(VkPipeline pipeline);
+        GIPipelineBuilderVk& SetPipelineCache(VkPipelineCache cache);
+        GIPipelineBuilderVk& SetBindPoint(VkPipelineBindPoint bindPoint);
+        GIPipelineBuilderVk& AddCreateFlag(VkPipelineCreateFlagBits flag);
+        GIPipelineBuilderVk& AddPushDescriptorSet(uint32_t setId);
+        GIPipelineBuilderVk& SetRenderPass(VkRenderPass renderPass, uint32_t subpass);
+        GIPipelineBuilderVk& AddShaderStage(const std::filesystem::path& path);
+        GIPipelineBuilderVk& AddShaderStages(const std::vector<std::filesystem::path>& paths);
+        GIPipelineBuilderVk& AddVertexAttributeBinding(const GIVertexAttributeBindingVk& attributeBinding);
+        GIPipelineBuilderVk& AddVertexAttributeBindings(const std::vector<GIVertexAttributeBindingVk>& attributeBindings);
+        
+        GIPipelineBuilderVk& SetInputAssemblyState(VkPrimitiveTopology topology, bool primitiveRestart);
+        GIPipelineBuilderVk& SetPatchControlPoints(uint32_t count);
+        GIPipelineBuilderVk& AddViewport(const VkViewport& viewport);
+        GIPipelineBuilderVk& AddScissor(const VkRect2D& scissor);
+        GIPipelineBuilderVk& EnableDepthClamp(bool value);
+        GIPipelineBuilderVk& EnableRasterizerDiscard(bool value);
+        GIPipelineBuilderVk& SetPolygonMode(VkPolygonMode polygonMode);
+        GIPipelineBuilderVk& SetCullMode(VkCullModeFlags cullMode);
+        GIPipelineBuilderVk& SetFrontFace(VkFrontFace frontFace);
+        GIPipelineBuilderVk& EnableDepthBias(bool value);
+        GIPipelineBuilderVk& SetDepthBiasConstantFactor(float value);
+        GIPipelineBuilderVk& SetDepthBiasClamp(float value);
+        GIPipelineBuilderVk& SetDepthBiasSlopeFactor(float value);
+        GIPipelineBuilderVk& SetLineWidth(float value);
+        GIPipelineBuilderVk& AddDynamicState(VkDynamicState dynamicState);
+
+        SharedPtr<GIPipelineVk> Build();
+
+    private:
+        SharedPtr<GIDeviceVk> mDevice;
+        SharedPtr<SPIRVReflection> mReflection;
+        std::vector<uint32_t> mPushDescriptorSetIds;
+        VkPipelineCache mPipelineCache = VK_NULL_HANDLE;
+        VkPipelineBindPoint mBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+        VkGraphicsPipelineCreateInfo mCreateInfo = {};
+
+        // Shader stages
+        std::vector<VkShaderModule> mShaderModules; // A shader module can be destroyed while pipelines created using its shaders are still in use.
+        std::vector<VkPipelineShaderStageCreateInfo> mShaderStages;
+
+        // Vertex input(attribute and its vertex-buffer-binding) state
+        std::vector<VkVertexInputAttributeDescription> mVertexInputAttributes;
+        std::vector<VkVertexInputBindingDescription> mVertexInputBindings;
+        VkPipelineVertexInputStateCreateInfo mVertexInputState = {};
+
+        // Input assembly state
+        VkPipelineInputAssemblyStateCreateInfo mInputAssemblyState;
+
+        // Tessellation state
+        std::optional<VkPipelineTessellationStateCreateInfo> mTessellationState;
+
+        // Viewport state
+        std::vector<VkViewport> mViewports;
+        std::vector<VkRect2D> mScissors;
+        VkPipelineViewportStateCreateInfo mViewportState;
+
+        // Rasterization state
+        VkPipelineRasterizationStateCreateInfo mRasterizationState = {};
+
+        // Multisample state
+        VkSampleMask mSampleMask = 0;
+        std::optional<VkPipelineMultisampleStateCreateInfo> mMultisampleState;
+
+        // Depth-stencil state
+        std::optional<VkPipelineDepthStencilStateCreateInfo> mDepthStencilState;
+
+        // Color blend state
+        std::vector<VkPipelineColorBlendAttachmentState> mAttachmentColorBlends;
+        std::optional<VkPipelineColorBlendStateCreateInfo> mColorBlendState;
+
+        // Dynamic states
+        std::vector<VkDynamicState> mDynamicStates;
+        std::optional<VkPipelineDynamicStateCreateInfo> mDynamicState;
+    };
+}

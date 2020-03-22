@@ -6,13 +6,6 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    SharedPtr<GICommandBufferVk> GICommandBufferVk::Create(SharedPtr<GICommandPoolVk> pool, bool secondary)
-    {
-        auto cmdbuf = SharedPtr<GICommandBufferVk>(new GICommandBufferVk(pool, secondary));
-        assert(cmdbuf->IsValid());
-        return cmdbuf;
-    }
-
     GICommandBufferVk::GICommandBufferVk(SharedPtr<GICommandPoolVk> pool, bool secondary)
         : GIWeakDeviceObjectVk(pool->GetDevice()->weak_from_this())
         , mCommandPool(*pool)

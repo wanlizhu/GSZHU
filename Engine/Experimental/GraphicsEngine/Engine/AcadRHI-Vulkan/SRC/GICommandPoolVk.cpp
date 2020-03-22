@@ -1,4 +1,5 @@
 #include "GICommandPoolVk.h"
+#include "GICommandBufferVk.h"
 #include "GIDeviceQueueVk.h"
 #include "GIDeviceVk.h"
 
@@ -58,7 +59,7 @@ namespace AutoCAD::Graphics::Engine
 
     SharedPtr<GICommandBufferVk> GICommandPoolVk::Allocate(bool secondary)
     {
-        return GICommandBufferVk::Create(shared_from_this(), secondary);
+        return SharedPtr<GICommandBufferVk>(new GICommandBufferVk(shared_from_this(), secondary));
     }
 
     std::thread::id GICommandPoolVk::GetThreadId() const

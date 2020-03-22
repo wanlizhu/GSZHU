@@ -38,11 +38,9 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="AcadRHI-Vulkan-UserMacros.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="AcadRHI-Vulkan-UserMacros.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -62,7 +60,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(SPIRV_CROSS_DIR)\include;$(ProjectDir)INC;$(ProjectDir)SRC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(ProjectDir)INC;$(ProjectDir)SRC;$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -70,23 +68,25 @@
     </Link>
     <PreBuildEvent />
     <Lib>
-      <AdditionalDependencies>vulkan-1.lib;spirv-cross-cored.lib;glslangd.lib;SPIRVd.lib;OGLCompilerd.lib;OSDependentd.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(VULKAN_SDK)\Lib\vulkan-1.lib;$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)\lib\spirv-cross-cored.lib;$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)\lib\spirv-cross-glsld.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;$(SPIRV_CROSS_DIR)\lib;$(GLSLANG_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>echo ====================
-echo SPIRV-Cross:  [$(Platform), $(Configuration)]
-echo SPIRV-Cross Version: $(SPIRV_CROSS_VERSION) 
-====================
+      <Command>set SPIRV_CROSS_VERSION=2020-02-26
+set SourceDir="$(ProjectDir).INT\SPIRV-Cross"
+set BinaryDir="$(ProjectDir).INT\SPIRV-Cross-CMakeBuild"
+set InstallDir="$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)"
 
-set SourceDir="$(IntDir)SPIRV-Cross"
-set BinaryDir="$(IntDir)SPIRV-Cross-BUILD"
-set InstallDir="$(SPIRV_CROSS_DIR)"
+echo ====================
+echo SPIRV-Cross:  [$(Platform), $(Configuration)]
+echo SPIRV-Cross Version: SPIRV_CROSS_VERSION
+echo Install Directory: "%InstallDir%"
+echo ====================
 
 if not exist "%SourceDir%" (
-    git clone --recursive --branch $(SPIRV_CROSS_VERSION) https://github.com/KhronosGroup/SPIRV-Cross.git "%SourceDir%"
+    git clone --recursive --branch %SPIRV_CROSS_VERSION% https://github.com/KhronosGroup/SPIRV-Cross.git "%SourceDir%"
 ) 
 
 if not exist "%InstallDir%" ( 
@@ -104,7 +104,7 @@ if not exist "%InstallDir%" (
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(SPIRV_CROSS_DIR)\include;$(ProjectDir)INC;$(ProjectDir)SRC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(ProjectDir)INC;$(ProjectDir)SRC;$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -115,23 +115,25 @@ if not exist "%InstallDir%" (
     </Link>
     <PreBuildEvent />
     <Lib>
-      <AdditionalDependencies>vulkan-1.lib;spirv-cross-core.lib;glslang.lib;SPIRV.lib;OGLCompiler.lib;OSDependent.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(VULKAN_SDK)\Lib\vulkan-1.lib;$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)\lib\spirv-cross-core.lib;$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)\lib\spirv-cross-glsl.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;$(SPIRV_CROSS_DIR)\lib;$(GLSLANG_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>echo ====================
-echo SPIRV-Cross:  [$(Platform), $(Configuration)]
-echo SPIRV-Cross Version: $(SPIRV_CROSS_VERSION) 
-====================
+      <Command>set SPIRV_CROSS_VERSION=2020-02-26
+set SourceDir="$(ProjectDir).INT\SPIRV-Cross"
+set BinaryDir="$(ProjectDir).INT\SPIRV-Cross-CMakeBuild"
+set InstallDir="$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)"
 
-set SourceDir="$(IntDir)SPIRV-Cross"
-set BinaryDir="$(IntDir)SPIRV-Cross-BUILD"
-set InstallDir="$(SPIRV_CROSS_DIR)"
+echo ====================
+echo SPIRV-Cross:  [$(Platform), $(Configuration)]
+echo SPIRV-Cross Version: SPIRV_CROSS_VERSION
+echo Install Directory: "%InstallDir%"
+echo ====================
 
 if not exist "%SourceDir%" (
-    git clone --recursive --branch $(SPIRV_CROSS_VERSION) https://github.com/KhronosGroup/SPIRV-Cross.git "%SourceDir%"
+    git clone --recursive --branch %SPIRV_CROSS_VERSION% https://github.com/KhronosGroup/SPIRV-Cross.git "%SourceDir%"
 ) 
 
 if not exist "%InstallDir%" ( 
@@ -147,18 +149,19 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIBufferVk.h" />
     <ClInclude Include="INC\GICommandBufferVk.h" />
     <ClInclude Include="INC\GICommandPoolVk.h" />
-    <ClInclude Include="INC\GIComputePipelineVk.h" />
     <ClInclude Include="INC\GIDescriptorPoolVk.h" />
+    <ClInclude Include="INC\GIDescriptorSetLayoutVk.h" />
     <ClInclude Include="INC\GIDescriptorSetVk.h" />
+    <ClInclude Include="INC\GIDeviceContextVk.h" />
     <ClInclude Include="INC\GIDeviceObjectVk.h" />
     <ClInclude Include="INC\GIDeviceQueueVk.h" />
     <ClInclude Include="INC\GIDeviceVk.h" />
     <ClInclude Include="INC\GIGenericPlatformVk.h" />
-    <ClInclude Include="INC\GIGraphicsPipelineVk.h" />
-    <ClInclude Include="INC\GIIDescriptorVk.h" />
+    <ClInclude Include="INC\GIPipelineLayoutVk.h" />
+    <ClInclude Include="INC\GIPipelineVk.h" />
+    <ClInclude Include="INC\GIDescriptorResourceVk.h" />
     <ClInclude Include="INC\GIIDeviceMemoryVk.h" />
     <ClInclude Include="INC\GIFramebufferVk.h" />
-    <ClInclude Include="INC\GIIPipelineVk.h" />
     <ClInclude Include="INC\GIPipelineCacheVk.h" />
     <ClInclude Include="INC\GIPlatformVk.h" />
     <ClInclude Include="INC\GIRenderPassVk.h" />
@@ -175,12 +178,15 @@ if not exist "%InstallDir%" (
     <ClCompile Include="SRC\GIAndroidPlatformVk.cpp" />
     <ClCompile Include="SRC\GICommandBufferVk.cpp" />
     <ClCompile Include="SRC\GICommandPoolVk.cpp" />
-    <ClCompile Include="SRC\GIComputePipelineVk.cpp" />
+    <ClCompile Include="SRC\GIDescriptorPoolVk.cpp" />
+    <ClCompile Include="SRC\GIDescriptorSetLayoutVk.cpp" />
+    <ClCompile Include="SRC\GIDescriptorSetVk.cpp" />
     <ClCompile Include="SRC\GIDeviceObjectVk.cpp" />
     <ClCompile Include="SRC\GIDeviceQueueVk.cpp" />
     <ClCompile Include="SRC\GIDeviceVk.cpp" />
     <ClCompile Include="SRC\GIFramebufferVk.cpp" />
-    <ClCompile Include="SRC\GIGraphicsPipelineVk.cpp" />
+    <ClCompile Include="SRC\GIPipelineLayoutVk.cpp" />
+    <ClCompile Include="SRC\GIPipelineVk.cpp" />
     <ClCompile Include="SRC\GIPipelineCacheVk.cpp" />
     <ClCompile Include="SRC\GIRenderPassVk.cpp" />
     <ClCompile Include="SRC\GISwapchainVk.cpp" />

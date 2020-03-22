@@ -7,6 +7,7 @@
 namespace AutoCAD::Graphics::Engine
 {
     class GIDeviceQueueVk;
+    class GIDeviceContextVk;
 
     struct OptionalDeviceExtensions
     {
@@ -54,6 +55,7 @@ namespace AutoCAD::Graphics::Engine
         operator const VkDevice& () const;
         bool IsValid() const;
         void SetupPresentQueue(VkSurfaceKHR surface);
+        void SetCurrentDC(WeakPtr<GIDeviceContextVk> dc);
         
         SharedPtr<VKInstance> const& GetInstance() const;
         VkPhysicalDevice GetPhysicalDevice() const;
@@ -61,6 +63,7 @@ namespace AutoCAD::Graphics::Engine
         OptionalDeviceExtensions const& GetOptionalExtensions() const;
 
         VkDevice GetLogicalDevice() const;
+        GIDeviceContextVk* GetDC() const;
         SharedPtr<GIDeviceQueueVk> GetGraphicsQueue() const;
         SharedPtr<GIDeviceQueueVk> GetComputeQueue() const;
         SharedPtr<GIDeviceQueueVk> GetTransferQueue() const;
@@ -86,6 +89,7 @@ namespace AutoCAD::Graphics::Engine
         OptionalDeviceExtensions mOptionalExtensions;
 
         VkDevice mLogicalDevice = VK_NULL_HANDLE;
+        WeakPtr<GIDeviceContextVk> mCurrentDC;
         SharedPtr<GIDeviceQueueVk> mGraphicsQueue;
         SharedPtr<GIDeviceQueueVk> mComputeQueue;
         SharedPtr<GIDeviceQueueVk> mTransferQueue;

@@ -45,7 +45,11 @@ namespace AutoCAD::Graphics::Engine
 
     void SPIRVReflection::AddShaderStage(const std::filesystem::path& stage)
     {
-        // TODO: shader reflection
+#ifdef ENABLE_SPIRV_CROSS_JSON
+        LoadJSON(std::filesystem::path(stage.wstring() + L".json"));
+#else
+        CompileToGLSL(stage);
+#endif
     }
 
     void SPIRVReflection::AddShaderStages(const std::vector<std::filesystem::path>& stages)
@@ -56,50 +60,24 @@ namespace AutoCAD::Graphics::Engine
         }
     }
 
-    std::optional<SPIRVBlock> SPIRVReflection::GetBlock(const std::string& typeName) const
+    void SPIRVReflection::AddPushDescriptorSet(uint32_t setId)
     {
-        const auto& it = mBlocks.find(typeName);
-        if (it == mBlocks.end())
-            return std::nullopt;
-        else
-            return it->second;
+        mIsPushDescriptorSets[setId] = true;
     }
 
-    std::optional<SPIRVArray> SPIRVReflection::GetArray(const std::string& typeName) const
+    std::unordered_map<std::string, SPIRVAttribute> const& SPIRVReflection::GetAttributes() const
     {
-        const auto& it = mArrays.find(typeName);
-        if (it == mArrays.end())
-            return std::nullopt;
-        else
-            return it->second;
+        return mAttributes;
     }
 
-    std::optional<SPIRVResource> SPIRVReflection::GetVariable(const std::string& name) const
+    std::unordered_map<std::string, SPIRVBlock> const& SPIRVReflection::GetBlocks() const
     {
-        const auto& it = mVariables.find(name);
-        if (it == mVariables.end())
-            return std::nullopt;
-        else
-            return it->second;
+        return mBlocks;
     }
 
-    std::vector<uint32_t> SPIRVReflection::GetDescriptorSetLayoutIndices() const
+    std::unordered_map<std::string, SPIRVArray> const& SPIRVReflection::GetArrays() const
     {
-        std::vector<uint32_t> indices;
-        for (const auto& [index, layoutBindings] : mDescriptorSetLayouts)
-        {
-            indices.push_back(index);
-        }
-        return indices;
-    }
-
-    std::vector<VkDescriptorSetLayoutBinding> const& SPIRVReflection::GetDescriptorSetLayoutBindings(uint32_t setIndex) const
-    {
-        const auto& it = mDescriptorSetLayouts.find(setIndex);
-        if (it == mDescriptorSetLayouts.end())
-            return {};
-        else
-            return it->second;
+        return mArrays;
     }
 
     std::vector<VkDescriptorPoolSize> const& SPIRVReflection::GetDescriptorPoolSizes() const
@@ -110,5 +88,24 @@ namespace AutoCAD::Graphics::Engine
     std::vector<VkPushConstantRange> const& SPIRVReflection::GetPushConstantRanges() const
     {
         return mPushConstantRanges;
+    }
+
+    bool SPIRVReflection::IsPushDescriptorSet(uint32_t setId) const
+    {
+        auto it = mIsPushDescriptorSets.find(setId);
+        if (it == mIsPushDescriptorSets.end())
+            return false;
+        else
+            return it->second;
+    }
+
+    void SPIRVReflection::CompileToGLSL(const std::filesystem::path& spirvPath)
+    {
+        // TODO: shader reflection
+    }
+
+    void SPIRVReflection::LoadJSON(const std::filesystem::path& jsonPath)
+    {
+        // TODO: shader reflection
     }
 }

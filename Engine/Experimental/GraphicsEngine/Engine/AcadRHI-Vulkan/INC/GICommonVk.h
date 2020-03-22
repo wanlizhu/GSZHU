@@ -22,6 +22,7 @@
 #include <filesystem>
 #include <sstream>
 #include <fstream>
+#include <streambuf>
 #include <stdint.h>
 #include <assert.h>
 #include "GIPlatformVk.h"
@@ -83,6 +84,44 @@ namespace AutoCAD::Graphics::Engine
 
     template<typename T>
     using UniquePtr = std::unique_ptr<T>;
+
+    class GIRange
+    {
+    public:
+        GIRange() = default;
+        GIRange(uint32_t offset, uint32_t size)
+            : mOffset(offset)
+            , mSize(size)
+        {}
+
+        inline uint32_t GetOffset() const { return mOffset; }
+        inline uint32_t GetSize() const { return mSize; }
+        inline bool operator==(const GIRange& rhs) const { return mOffset == rhs.mOffset && mSize == rhs.mSize; }
+        inline bool operator!=(const GIRange& rhs) const { return !(*this == rhs); }
+
+    private:
+        uint32_t mOffset = 0;
+        uint32_t mSize = 0;
+    };
+
+    class GIRegion
+    {
+    public:
+        GIRegion() = default;
+        GIRegion(const VkOffset2D& offset, const VkExtent2D& extent)
+            : mOffset(offset)
+            , mExtent(extent)
+        {}
+
+        inline const VkOffset2D& GetOffset() const { return mOffset; }
+        inline const VkExtent2D& GetExtent() const { return mExtent; }
+        inline bool operator==(const GIRegion& rhs) const { return mOffset.x == rhs.mOffset.x && mOffset.y == rhs.mOffset.y && mExtent.width == rhs.mExtent.width && mExtent.height == rhs.mExtent.height; }
+        inline bool operator!=(const GIRegion& rhs) const { return !(*this == rhs); }
+
+    private:
+        VkOffset2D mOffset = { 0, 0 };
+        VkExtent2D mExtent = { 0, 0 };
+    };
 
     const char* GIErrorDescVk(VkResult error);
     const char* GIFormatToStringVk(VkFormat format);
