@@ -73,12 +73,6 @@
     <ClInclude Include="INC\GIBufferViewVk.h">
       <Filter>BACKLOG</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIBufferVk.h">
-      <Filter>BACKLOG</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIIDeviceMemoryVk.h">
-      <Filter>BACKLOG</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GISamplerVk.h">
       <Filter>BACKLOG</Filter>
     </ClInclude>
@@ -106,8 +100,29 @@
     <ClInclude Include="INC\GIDescriptorSetLayoutVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="INC\GIBufferVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="INC\GIDescriptorResourceVk.h">
-      <Filter>BACKLOG</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIVertexBufferVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIVertexLayoutVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIIndexBufferVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIUniformBufferVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIStorageBufferVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIPushConstantVk.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

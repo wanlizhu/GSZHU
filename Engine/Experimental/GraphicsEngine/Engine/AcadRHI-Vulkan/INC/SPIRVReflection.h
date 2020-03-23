@@ -13,9 +13,19 @@ namespace AutoCAD::Graphics::Engine
         std::optional<uint32_t> arrayLength;
     };
 
-    struct SPIRVBlock
+    struct SPIRVVariable
     {
-        struct Field
+        std::string name;
+        uint32_t setId = 0;
+        uint32_t bindingId = 0;
+        uint32_t size = 0;
+        VkShaderStageFlags stageFlags = 0;
+        bool isWritable = false;
+    };
+
+    struct SPIRVBlock : public SPIRVVariable
+    {
+        struct BlockField
         {
             std::string name;
             uint32_t offset = 0;
@@ -24,29 +34,61 @@ namespace AutoCAD::Graphics::Engine
             std::optional<uint32_t> arrayLength;
         };
 
-        std::string name;
-        uint32_t setId = 0;
-        uint32_t bindingId = 0;
-        uint32_t size = 0;
-        bool isPushConstant = false;
-        bool isWritable = false;
-        VkShaderStageFlags stageFlags = 0;
-
-        std::unordered_map<std::string, Field> members;
+        std::unordered_map<std::string, BlockField> members;
     };
 
-    struct SPIRVArray
+    struct SPIRVArray : public SPIRVVariable
+    {
+        uint32_t arrayLength = 0;
+    };
+
+    struct SPIRVConstantVariable
     {
         std::string name;
-        uint32_t setId = 0;
-        uint32_t bindingId = 0;
         uint32_t size = 0;
-        uint32_t arrayLength = 0;
-        bool isLengthLiteral = true;
-        bool isWritable = false;
-        VkShaderStageFlags stageFlags = 0;
-        VkFormat elementType = VK_FORMAT_UNDEFINED; // VK_FORMAT_UNDEFINED for block type here (nested array is not recommended)
+        VkShaderStageFlags stageFlag = 0;
     };
+
+    struct SPIRVPushConstant : public SPIRVConstantVariable
+    {
+        struct BlockField
+        {
+            std::string name;
+            uint32_t offset = 0;
+            uint32_t size = 0;
+            VkFormat format = VK_FORMAT_UNDEFINED; // VK_FORMAT_UNDEFINED for array type here (nested block is not allowed)
+            std::optional<uint32_t> arrayLength;
+        };
+
+        std::unordered_map<std::string, BlockField> members;
+    };
+
+    struct SPIRVSpecializationConstant : public SPIRVConstantVariable
+    {
+        uint32_t constId = 0;
+    };
+
+    struct SPIRVOpaqueVariable
+    {
+        std::string name;
+    };
+
+    struct SPIRVSampledImage : public SPIRVOpaqueVariable
+    {
+        std::string name;
+    };
+
+    struct SPIRVImage : public SPIRVOpaqueVariable
+    {
+        std::string name;
+        bool isWritable = false;
+    };
+
+    struct SPIRVSampler : public SPIRVOpaqueVariable
+    {
+        std::string name;
+    };
+
 
     /* 'non-opaque uniforms outside a block' : not allowed when using GLSL for Vulkan.
      * 'sampler2D' : sampler/image types can only be used in uniform variables or function parameters.
@@ -96,9 +138,12 @@ namespace AutoCAD::Graphics::Engine
         std::vector<VkDescriptorPoolSize> mDescriptorPoolSizes;
         std::vector<VkPushConstantRange> mPushConstantRanges; // Only one push_constant block is allowed per stage.
 
-        std::unordered_map<std::string, SPIRVAttribute> mAttributes;
-        std::unordered_map<std::string, SPIRVBlock> mBlocks;
-        std::unordered_map<std::string, SPIRVArray> mArrays;
+        //std::unordered_map<std::string, SPIRVAttribute> mAttributes;
+        //std::unordered_map<std::string, SPIRVUniformVariable> mUniformVariables;
+        //std::unordered_map<std::string, SPIRVStorageVariable> mStorageVariables;
+        //std::unordered_map<std::string, SPIRVPushConstant> mPushConstants;
+        //std::unordered_map<std::string, SPIRVSpecializationConstant> mSpecializationConstants;
+        //std::unordered_map<std::string, SPIRVOpaqueVariable> mOpaqueVariables;
     };
 
 

@@ -85,38 +85,38 @@ namespace AutoCAD::Graphics::Engine
     template<typename T>
     using UniquePtr = std::unique_ptr<T>;
 
-    class GIRange
+    class GIRange1D
     {
     public:
-        GIRange() = default;
-        GIRange(uint32_t offset, uint32_t size)
+        GIRange1D() = default;
+        GIRange1D(uint32_t offset, uint32_t size)
             : mOffset(offset)
             , mSize(size)
         {}
 
         inline uint32_t GetOffset() const { return mOffset; }
         inline uint32_t GetSize() const { return mSize; }
-        inline bool operator==(const GIRange& rhs) const { return mOffset == rhs.mOffset && mSize == rhs.mSize; }
-        inline bool operator!=(const GIRange& rhs) const { return !(*this == rhs); }
+        inline bool operator==(const GIRange1D& rhs) const { return mOffset == rhs.mOffset && mSize == rhs.mSize; }
+        inline bool operator!=(const GIRange1D& rhs) const { return !(*this == rhs); }
 
     private:
         uint32_t mOffset = 0;
         uint32_t mSize = 0;
     };
 
-    class GIRegion
+    class GIRange2D
     {
     public:
-        GIRegion() = default;
-        GIRegion(const VkOffset2D& offset, const VkExtent2D& extent)
+        GIRange2D() = default;
+        GIRange2D(const VkOffset2D& offset, const VkExtent2D& extent)
             : mOffset(offset)
             , mExtent(extent)
         {}
 
         inline const VkOffset2D& GetOffset() const { return mOffset; }
         inline const VkExtent2D& GetExtent() const { return mExtent; }
-        inline bool operator==(const GIRegion& rhs) const { return mOffset.x == rhs.mOffset.x && mOffset.y == rhs.mOffset.y && mExtent.width == rhs.mExtent.width && mExtent.height == rhs.mExtent.height; }
-        inline bool operator!=(const GIRegion& rhs) const { return !(*this == rhs); }
+        inline bool operator==(const GIRange2D& rhs) const { return mOffset.x == rhs.mOffset.x && mOffset.y == rhs.mOffset.y && mExtent.width == rhs.mExtent.width && mExtent.height == rhs.mExtent.height; }
+        inline bool operator!=(const GIRange2D& rhs) const { return !(*this == rhs); }
 
     private:
         VkOffset2D mOffset = { 0, 0 };
