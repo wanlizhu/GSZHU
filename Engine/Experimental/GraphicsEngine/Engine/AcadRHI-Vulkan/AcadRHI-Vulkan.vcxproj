@@ -82,7 +82,7 @@ set InstallDir="$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)"
 echo ====================
 echo SPIRV-Cross:  [$(Platform), $(Configuration)]
 echo SPIRV-Cross Version: SPIRV_CROSS_VERSION
-echo Install Directory: "%InstallDir%"
+echo SPIRV-Cross Install Directory: "%InstallDir%"
 echo ====================
 
 if not exist "%SourceDir%" (
@@ -93,6 +93,26 @@ if not exist "%InstallDir%" (
     cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%"  -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF -DSPIRV_CROSS_ENABLE_C_API=OFF -DSPIRV_CROSS_ENABLE_HLSL=OFF -DSPIRV_CROSS_ENABLE_MSL=OFF -DSPIRV_CROSS_ENABLE_REFLECT=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_UTIL=OFF 
     cmake --build "%BinaryDir%"
     cmake --install "%BinaryDir%"
+)
+
+
+set VulkanMemoryAllocator_VERSION=v2.3.0
+set SourceDir="$(ProjectDir).INT\VulkanMemoryAllocator"
+set BinaryDir=""
+set InstallDir="$(ProjectDir)BIN\VulkanMemoryAllocator-HEADER-ONLY"
+
+echo ====================
+echo VulkanMemoryAllocator:  [HEADER ONLY]
+echo VulkanMemoryAllocator Version: %VulkanMemoryAllocator_VERSION%
+echo VulkanMemoryAllocator Install Directory: "%InstallDir%"
+echo ====================
+
+if not exist "%SourceDir%" (
+    git clone --recursive --branch %VulkanMemoryAllocator_VERSION% https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git "%SourceDir%"
+) 
+
+if not exist "%InstallDir%" ( 
+    cmake -E copy "%SourceDir%\src\vk_mem_alloc.h" "%InstallDir%\include\vk_mem_alloc.h"
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -129,7 +149,7 @@ set InstallDir="$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)"
 echo ====================
 echo SPIRV-Cross:  [$(Platform), $(Configuration)]
 echo SPIRV-Cross Version: SPIRV_CROSS_VERSION
-echo Install Directory: "%InstallDir%"
+echo SPIRV-Cross Install Directory: "%InstallDir%"
 echo ====================
 
 if not exist "%SourceDir%" (
@@ -140,6 +160,26 @@ if not exist "%InstallDir%" (
     cmake -S "%SourceDir%" -B "%BinaryDir%" -G "Visual Studio 16 2019" -A $(Platform) -DCMAKE_CONFIGURATION_TYPES=$(Configuration) -DCMAKE_INSTALL_PREFIX="%InstallDir%"  -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_CPP=OFF -DSPIRV_CROSS_ENABLE_C_API=OFF -DSPIRV_CROSS_ENABLE_HLSL=OFF -DSPIRV_CROSS_ENABLE_MSL=OFF -DSPIRV_CROSS_ENABLE_REFLECT=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DSPIRV_CROSS_ENABLE_UTIL=OFF 
     cmake --build "%BinaryDir%"
     cmake --install "%BinaryDir%"
+)
+
+
+set VulkanMemoryAllocator_VERSION=v2.3.0
+set SourceDir="$(ProjectDir).INT\VulkanMemoryAllocator"
+set BinaryDir=""
+set InstallDir="$(ProjectDir)BIN\VulkanMemoryAllocator-HEADER-ONLY"
+
+echo ====================
+echo VulkanMemoryAllocator:  [HEADER ONLY]
+echo VulkanMemoryAllocator Version: %VulkanMemoryAllocator_VERSION%
+echo VulkanMemoryAllocator Install Directory: "%InstallDir%"
+echo ====================
+
+if not exist "%SourceDir%" (
+    git clone --recursive --branch %VulkanMemoryAllocator_VERSION% https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git "%SourceDir%"
+) 
+
+if not exist "%InstallDir%" ( 
+    cmake -E copy "%SourceDir%\src\vk_mem_alloc.h" "%InstallDir%\include\vk_mem_alloc.h"
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -179,6 +219,7 @@ if not exist "%InstallDir%" (
     <ClCompile Include="SRC\GICommandBufferVk.cpp" />
     <ClCompile Include="SRC\GICommandPoolVk.cpp" />
     <ClCompile Include="SRC\GIDescriptorPoolVk.cpp" />
+    <ClCompile Include="SRC\GIDescriptorResourceVk.cpp" />
     <ClCompile Include="SRC\GIDescriptorSetLayoutVk.cpp" />
     <ClCompile Include="SRC\GIDescriptorSetVk.cpp" />
     <ClCompile Include="SRC\GIDeviceObjectVk.cpp" />
