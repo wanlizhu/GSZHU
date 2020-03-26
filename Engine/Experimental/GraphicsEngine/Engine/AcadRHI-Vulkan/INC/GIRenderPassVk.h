@@ -32,12 +32,10 @@ namespace AutoCAD::Graphics::Engine
         VkFormat GetDepthStencilFormat() const;
 
     protected:
-        GIRenderPassVk(SharedPtr<GIDeviceVk> device, const VkRenderPassCreateInfo& createInfo);
-        GIRenderPassVk(const GIRenderPassVk&) = delete;
-        GIRenderPassVk(GIRenderPassVk&&) = default;
-        GIRenderPassVk& operator=(const GIRenderPassVk&) = delete;
-        GIRenderPassVk& operator=(GIRenderPassVk&&) = default;
-
+        GIRenderPassVk(
+            SharedPtr<GIDeviceVk> device,
+            const VkRenderPassCreateInfo& createInfo);
+        
     private:
         VkRenderPass mRenderPass = VK_NULL_HANDLE;
         VkSampleCountFlagBits mSampleCount = VK_SAMPLE_COUNT_1_BIT;

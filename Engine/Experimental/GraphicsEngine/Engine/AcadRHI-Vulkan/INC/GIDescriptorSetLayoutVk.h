@@ -29,11 +29,6 @@ namespace AutoCAD::Graphics::Engine
             const std::vector<VkDescriptorSetLayoutBinding>& setBindings,
             bool isPushDescriptor);
 
-        GIDescriptorSetLayoutVk(const GIDescriptorSetLayoutVk&) = delete;
-        GIDescriptorSetLayoutVk(GIDescriptorSetLayoutVk&&) = default;
-        GIDescriptorSetLayoutVk& operator=(const GIDescriptorSetLayoutVk&) = delete;
-        GIDescriptorSetLayoutVk& operator=(GIDescriptorSetLayoutVk&&) = default;
-        
     private:
         VkDescriptorSetLayout mDescriptorSetLayout = VK_NULL_HANDLE;
         bool mIsPushDescriptorSet = false;

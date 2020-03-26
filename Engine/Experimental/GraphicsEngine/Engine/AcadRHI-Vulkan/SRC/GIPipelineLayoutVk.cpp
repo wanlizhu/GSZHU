@@ -67,7 +67,7 @@ namespace AutoCAD::Graphics::Engine
             return it->second;
     }
 
-    std::optional<GIRange> GIPipelineLayoutVk::GetPushConstantRange(VkPipelineStageFlags stage) const
+    std::optional<VkPushConstantRange> GIPipelineLayoutVk::GetPushConstantRange(VkPipelineStageFlags stage) const
     {
         auto it = mPushConstantRanges.find(stage);
         if (it == mPushConstantRanges.end())

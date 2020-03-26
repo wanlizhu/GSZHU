@@ -109,19 +109,16 @@
     <ClInclude Include="INC\GIVertexBufferVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIVertexLayoutVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIIndexBufferVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIUniformBufferVk.h">
+    <ClInclude Include="INC\GIDeviceMemoryPoolVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIStorageBufferVk.h">
+    <ClInclude Include="INC\GIShaderVariableVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIPushConstantVk.h">
+    <ClInclude Include="INC\GIVertexLayoutVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

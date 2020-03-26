@@ -46,11 +46,7 @@ namespace AutoCAD::Graphics::Engine
 
     protected:
         GICommandBufferVk(SharedPtr<GICommandPoolVk> pool, bool secondary = false);
-        GICommandBufferVk(const GICommandBufferVk&) = delete;
-        GICommandBufferVk(GICommandBufferVk&&) = default;
-        GICommandBufferVk& operator=(const GICommandBufferVk&) = delete;
-        GICommandBufferVk& operator=(GICommandBufferVk&&) = default;
-
+        
     private:
         VkCommandBuffer mCommandBuffer = VK_NULL_HANDLE;
         VkCommandPool mCommandPool = VK_NULL_HANDLE;

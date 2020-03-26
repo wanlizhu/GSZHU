@@ -3,6 +3,7 @@
 #include "GIPipelineLayoutVk.h"
 #include "GIDescriptorSetLayoutVk.h"
 #include "SPIRVReflection.h"
+#include "GIVertexLayoutVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
@@ -33,8 +34,9 @@ namespace AutoCAD::Graphics::Engine
         std::vector<SharedPtr<GIDescriptorSetLayoutVk>> setLayouts;
         std::vector<VkPushConstantRange> pushConstants = mReflection->GetPushConstantRanges();
 
-        for (const auto& [setId, setBindings] : mReflection->GetDescriptorSetLayoutsBindings())
+        for (const auto& setId : mReflection->GetDescriptorSetIds())
         {
+            const auto& setBindings = mReflection->GetDescriptorSetLayoutBindings(setId);
             auto setLayout = GIDescriptorSetLayoutVk::Create(mDevice, setBindings, mReflection->IsPushDescriptorSet(setId));
             setLayouts.push_back(setLayout);
         }
@@ -215,89 +217,13 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    GIPipelineBuilderVk& GIPipelineBuilderVk::AddShaderStages(const std::vector<std::filesystem::path>& paths)
+    GIPipelineBuilderVk& GIPipelineBuilderVk::SetVertexLayout(SharedPtr<GIVertexLayoutVk> vertexLayout)
     {
-        for (const auto& path : paths)
-        {
-            AddShaderStage(path);
-        }
-        return *this;
-    }
-
-    GIPipelineBuilderVk& GIPipelineBuilderVk::AddVertexAttributeBinding(const GIVertexAttributeBindingVk& attributeBinding)
-    {
-        VkVertexInputBindingDescription* currentInputBinding = nullptr;
-        VkVertexInputAttributeDescription* currentInputAttribute = nullptr;
-
-        const auto& attribs = mReflection->GetAttributes();
-        assert(attribs.size() >= 1);
-
-        auto it = attribs.find(attributeBinding.GetName());
-        if (it == attribs.end())
-        {
-            LOG_ERROR("Failed to find vertex attribute \"%s\"\n", attributeBinding.GetName().c_str());
-            return *this;
-        }
-
-        const SPIRVAttribute& attrib = it->second;
-        assert(attrib.locationId != (uint32_t)-1);
-        assert(attrib.size <= attributeBinding.GetStride());
-
-        // Find the same vertex input binding added before
-        const auto& oldInputBinding = std::find_if(
-            mVertexInputBindings.begin(),
-            mVertexInputBindings.end(),
-            [&](const VkVertexInputBindingDescription& desc) {
-                return desc.binding == attributeBinding.GetBinding();
-            });
-        if (oldInputBinding != mVertexInputBindings.end())
-        {
-            assert(oldInputBinding->stride == attributeBinding.GetStride());
-            assert(oldInputBinding->inputRate == attributeBinding.GetInputRate());
-            currentInputBinding = &(*oldInputBinding);
-        }
-        else
-        {
-            mVertexInputBindings.emplace_back();
-            currentInputBinding = &mVertexInputBindings.back();
-
-            currentInputBinding->binding = attributeBinding.GetBinding();
-            currentInputBinding->stride = attributeBinding.GetStride();
-            currentInputBinding->inputRate = attributeBinding.GetInputRate();
-        }
-
-        // Find the same vertex attribute added before. (Normally, there shouldn't be one)
-        const auto& inputAttribute = std::find_if(
-            mVertexInputAttributes.begin(),
-            mVertexInputAttributes.end(),
-            [&](const VkVertexInputAttributeDescription& desc) {
-                return desc.location == attrib.locationId;
-            });
-        if (inputAttribute != mVertexInputAttributes.end())
-        {
-            LOG_WARNING("Vertex input attribute (%d) exists, do you want to override it?\n", inputAttribute->location);
-            currentInputAttribute = &(*inputAttribute);
-        }
-        else
-        {
-            mVertexInputAttributes.emplace_back();
-            currentInputAttribute = &mVertexInputAttributes.back();
-        }
-
-        currentInputAttribute->binding = attributeBinding.GetBinding();
-        currentInputAttribute->location = attrib.locationId;
-        currentInputAttribute->offset = attributeBinding.GetOffset();
-        currentInputAttribute->format = attrib.format;
-
-        return *this;
-    }
-
-    GIPipelineBuilderVk& GIPipelineBuilderVk::AddVertexAttributeBindings(const std::vector<GIVertexAttributeBindingVk>& attributeBindings)
-    {
-        for (const auto& attributeBinding : attributeBindings)
-        {
-            AddVertexAttributeBinding(attributeBinding);
-        }
+        mVertexLayout = vertexLayout;
+        mVertexInputState.vertexAttributeDescriptionCount = (uint32_t)mVertexLayout->GetVertexAttributes().size();
+        mVertexInputState.pVertexAttributeDescriptions = mVertexLayout->GetVertexAttributes().data();
+        mVertexInputState.vertexBindingDescriptionCount = (uint32_t)mVertexLayout->GetBindingPoints().size();
+        mVertexInputState.pVertexBindingDescriptions = mVertexLayout->GetBindingPoints().data();
         return *this;
     }
 

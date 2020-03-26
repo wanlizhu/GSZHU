@@ -86,30 +86,6 @@ namespace AutoCAD::Graphics::Engine
         // TODO    
     }
 
-    void GIDescriptorSetVk::BindResourceRange(uint32_t binding, WeakPtr<GIDescriptorResourceVk> resource, std::optional<GIRange> range)
-    {
-        if (!mDescriptorSetLayout->GetDescriptorType(binding).has_value() ||
-            resource.expired())
-        {
-            LOG_WARNING("Failed to bind resource to (%d).\n", binding);
-            return;
-        }
-
-        // TODO
-    }
-
-    void GIDescriptorSetVk::BindResourceRegion(uint32_t binding, WeakPtr<GIDescriptorResourceVk> resource, std::optional<GIRegion> region)
-    {
-        if (!mDescriptorSetLayout->GetDescriptorType(binding).has_value() ||
-            resource.expired())
-        {
-            LOG_WARNING("Failed to bind resource to (%d).\n", binding);
-            return;
-        }
-
-        // TODO
-    }
-
     void GIDescriptorSetVk::SetParentDescriptorSet(WeakPtr<GIDescriptorSetVk> set)
     {
         mParent = set;

@@ -21,11 +21,9 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIRenderPassVk> GetRenderPass() const;
         
     protected:
-        GIFramebufferVk(SharedPtr<GIRenderPassVk> renderPass, const VkFramebufferCreateInfo& createInfo);
-        GIFramebufferVk(const GIFramebufferVk&) = delete;
-        GIFramebufferVk(GIFramebufferVk&&) = default;
-        GIFramebufferVk& operator=(const GIFramebufferVk&) = delete;
-        GIFramebufferVk& operator=(GIFramebufferVk&&) = default;
+        GIFramebufferVk(
+            SharedPtr<GIRenderPassVk> renderPass,
+            const VkFramebufferCreateInfo& createInfo);
 
     private:
         VkFramebuffer mFramebuffer = VK_NULL_HANDLE;

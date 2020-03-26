@@ -77,11 +77,6 @@ namespace AutoCAD::Graphics::Engine
             VkPhysicalDevice physicalDevice,
             VkDeviceCreateInfo& createInfo);
 
-        GIDeviceVk(const GIDeviceVk&) = delete;
-        GIDeviceVk(GIDeviceVk&&) = default;
-        GIDeviceVk& operator=(const GIDeviceVk&) = delete;
-        GIDeviceVk& operator=(GIDeviceVk&&) = default;
-
     private:
         SharedPtr<VKInstance> mInstance;
         VkPhysicalDevice mPhysicalDevice = VK_NULL_HANDLE;

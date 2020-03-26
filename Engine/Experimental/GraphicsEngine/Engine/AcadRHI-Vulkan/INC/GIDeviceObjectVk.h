@@ -24,6 +24,7 @@ namespace AutoCAD::Graphics::Engine
 
     class GIDeviceObjectVk 
         : public GIIDebugObjectVk 
+        , public GINonCopyable
 		, public std::enable_shared_from_this<GIDeviceObjectVk>
     {
         friend class GIDeviceVk;
@@ -34,20 +35,18 @@ namespace AutoCAD::Graphics::Engine
 
     protected:
         GIDeviceObjectVk(SharedPtr<GIDeviceVk> device);
-        GIDeviceObjectVk(const GIDeviceObjectVk&) = delete;
-        GIDeviceObjectVk(GIDeviceObjectVk&& rhs) = default;
-        GIDeviceObjectVk& operator=(const GIDeviceObjectVk&) = delete;
-        GIDeviceObjectVk& operator=(GIDeviceObjectVk&& rhs) = default;
-
+        
         void SetDebugNameInternal(void* object, VkDebugReportObjectTypeEXT type, const char* name) const;
         void SetDebugTagInternal(void* object, VkDebugReportObjectTypeEXT type, const DebugTag& tag) const;
 
     protected:
         SharedPtr<GIDeviceVk> mDevice;
+
     };
 
     class GIWeakDeviceObjectVk 
         : public GIIDebugObjectVk
+        , public GINonCopyable
         , public std::enable_shared_from_this<GIWeakDeviceObjectVk>
     {
     public:
@@ -57,11 +56,7 @@ namespace AutoCAD::Graphics::Engine
 
     protected:
         GIWeakDeviceObjectVk(WeakPtr<GIDeviceVk> device);
-        GIWeakDeviceObjectVk(const GIWeakDeviceObjectVk&) = delete;
-        GIWeakDeviceObjectVk(GIWeakDeviceObjectVk&& rhs) = default;
-        GIWeakDeviceObjectVk& operator=(const GIWeakDeviceObjectVk&) = delete;
-        GIWeakDeviceObjectVk& operator=(GIWeakDeviceObjectVk && rhs) = default;
-
+        
         void SetDebugNameInternal(void* object, VkDebugReportObjectTypeEXT type, const char* name) const;
         void SetDebugTagInternal(void* object, VkDebugReportObjectTypeEXT type, const DebugTag& tag) const;
 

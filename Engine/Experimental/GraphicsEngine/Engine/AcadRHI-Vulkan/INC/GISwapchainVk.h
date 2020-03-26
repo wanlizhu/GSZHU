@@ -34,11 +34,6 @@ namespace AutoCAD::Graphics::Engine
             VkComponentMapping componentMapping,
             const VkSwapchainCreateInfoKHR& createInfo);
 
-        GISwapchainVk(const GISwapchainVk&) = delete;
-        GISwapchainVk(GISwapchainVk&&) = default;
-        GISwapchainVk& operator=(const GISwapchainVk&) = delete;
-        GISwapchainVk& operator=(GISwapchainVk&&) = default;
-
         bool RecreateSwapchain();
         void WaitImageAcquiredFence();
         void Destroy();

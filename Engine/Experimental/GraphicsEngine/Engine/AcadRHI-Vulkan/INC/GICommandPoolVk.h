@@ -25,11 +25,7 @@ namespace AutoCAD::Graphics::Engine
 
     protected:
         GICommandPoolVk(SharedPtr<GIDeviceQueueVk> queue);
-        GICommandPoolVk(const GICommandPoolVk&) = delete;
-        GICommandPoolVk(GICommandPoolVk&&) = default;
-        GICommandPoolVk& operator=(const GICommandPoolVk&) = delete;
-        GICommandPoolVk& operator=(GICommandPoolVk&&) = default;
-
+        
     private:
         VkCommandPool mCommandPool = VK_NULL_HANDLE;
         VkQueue mQueue = VK_NULL_HANDLE;

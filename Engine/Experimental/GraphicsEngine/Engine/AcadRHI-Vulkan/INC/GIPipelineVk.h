@@ -7,6 +7,7 @@ namespace AutoCAD::Graphics::Engine
     class SPIRVReflection;
     class GIDescriptorSetLayoutVk;
     class GIPipelineLayoutVk;
+    class GIVertexLayoutVk;
 
     class GIPipelineVk : public GIDeviceObjectVk
     {
@@ -31,11 +32,6 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<SPIRVReflection> reflection,
             const VkGraphicsPipelineCreateInfo& createInfo,
             VkPipelineCache cache);
-
-        GIPipelineVk(const GIPipelineVk&) = delete;
-        GIPipelineVk(GIPipelineVk&&) = default;
-        GIPipelineVk& operator=(const GIPipelineVk&) = delete;
-        GIPipelineVk& operator=(GIPipelineVk&&) = default;
 
         void CreatePipelineLayout();
 
@@ -82,13 +78,11 @@ namespace AutoCAD::Graphics::Engine
         GIPipelineBuilderVk& SetBasePipeline(VkPipeline pipeline);
         GIPipelineBuilderVk& SetPipelineCache(VkPipelineCache cache);
         GIPipelineBuilderVk& SetBindPoint(VkPipelineBindPoint bindPoint);
+        GIPipelineBuilderVk& SetVertexLayout(SharedPtr<GIVertexLayoutVk> vertexLayout);
+        GIPipelineBuilderVk& SetRenderPass(VkRenderPass renderPass, uint32_t subpass);
         GIPipelineBuilderVk& AddCreateFlag(VkPipelineCreateFlagBits flag);
         GIPipelineBuilderVk& AddPushDescriptorSet(uint32_t setId);
-        GIPipelineBuilderVk& SetRenderPass(VkRenderPass renderPass, uint32_t subpass);
         GIPipelineBuilderVk& AddShaderStage(const std::filesystem::path& path);
-        GIPipelineBuilderVk& AddShaderStages(const std::vector<std::filesystem::path>& paths);
-        GIPipelineBuilderVk& AddVertexAttributeBinding(const GIVertexAttributeBindingVk& attributeBinding);
-        GIPipelineBuilderVk& AddVertexAttributeBindings(const std::vector<GIVertexAttributeBindingVk>& attributeBindings);
         
         GIPipelineBuilderVk& SetInputAssemblyState(VkPrimitiveTopology topology, bool primitiveRestart);
         GIPipelineBuilderVk& SetPatchControlPoints(uint32_t count);
@@ -121,8 +115,7 @@ namespace AutoCAD::Graphics::Engine
         std::vector<VkPipelineShaderStageCreateInfo> mShaderStages;
 
         // Vertex input(attribute and its vertex-buffer-binding) state
-        std::vector<VkVertexInputAttributeDescription> mVertexInputAttributes;
-        std::vector<VkVertexInputBindingDescription> mVertexInputBindings;
+        SharedPtr<GIVertexLayoutVk> mVertexLayout;
         VkPipelineVertexInputStateCreateInfo mVertexInputState = {};
 
         // Input assembly state

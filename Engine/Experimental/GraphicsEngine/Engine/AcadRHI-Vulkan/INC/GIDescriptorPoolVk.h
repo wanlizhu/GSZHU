@@ -35,11 +35,6 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device,
             const VkDescriptorPoolCreateInfo& createInfo);
 
-        GIDescriptorPoolVk(const GIDescriptorPoolVk&) = delete;
-        GIDescriptorPoolVk(GIDescriptorPoolVk&&) = default;
-        GIDescriptorPoolVk& operator=(const GIDescriptorPoolVk&) = delete;
-        GIDescriptorPoolVk& operator=(GIDescriptorPoolVk&&) = default;
-
     private:
         VkDescriptorPool mDescriptorPool = VK_NULL_HANDLE;
         std::thread::id mThreadId;

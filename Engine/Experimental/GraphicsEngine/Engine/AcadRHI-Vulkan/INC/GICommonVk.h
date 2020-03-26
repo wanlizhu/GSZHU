@@ -85,42 +85,14 @@ namespace AutoCAD::Graphics::Engine
     template<typename T>
     using UniquePtr = std::unique_ptr<T>;
 
-    class GIRange1D
+    class GINonCopyable
     {
     public:
-        GIRange1D() = default;
-        GIRange1D(uint32_t offset, uint32_t size)
-            : mOffset(offset)
-            , mSize(size)
-        {}
-
-        inline uint32_t GetOffset() const { return mOffset; }
-        inline uint32_t GetSize() const { return mSize; }
-        inline bool operator==(const GIRange1D& rhs) const { return mOffset == rhs.mOffset && mSize == rhs.mSize; }
-        inline bool operator!=(const GIRange1D& rhs) const { return !(*this == rhs); }
-
-    private:
-        uint32_t mOffset = 0;
-        uint32_t mSize = 0;
-    };
-
-    class GIRange2D
-    {
-    public:
-        GIRange2D() = default;
-        GIRange2D(const VkOffset2D& offset, const VkExtent2D& extent)
-            : mOffset(offset)
-            , mExtent(extent)
-        {}
-
-        inline const VkOffset2D& GetOffset() const { return mOffset; }
-        inline const VkExtent2D& GetExtent() const { return mExtent; }
-        inline bool operator==(const GIRange2D& rhs) const { return mOffset.x == rhs.mOffset.x && mOffset.y == rhs.mOffset.y && mExtent.width == rhs.mExtent.width && mExtent.height == rhs.mExtent.height; }
-        inline bool operator!=(const GIRange2D& rhs) const { return !(*this == rhs); }
-
-    private:
-        VkOffset2D mOffset = { 0, 0 };
-        VkExtent2D mExtent = { 0, 0 };
+        GINonCopyable() = default;
+        GINonCopyable(const GINonCopyable&) = delete;
+        GINonCopyable(GINonCopyable&&) = default;
+        GINonCopyable& operator=(const GINonCopyable&) = delete;
+        GINonCopyable& operator=(GINonCopyable&&) = default;
     };
 
     const char* GIErrorDescVk(VkResult error);

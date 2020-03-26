@@ -27,10 +27,6 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         GIPipelineCacheVk(SharedPtr<GIDeviceVk> device, const std::wstring& path);
-        GIPipelineCacheVk(const GIPipelineCacheVk&) = delete;
-        GIPipelineCacheVk(GIPipelineCacheVk&&) = default;
-        GIPipelineCacheVk& operator=(const GIPipelineCacheVk&) = delete;
-        GIPipelineCacheVk& operator=(GIPipelineCacheVk&&) = default;
 
     private:
         VkPipelineCache mPipelineCache = VK_NULL_HANDLE;

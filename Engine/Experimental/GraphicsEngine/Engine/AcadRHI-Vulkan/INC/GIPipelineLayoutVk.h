@@ -22,7 +22,7 @@ namespace AutoCAD::Graphics::Engine
 
         operator const VkPipelineLayout& () const;
         SharedPtr<GIDescriptorSetLayoutVk> GetDescriptorSetLayout(uint32_t setId) const;
-        std::optional<GIRange> GetPushConstantRange(VkPipelineStageFlags stage) const; // Only one push_constant block is allowed per stage.
+        std::optional<VkPushConstantRange> GetPushConstantRange(VkPipelineStageFlags stage) const; // Only one push_constant block is allowed per stage.
         
     private:
         GIPipelineLayoutVk(
@@ -30,15 +30,10 @@ namespace AutoCAD::Graphics::Engine
             const std::vector<SharedPtr<GIDescriptorSetLayoutVk>>& setLayouts,
             const std::vector<VkPushConstantRange>& pushConstantRanges);
 
-        GIPipelineLayoutVk(const GIPipelineLayoutVk&) = delete;
-        GIPipelineLayoutVk(GIPipelineLayoutVk&&) = default;
-        GIPipelineLayoutVk& operator=(const GIPipelineLayoutVk&) = delete;
-        GIPipelineLayoutVk& operator=(GIPipelineLayoutVk&&) = default;
-
     private:
         VkPipelineLayout mPipelineLayout = VK_NULL_HANDLE;
 
         std::unordered_map<uint32_t, SharedPtr<GIDescriptorSetLayoutVk>> mDescriptorSetLayouts;
-        std::unordered_map<VkPipelineStageFlags, GIRange> mPushConstantRanges;
+        std::unordered_map<VkPipelineStageFlags, VkPushConstantRange> mPushConstantRanges;
     };
 }

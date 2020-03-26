@@ -75,7 +75,7 @@ namespace AutoCAD::Graphics::Engine
 
     GIDescriptorPoolBuilderVk& GIDescriptorPoolBuilderVk::Expand(SharedPtr<SPIRVReflection> reflection)
     {
-        for (const auto& poolSize : reflection->GetDescriptorPoolSizes())
+        for (const auto& poolSize : reflection->GetDescriptorPoolRequirements())
         {
             Expand(poolSize);
         }

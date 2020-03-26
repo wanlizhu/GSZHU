@@ -193,6 +193,7 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIDescriptorSetLayoutVk.h" />
     <ClInclude Include="INC\GIDescriptorSetVk.h" />
     <ClInclude Include="INC\GIDeviceContextVk.h" />
+    <ClInclude Include="INC\GIDeviceMemoryPoolVk.h" />
     <ClInclude Include="INC\GIDeviceObjectVk.h" />
     <ClInclude Include="INC\GIDeviceQueueVk.h" />
     <ClInclude Include="INC\GIDeviceVk.h" />
@@ -204,11 +205,9 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIFramebufferVk.h" />
     <ClInclude Include="INC\GIPipelineCacheVk.h" />
     <ClInclude Include="INC\GIPlatformVk.h" />
-    <ClInclude Include="INC\GIPushConstantVk.h" />
     <ClInclude Include="INC\GIRenderPassVk.h" />
     <ClInclude Include="INC\GISamplerVk.h" />
-    <ClInclude Include="INC\GIStorageBufferVk.h" />
-    <ClInclude Include="INC\GIUniformBufferVk.h" />
+    <ClInclude Include="INC\GIShaderVariableVk.h" />
     <ClInclude Include="INC\GIVertexBufferVk.h" />
     <ClInclude Include="INC\GIVertexLayoutVk.h" />
     <ClInclude Include="INC\SPIRVReflection.h" />

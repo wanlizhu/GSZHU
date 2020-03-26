@@ -65,31 +65,6 @@ namespace AutoCAD::Graphics::Engine
         mIsPushDescriptorSets[setId] = true;
     }
 
-    std::unordered_map<std::string, SPIRVAttribute> const& SPIRVReflection::GetAttributes() const
-    {
-        return mAttributes;
-    }
-
-    std::unordered_map<std::string, SPIRVBlock> const& SPIRVReflection::GetBlocks() const
-    {
-        return mBlocks;
-    }
-
-    std::unordered_map<std::string, SPIRVArray> const& SPIRVReflection::GetArrays() const
-    {
-        return mArrays;
-    }
-
-    std::vector<VkDescriptorPoolSize> const& SPIRVReflection::GetDescriptorPoolSizes() const
-    {
-        return mDescriptorPoolSizes;
-    }
-
-    std::vector<VkPushConstantRange> const& SPIRVReflection::GetPushConstantRanges() const
-    {
-        return mPushConstantRanges;
-    }
-
     bool SPIRVReflection::IsPushDescriptorSet(uint32_t setId) const
     {
         auto it = mIsPushDescriptorSets.find(setId);

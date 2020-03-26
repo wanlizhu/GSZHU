@@ -23,8 +23,6 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIDescriptorSetLayoutVk> GetDescriptorSetLayout() const;
         
         void BindResource(uint32_t binding, WeakPtr<GIDescriptorResourceVk> resource);
-        void BindResourceRange(uint32_t binding, WeakPtr<GIDescriptorResourceVk> resource, std::optional<GIRange> range = std::nullopt);
-        void BindResourceRegion(uint32_t binding, WeakPtr<GIDescriptorResourceVk> resource, std::optional<GIRegion> region = std::nullopt);
         void SetParentDescriptorSet(WeakPtr<GIDescriptorSetVk> set);
         void Update();
 
@@ -33,11 +31,6 @@ namespace AutoCAD::Graphics::Engine
             WeakPtr<GIDescriptorPoolVk> pool,
             SharedPtr<GIDescriptorSetLayoutVk> setLayout,
             std::optional<WeakPtr<GIDescriptorSetVk>> parent);
-
-        GIDescriptorSetVk(const GIDescriptorSetVk&) = delete;
-        GIDescriptorSetVk(GIDescriptorSetVk&&) = default;
-        GIDescriptorSetVk& operator=(const GIDescriptorSetVk&) = delete;
-        GIDescriptorSetVk& operator=(GIDescriptorSetVk&&) = default;
 
     private:
         VkDescriptorSet mDescriptorSet = VK_NULL_HANDLE; // Must be VK_NULL_HANDLE for push-descriptor-set

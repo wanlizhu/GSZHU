@@ -28,11 +28,7 @@ namespace AutoCAD::Graphics::Engine
 
     protected:
         GIDeviceQueueVk(WeakPtr<GIDeviceVk> device, VkQueue queue, uint32_t familyIndex);
-        GIDeviceQueueVk(const GIDeviceQueueVk&) = delete;
-        GIDeviceQueueVk(GIDeviceQueueVk&&) = default;
-        GIDeviceQueueVk& operator=(const GIDeviceQueueVk&) = delete;
-        GIDeviceQueueVk& operator=(GIDeviceQueueVk&&) = default;
-
+       
     private:
         VkQueue mQueue = VK_NULL_HANDLE; /* VkQueue is created by driver when creating VkDevice */ 
         uint32_t mFamilyIndex = INT32_MAX;
