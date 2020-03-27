@@ -26,10 +26,10 @@ namespace AutoCAD::Graphics::Engine
         static void LoadVulkanFunctions() {}
         static void FreeVulkanLibrary() {}
 
-        static std::vector<const char*> const& RequiredInstanceLayers() {}
-        static std::vector<const char*> const& RequiredInstanceExtensions() {}
-        static std::vector<const char*> const& RequiredDeviceExtensions(EGPUVendorID vendorId) {}
-        static VkPhysicalDeviceFeatures const& RequiredDeviceFeatures() {}
+        static std::vector<const char*> RequiredInstanceLayers() { return {}; }
+        static std::vector<const char*> RequiredInstanceExtensions() { return {}; }
+        static std::vector<const char*> RequiredDeviceExtensions(EGPUVendorID vendorId) { return {}; }
+        static VkPhysicalDeviceFeatures RequiredDeviceFeatures() { return {}; }
         
         static void CreateSurface(VkInstance instance, void* window, VkSurfaceKHR* surface) {}
         static void PrePresent(VkQueue queue, VkPresentInfoKHR& presentInfo) {}

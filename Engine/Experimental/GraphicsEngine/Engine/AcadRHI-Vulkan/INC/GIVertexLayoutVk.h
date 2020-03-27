@@ -4,7 +4,7 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class GIVertexLayoutVk : public GIDeviceObjectVk
+    class GIVertexLayoutVk : public GINonCopyable
     {
     public:
         static SharedPtr<GIVertexLayoutVk> Create();
@@ -16,6 +16,9 @@ namespace AutoCAD::Graphics::Engine
         std::optional<VkVertexInputBindingDescription> GetBindingPoint(uint32_t binding) const;
         std::vector<VkVertexInputBindingDescription> const& GetBindingPoints() const;
         std::vector<VkVertexInputAttributeDescription> const& GetVertexAttributes() const;
+
+    protected:
+        GIVertexLayoutVk();
         
     private:
         std::vector<VkVertexInputBindingDescription> mBindingPoints;

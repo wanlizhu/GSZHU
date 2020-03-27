@@ -15,7 +15,7 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIDeviceVk> device,
         const std::vector<VkDescriptorSetLayoutBinding>& setBindings,
         bool isPushDescriptor
-        )
+    )
         : GIDeviceObjectVk(device)
         , mIsPushDescriptorSet(isPushDescriptor)
     {

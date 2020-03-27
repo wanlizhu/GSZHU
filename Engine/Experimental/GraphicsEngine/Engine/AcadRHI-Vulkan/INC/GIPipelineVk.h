@@ -93,6 +93,16 @@ namespace AutoCAD::Graphics::Engine
         GIPipelineBuilderVk& SetPolygonMode(VkPolygonMode polygonMode);
         GIPipelineBuilderVk& SetCullMode(VkCullModeFlags cullMode);
         GIPipelineBuilderVk& SetFrontFace(VkFrontFace frontFace);
+        GIPipelineBuilderVk& SetDepthTest(bool enableTest, bool enableWrite, VkCompareOp compareOp);
+        GIPipelineBuilderVk& SetDepthBoundsTest(bool enable, float minBound, float maxBound);
+        GIPipelineBuilderVk& SetStencilTest(bool enableTest, const VkStencilOpState& frontFace, const VkStencilOpState& backFace);
+        GIPipelineBuilderVk& SetColorBlendLogicOp(bool enable, VkLogicOp logicOp);
+        GIPipelineBuilderVk& SetColorBlendConstants(const float* color);
+        GIPipelineBuilderVk& AddColorBlendAttachmentState(const VkPipelineColorBlendAttachmentState& attachmentState);
+        GIPipelineBuilderVk& SetSampleCount(VkSampleCountFlagBits count);
+        GIPipelineBuilderVk& SetSampleShading(bool enable, float minSampleShading, const VkSampleMask* sampleMask);
+        GIPipelineBuilderVk& EnableAlphaToCoverage(bool value);
+        GIPipelineBuilderVk& EnableAlphaToOneEnable(bool value);
         GIPipelineBuilderVk& EnableDepthBias(bool value);
         GIPipelineBuilderVk& SetDepthBiasConstantFactor(float value);
         GIPipelineBuilderVk& SetDepthBiasClamp(float value);
@@ -133,7 +143,6 @@ namespace AutoCAD::Graphics::Engine
         VkPipelineRasterizationStateCreateInfo mRasterizationState = {};
 
         // Multisample state
-        VkSampleMask mSampleMask = 0;
         std::optional<VkPipelineMultisampleStateCreateInfo> mMultisampleState;
 
         // Depth-stencil state

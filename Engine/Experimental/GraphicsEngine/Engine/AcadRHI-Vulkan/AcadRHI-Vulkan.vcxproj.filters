@@ -70,9 +70,6 @@
     <ClInclude Include="INC\VKInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIBufferViewVk.h">
-      <Filter>BACKLOG</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GISamplerVk.h">
       <Filter>BACKLOG</Filter>
     </ClInclude>
@@ -121,6 +118,9 @@
     <ClInclude Include="INC\GIVertexLayoutVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="INC\GIBufferViewVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\GIAndroidPlatformVk.cpp">
@@ -128,9 +128,6 @@
     </ClCompile>
     <ClCompile Include="SRC\GIWindowsPlatformVk.cpp">
       <Filter>Source Files\PLATFORM</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GICommandBufferVk.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GICommandPoolVk.cpp">
       <Filter>Source Files</Filter>
@@ -180,7 +177,22 @@
     <ClCompile Include="SRC\GIDescriptorPoolVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\GIDescriptorResourceVk.cpp">
+    <ClCompile Include="SRC\GICommandBufferVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIBufferVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIBufferViewVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIVertexLayoutVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIVertexBufferVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIIndexBufferVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

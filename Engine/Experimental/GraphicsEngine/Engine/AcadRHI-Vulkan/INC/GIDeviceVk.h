@@ -58,6 +58,7 @@ namespace AutoCAD::Graphics::Engine
         void SetCurrentDC(WeakPtr<GIDeviceContextVk> dc);
         
         SharedPtr<VKInstance> const& GetInstance() const;
+        uint32_t GetMemoryTypeIndex(uint32_t typeFilters, VkMemoryPropertyFlags properties) const;
         VkPhysicalDevice GetPhysicalDevice() const;
         PhysicalDeviceInfo const& GetPhysicalDeviceInfo() const;
         OptionalDeviceExtensions const& GetOptionalExtensions() const;

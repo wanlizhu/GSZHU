@@ -9,7 +9,7 @@ namespace AutoCAD::Graphics::Engine
         WeakPtr<GIDescriptorPoolVk> pool,
         SharedPtr<GIDescriptorSetLayoutVk> setLayout,
         std::optional<WeakPtr<GIDescriptorSetVk>> parent
-        )
+    )
         : GIDeviceObjectVk(pool.lock()->GetDevice())
         , mDescriptorSetLayout(setLayout)
         , mDescriptorPool(pool)

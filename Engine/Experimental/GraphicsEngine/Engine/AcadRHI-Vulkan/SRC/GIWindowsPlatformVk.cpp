@@ -27,7 +27,7 @@ namespace AutoCAD::Graphics::Engine
         }
     }
 
-    std::vector<const char*> const& GIWindowsPlatformVk::RequiredInstanceLayers()
+    std::vector<const char*> GIWindowsPlatformVk::RequiredInstanceLayers()
     {
         static std::vector<const char*> layers;
         if (layers.empty())
@@ -41,7 +41,7 @@ namespace AutoCAD::Graphics::Engine
         return layers;
     }
 
-    std::vector<const char*> const& GIWindowsPlatformVk::RequiredInstanceExtensions()
+    std::vector<const char*> GIWindowsPlatformVk::RequiredInstanceExtensions()
     {
         static std::vector<const char*> extensions;
         if (extensions.empty())
@@ -53,7 +53,7 @@ namespace AutoCAD::Graphics::Engine
         return extensions;
     }
 
-    std::vector<const char*> const& GIWindowsPlatformVk::RequiredDeviceExtensions(EGPUVendorID vendorId)
+    std::vector<const char*> GIWindowsPlatformVk::RequiredDeviceExtensions(EGPUVendorID vendorId)
     {
         static std::vector<const char*> extensions;
         if (extensions.empty())
@@ -74,7 +74,7 @@ namespace AutoCAD::Graphics::Engine
         return extensions;
     }
 
-    VkPhysicalDeviceFeatures const& GIWindowsPlatformVk::RequiredDeviceFeatures()
+    VkPhysicalDeviceFeatures GIWindowsPlatformVk::RequiredDeviceFeatures()
     {
         static VkPhysicalDeviceFeatures features = {};
         return features;

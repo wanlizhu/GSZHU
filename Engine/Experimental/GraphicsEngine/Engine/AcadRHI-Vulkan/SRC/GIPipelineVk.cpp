@@ -302,6 +302,166 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
+    GIPipelineBuilderVk& GIPipelineBuilderVk::SetDepthTest(bool enableTest, bool enableWrite, VkCompareOp compareOp)
+    {
+        if (!mDepthStencilState.has_value())
+        {
+            mDepthStencilState = VkPipelineDepthStencilStateCreateInfo();
+            mDepthStencilState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+            mDepthStencilState.value().pNext = nullptr;
+            mDepthStencilState.value().flags = 0;
+        }
+
+        mDepthStencilState.value().depthTestEnable = enableTest;
+        mDepthStencilState.value().depthWriteEnable = enableWrite;
+        mDepthStencilState.value().depthCompareOp = compareOp;
+
+        return *this;
+    }
+
+    GIPipelineBuilderVk& GIPipelineBuilderVk::SetDepthBoundsTest(bool enable, float minBound, float maxBound)
+    {
+        if (!mDepthStencilState.has_value())
+        {
+            mDepthStencilState = VkPipelineDepthStencilStateCreateInfo();
+            mDepthStencilState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+            mDepthStencilState.value().pNext = nullptr;
+            mDepthStencilState.value().flags = 0;
+        }
+
+        mDepthStencilState.value().depthBoundsTestEnable = enable;
+        mDepthStencilState.value().minDepthBounds = minBound;
+        mDepthStencilState.value().maxDepthBounds = maxBound;
+
+        return *this;
+    }
+
+    GIPipelineBuilderVk& GIPipelineBuilderVk::SetStencilTest(bool enableTest, const VkStencilOpState& frontFace, const VkStencilOpState& backFace)
+    {
+        if (!mDepthStencilState.has_value())
+        {
+            mDepthStencilState = VkPipelineDepthStencilStateCreateInfo();
+            mDepthStencilState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+            mDepthStencilState.value().pNext = nullptr;
+            mDepthStencilState.value().flags = 0;
+        }
+
+        mDepthStencilState.value().stencilTestEnable = enableTest;
+        mDepthStencilState.value().front = frontFace;
+        mDepthStencilState.value().back = backFace;
+
+        return *this;
+    }
+
+    GIPipelineBuilderVk& GIPipelineBuilderVk::SetColorBlendLogicOp(bool enable, VkLogicOp logicOp)
+    {
+        if (!mColorBlendState.has_value())
+        {
+            mColorBlendState = VkPipelineColorBlendStateCreateInfo();
+            mColorBlendState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+            mColorBlendState.value().pNext = nullptr;
+            mColorBlendState.value().flags = 0;
+        }
+
+        mColorBlendState.value().logicOpEnable = enable;
+        mColorBlendState.value().logicOp = logicOp;
+
+        return *this;
+    }
+
+    GIPipelineBuilderVk& GIPipelineBuilderVk::SetColorBlendConstants(const float* color)
+    {
+        if (!mColorBlendState.has_value())
+        {
+            mColorBlendState = VkPipelineColorBlendStateCreateInfo();
+            mColorBlendState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+            mColorBlendState.value().pNext = nullptr;
+            mColorBlendState.value().flags = 0;
+        }
+
+        std::memcpy(mColorBlendState.value().blendConstants, color, sizeof(float) * 4);
+
+        return *this;
+    }
+
+    GIPipelineBuilderVk& GIPipelineBuilderVk::AddColorBlendAttachmentState(const VkPipelineColorBlendAttachmentState& attachmentState)
+    {
+        if (!mColorBlendState.has_value())
+        {
+            mColorBlendState = VkPipelineColorBlendStateCreateInfo();
+            mColorBlendState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+            mColorBlendState.value().pNext = nullptr;
+            mColorBlendState.value().flags = 0;
+        }
+
+        mAttachmentColorBlends.push_back(attachmentState);
+        mColorBlendState.value().attachmentCount = (uint32_t)mAttachmentColorBlends.size();
+        mColorBlendState.value().pAttachments = mAttachmentColorBlends.data();
+
+        return *this;
+    }
+
+    GIPipelineBuilderVk& GIPipelineBuilderVk::SetSampleCount(VkSampleCountFlagBits count)
+    {
+        if (!mMultisampleState.has_value())
+        {
+            mMultisampleState = VkPipelineMultisampleStateCreateInfo();
+            mMultisampleState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+            mMultisampleState.value().pNext = nullptr;
+            mMultisampleState.value().flags = 0;
+        }
+
+        mMultisampleState.value().rasterizationSamples = count;
+        return *this;
+    }
+
+    GIPipelineBuilderVk& GIPipelineBuilderVk::SetSampleShading(bool enable, float minSampleShading, const VkSampleMask* sampleMask)
+    {
+        if (!mMultisampleState.has_value())
+        {
+            mMultisampleState = VkPipelineMultisampleStateCreateInfo();
+            mMultisampleState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+            mMultisampleState.value().pNext = nullptr;
+            mMultisampleState.value().flags = 0;
+        }
+
+        mMultisampleState.value().sampleShadingEnable = enable;
+        mMultisampleState.value().minSampleShading = minSampleShading;
+        mMultisampleState.value().pSampleMask = sampleMask;
+
+        return *this;
+    }
+
+    GIPipelineBuilderVk& GIPipelineBuilderVk::EnableAlphaToCoverage(bool value)
+    {
+        if (!mMultisampleState.has_value())
+        {
+            mMultisampleState = VkPipelineMultisampleStateCreateInfo();
+            mMultisampleState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+            mMultisampleState.value().pNext = nullptr;
+            mMultisampleState.value().flags = 0;
+        }
+
+        mMultisampleState.value().alphaToCoverageEnable = value;
+
+        return *this;
+    }
+
+    GIPipelineBuilderVk& GIPipelineBuilderVk::EnableAlphaToOneEnable(bool value)
+    {
+        if (!mMultisampleState.has_value())
+        {
+            mMultisampleState = VkPipelineMultisampleStateCreateInfo();
+            mMultisampleState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+            mMultisampleState.value().pNext = nullptr;
+            mMultisampleState.value().flags = 0;
+        }
+
+        mMultisampleState.value().alphaToOneEnable = value;
+
+        return *this;
+    }
+
     GIPipelineBuilderVk& GIPipelineBuilderVk::EnableDepthBias(bool value)
     {
         mRasterizationState.depthBiasEnable = value ? VK_TRUE : VK_FALSE;
@@ -334,7 +494,7 @@ namespace AutoCAD::Graphics::Engine
 
     GIPipelineBuilderVk& GIPipelineBuilderVk::AddDynamicState(VkDynamicState dynamicState)
     {
-        if (mDynamicState)
+        if (!mDynamicState.has_value())
         {
             mDynamicState = VkPipelineDynamicStateCreateInfo();
             mDynamicState.value().sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;

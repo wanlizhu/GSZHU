@@ -14,20 +14,20 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{6D0AD505-A960-4A7E-86FC-DCB5D9C8770F}</ProjectGuid>
     <RootNamespace>AcadRHIVulkan</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <ProjectName>AcadRHI-Vulkan</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -57,10 +57,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(ProjectDir)INC;$(ProjectDir)SRC;$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SupportJustMyCode>false</SupportJustMyCode>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,7 +123,7 @@ if not exist "%InstallDir%" (
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(ProjectDir)INC;$(ProjectDir)SRC;$(ProjectDir)BIN\SPIRV-Cross-$(Platform)-$(Configuration)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -220,22 +221,26 @@ if not exist "%InstallDir%" (
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\GIAndroidPlatformVk.cpp" />
+    <ClCompile Include="SRC\GIBufferViewVk.cpp" />
     <ClCompile Include="SRC\GICommandBufferVk.cpp" />
     <ClCompile Include="SRC\GICommandPoolVk.cpp" />
     <ClCompile Include="SRC\GIDescriptorPoolVk.cpp" />
-    <ClCompile Include="SRC\GIDescriptorResourceVk.cpp" />
+    <ClCompile Include="SRC\GIBufferVk.cpp" />
     <ClCompile Include="SRC\GIDescriptorSetLayoutVk.cpp" />
     <ClCompile Include="SRC\GIDescriptorSetVk.cpp" />
     <ClCompile Include="SRC\GIDeviceObjectVk.cpp" />
     <ClCompile Include="SRC\GIDeviceQueueVk.cpp" />
     <ClCompile Include="SRC\GIDeviceVk.cpp" />
     <ClCompile Include="SRC\GIFramebufferVk.cpp" />
+    <ClCompile Include="SRC\GIIndexBufferVk.cpp" />
     <ClCompile Include="SRC\GIPipelineLayoutVk.cpp" />
     <ClCompile Include="SRC\GIPipelineVk.cpp" />
     <ClCompile Include="SRC\GIPipelineCacheVk.cpp" />
     <ClCompile Include="SRC\GIRenderPassVk.cpp" />
     <ClCompile Include="SRC\GISwapchainVk.cpp" />
     <ClCompile Include="SRC\GICommonVk.cpp" />
+    <ClCompile Include="SRC\GIVertexBufferVk.cpp" />
+    <ClCompile Include="SRC\GIVertexLayoutVk.cpp" />
     <ClCompile Include="SRC\GIWindowsPlatformVk.cpp" />
     <ClCompile Include="SRC\SPIRVReflection.cpp" />
     <ClCompile Include="SRC\VKInstance.cpp" />

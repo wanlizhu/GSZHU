@@ -31,7 +31,7 @@ namespace AutoCAD::Graphics::Engine
         }
     }
 
-    std::vector<const char*> const& GIAndroidPlatformVk::RequiredInstanceLayers()
+    std::vector<const char*> GIAndroidPlatformVk::RequiredInstanceLayers()
     {
         static std::vector<const char*> layers;
         if (layers.empty())
@@ -44,7 +44,7 @@ namespace AutoCAD::Graphics::Engine
         return layers;
     }
 
-    std::vector<const char*> const& GIAndroidPlatformVk::RequiredInstanceExtensions()
+    std::vector<const char*> GIAndroidPlatformVk::RequiredInstanceExtensions()
     {
         static std::vector<const char*> extensions;
         if (extensions.empty())
@@ -56,7 +56,7 @@ namespace AutoCAD::Graphics::Engine
         return extensions;
     }
 
-    std::vector<const char*> const& GIAndroidPlatformVk::RequiredDeviceExtensions(EGPUVendorID vendorId)
+    std::vector<const char*> GIAndroidPlatformVk::RequiredDeviceExtensions(EGPUVendorID vendorId)
     {
         static std::vector<const char*> extensions;
         if (extensions.empty())
@@ -70,7 +70,7 @@ namespace AutoCAD::Graphics::Engine
         return extensions;
     }
 
-    VkPhysicalDeviceFeatures const& GIAndroidPlatformVk::RequiredDeviceFeatures()
+    VkPhysicalDeviceFeatures GIAndroidPlatformVk::RequiredDeviceFeatures()
     {
         static VkPhysicalDeviceFeatures features = {};
         return features;

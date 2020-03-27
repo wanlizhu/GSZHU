@@ -9,7 +9,7 @@ namespace AutoCAD::Graphics::Engine
     GIDescriptorPoolVk::GIDescriptorPoolVk(
         SharedPtr<GIDeviceVk> device,
         const VkDescriptorPoolCreateInfo& createInfo
-        )
+    )
         : GIDeviceObjectVk(device)
         , mThreadId(std::this_thread::get_id())
     {

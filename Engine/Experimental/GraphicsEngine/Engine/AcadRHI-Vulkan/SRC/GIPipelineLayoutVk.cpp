@@ -16,7 +16,7 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIDeviceVk> device,
         const std::vector<SharedPtr<GIDescriptorSetLayoutVk>>& setLayouts,
         const std::vector<VkPushConstantRange>& pushConstantRanges
-        )
+    )
         : GIDeviceObjectVk(device)
     {
         
