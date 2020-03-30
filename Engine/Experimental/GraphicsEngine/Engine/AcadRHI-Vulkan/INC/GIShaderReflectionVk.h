@@ -22,10 +22,10 @@ namespace AutoCAD::Graphics::Engine
     public:
         virtual ~GIShaderReflectionVk();
 
-        bool IsPushDescriptorSet(uint32_t setId) const;
-        bool IsDynamicDescriptor(uint32_t setId, uint32_t bindingId) const;
+        bool IsPushDescriptorSet(SET_ID setId) const;
+        bool IsDynamicDescriptor(SET_ID setId, BINDING_ID bindingId) const;
         std::optional<GIShaderVariableVk> GetVariable(const std::string& name) const;
-        std::optional<std::vector<VkDescriptorSetLayoutBinding>> GetDescriptorSetLayoutInfo() const;
+        std::optional<std::vector<VkDescriptorSetLayoutBinding>> GetDescriptorSetLayoutInfo(SET_ID setId) const;
         
         std::vector<VkVertexInputAttributeDescription> const& GetVertexInputAttributes() const;
         std::vector<VkDescriptorPoolSize> const& GetDescriptorPoolRequirements() const;
@@ -39,20 +39,17 @@ namespace AutoCAD::Graphics::Engine
          * Descriptor set marked as 'push descriptor set' can only be updated using vkCmdPushDescriptorSetKHR which is for frequent updatings.
          * For uniform/storage buffers, it is better to use 'dynamic offset' for frequent updatings.
         */
-        void MarkPushDescriptorSet(uint32_t setId);
+        void MarkPushDescriptorSet(SET_ID setId);
 
         /* 
          * This information can only be specified from application, instead of shader reflection.
          * Supports two kinds of dynamic descriptors: VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC and VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC.
          * Argument 'setId' cannot be marked as 'push descriptor set'.
         */
-        void MarkDynamicDescriptor(uint32_t setId, uint32_t bindingId);
+        void MarkDynamicDescriptor(SET_ID setId, BINDING_ID bindingId);
         
     protected:
         GIShaderReflectionVk() = default;
-
-        void CompileToGLSL(const std::filesystem::path& spirvPath); // Convert SPIRV binary code to GLSL for reflection
-        void LoadJSON(const std::filesystem::path& jsonPath); // Load precompiled reflection info from file
 
     private:
         std::vector<VkVertexInputAttributeDescription> mVertexInputAttributes; // The field 'binding' is left empty for application to assign later
@@ -61,7 +58,7 @@ namespace AutoCAD::Graphics::Engine
         std::vector<VkSpecializationMapEntry> mSpecializationMapEntries;
         
         std::unordered_map<SET_ID, bool> mIsPushDescriptorSets; // Assigned by application (NOT the shader reflection)
-        std::unordered_map<PACKED_BINDING_ID, bool> mIsDynamicDescriptors; // Assigned by application (NOT the shader reflection)
+        std::unordered_map<GIDescriptorBindingVk, bool> mIsDynamicDescriptors; // Assigned by application (NOT the shader reflection)
         std::unordered_map<SET_ID, std::vector<VkDescriptorSetLayoutBinding>> mDescriptorSetLayouts; // A pipeline contains multiple descriptor sets
         std::unordered_map<std::string, GIShaderVariableVk> mVariables;
     };

@@ -190,6 +190,7 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIBufferVk.h" />
     <ClInclude Include="INC\GICommandBufferVk.h" />
     <ClInclude Include="INC\GICommandPoolVk.h" />
+    <ClInclude Include="INC\GIDescriptorBindingVk.h" />
     <ClInclude Include="INC\GIDescriptorPoolVk.h" />
     <ClInclude Include="INC\GIDescriptorSetLayoutVk.h" />
     <ClInclude Include="INC\GIDescriptorSetVk.h" />
@@ -224,6 +225,7 @@ if not exist "%InstallDir%" (
     <ClCompile Include="SRC\GIBufferViewVk.cpp" />
     <ClCompile Include="SRC\GICommandBufferVk.cpp" />
     <ClCompile Include="SRC\GICommandPoolVk.cpp" />
+    <ClCompile Include="SRC\GIDescriptorBindingVk.cpp" />
     <ClCompile Include="SRC\GIDescriptorPoolVk.cpp" />
     <ClCompile Include="SRC\GIBufferVk.cpp" />
     <ClCompile Include="SRC\GIDescriptorSetLayoutVk.cpp" />
@@ -243,8 +245,8 @@ if not exist "%InstallDir%" (
     <ClCompile Include="SRC\GIVertexBufferVk.cpp" />
     <ClCompile Include="SRC\GIVertexLayoutVk.cpp" />
     <ClCompile Include="SRC\GIWindowsPlatformVk.cpp" />
-    <ClCompile Include="SRC\SPIRVReflection.cpp" />
-    <ClCompile Include="SRC\VKInstance.cpp" />
+    <ClCompile Include="SRC\GIShaderReflectionVk.cpp" />
+    <ClCompile Include="SRC\GIInstanceVk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AcadRHI-Vulkan Class Diagram.cd" />

@@ -1,24 +1,25 @@
 #pragma once
 
-#include "GICommonVk.h"
+#include "GIDescriptorBindingVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
-    using SET_ID = uint32_t;
-    using BINDING_ID = uint32_t;
-    using PACKED_BINDING_ID = uint64_t;
+    struct LOCATION_TAG {};
+    struct CONST_ID_TAG {};
+    struct INPUT_ATTACHMENT_ATG {};
 
     class GIShaderVariableVk
     {
     public:
-        GIShaderVariableVk(uint32_t id); // Could be location/constId/inputAttachmentId
+        GIShaderVariableVk(uint32_t location, LOCATION_TAG);
+        GIShaderVariableVk(uint32_t constId, CONST_ID_TAG);
+        GIShaderVariableVk(uint32_t inputAttachment, INPUT_ATTACHMENT_ATG);
         GIShaderVariableVk(SET_ID set, BINDING_ID binding);
 
         std::optional<uint32_t> GetLocation() const;
         std::optional<uint32_t> GetConstId() const;
         std::optional<uint32_t> GetInputAttachmentId() const;
-        std::optional<std::pair<SET_ID, BINDING_ID>> GetBinding() const;
-        std::optional<PACKED_BINDING_ID> GetBindingPacked() const; //  high word for set-id, low word for binding-id
+        std::optional<GIDescriptorBindingVk> GetBinding() const;
 
         const std::string& GetName() const;
         bool IsWritable() const;
@@ -32,7 +33,7 @@ namespace AutoCAD::Graphics::Engine
         std::optional<uint32_t> mLocation;               // For stage input/output variable
         std::optional<uint32_t> mConstId;                // For specialization variable
         std::optional<uint32_t> mInputAttachmentId;      // For input attachment used in fragment stage
-        std::optional<std::pair<SET_ID, BINDING_ID>> mBinding; // For descriptor binding variable
+        std::optional<GIDescriptorBindingVk> mBinding;   // For descriptor binding variable
         
         std::string mName;
         bool mWritable = false;

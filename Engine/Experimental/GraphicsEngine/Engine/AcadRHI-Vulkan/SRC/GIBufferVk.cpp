@@ -4,53 +4,14 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    GIBufferVk::ViewCacheKey::ViewCacheKey(size_t _offset, size_t _size, VkFormat _format)
-        : offset(_offset)
-        , size(_size)
-        , format(_format)
-    {}
-
-    size_t GIBufferVk::ViewCacheKey::operator()(const ViewCacheKey& key) const
-    {
-        return std::hash<size_t>()(key.offset) ^
-            std::hash<size_t>()(key.size) ^
-            std::hash<size_t>()(key.format);
-    }
-
-    bool GIBufferVk::ViewCacheKey::operator==(const ViewCacheKey& rhs) const
-    {
-        return offset == rhs.offset &&
-            size == rhs.size &&
-            format == rhs.format;
-    }
-
-    bool GIBufferVk::ViewCacheKey::operator!=(const ViewCacheKey& rhs) const
-    {
-        return !(*this == rhs);
-    }
-
-    SharedPtr<GIBufferVk> GIBufferVk::Create(
-        SharedPtr<GIDeviceVk> device,
-        VkDeviceSize size,
-        VkBufferUsageFlags usages,
-        VkMemoryPropertyFlags properties,
-        const std::vector<uint32_t>& queues,
-        const void* data)
-    {
-        return SharedPtr<GIBufferVk>(new GIBufferVk(device, size, usages, properties, queues, data));
-    }
-
     GIBufferVk::GIBufferVk(
         SharedPtr<GIDeviceVk> device,
-        VkDeviceSize size,
-        VkBufferUsageFlags usages,
-        VkMemoryPropertyFlags properties,
-        const std::vector<uint32_t>& queues,
-        const void* data
+        const VkBufferCreateInfo& createInfo,
+        const VkMemoryAllocateInfo& allocInfo,
+        const void* data,
+        bool useStagingBuffer
     )
-        : GIDeviceObjectVk(device)
-        , mDeviceMemorySize(size)
-        , mUsages(usages)
+        : GIDeviceResourceVk(device)
     {
         // Erase duplicates from 'queues'
         std::vector<uint32_t> uniqueQueues = queues;

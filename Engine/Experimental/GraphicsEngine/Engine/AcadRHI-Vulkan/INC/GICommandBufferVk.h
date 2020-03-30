@@ -45,7 +45,7 @@ namespace AutoCAD::Graphics::Engine
         void SubmitIdle();
 
     protected:
-        GICommandBufferVk(SharedPtr<GICommandPoolVk> pool, bool secondary = false);
+        GICommandBufferVk(SharedPtr<GICommandPoolVk> pool, bool secondary);
         
     private:
         VkCommandBuffer mCommandBuffer = VK_NULL_HANDLE;

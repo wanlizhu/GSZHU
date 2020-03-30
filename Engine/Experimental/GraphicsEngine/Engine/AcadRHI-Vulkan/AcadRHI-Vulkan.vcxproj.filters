@@ -121,6 +121,9 @@
     <ClInclude Include="INC\GIInstanceVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="INC\GIDescriptorBindingVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\GIAndroidPlatformVk.cpp">
@@ -154,12 +157,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GISwapchainVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\SPIRVReflection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\VKInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GIPipelineVk.cpp">
@@ -196,6 +193,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GIShaderVariableVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIInstanceVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIShaderReflectionVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIDescriptorBindingVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
