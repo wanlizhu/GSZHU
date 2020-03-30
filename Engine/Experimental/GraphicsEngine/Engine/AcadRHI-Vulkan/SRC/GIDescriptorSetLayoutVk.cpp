@@ -6,9 +6,9 @@ namespace AutoCAD::Graphics::Engine
     SharedPtr<GIDescriptorSetLayoutVk> GIDescriptorSetLayoutVk::Create(
         SharedPtr<GIDeviceVk> device,
         const std::vector<VkDescriptorSetLayoutBinding>& setBindings,
-        bool isPushDescriptor)
+        bool isPushDescriptorSet)
     {
-        return SharedPtr<GIDescriptorSetLayoutVk>(new GIDescriptorSetLayoutVk(device, setBindings, isPushDescriptor));
+        return SharedPtr<GIDescriptorSetLayoutVk>(new GIDescriptorSetLayoutVk(device, setBindings, isPushDescriptorSet));
     }
 
     GIDescriptorSetLayoutVk::GIDescriptorSetLayoutVk(

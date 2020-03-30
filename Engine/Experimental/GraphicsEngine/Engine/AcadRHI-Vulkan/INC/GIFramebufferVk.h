@@ -23,7 +23,8 @@ namespace AutoCAD::Graphics::Engine
     protected:
         GIFramebufferVk(
             SharedPtr<GIRenderPassVk> renderPass,
-            const VkFramebufferCreateInfo& createInfo);
+            const VkFramebufferCreateInfo& createInfo
+        );
 
     private:
         VkFramebuffer mFramebuffer = VK_NULL_HANDLE;

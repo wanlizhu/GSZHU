@@ -5,8 +5,9 @@
 namespace AutoCAD::Graphics::Engine
 {
     class GIDescriptorSetLayoutVk;
-    class GIDescriptorResourceVk;
     class GIDescriptorPoolVk;
+    class GIDeviceResourceVk;
+    class GICommandBufferVk;
 
     class GIDescriptorSetVk : public GIDeviceObjectVk
     {
@@ -22,23 +23,25 @@ namespace AutoCAD::Graphics::Engine
         bool IsPushDescriptorSet() const;
         SharedPtr<GIDescriptorSetLayoutVk> GetDescriptorSetLayout() const;
         
-        void BindResource(uint32_t binding, WeakPtr<GIDescriptorResourceVk> resource);
-        void SetParentDescriptorSet(WeakPtr<GIDescriptorSetVk> set);
-        void Update();
+        void BindResource(const char* name, WeakPtr<GIDeviceResourceVk> resource, SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
+        void BindResourceArray(const char* name, const std::vector<WeakPtr<GIDeviceResourceVk>>& resourceArray, SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
+        void Update(SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
 
     private:
         GIDescriptorSetVk(
             WeakPtr<GIDescriptorPoolVk> pool,
             SharedPtr<GIDescriptorSetLayoutVk> setLayout,
-            std::optional<WeakPtr<GIDescriptorSetVk>> parent);
+            std::optional<WeakPtr<GIDescriptorSetVk>> parent
+        );
 
     private:
-        VkDescriptorSet mDescriptorSet = VK_NULL_HANDLE; // Must be VK_NULL_HANDLE for push-descriptor-set
+        VkDescriptorSet mDescriptorSet = VK_NULL_HANDLE; // Must be NULL for push-descriptor-set
         SharedPtr<GIDescriptorSetLayoutVk> mDescriptorSetLayout;
         WeakPtr<GIDescriptorPoolVk> mDescriptorPool;
         std::optional<WeakPtr<GIDescriptorSetVk>> mParent;
         
-        std::unordered_map<uint32_t, WeakPtr<GIDescriptorResourceVk>> mBoundResources;
-        std::vector<WeakPtr<GIDescriptorResourceVk>> mPendingUpdates;
+        std::unordered_map<std::string, WeakPtr<GIDeviceResourceVk>> mBoundResources;
+        std::unordered_map<std::string, std::vector<WeakPtr<GIDeviceResourceVk>>> mBoundResourceArrays;
+        std::vector<VkWriteDescriptorSet> mPendingUpdates;
     };
 }

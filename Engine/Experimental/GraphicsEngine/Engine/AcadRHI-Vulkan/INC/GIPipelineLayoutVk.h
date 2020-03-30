@@ -13,7 +13,8 @@ namespace AutoCAD::Graphics::Engine
         static SharedPtr<GIPipelineLayoutVk> Create(
             SharedPtr<GIDeviceVk> device,
             const std::vector<SharedPtr<GIDescriptorSetLayoutVk>>& setLayouts,
-            const std::vector<VkPushConstantRange>& pushConstantRanges);
+            const std::vector<VkPushConstantRange>& pushConstantRanges
+        );
 
         virtual ~GIPipelineLayoutVk();
         virtual bool IsValid() const override final;
@@ -21,19 +22,20 @@ namespace AutoCAD::Graphics::Engine
         virtual void SetDebugTag(const DebugTag& tag) const override final;
 
         operator const VkPipelineLayout& () const;
-        SharedPtr<GIDescriptorSetLayoutVk> GetDescriptorSetLayout(uint32_t setId) const;
+        std::unordered_map<uint32_t, SharedPtr<GIDescriptorSetLayoutVk>> const& GetDescriptorSetLayouts() const;
+        std::optional<SharedPtr<GIDescriptorSetLayoutVk>> GetDescriptorSetLayout(uint32_t setId) const;
         std::optional<VkPushConstantRange> GetPushConstantRange(VkPipelineStageFlags stage) const; // Only one push_constant block is allowed per stage.
         
     private:
         GIPipelineLayoutVk(
             SharedPtr<GIDeviceVk> device,
             const std::vector<SharedPtr<GIDescriptorSetLayoutVk>>& setLayouts,
-            const std::vector<VkPushConstantRange>& pushConstantRanges);
+            const std::vector<VkPushConstantRange>& pushConstantRanges
+        );
 
     private:
         VkPipelineLayout mPipelineLayout = VK_NULL_HANDLE;
-
-        std::unordered_map<uint32_t, SharedPtr<GIDescriptorSetLayoutVk>> mDescriptorSetLayouts;
+        std::unordered_map<uint32_t, SharedPtr<GIDescriptorSetLayoutVk>> mDescriptorSetLayouts; // The descriptor set ids might be uncontinuous
         std::unordered_map<VkPipelineStageFlags, VkPushConstantRange> mPushConstantRanges;
     };
 }

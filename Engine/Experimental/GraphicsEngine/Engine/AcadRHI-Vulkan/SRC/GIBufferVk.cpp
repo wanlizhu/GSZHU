@@ -49,7 +49,7 @@ namespace AutoCAD::Graphics::Engine
         const void* data
     )
         : GIDeviceObjectVk(device)
-        , mSize(size)
+        , mDeviceMemorySize(size)
         , mUsages(usages)
     {
         // Erase duplicates from 'queues'
@@ -85,8 +85,8 @@ namespace AutoCAD::Graphics::Engine
         if (data != nullptr)
         {
             void* mappedData = nullptr;
-            VK_CHECK(vkMapMemory(*mDevice, mDeviceMemory, 0, mSize, 0, &mappedData));
-            std::memcpy(mappedData, data, mSize);
+            VK_CHECK(vkMapMemory(*mDevice, mDeviceMemory, 0, mDeviceMemorySize, 0, &mappedData));
+            std::memcpy(mappedData, data, mDeviceMemorySize);
 
             // If host coherency hasn't been requested, do a manual flush to make writes visible.
             if (!(properties & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT))
@@ -96,7 +96,7 @@ namespace AutoCAD::Graphics::Engine
                 mappedRange.pNext = nullptr;
                 mappedRange.memory = mDeviceMemory;
                 mappedRange.offset = 0;
-                mappedRange.size = mSize;
+                mappedRange.size = mDeviceMemorySize;
                 VK_CHECK(vkFlushMappedMemoryRanges(*mDevice, 1, &mappedRange));
             }
 

@@ -5,19 +5,18 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class VKInstance
+    class GIInstanceVk
         : public GINonCopyable
-        , public std::enable_shared_from_this<VKInstance>
+        , public std::enable_shared_from_this<GIInstanceVk>
     {
         friend class GIDeviceBuilderVk;
-        friend class VKInstanceBuilder;
+        friend class GIInstanceBuilderVk;
     public:
         static const VkAllocationCallbacks* GetHostAlloc();
         static bool IsLayerSupported(const char* name);
         static bool IsExtensionSupported(const char* name);
 
-        ~VKInstance();
-
+        ~GIInstanceVk();
         operator const VkInstance& () const;
         bool IsValid() const;
         bool IsValidationLayerEnabled() const;
@@ -30,16 +29,18 @@ namespace AutoCAD::Graphics::Engine
             const std::vector<const char*>& extensions,
             const std::vector<const char*>& extensionsOptional,
             VkQueueFlags queueFlags,
-            const VkPhysicalDeviceFeatures& features);
+            const VkPhysicalDeviceFeatures& features
+        );
         
         VkPhysicalDevice GetChosenGPU() const;
         EGPUVendorID GetChosenGPUVendorID() const;
 
     protected:
-        VKInstance(
+        GIInstanceVk(
             const VkInstanceCreateInfo& createInfo,
             const std::vector<const char*>& enabledLayers,
-            const std::vector<const char*>& enabledExtensions);
+            const std::vector<const char*>& enabledExtensions
+        );
 
     private:
         static inline VkAllocationCallbacks mAllocationCallbacks = {};
@@ -51,19 +52,19 @@ namespace AutoCAD::Graphics::Engine
         VkDebugUtilsMessengerEXT mDebugUtils = VK_NULL_HANDLE;
     };
 
-    class VKInstanceBuilder
+    class GIInstanceBuilderVk
     {
     public:
-        VKInstanceBuilder();
-        VKInstanceBuilder& SetAppName(const char* name);
-        VKInstanceBuilder& SetEngineName(const char* name);
-        VKInstanceBuilder& SetApiVersion(uint32_t version);
-        VKInstanceBuilder& EnableValidationLayers(bool value);
-        VKInstanceBuilder& EnableLayer(const char* name, bool compulsory = false);
-        VKInstanceBuilder& EnableLayers(const std::vector<const char*>& names);
-        VKInstanceBuilder& EnableExtension(const char* name, bool compulsory = false);
-        VKInstanceBuilder& EnableExtensions(const std::vector<const char*>& names);
-        SharedPtr<VKInstance> Build();
+        GIInstanceBuilderVk();
+        GIInstanceBuilderVk& SetAppName(const char* name);
+        GIInstanceBuilderVk& SetEngineName(const char* name);
+        GIInstanceBuilderVk& SetApiVersion(uint32_t version);
+        GIInstanceBuilderVk& EnableValidationLayers(bool value);
+        GIInstanceBuilderVk& EnableLayer(const char* name, bool compulsory = false);
+        GIInstanceBuilderVk& EnableLayers(const std::vector<const char*>& names);
+        GIInstanceBuilderVk& EnableExtension(const char* name, bool compulsory = false);
+        GIInstanceBuilderVk& EnableExtensions(const std::vector<const char*>& names);
+        SharedPtr<GIInstanceVk> Build();
 
     private:
         VkApplicationInfo mAppInfo = {};

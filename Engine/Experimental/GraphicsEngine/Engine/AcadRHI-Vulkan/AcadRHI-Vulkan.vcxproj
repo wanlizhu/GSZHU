@@ -197,12 +197,12 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIDeviceMemoryPoolVk.h" />
     <ClInclude Include="INC\GIDeviceObjectVk.h" />
     <ClInclude Include="INC\GIDeviceQueueVk.h" />
+    <ClInclude Include="INC\GIDeviceResourceVk.h" />
     <ClInclude Include="INC\GIDeviceVk.h" />
     <ClInclude Include="INC\GIGenericPlatformVk.h" />
     <ClInclude Include="INC\GIIndexBufferVk.h" />
     <ClInclude Include="INC\GIPipelineLayoutVk.h" />
     <ClInclude Include="INC\GIPipelineVk.h" />
-    <ClInclude Include="INC\GIDescriptorResourceVk.h" />
     <ClInclude Include="INC\GIFramebufferVk.h" />
     <ClInclude Include="INC\GIPipelineCacheVk.h" />
     <ClInclude Include="INC\GIPlatformVk.h" />
@@ -211,13 +211,13 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIShaderVariableVk.h" />
     <ClInclude Include="INC\GIVertexBufferVk.h" />
     <ClInclude Include="INC\GIVertexLayoutVk.h" />
-    <ClInclude Include="INC\SPIRVReflection.h" />
+    <ClInclude Include="INC\GIShaderReflectionVk.h" />
     <ClInclude Include="INC\GISwapchainVk.h" />
     <ClInclude Include="INC\GITextureViewVk.h" />
     <ClInclude Include="INC\GITextureVk.h" />
     <ClInclude Include="INC\GIWindowsPlatformVk.h" />
     <ClInclude Include="INC\GICommonVk.h" />
-    <ClInclude Include="INC\VKInstance.h" />
+    <ClInclude Include="INC\GIInstanceVk.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\GIAndroidPlatformVk.cpp" />

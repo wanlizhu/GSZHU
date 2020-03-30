@@ -11,8 +11,8 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device,
             VkDeviceSize size,
             VkIndexType indexType,
-            bool enableStagingBuffer = true,
-            const void* data = nullptr);
+            const void* data
+        );
 
         virtual ~GIIndexBufferVk();
         virtual bool IsValid() const override final;
@@ -23,11 +23,10 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device,
             VkDeviceSize size,
             VkIndexType indexType,
-            bool enableStagingBuffer = true,
-            const void* data = nullptr);
+            const void* data
+        );
 
     private:
         VkIndexType mIndexType = VK_INDEX_TYPE_UINT32;
-        std::optional<SharedPtr<GIBufferVk>> mStagingBuffer;
     };
 }

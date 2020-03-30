@@ -14,8 +14,8 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device,
             VkDeviceSize size, 
             SharedPtr<GIVertexLayoutVk> vertexLayout,
-            bool enableStagingBuffer = true,
-            const void* data = nullptr);
+            const void* data
+        );
 
         virtual ~GIVertexBufferVk();
         virtual bool IsValid() const override final;
@@ -29,12 +29,11 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device,
             VkDeviceSize size,
             SharedPtr<GIVertexLayoutVk> vertexLayout,
-            bool enableStagingBuffer = true,
-            const void* data = nullptr);
+            const void* data
+        );
         
     private:
         VkVertexInputBindingDescription mBindingPoint = {};
         SharedPtr<GIVertexLayoutVk> mVertexLayout;
-        std::optional<SharedPtr<GIBufferVk>> mStagingBuffer;
     };
 }

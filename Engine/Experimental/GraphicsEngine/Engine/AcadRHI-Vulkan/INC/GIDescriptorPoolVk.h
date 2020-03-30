@@ -4,7 +4,7 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class SPIRVReflection;
+    class GIShaderReflectionVk;
     class GIDescriptorSetVk;
 
     /*
@@ -19,6 +19,13 @@ namespace AutoCAD::Graphics::Engine
         friend class GIDescriptorPoolBuilderVk;
         DECL_DEVICE_OBJECT(GIDescriptorPoolVk)
     public:
+        static SharedPtr<GIDescriptorPoolVk> Create(
+            SharedPtr<GIDeviceVk> device,
+            SharedPtr<GIShaderReflectionVk> reflection,
+            uint32_t maxSets,
+            const std::vector<VkDescriptorPoolSize>& poolSizes
+        );
+
         virtual ~GIDescriptorPoolVk();
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
@@ -33,28 +40,14 @@ namespace AutoCAD::Graphics::Engine
     protected:
         GIDescriptorPoolVk(
             SharedPtr<GIDeviceVk> device,
-            const VkDescriptorPoolCreateInfo& createInfo);
+            SharedPtr<GIShaderReflectionVk> reflection,
+            uint32_t maxSets,
+            const std::vector<VkDescriptorPoolSize>& poolSizes
+        );
 
     private:
+        SharedPtr<GIShaderReflectionVk> mReflection;
         VkDescriptorPool mDescriptorPool = VK_NULL_HANDLE;
         std::thread::id mThreadId;
-    };
-
-    class GIDescriptorPoolBuilderVk
-    {
-    public:
-        GIDescriptorPoolBuilderVk(SharedPtr<GIDeviceVk> device);
-        
-        GIDescriptorPoolBuilderVk& Expand(SharedPtr<SPIRVReflection> reflection);
-        GIDescriptorPoolBuilderVk& Expand(const VkDescriptorPoolSize& typeAndCount);
-        GIDescriptorPoolBuilderVk& SetMaxSetCount(uint32_t maxSets);
-
-        SharedPtr<GIDescriptorPoolVk> Build();
-
-    private:
-        SharedPtr<GIDeviceVk> mDevice;
-        VkDescriptorPoolCreateInfo mCreateInfo = {};
-
-        std::vector<VkDescriptorPoolSize> mPoolSizes;
     };
 }

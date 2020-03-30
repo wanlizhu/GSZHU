@@ -1,15 +1,12 @@
 #pragma once
 
 #include "GIDeviceObjectVk.h"
-#include "GIDescriptorResourceVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
     class GIBufferVk;
 
-    class GIBufferViewVk 
-        : public GIDeviceObjectVk
-        , public GIDescriptorResourceVk
+    class GIBufferViewVk : public GIDeviceObjectVk
     {
         DECL_DEVICE_OBJECT(GIBufferViewVk)
     public:
@@ -17,17 +14,13 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIBufferVk> buffer,
             size_t offset,
             size_t size,
-            VkFormat format);
+            VkFormat format
+        );
 
         virtual ~GIBufferViewVk();
         virtual bool IsValid() const override;
         virtual void SetDebugName(const char* name) const override;
         virtual void SetDebugTag(const DebugTag& tag) const override;
-
-        virtual size_t GetResourceSize() const override final;
-        virtual uint32_t GetUnderlyingCopyCount() const override final;
-        virtual VkAccessFlags GetResourceState() const override final;
-        virtual VkWriteDescriptorSet GetWriteCommand() const override final;
 
         operator const VkBufferView& () const;
         SharedPtr<GIBufferVk> GetBuffer() const;
@@ -40,7 +33,8 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIBufferVk> buffer,
             size_t offset,
             size_t size,
-            VkFormat format);
+            VkFormat format
+        );
 
     private:
         VkBufferView mBufferView = VK_NULL_HANDLE;
@@ -48,8 +42,5 @@ namespace AutoCAD::Graphics::Engine
         size_t mOffset = 0;
         size_t mSize = 0;
         VkFormat mFormat = VK_FORMAT_UNDEFINED;
-
-        VkAccessFlags mResourceState = VK_ACCESS_FLAG_BITS_MAX_ENUM;
-        VkDescriptorBufferInfo mBufferInfo;
     };
 }

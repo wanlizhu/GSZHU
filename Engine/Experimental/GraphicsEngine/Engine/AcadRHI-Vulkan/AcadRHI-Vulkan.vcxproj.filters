@@ -64,21 +64,6 @@
     <ClInclude Include="INC\GISwapchainVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\SPIRVReflection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\VKInstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GISamplerVk.h">
-      <Filter>BACKLOG</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GITextureViewVk.h">
-      <Filter>BACKLOG</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GITextureVk.h">
-      <Filter>BACKLOG</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIDescriptorPoolVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -100,9 +85,6 @@
     <ClInclude Include="INC\GIBufferVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIDescriptorResourceVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIVertexBufferVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -112,13 +94,31 @@
     <ClInclude Include="INC\GIDeviceMemoryPoolVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIShaderVariableVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIVertexLayoutVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\GIBufferViewVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GITextureVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GITextureViewVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GISamplerVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIShaderReflectionVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIShaderVariableVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDeviceResourceVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIInstanceVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

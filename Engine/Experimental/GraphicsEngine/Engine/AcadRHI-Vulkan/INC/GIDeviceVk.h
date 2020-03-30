@@ -2,7 +2,7 @@
 
 #include "GIPlatformVk.h"
 #include "GICommonVk.h"
-#include "VKInstance.h"
+#include "GIInstanceVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
@@ -57,7 +57,7 @@ namespace AutoCAD::Graphics::Engine
         void SetupPresentQueue(VkSurfaceKHR surface);
         void SetCurrentDC(WeakPtr<GIDeviceContextVk> dc);
         
-        SharedPtr<VKInstance> const& GetInstance() const;
+        SharedPtr<GIInstanceVk> const& GetInstance() const;
         uint32_t GetMemoryTypeIndex(uint32_t typeFilters, VkMemoryPropertyFlags properties) const;
         VkPhysicalDevice GetPhysicalDevice() const;
         PhysicalDeviceInfo const& GetPhysicalDeviceInfo() const;
@@ -74,12 +74,13 @@ namespace AutoCAD::Graphics::Engine
 
     protected:
         GIDeviceVk(
-            SharedPtr<VKInstance> instance,
+            SharedPtr<GIInstanceVk> instance,
             VkPhysicalDevice physicalDevice,
-            VkDeviceCreateInfo& createInfo);
+            VkDeviceCreateInfo& createInfo
+        );
 
     private:
-        SharedPtr<VKInstance> mInstance;
+        SharedPtr<GIInstanceVk> mInstance;
         VkPhysicalDevice mPhysicalDevice = VK_NULL_HANDLE;
         PhysicalDeviceInfo mPhysicalDeviceInfo;
         OptionalDeviceExtensions mOptionalExtensions;
@@ -95,7 +96,7 @@ namespace AutoCAD::Graphics::Engine
     class GIDeviceBuilderVk
     {
     public:
-        GIDeviceBuilderVk(SharedPtr<VKInstance> instance);
+        GIDeviceBuilderVk(SharedPtr<GIInstanceVk> instance);
         
         GIDeviceBuilderVk& SetPhysicalDevice(VkPhysicalDevice physicalDevice);
         GIDeviceBuilderVk& EnableExtension(const char* name, bool compulsory = false);
@@ -111,7 +112,7 @@ namespace AutoCAD::Graphics::Engine
         bool FindFromQueueCreateInfos(uint32_t familyIndex);
 
     private:
-        SharedPtr<VKInstance> mInstance;
+        SharedPtr<GIInstanceVk> mInstance;
         VkPhysicalDevice mPhysicalDevice = VK_NULL_HANDLE;
         VkDeviceCreateInfo mCreateInfo = {};
 

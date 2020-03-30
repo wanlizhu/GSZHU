@@ -122,9 +122,19 @@ namespace AutoCAD::Graphics::Engine
         LOG_ERROR("No device queue supports present to surface!\n");
     }
 
+    void GIDeviceVk::SetCurrentDC(WeakPtr<GIDeviceContextVk> dc)
+    {
+        mCurrentDC = dc;
+    }
+
     SharedPtr<VKInstance> const& GIDeviceVk::GetInstance() const
     {
         return mInstance;
+    }
+
+    uint32_t GIDeviceVk::GetMemoryTypeIndex(uint32_t typeFilters, VkMemoryPropertyFlags properties) const
+    {
+        return 0; // TODO
     }
 
     VkPhysicalDevice GIDeviceVk::GetPhysicalDevice() const
@@ -145,6 +155,11 @@ namespace AutoCAD::Graphics::Engine
     VkDevice GIDeviceVk::GetLogicalDevice() const
     {
         return mLogicalDevice;
+    }
+
+    GIDeviceContextVk* GIDeviceVk::GetDC() const
+    {
+        return mCurrentDC.lock().get();
     }
 
     SharedPtr<GIDeviceQueueVk> GIDeviceVk::GetGraphicsQueue() const

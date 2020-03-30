@@ -31,7 +31,8 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device,
             SharedPtr<SPIRVReflection> reflection,
             const VkGraphicsPipelineCreateInfo& createInfo,
-            VkPipelineCache cache);
+            VkPipelineCache cache
+        );
 
         void CreatePipelineLayout();
 
@@ -53,7 +54,8 @@ namespace AutoCAD::Graphics::Engine
             uint32_t binding,
             uint32_t offset,
             uint32_t stride,
-            VkVertexInputRate inputRate = VK_VERTEX_INPUT_RATE_VERTEX);
+            VkVertexInputRate inputRate
+        );
 
         std::string const& GetName() const;
         uint32_t GetBinding() const;

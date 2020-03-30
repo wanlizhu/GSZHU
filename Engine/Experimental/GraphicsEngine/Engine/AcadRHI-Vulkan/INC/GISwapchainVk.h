@@ -32,7 +32,8 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device,
             bool acquireNextImageAsync,
             VkComponentMapping componentMapping,
-            const VkSwapchainCreateInfoKHR& createInfo);
+            const VkSwapchainCreateInfoKHR& createInfo
+        );
 
         bool RecreateSwapchain();
         void WaitImageAcquiredFence();

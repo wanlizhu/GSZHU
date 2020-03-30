@@ -34,7 +34,8 @@ namespace AutoCAD::Graphics::Engine
     protected:
         GIRenderPassVk(
             SharedPtr<GIDeviceVk> device,
-            const VkRenderPassCreateInfo& createInfo);
+            const VkRenderPassCreateInfo& createInfo
+        );
         
     private:
         VkRenderPass mRenderPass = VK_NULL_HANDLE;
