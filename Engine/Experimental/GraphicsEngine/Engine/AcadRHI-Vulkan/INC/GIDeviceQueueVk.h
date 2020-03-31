@@ -14,9 +14,13 @@ namespace AutoCAD::Graphics::Engine
         friend class GIDeviceBuilderVk;
         DECL_WEAK_DEVICE_OBJECT(GIDeviceQueueVk)
     public:
-        static SharedPtr<GIDeviceQueueVk> Create(WeakPtr<GIDeviceVk> device, VkQueue queue, uint32_t familyIndex);
+        static SharedPtr<GIDeviceQueueVk> Create(
+            WeakPtr<GIDeviceVk> device, 
+            VkQueue queue,
+            uint32_t familyIndex
+        );
+        
         virtual ~GIDeviceQueueVk();
-
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
         virtual void SetDebugTag(const DebugTag& tag) const override final;
@@ -27,7 +31,11 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GICommandPoolVk> GetCommandPool(); /* thread_local */
 
     protected:
-        GIDeviceQueueVk(WeakPtr<GIDeviceVk> device, VkQueue queue, uint32_t familyIndex);
+        GIDeviceQueueVk(
+            WeakPtr<GIDeviceVk> device,
+            VkQueue queue,
+            uint32_t familyIndex
+        );
        
     private:
         VkQueue mQueueHandle = VK_NULL_HANDLE; /* VkQueue is created by driver when creating VkDevice */ 

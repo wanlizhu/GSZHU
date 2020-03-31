@@ -20,7 +20,6 @@ namespace AutoCAD::Graphics::Engine
         DECL_DEVICE_OBJECT(GIRenderPassVk)
     public:
         virtual ~GIRenderPassVk();
-
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
         virtual void SetDebugTag(const DebugTag& tag) const override final;

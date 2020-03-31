@@ -51,7 +51,6 @@ namespace AutoCAD::Graphics::Engine
         };
 
         virtual ~GIDeviceVk();
-
         operator const VkDevice& () const;
         bool IsValid() const;
         void SetupPresentQueue(VkSurfaceKHR surface);

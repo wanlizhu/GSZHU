@@ -21,7 +21,6 @@ namespace AutoCAD::Graphics::Engine
         friend class GIShaderReflectionBuilderVk;
     public:
         virtual ~GIShaderReflectionVk();
-
         bool IsPushDescriptorSet(SET_ID setId) const;
         bool IsDynamicDescriptor(SET_ID setId, BINDING_ID bindingId) const;
         std::optional<GIShaderVariableVk> GetVariable(const std::string& name) const;

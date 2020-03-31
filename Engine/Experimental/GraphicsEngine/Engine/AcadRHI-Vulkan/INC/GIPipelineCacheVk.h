@@ -15,9 +15,12 @@ namespace AutoCAD::Graphics::Engine
     {
         DECL_DEVICE_OBJECT(GIPipelineCacheVk)
     public:
-        static SharedPtr<GIPipelineCacheVk> Create(SharedPtr<GIDeviceVk> device, const std::wstring& path);
+        static SharedPtr<GIPipelineCacheVk> Create(
+            SharedPtr<GIDeviceVk> device,
+            const std::wstring& path
+        );
+        
         virtual ~GIPipelineCacheVk();
-
         operator const VkPipelineCache& () const;
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
@@ -26,7 +29,10 @@ namespace AutoCAD::Graphics::Engine
         void Flush() const;
 
     private:
-        GIPipelineCacheVk(SharedPtr<GIDeviceVk> device, const std::wstring& path);
+        GIPipelineCacheVk(
+            SharedPtr<GIDeviceVk> device,
+            const std::wstring& path
+        );
 
     private:
         VkPipelineCache mPipelineCacheHandle = VK_NULL_HANDLE;
