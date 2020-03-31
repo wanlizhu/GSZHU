@@ -25,7 +25,7 @@ namespace AutoCAD::Graphics::Engine
         allocInfo.descriptorSetCount = 1;
         allocInfo.pSetLayouts = setLayouts.data();
 
-        VK_CHECK(vkAllocateDescriptorSets(*mDevice, &allocInfo, &mDescriptorSet));
+        VK_CHECK(vkAllocateDescriptorSets(*mDevice, &allocInfo, &mDescriptorSetHandle));
     }
 
     GIDescriptorSetVk::~GIDescriptorSetVk()
@@ -33,35 +33,37 @@ namespace AutoCAD::Graphics::Engine
         auto pool = mDescriptorPool.lock();
         if (IsValid() && pool)
         {
-            vkFreeDescriptorSets(*mDevice, *pool, 1, &mDescriptorSet);
-            mDescriptorSet = VK_NULL_HANDLE;
+            vkFreeDescriptorSets(*mDevice, *pool, 1, &mDescriptorSetHandle);
+            mDescriptorSetHandle = VK_NULL_HANDLE;
         }
     }
 
     bool GIDescriptorSetVk::IsValid() const
     {
-        return mDescriptorSet != VK_NULL_HANDLE;
+        return mDescriptorSetHandle != VK_NULL_HANDLE;
     }
 
     void GIDescriptorSetVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mDescriptorSet,
+            mDescriptorSetHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_EXT,
-            name);
+            name
+        );
     }
 
     void GIDescriptorSetVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mDescriptorSet,
+            mDescriptorSetHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_EXT,
-            tag);
+            tag
+        );
     }
 
     GIDescriptorSetVk::operator const VkDescriptorSet& () const
     {
-        return mDescriptorSet;
+        return mDescriptorSetHandle;
     }
 
     bool GIDescriptorSetVk::IsPushDescriptorSet() const

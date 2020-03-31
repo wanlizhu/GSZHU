@@ -23,42 +23,44 @@ namespace AutoCAD::Graphics::Engine
         createInfo.maxSets = maxSets;
         createInfo.poolSizeCount = (uint32_t)poolSizes.size();
         createInfo.pPoolSizes = poolSizes.data();
-        VK_CHECK(vkCreateDescriptorPool(*mDevice, &createInfo, nullptr, &mDescriptorPool));
+        VK_CHECK(vkCreateDescriptorPool(*mDevice, &createInfo, nullptr, &mDescriptorPoolHandle));
     }
 
     GIDescriptorPoolVk::~GIDescriptorPoolVk()
     {
         if (IsValid())
         {
-            vkDestroyDescriptorPool(*mDevice, mDescriptorPool, nullptr);
-            mDescriptorPool = VK_NULL_HANDLE;
+            vkDestroyDescriptorPool(*mDevice, mDescriptorPoolHandle, nullptr);
+            mDescriptorPoolHandle = VK_NULL_HANDLE;
         }
     }
 
     bool GIDescriptorPoolVk::IsValid() const
     {
-        return mDescriptorPool != VK_NULL_HANDLE;
+        return mDescriptorPoolHandle != VK_NULL_HANDLE;
     }
 
     void GIDescriptorPoolVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mDescriptorPool,
+            mDescriptorPoolHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_POOL_EXT,
-            name);
+            name
+        );
     }
 
     void GIDescriptorPoolVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mDescriptorPool,
+            mDescriptorPoolHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_POOL_EXT,
-            tag);
+            tag
+        );
     }
 
     GIDescriptorPoolVk::operator const VkDescriptorPool& () const
     {
-        return mDescriptorPool;
+        return mDescriptorPoolHandle;
     }
 
     std::thread::id GIDescriptorPoolVk::GetThreadId() const

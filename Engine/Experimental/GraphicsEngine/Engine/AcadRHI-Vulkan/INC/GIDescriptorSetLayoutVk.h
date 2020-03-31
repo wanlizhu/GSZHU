@@ -37,7 +37,7 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         SharedPtr<GIShaderReflectionVk> mShaderReflection;
-        VkDescriptorSetLayout mDescriptorSetLayout = VK_NULL_HANDLE;
+        VkDescriptorSetLayout mDescriptorSetLayoutHandle = VK_NULL_HANDLE;
         std::unordered_map<BINDING_ID, VkDescriptorSetLayoutBinding> mBindings; // The binding ids might be uncontinuous
         bool mIsPushDescriptorSet = false;
     };

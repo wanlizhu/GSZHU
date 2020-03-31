@@ -31,7 +31,7 @@ namespace AutoCAD::Graphics::Engine
         createInfo.initialDataSize = buffer.size();
         createInfo.pInitialData = buffer.data();
 
-        VK_CHECK(vkCreatePipelineCache(*mDevice, &createInfo, nullptr, &mPipelineCache));
+        VK_CHECK(vkCreatePipelineCache(*mDevice, &createInfo, nullptr, &mPipelineCacheHandle));
     }
 
     GIPipelineCacheVk::~GIPipelineCacheVk()
@@ -39,35 +39,37 @@ namespace AutoCAD::Graphics::Engine
         if (IsValid())
         {
             Flush();
-            vkDestroyPipelineCache(*mDevice, mPipelineCache, nullptr);
-            mPipelineCache = VK_NULL_HANDLE;
+            vkDestroyPipelineCache(*mDevice, mPipelineCacheHandle, nullptr);
+            mPipelineCacheHandle = VK_NULL_HANDLE;
         }
     }
 
     GIPipelineCacheVk::operator const VkPipelineCache& () const
     {
-        return mPipelineCache;
+        return mPipelineCacheHandle;
     }
 
     bool GIPipelineCacheVk::IsValid() const
     {
-        return mPipelineCache != VK_NULL_HANDLE;
+        return mPipelineCacheHandle != VK_NULL_HANDLE;
     }
 
     void GIPipelineCacheVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mPipelineCache,
+            mPipelineCacheHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_CACHE_EXT,
-            name);
+            name
+        );
     }
 
     void GIPipelineCacheVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mPipelineCache,
+            mPipelineCacheHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_CACHE_EXT,
-            tag);
+            tag
+        );
     }
 
     void GIPipelineCacheVk::Flush() const
@@ -75,11 +77,11 @@ namespace AutoCAD::Graphics::Engine
         if (IsValid() && !mFilePath.empty())
         {
             size_t size = 0;
-            VK_CHECK(vkGetPipelineCacheData(*mDevice, mPipelineCache, &size, nullptr));
+            VK_CHECK(vkGetPipelineCacheData(*mDevice, mPipelineCacheHandle, &size, nullptr));
             if (size > 0)
             {
                 std::vector<char> data(size);
-                VK_CHECK(vkGetPipelineCacheData(*mDevice, mPipelineCache, &size, data.data()));
+                VK_CHECK(vkGetPipelineCacheData(*mDevice, mPipelineCacheHandle, &size, data.data()));
 
                 std::ofstream output(mFilePath.wstring(), std::ios::binary);
                 if (output.is_open())

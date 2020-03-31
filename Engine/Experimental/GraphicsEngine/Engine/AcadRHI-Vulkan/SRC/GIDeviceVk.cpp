@@ -11,35 +11,35 @@ namespace AutoCAD::Graphics::Engine
         VkDeviceCreateInfo& createInfo
     )
         : mInstance(instance)
-        , mPhysicalDevice(physicalDevice)
+        , mPhysicalDeviceHandle(physicalDevice)
     {
         assert(instance->IsValid());
         assert(physicalDevice != VK_NULL_HANDLE);
 
-        vkGetPhysicalDeviceProperties(mPhysicalDevice, &mPhysicalDeviceInfo.properties);
-        vkGetPhysicalDeviceFeatures(mPhysicalDevice, &mPhysicalDeviceInfo.features);
-        vkGetPhysicalDeviceMemoryProperties(mPhysicalDevice, &mPhysicalDeviceInfo.memoryProperties);
+        vkGetPhysicalDeviceProperties(mPhysicalDeviceHandle, &mPhysicalDeviceInfo.properties);
+        vkGetPhysicalDeviceFeatures(mPhysicalDeviceHandle, &mPhysicalDeviceInfo.features);
+        vkGetPhysicalDeviceMemoryProperties(mPhysicalDeviceHandle, &mPhysicalDeviceInfo.memoryProperties);
 
         uint32_t extensionCount = 0;
-        vkEnumerateDeviceExtensionProperties(mPhysicalDevice, nullptr, &extensionCount, nullptr);
+        vkEnumerateDeviceExtensionProperties(mPhysicalDeviceHandle, nullptr, &extensionCount, nullptr);
         mPhysicalDeviceInfo.supportedExtensions.resize(extensionCount);
-        vkEnumerateDeviceExtensionProperties(mPhysicalDevice, nullptr, &extensionCount, mPhysicalDeviceInfo.supportedExtensions.data());
+        vkEnumerateDeviceExtensionProperties(mPhysicalDeviceHandle, nullptr, &extensionCount, mPhysicalDeviceInfo.supportedExtensions.data());
         mOptionalExtensions.Initialize(mPhysicalDeviceInfo.supportedExtensions);
 
         uint32_t familyCount = 0;
-        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDevice, &familyCount, nullptr);
+        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDeviceHandle, &familyCount, nullptr);
         mPhysicalDeviceInfo.supportedQueueFamilies.resize(familyCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDevice, &familyCount, mPhysicalDeviceInfo.supportedQueueFamilies.data());
+        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDeviceHandle, &familyCount, mPhysicalDeviceInfo.supportedQueueFamilies.data());
 
-        VK_CHECK(vkCreateDevice(mPhysicalDevice, &createInfo, nullptr, &mLogicalDevice));
+        VK_CHECK(vkCreateDevice(mPhysicalDeviceHandle, &createInfo, nullptr, &mLogicalDeviceHandle));
     }
 
     GIDeviceVk::~GIDeviceVk()
     {
         if (IsValid())
         {
-            vkDestroyDevice(mLogicalDevice, nullptr);
-            mLogicalDevice = VK_NULL_HANDLE;
+            vkDestroyDevice(mLogicalDeviceHandle, nullptr);
+            mLogicalDeviceHandle = VK_NULL_HANDLE;
             mInstance.reset();
         }
     }
@@ -78,12 +78,12 @@ namespace AutoCAD::Graphics::Engine
 
     GIDeviceVk::operator const VkDevice& () const
     {
-        return mLogicalDevice;
+        return mLogicalDeviceHandle;
     }
 
     bool GIDeviceVk::IsValid() const
     {
-        return mLogicalDevice != VK_NULL_HANDLE;
+        return mLogicalDeviceHandle != VK_NULL_HANDLE;
     }
 
     void GIDeviceVk::SetupPresentQueue(VkSurfaceKHR surface)
@@ -94,7 +94,7 @@ namespace AutoCAD::Graphics::Engine
             
             VkBool32 supportsPresent = VK_FALSE;
             uint32_t familyIndex = queue->GetFamilyIndex();
-            VK_CHECK(vkGetPhysicalDeviceSurfaceSupportKHR(mPhysicalDevice, familyIndex, surface, &supportsPresent));
+            VK_CHECK(vkGetPhysicalDeviceSurfaceSupportKHR(mPhysicalDeviceHandle, familyIndex, surface, &supportsPresent));
             return supportsPresent == VK_TRUE;
         };
 
@@ -139,7 +139,7 @@ namespace AutoCAD::Graphics::Engine
 
     VkPhysicalDevice GIDeviceVk::GetPhysicalDevice() const
     {
-        return mPhysicalDevice;
+        return mPhysicalDeviceHandle;
     }
 
     const GIDeviceVk::PhysicalDeviceInfo& GIDeviceVk::GetPhysicalDeviceInfo() const
@@ -154,7 +154,7 @@ namespace AutoCAD::Graphics::Engine
 
     VkDevice GIDeviceVk::GetLogicalDevice() const
     {
-        return mLogicalDevice;
+        return mLogicalDeviceHandle;
     }
 
     GIDeviceContextVk* GIDeviceVk::GetDC() const
@@ -184,7 +184,7 @@ namespace AutoCAD::Graphics::Engine
     
     void GIDeviceVk::WaitIdle()
     {
-        vkDeviceWaitIdle(mLogicalDevice);
+        vkDeviceWaitIdle(mLogicalDeviceHandle);
     }
 
     GIDeviceBuilderVk::GIDeviceBuilderVk(SharedPtr<GIInstanceVk> instance)
@@ -198,19 +198,19 @@ namespace AutoCAD::Graphics::Engine
 
     GIDeviceBuilderVk& GIDeviceBuilderVk::SetPhysicalDevice(VkPhysicalDevice physicalDevice)
     {
-        mPhysicalDevice = physicalDevice;
-        assert(mPhysicalDevice != VK_NULL_HANDLE);
-        vkGetPhysicalDeviceFeatures(mPhysicalDevice, &mSupportedFeatures);
+        mPhysicalDeviceHandle = physicalDevice;
+        assert(mPhysicalDeviceHandle != VK_NULL_HANDLE);
+        vkGetPhysicalDeviceFeatures(mPhysicalDeviceHandle, &mSupportedFeatures);
 
         uint32_t extensionCount = 0;
-        VK_CHECK(vkEnumerateDeviceExtensionProperties(mPhysicalDevice, nullptr, &extensionCount, nullptr));
+        VK_CHECK(vkEnumerateDeviceExtensionProperties(mPhysicalDeviceHandle, nullptr, &extensionCount, nullptr));
         mSupportedExtensions.resize(extensionCount);
-        VK_CHECK(vkEnumerateDeviceExtensionProperties(mPhysicalDevice, nullptr, &extensionCount, mSupportedExtensions.data()));
+        VK_CHECK(vkEnumerateDeviceExtensionProperties(mPhysicalDeviceHandle, nullptr, &extensionCount, mSupportedExtensions.data()));
 
         uint32_t familyCount = 0;
-        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDevice, &familyCount, nullptr);
+        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDeviceHandle, &familyCount, nullptr);
         mSupportedQueueFamilies.resize(familyCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDevice, &familyCount, mSupportedQueueFamilies.data());
+        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDeviceHandle, &familyCount, mSupportedQueueFamilies.data());
 
         return *this;
     }
@@ -367,7 +367,7 @@ namespace AutoCAD::Graphics::Engine
 
         auto device = SharedPtr<GIDeviceVk>(new GIDeviceVk(
             mInstance,
-            mPhysicalDevice,
+            mPhysicalDeviceHandle,
             mCreateInfo));
         assert(device->IsValid());
 
@@ -376,7 +376,7 @@ namespace AutoCAD::Graphics::Engine
             const auto& queueFamilies = device->mPhysicalDeviceInfo.supportedQueueFamilies;
             uint32_t familyIndex = mCreateInfo.pQueueCreateInfos[i].queueFamilyIndex;
             VkQueue queue = VK_NULL_HANDLE;
-            vkGetDeviceQueue(device->mLogicalDevice, familyIndex, 0, &queue);
+            vkGetDeviceQueue(device->mLogicalDeviceHandle, familyIndex, 0, &queue);
 
             if (VK_QUEUE_GRAPHICS_BIT & queueFamilies[familyIndex].queueFlags)
             {

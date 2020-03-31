@@ -48,8 +48,8 @@ namespace AutoCAD::Graphics::Engine
         GICommandBufferVk(SharedPtr<GICommandPoolVk> pool, bool secondary);
         
     private:
-        VkCommandBuffer mCommandBuffer = VK_NULL_HANDLE;
-        VkCommandPool mCommandPool = VK_NULL_HANDLE;
+        VkCommandBuffer mCommandBufferHandle = VK_NULL_HANDLE;
+        VkCommandPool mCommandPoolHandle = VK_NULL_HANDLE;
         VkQueue mQueue = VK_NULL_HANDLE;
         EState mState = EState::NotAllocated;
 

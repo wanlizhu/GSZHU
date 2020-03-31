@@ -7,35 +7,37 @@ namespace AutoCAD::Graphics::Engine
     {
         if (IsValid())
         {
-            vkDestroyRenderPass(*mDevice, mRenderPass, nullptr);
-            mRenderPass = VK_NULL_HANDLE;
+            vkDestroyRenderPass(*mDevice, mRenderPassHandle, nullptr);
+            mRenderPassHandle = VK_NULL_HANDLE;
         }
     }
 
     bool GIRenderPassVk::IsValid() const
     {
-        return mRenderPass != VK_NULL_HANDLE;
+        return mRenderPassHandle != VK_NULL_HANDLE;
     }
 
     void GIRenderPassVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mRenderPass,
+            mRenderPassHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT,
-            name);
+            name
+        );
     }
 
     void GIRenderPassVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mRenderPass,
+            mRenderPassHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT,
-            tag);
+            tag
+        );
     }
 
     GIRenderPassVk::operator const VkRenderPass& () const
     {
-        return mRenderPass;
+        return mRenderPassHandle;
     }
 
     uint32_t GIRenderPassVk::GetSampleCount() const

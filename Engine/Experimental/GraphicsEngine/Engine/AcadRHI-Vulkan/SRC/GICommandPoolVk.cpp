@@ -14,7 +14,7 @@ namespace AutoCAD::Graphics::Engine
 
     GICommandPoolVk::GICommandPoolVk(SharedPtr<GIDeviceQueueVk> queue)
         : GIDeviceObjectVk(queue->GetDevice().lock())
-        , mQueue(*queue)
+        , mQueueHandle(*queue)
         , mThreadId(std::this_thread::get_id())
     {
         VkCommandPoolCreateInfo createInfo = {};
@@ -22,39 +22,41 @@ namespace AutoCAD::Graphics::Engine
         createInfo.pNext = nullptr;
         createInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
         createInfo.queueFamilyIndex = queue->GetFamilyIndex();
-        VK_CHECK(vkCreateCommandPool(*mDevice, &createInfo, nullptr, &mCommandPool));
+        VK_CHECK(vkCreateCommandPool(*mDevice, &createInfo, nullptr, &mCommandPoolHandle));
     }
 
     GICommandPoolVk::~GICommandPoolVk()
     {
-        vkDestroyCommandPool(*mDevice, mCommandPool, nullptr);
-        mCommandPool = VK_NULL_HANDLE;
+        vkDestroyCommandPool(*mDevice, mCommandPoolHandle, nullptr);
+        mCommandPoolHandle = VK_NULL_HANDLE;
     }
 
     bool GICommandPoolVk::IsValid() const
     {
-        return mCommandPool != VK_NULL_HANDLE;
+        return mCommandPoolHandle != VK_NULL_HANDLE;
     }
 
     void GICommandPoolVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            (void*)mCommandPool,
+            (void*)mCommandPoolHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_POOL_EXT,
-            name);
+            name
+        );
     }
 
     void GICommandPoolVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            (void*)mCommandPool,
+            (void*)mCommandPoolHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_POOL_EXT,
-            tag);
+            tag
+        );
     }
 
     GICommandPoolVk::operator const VkCommandPool& () const
     {
-        return mCommandPool;
+        return mCommandPoolHandle;
     }
 
     SharedPtr<GICommandBufferVk> GICommandPoolVk::Allocate(bool secondary)
@@ -69,6 +71,6 @@ namespace AutoCAD::Graphics::Engine
 
     VkQueue GICommandPoolVk::GetQueue() const
     {
-        return mQueue;
+        return mQueueHandle;
     }
 }

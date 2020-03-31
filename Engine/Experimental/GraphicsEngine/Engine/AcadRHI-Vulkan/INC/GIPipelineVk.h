@@ -39,7 +39,7 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         std::wstring mPipelineName;
-        VkPipeline mPipeline = VK_NULL_HANDLE;
+        VkPipeline mPipelineHandle = VK_NULL_HANDLE;
         VkPipelineBindPoint mPipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 
         SharedPtr<GIPipelineLayoutVk> mPipelineLayout;
@@ -119,7 +119,7 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIDeviceVk> mDevice;
         SharedPtr<GIShaderReflectionBuilderVk> mShaderReflectionBuilder;
         std::vector<uint32_t> mPushDescriptorSetIds;
-        VkPipelineCache mPipelineCache = VK_NULL_HANDLE;
+        VkPipelineCache mPipelineCacheHandle = VK_NULL_HANDLE;
         VkPipelineBindPoint mBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
         VkGraphicsPipelineCreateInfo mCreateInfo = {};
 

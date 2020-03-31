@@ -34,7 +34,7 @@ namespace AutoCAD::Graphics::Engine
         );
 
     private:
-        VkPipelineLayout mPipelineLayout = VK_NULL_HANDLE;
+        VkPipelineLayout mPipelineLayoutHandle = VK_NULL_HANDLE;
         std::unordered_map<uint32_t, SharedPtr<GIDescriptorSetLayoutVk>> mDescriptorSetLayouts; // The descriptor set ids might be uncontinuous
         std::unordered_map<VkPipelineStageFlags, VkPushConstantRange> mPushConstantRanges;
     };

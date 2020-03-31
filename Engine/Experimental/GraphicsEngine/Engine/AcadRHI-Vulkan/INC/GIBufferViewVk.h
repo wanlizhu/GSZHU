@@ -43,7 +43,7 @@ namespace AutoCAD::Graphics::Engine
         );
 
     private:
-        VkBufferView mBufferView = VK_NULL_HANDLE;
+        VkBufferView mBufferViewHandle = VK_NULL_HANDLE;
         SharedPtr<GIBufferVk> mBuffer;
         size_t mOffset = 0;
         size_t mSize = 0;

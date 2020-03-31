@@ -17,15 +17,15 @@ namespace AutoCAD::Graphics::Engine
         , mShaderReflection(reflection)
     {
         CreatePipelineLayout();
-        VK_CHECK(vkCreateGraphicsPipelines(*mDevice, cache, 1, &createInfo, nullptr, &mPipeline));
+        VK_CHECK(vkCreateGraphicsPipelines(*mDevice, cache, 1, &createInfo, nullptr, &mPipelineHandle));
     }
 
     GIPipelineVk::~GIPipelineVk()
     {
         if (IsValid())
         {
-            vkDestroyPipeline(*mDevice, mPipeline, nullptr);
-            mPipeline = VK_NULL_HANDLE;
+            vkDestroyPipeline(*mDevice, mPipelineHandle, nullptr);
+            mPipelineHandle = VK_NULL_HANDLE;
         }
     }
 
@@ -50,28 +50,30 @@ namespace AutoCAD::Graphics::Engine
 
     GIPipelineVk::operator const VkPipeline& () const
     {
-        return mPipeline;
+        return mPipelineHandle;
     }
 
     bool GIPipelineVk::IsValid() const
     {
-        return mPipeline != VK_NULL_HANDLE;
+        return mPipelineHandle != VK_NULL_HANDLE;
     }
 
     void GIPipelineVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mPipeline, 
+            mPipelineHandle, 
             VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT,
-            name);
+            name
+        );
     }
 
     void GIPipelineVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mPipeline,
+            mPipelineHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT,
-            tag);
+            tag
+        );
     }
 
     void GIPipelineVk::SetPipelineName(const std::wstring& name)
@@ -166,7 +168,7 @@ namespace AutoCAD::Graphics::Engine
 
     GIPipelineBuilderVk& GIPipelineBuilderVk::SetPipelineCache(VkPipelineCache cache)
     {
-        mPipelineCache = cache;
+        mPipelineCacheHandle = cache;
         return *this;
     }
 
@@ -521,7 +523,7 @@ namespace AutoCAD::Graphics::Engine
             mDevice,
             mShaderReflectionBuilder->Build(),
             mCreateInfo,
-            mPipelineCache));
+            mPipelineCacheHandle));
         assert(pipeline->IsValid());
 
         return pipeline;

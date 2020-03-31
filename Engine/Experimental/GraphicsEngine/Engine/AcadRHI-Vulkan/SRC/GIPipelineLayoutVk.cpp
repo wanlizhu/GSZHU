@@ -27,35 +27,37 @@ namespace AutoCAD::Graphics::Engine
     {
         if (IsValid())
         {
-            vkDestroyPipelineLayout(*mDevice, mPipelineLayout, nullptr);
-            mPipelineLayout = VK_NULL_HANDLE;
+            vkDestroyPipelineLayout(*mDevice, mPipelineLayoutHandle, nullptr);
+            mPipelineLayoutHandle = VK_NULL_HANDLE;
         }
     }
 
     bool GIPipelineLayoutVk::IsValid() const
     {
-        return mPipelineLayout != VK_NULL_HANDLE;
+        return mPipelineLayoutHandle != VK_NULL_HANDLE;
     }
 
     void GIPipelineLayoutVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mPipelineLayout,
+            mPipelineLayoutHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_LAYOUT_EXT,
-            name);
+            name
+        );
     }
 
     void GIPipelineLayoutVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mPipelineLayout,
+            mPipelineLayoutHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_LAYOUT_EXT,
-            tag);
+            tag
+        );
     }
 
     GIPipelineLayoutVk::operator const VkPipelineLayout& () const
     {
-        return mPipelineLayout;
+        return mPipelineLayoutHandle;
     }
 
     std::unordered_map<uint32_t, SharedPtr<GIDescriptorSetLayoutVk>> const& GIPipelineLayoutVk::GetDescriptorSetLayouts() const

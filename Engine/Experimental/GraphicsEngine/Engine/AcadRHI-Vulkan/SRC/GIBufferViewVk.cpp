@@ -42,42 +42,44 @@ namespace AutoCAD::Graphics::Engine
         createInfo.format = mFormat;
         createInfo.offset = mOffset;
         createInfo.range = mSize;
-        VK_CHECK(vkCreateBufferView(*mDevice, &createInfo, nullptr, &mBufferView));
+        VK_CHECK(vkCreateBufferView(*mDevice, &createInfo, nullptr, &mBufferViewHandle));
     }
 
     GIBufferViewVk::~GIBufferViewVk()
     {
         if (IsValid())
         {
-            vkDestroyBufferView(*mDevice, mBufferView, nullptr);
-            mBufferView = VK_NULL_HANDLE;
+            vkDestroyBufferView(*mDevice, mBufferViewHandle, nullptr);
+            mBufferViewHandle = VK_NULL_HANDLE;
         }
     }
 
     bool GIBufferViewVk::IsValid() const
     {
-        return mBufferView != VK_NULL_HANDLE;
+        return mBufferViewHandle != VK_NULL_HANDLE;
     }
 
     void GIBufferViewVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mBufferView,
+            mBufferViewHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_VIEW_EXT,
-            name);
+            name
+        );
     }
 
     void GIBufferViewVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mBufferView,
+            mBufferViewHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_VIEW_EXT,
-            tag);
+            tag
+        );
     }
 
     GIBufferViewVk::operator const VkBufferView& () const
     {
-        return mBufferView;
+        return mBufferViewHandle;
     }
 
     SharedPtr<GIBufferVk> GIBufferViewVk::GetBuffer() const

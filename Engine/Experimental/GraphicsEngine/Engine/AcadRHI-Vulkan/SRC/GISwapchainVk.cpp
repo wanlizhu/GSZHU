@@ -12,7 +12,7 @@ namespace AutoCAD::Graphics::Engine
     )
         : GIDeviceObjectVk(device)
         , mAcquireNextImageAsync(acquireNextImageAsync)
-        , mSurface(createInfo.surface)
+        , mSurfaceHandle(createInfo.surface)
         , mComponentMapping(componentMapping)
         , mCreateInfoCache(createInfo)
     {
@@ -26,7 +26,7 @@ namespace AutoCAD::Graphics::Engine
 
     bool GISwapchainVk::IsValid() const
     {
-        return mSwapchain != VK_NULL_HANDLE &&
+        return mSwapchainHandle != VK_NULL_HANDLE &&
             mImagesViews.size() > 0 &&
             mDevice != nullptr;
     }
@@ -34,22 +34,24 @@ namespace AutoCAD::Graphics::Engine
     void GISwapchainVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            (void*)mSwapchain, 
+            (void*)mSwapchainHandle, 
             VK_DEBUG_REPORT_OBJECT_TYPE_SWAPCHAIN_KHR_EXT, 
-            name);
+            name
+        );
     }
 
     void GISwapchainVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            (void*)mSwapchain,
+            (void*)mSwapchainHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_SWAPCHAIN_KHR_EXT,
-            tag);
+            tag
+        );
     }
 
     GISwapchainVk::operator const VkSwapchainKHR& () const
     {
-        return mSwapchain;
+        return mSwapchainHandle;
     }
 
     /* Applications should not rely on vkAcquireNextImageKHR blocking in order to
@@ -90,7 +92,7 @@ namespace AutoCAD::Graphics::Engine
         // .semaphore is enough for most cases if you don't care about 'graceful shutdown'.
         VkResult acquireResult = vkAcquireNextImageKHR(
             *mDevice,
-            mSwapchain,
+            mSwapchainHandle,
             UINT64_MAX,
             semaphoreToSignal, 
             mImageAcquiredFence, 
@@ -133,7 +135,7 @@ namespace AutoCAD::Graphics::Engine
         presentInfo.waitSemaphoreCount = 1;
         presentInfo.pWaitSemaphores = &waitSemaphore;
         presentInfo.swapchainCount = 1;
-        presentInfo.pSwapchains = &mSwapchain;
+        presentInfo.pSwapchains = &mSwapchainHandle;
         presentInfo.pImageIndices = &mCurrentImageIndex;
         presentInfo.pResults = nullptr; // If pResults is not NULL, pResults must be a valid pointer to an array of swapchainCount VkResult values
         VkResult presentResult = vkQueuePresentKHR(*mDevice->GetPresentQueue(), &presentInfo);
@@ -238,8 +240,8 @@ namespace AutoCAD::Graphics::Engine
             mCurrentImageIndex = 0;
             mIsMinimized = false;
 
-            vkDestroySwapchainKHR(*mDevice, mSwapchain, nullptr);
-            mSwapchain = VK_NULL_HANDLE;
+            vkDestroySwapchainKHR(*mDevice, mSwapchainHandle, nullptr);
+            mSwapchainHandle = VK_NULL_HANDLE;
         }
     }
 
@@ -252,12 +254,12 @@ namespace AutoCAD::Graphics::Engine
             Destroy();
         }
 
-        VK_CHECK(vkCreateSwapchainKHR(*mDevice, &mCreateInfoCache, nullptr, &mSwapchain));
+        VK_CHECK(vkCreateSwapchainKHR(*mDevice, &mCreateInfoCache, nullptr, &mSwapchainHandle));
 
         uint32_t imageCount = 0;
-        vkGetSwapchainImagesKHR(*mDevice, mSwapchain, &imageCount, nullptr);
+        vkGetSwapchainImagesKHR(*mDevice, mSwapchainHandle, &imageCount, nullptr);
         std::vector<VkImage> images(imageCount);
-        vkGetSwapchainImagesKHR(*mDevice, mSwapchain, &imageCount, images.data());
+        vkGetSwapchainImagesKHR(*mDevice, mSwapchainHandle, &imageCount, images.data());
 
         mImagesViews.resize(imageCount);
 

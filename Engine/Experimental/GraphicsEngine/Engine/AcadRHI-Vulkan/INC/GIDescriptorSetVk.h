@@ -35,7 +35,7 @@ namespace AutoCAD::Graphics::Engine
         );
 
     private:
-        VkDescriptorSet mDescriptorSet = VK_NULL_HANDLE; // Must be NULL for push-descriptor-set
+        VkDescriptorSet mDescriptorSetHandle = VK_NULL_HANDLE; // Must be NULL for push-descriptor-set
         SharedPtr<GIDescriptorSetLayoutVk> mDescriptorSetLayout;
         WeakPtr<GIDescriptorPoolVk> mDescriptorPool;
         std::optional<WeakPtr<GIDescriptorSetVk>> mParent;

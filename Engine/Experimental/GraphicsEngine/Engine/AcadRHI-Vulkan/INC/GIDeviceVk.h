@@ -81,11 +81,11 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         SharedPtr<GIInstanceVk> mInstance;
-        VkPhysicalDevice mPhysicalDevice = VK_NULL_HANDLE;
+        VkPhysicalDevice mPhysicalDeviceHandle = VK_NULL_HANDLE;
         PhysicalDeviceInfo mPhysicalDeviceInfo;
         OptionalDeviceExtensions mOptionalExtensions;
 
-        VkDevice mLogicalDevice = VK_NULL_HANDLE;
+        VkDevice mLogicalDeviceHandle = VK_NULL_HANDLE;
         WeakPtr<GIDeviceContextVk> mCurrentDC;
         SharedPtr<GIDeviceQueueVk> mGraphicsQueue;
         SharedPtr<GIDeviceQueueVk> mComputeQueue;
@@ -113,7 +113,7 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         SharedPtr<GIInstanceVk> mInstance;
-        VkPhysicalDevice mPhysicalDevice = VK_NULL_HANDLE;
+        VkPhysicalDevice mPhysicalDeviceHandle = VK_NULL_HANDLE;
         VkDeviceCreateInfo mCreateInfo = {};
 
         VkPhysicalDeviceFeatures mSupportedFeatures = {};

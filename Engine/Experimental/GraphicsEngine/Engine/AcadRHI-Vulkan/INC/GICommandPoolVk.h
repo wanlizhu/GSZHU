@@ -27,8 +27,8 @@ namespace AutoCAD::Graphics::Engine
         GICommandPoolVk(SharedPtr<GIDeviceQueueVk> queue);
         
     private:
-        VkCommandPool mCommandPool = VK_NULL_HANDLE;
-        VkQueue mQueue = VK_NULL_HANDLE;
+        VkCommandPool mCommandPoolHandle = VK_NULL_HANDLE;
+        VkQueue mQueueHandle = VK_NULL_HANDLE;
         std::thread::id mThreadId;
     };
 }

@@ -8,7 +8,7 @@ namespace AutoCAD::Graphics::Engine
 {
     GICommandBufferVk::GICommandBufferVk(SharedPtr<GICommandPoolVk> pool, bool secondary)
         : GIWeakDeviceObjectVk(pool->GetDevice()->weak_from_this())
-        , mCommandPool(*pool)
+        , mCommandPoolHandle(*pool)
         , mQueue(pool->GetQueue())
     {
         VkCommandBufferAllocateInfo allocInfo = {};
@@ -17,41 +17,43 @@ namespace AutoCAD::Graphics::Engine
         allocInfo.commandPool = *pool;
         allocInfo.level = secondary ? VK_COMMAND_BUFFER_LEVEL_SECONDARY : VK_COMMAND_BUFFER_LEVEL_PRIMARY;
         allocInfo.commandBufferCount = 1;
-        VK_CHECK(vkAllocateCommandBuffers(*pool->GetDevice(), &allocInfo, &mCommandBuffer));
-        assert(mCommandBuffer != VK_NULL_HANDLE);
+        VK_CHECK(vkAllocateCommandBuffers(*pool->GetDevice(), &allocInfo, &mCommandBufferHandle));
+        assert(mCommandBufferHandle != VK_NULL_HANDLE);
     }
 
     GICommandBufferVk::~GICommandBufferVk()
     {
         VkDevice device = *mDevice.lock();
-        vkFreeCommandBuffers(device, mCommandPool, 1, &mCommandBuffer);
-        mCommandBuffer = VK_NULL_HANDLE;
+        vkFreeCommandBuffers(device, mCommandPoolHandle, 1, &mCommandBufferHandle);
+        mCommandBufferHandle = VK_NULL_HANDLE;
     }
 
     bool GICommandBufferVk::IsValid() const
     {
-        return mCommandBuffer != VK_NULL_HANDLE;
+        return mCommandBufferHandle != VK_NULL_HANDLE;
     }
 
     void GICommandBufferVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mCommandBuffer, 
+            mCommandBufferHandle, 
             VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_BUFFER_EXT,
-            name);
+            name
+        );
     }
 
     void GICommandBufferVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mCommandBuffer,
+            mCommandBufferHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_BUFFER_EXT,
-            tag);
+            tag
+        );
     }
 
     GICommandBufferVk::operator const VkCommandBuffer& () const
     {
-        return mCommandBuffer;
+        return mCommandBufferHandle;
     }
 
     GICommandBufferVk::EState GICommandBufferVk::GetState() const
@@ -61,7 +63,7 @@ namespace AutoCAD::Graphics::Engine
 
     VkCommandPool GICommandBufferVk::GetCommandPool() const
     {
-        return mCommandPool;
+        return mCommandPoolHandle;
     }
 
     VkQueue GICommandBufferVk::GetQueue() const
@@ -110,7 +112,7 @@ namespace AutoCAD::Graphics::Engine
         submitInfo.pWaitSemaphores = mSemaphoresToWait.empty() ? nullptr : mSemaphoresToWait.data();
         submitInfo.pWaitDstStageMask = mStageFlagsToWait ? &(mStageFlagsToWait.value()) : nullptr;
         submitInfo.commandBufferCount = 1;
-        submitInfo.pCommandBuffers = &mCommandBuffer;
+        submitInfo.pCommandBuffers = &mCommandBufferHandle;
         submitInfo.signalSemaphoreCount = (uint32_t)mSemaphoresToSignal.size();
         submitInfo.pSignalSemaphores = mSemaphoresToSignal.empty() ? nullptr : mSemaphoresToSignal.data();
         

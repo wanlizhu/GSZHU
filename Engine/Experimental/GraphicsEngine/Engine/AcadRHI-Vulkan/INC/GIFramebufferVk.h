@@ -27,7 +27,7 @@ namespace AutoCAD::Graphics::Engine
         );
 
     private:
-        VkFramebuffer mFramebuffer = VK_NULL_HANDLE;
+        VkFramebuffer mFramebufferHandle = VK_NULL_HANDLE;
         VkExtent2D mExtent = { 0, 0 };
         std::vector<VkImageView> mImageViews;
         SharedPtr<GIRenderPassVk> mRenderPass;

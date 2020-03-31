@@ -29,7 +29,7 @@ namespace AutoCAD::Graphics::Engine
         createInfo.flags = isPushDescriptor ? VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR : 0;
         createInfo.bindingCount = (uint32_t)setBindings.size();
         createInfo.pBindings = setBindings.data();
-        VK_CHECK(vkCreateDescriptorSetLayout(*device, &createInfo, nullptr, &mDescriptorSetLayout));
+        VK_CHECK(vkCreateDescriptorSetLayout(*device, &createInfo, nullptr, &mDescriptorSetLayoutHandle));
 
         for (const auto& binding : setBindings)
         {
@@ -41,35 +41,37 @@ namespace AutoCAD::Graphics::Engine
     {
         if (IsValid())
         {
-            vkDestroyDescriptorSetLayout(*mDevice, mDescriptorSetLayout, nullptr);
-            mDescriptorSetLayout = VK_NULL_HANDLE;
+            vkDestroyDescriptorSetLayout(*mDevice, mDescriptorSetLayoutHandle, nullptr);
+            mDescriptorSetLayoutHandle = VK_NULL_HANDLE;
         }
     }
 
     bool GIDescriptorSetLayoutVk::IsValid() const
     {
-        return mDescriptorSetLayout != VK_NULL_HANDLE;
+        return mDescriptorSetLayoutHandle != VK_NULL_HANDLE;
     }
 
     void GIDescriptorSetLayoutVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mDescriptorSetLayout,
+            mDescriptorSetLayoutHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_LAYOUT_EXT,
-            name);
+            name
+        );
     }
 
     void GIDescriptorSetLayoutVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mDescriptorSetLayout,
+            mDescriptorSetLayoutHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_LAYOUT_EXT,
-            tag);
+            tag
+        );
     }
 
     GIDescriptorSetLayoutVk::operator const VkDescriptorSetLayout& () const
     {
-        return mDescriptorSetLayout;
+        return mDescriptorSetLayoutHandle;
     }
 
     bool GIDescriptorSetLayoutVk::IsPushDescriptorSet() const

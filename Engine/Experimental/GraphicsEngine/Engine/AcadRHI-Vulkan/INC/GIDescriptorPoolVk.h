@@ -48,7 +48,7 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         SharedPtr<GIShaderReflectionVk> mReflection;
-        VkDescriptorPool mDescriptorPool = VK_NULL_HANDLE;
+        VkDescriptorPool mDescriptorPoolHandle = VK_NULL_HANDLE;
         std::thread::id mThreadId;
     };
 }

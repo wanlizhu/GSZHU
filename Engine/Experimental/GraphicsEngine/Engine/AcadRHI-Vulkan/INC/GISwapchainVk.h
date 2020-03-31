@@ -41,8 +41,8 @@ namespace AutoCAD::Graphics::Engine
         
     private:
         VkSwapchainCreateInfoKHR mCreateInfoCache = {}; // For RecreateSwapchain()
-        VkSwapchainKHR mSwapchain = VK_NULL_HANDLE;
-        VkSurfaceKHR mSurface = VK_NULL_HANDLE;
+        VkSwapchainKHR mSwapchainHandle = VK_NULL_HANDLE;
+        VkSurfaceKHR mSurfaceHandle = VK_NULL_HANDLE;
         VkComponentMapping mComponentMapping;
         bool mAcquireNextImageAsync = true;
         bool mIsMinimized = false;

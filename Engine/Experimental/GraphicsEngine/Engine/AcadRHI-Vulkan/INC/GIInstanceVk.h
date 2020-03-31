@@ -45,11 +45,11 @@ namespace AutoCAD::Graphics::Engine
     private:
         static inline VkAllocationCallbacks mAllocationCallbacks = {};
 
-        VkInstance mInstance = VK_NULL_HANDLE;
-        VkPhysicalDevice mChosenPhysicalDevice = VK_NULL_HANDLE;
+        VkInstance mInstanceHandle = VK_NULL_HANDLE;
+        VkPhysicalDevice mChosenPhysicalDeviceHandle = VK_NULL_HANDLE;
         std::vector<const char*> mEnabledLayers; // referenced by vkCreateDevice(...)
         std::vector<const char*> mEnabledExtensions;
-        VkDebugUtilsMessengerEXT mDebugUtils = VK_NULL_HANDLE;
+        VkDebugUtilsMessengerEXT mDebugUtilsHandle = VK_NULL_HANDLE;
     };
 
     class GIInstanceBuilderVk

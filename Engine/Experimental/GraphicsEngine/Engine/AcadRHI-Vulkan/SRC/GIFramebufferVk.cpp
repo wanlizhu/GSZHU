@@ -14,35 +14,37 @@ namespace AutoCAD::Graphics::Engine
     {
         if (IsValid())
         {
-            vkDestroyFramebuffer(*mDevice, mFramebuffer, nullptr);
-            mFramebuffer = VK_NULL_HANDLE;
+            vkDestroyFramebuffer(*mDevice, mFramebufferHandle, nullptr);
+            mFramebufferHandle = VK_NULL_HANDLE;
         }
     }
 
     bool GIFramebufferVk::IsValid() const
     {
-        return mFramebuffer != VK_NULL_HANDLE;
+        return mFramebufferHandle != VK_NULL_HANDLE;
     }
 
     void GIFramebufferVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            (void*)mFramebuffer,
+            (void*)mFramebufferHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT,
-            name);
+            name
+        );
     }
 
     void GIFramebufferVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            (void*)mFramebuffer,
+            (void*)mFramebufferHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT,
-            tag);
+            tag
+        );
     }
 
     GIFramebufferVk::operator const VkFramebuffer& () const
     {
-        return mFramebuffer;
+        return mFramebufferHandle;
     }
 
     VkExtent2D GIFramebufferVk::GetExtent() const

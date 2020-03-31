@@ -71,7 +71,8 @@ namespace AutoCAD::Graphics::Engine
         SetDebugNameInternal(
             mBufferHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT,
-            name);
+            name
+        );
     }
 
     void GIBufferVk::SetDebugTag(const DebugTag& tag) const
@@ -79,7 +80,8 @@ namespace AutoCAD::Graphics::Engine
         SetDebugTagInternal(
             mBufferHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT,
-            tag);
+            tag
+        );
     }
 
     EResourceType GIBufferVk::GetResourceType() const

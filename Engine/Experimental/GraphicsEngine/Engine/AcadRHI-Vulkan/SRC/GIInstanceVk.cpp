@@ -141,30 +141,30 @@ namespace AutoCAD::Graphics::Engine
     {
         if (IsValid())
         {
-            if (mDebugUtils)
+            if (mDebugUtilsHandle)
             {
-                vkDestroyDebugUtilsMessengerEXT(mInstance, mDebugUtils, nullptr);
-                mDebugUtils = VK_NULL_HANDLE;
+                vkDestroyDebugUtilsMessengerEXT(mInstanceHandle, mDebugUtilsHandle, nullptr);
+                mDebugUtilsHandle = VK_NULL_HANDLE;
             }
 
-            vkDestroyInstance(mInstance, nullptr);
-            mInstance = VK_NULL_HANDLE;
+            vkDestroyInstance(mInstanceHandle, nullptr);
+            mInstanceHandle = VK_NULL_HANDLE;
         }
     }
 
     GIInstanceVk::operator const VkInstance& () const
     {
-        return mInstance;
+        return mInstanceHandle;
     }
 
     bool GIInstanceVk::IsValid() const
     {
-        return mInstance != VK_NULL_HANDLE;
+        return mInstanceHandle != VK_NULL_HANDLE;
     }
 
     bool GIInstanceVk::IsValidationLayerEnabled() const
     {
-        return mDebugUtils != VK_NULL_HANDLE;
+        return mDebugUtilsHandle != VK_NULL_HANDLE;
     }
 
     bool GIInstanceVk::IsLayerEnabled(const char* name) const
@@ -190,7 +190,7 @@ namespace AutoCAD::Graphics::Engine
     uint32_t GIInstanceVk::GetPhysicalDeviceCount() const
     {
         uint32_t count = 0;
-        vkEnumeratePhysicalDevices(mInstance, &count, nullptr);
+        vkEnumeratePhysicalDevices(mInstanceHandle, &count, nullptr);
         return count;
     }
 
@@ -198,7 +198,7 @@ namespace AutoCAD::Graphics::Engine
     {
         uint32_t count = GetPhysicalDeviceCount();
         std::vector<VkPhysicalDevice> devices(count);
-        vkEnumeratePhysicalDevices(mInstance, &count, devices.data());
+        vkEnumeratePhysicalDevices(mInstanceHandle, &count, devices.data());
         return devices[0];
     }
 
@@ -363,9 +363,9 @@ namespace AutoCAD::Graphics::Engine
         const VkPhysicalDeviceFeatures& features)
     {
         uint32_t deviceCount = 0;
-        vkEnumeratePhysicalDevices(mInstance, &deviceCount, nullptr);
+        vkEnumeratePhysicalDevices(mInstanceHandle, &deviceCount, nullptr);
         std::vector<VkPhysicalDevice> devices(deviceCount);
-        vkEnumeratePhysicalDevices(mInstance, &deviceCount, devices.data());
+        vkEnumeratePhysicalDevices(mInstanceHandle, &deviceCount, devices.data());
 
         // Find adequate devices
         std::vector<uint32_t> adequateDevices;
@@ -402,25 +402,25 @@ namespace AutoCAD::Graphics::Engine
             return VK_NULL_HANDLE;
         }
 
-        mChosenPhysicalDevice = devices[index];
+        mChosenPhysicalDeviceHandle = devices[index];
 
 #ifdef _DEBUG
-        LogPhysicalDeviceInfo(mChosenPhysicalDevice);
+        LogPhysicalDeviceInfo(mChosenPhysicalDeviceHandle);
 #endif
 
-        return mChosenPhysicalDevice;
+        return mChosenPhysicalDeviceHandle;
     }
 
     VkPhysicalDevice GIInstanceVk::GetChosenGPU() const
     {
-        return mChosenPhysicalDevice;
+        return mChosenPhysicalDeviceHandle;
     }
 
     EGPUVendorID GIInstanceVk::GetChosenGPUVendorID() const
     {
-        assert(mChosenPhysicalDevice != 0);
+        assert(mChosenPhysicalDeviceHandle != 0);
         VkPhysicalDeviceProperties props = {};
-        vkGetPhysicalDeviceProperties(mChosenPhysicalDevice, &props);
+        vkGetPhysicalDeviceProperties(mChosenPhysicalDeviceHandle, &props);
         return static_cast<EGPUVendorID>(props.vendorID);
     }
 
@@ -432,14 +432,14 @@ namespace AutoCAD::Graphics::Engine
         : mEnabledLayers(enabledLayers)
         , mEnabledExtensions(enabledExtensions)
     {
-        VK_CHECK(vkCreateInstance(&createInfo, nullptr, &mInstance));
+        VK_CHECK(vkCreateInstance(&createInfo, nullptr, &mInstanceHandle));
 
         if (createInfo.enabledLayerCount > 0)
         {
             if (GIInstanceVk::IsExtensionSupported(VK_EXT_DEBUG_UTILS_EXTENSION_NAME))
             {
-                vkCreateDebugUtilsMessengerEXT = LOAD_INSTANCE_FUNC(mInstance, vkCreateDebugUtilsMessengerEXT);
-                vkDestroyDebugUtilsMessengerEXT = LOAD_INSTANCE_FUNC(mInstance, vkDestroyDebugUtilsMessengerEXT);
+                vkCreateDebugUtilsMessengerEXT = LOAD_INSTANCE_FUNC(mInstanceHandle, vkCreateDebugUtilsMessengerEXT);
+                vkDestroyDebugUtilsMessengerEXT = LOAD_INSTANCE_FUNC(mInstanceHandle, vkDestroyDebugUtilsMessengerEXT);
                 if (vkCreateDebugUtilsMessengerEXT == nullptr || vkDestroyDebugUtilsMessengerEXT == nullptr)
                 {
                     LOG_DEBUG("vk*DebugUtilsMessengerEXT functions are missing, fallback to VkDebugReportCallbackEXT");
@@ -458,7 +458,7 @@ namespace AutoCAD::Graphics::Engine
                         VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;;
                     createInfo.pfnUserCallback = DebugMessengerCallback;
                     createInfo.pUserData = this;
-                    VK_CHECK(vkCreateDebugUtilsMessengerEXT(mInstance, &createInfo, nullptr, &mDebugUtils));
+                    VK_CHECK(vkCreateDebugUtilsMessengerEXT(mInstanceHandle, &createInfo, nullptr, &mDebugUtilsHandle));
                 }
             }
         }

@@ -30,7 +30,7 @@ namespace AutoCAD::Graphics::Engine
         GIDeviceQueueVk(WeakPtr<GIDeviceVk> device, VkQueue queue, uint32_t familyIndex);
        
     private:
-        VkQueue mQueue = VK_NULL_HANDLE; /* VkQueue is created by driver when creating VkDevice */ 
+        VkQueue mQueueHandle = VK_NULL_HANDLE; /* VkQueue is created by driver when creating VkDevice */ 
         uint32_t mFamilyIndex = INT32_MAX;
         std::mutex mMutex; /* Multi-threads could access this device queue simultaneously */
         std::unordered_map<std::thread::id, SharedPtr<GICommandPoolVk>> mThreadCommandPools; /* VkCommandPool shall be thread_local*/

@@ -27,8 +27,8 @@ namespace AutoCAD::Graphics::Engine
         //GITextureVk(); /* [2] Configure with image and memory objects precreated by VMA */
 
     protected:
-        VkImage mImage = VK_NULL_HANDLE;
-        VkDeviceMemory mDeviceMemory = VK_NULL_HANDLE;
+        VkImage mImageHandle = VK_NULL_HANDLE;
+        VkDeviceMemory mMemoryHandle = VK_NULL_HANDLE;
         VkDeviceSize mDeviceMemorySize = 0;
         SharedPtr<GISamplerVk> mSampler;
         bool mIsMapped = false;

@@ -38,7 +38,7 @@ namespace AutoCAD::Graphics::Engine
         );
         
     private:
-        VkRenderPass mRenderPass = VK_NULL_HANDLE;
+        VkRenderPass mRenderPassHandle = VK_NULL_HANDLE;
         VkSampleCountFlagBits mSampleCount = VK_SAMPLE_COUNT_1_BIT;
         VkFormat mDepthStencilFormat = VK_FORMAT_UNDEFINED;
         std::vector<VkFormat> mRenderTargetFormats;

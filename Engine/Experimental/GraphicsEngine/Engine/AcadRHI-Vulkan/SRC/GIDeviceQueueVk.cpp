@@ -25,7 +25,7 @@ namespace AutoCAD::Graphics::Engine
         uint32_t familyIndex
     )
         : GIWeakDeviceObjectVk(device)
-        , mQueue(queue)
+        , mQueueHandle(queue)
         , mFamilyIndex(familyIndex)
     {}
 
@@ -34,33 +34,35 @@ namespace AutoCAD::Graphics::Engine
 
     bool GIDeviceQueueVk::IsValid() const
     {
-        return mQueue != VK_NULL_HANDLE;
+        return mQueueHandle != VK_NULL_HANDLE;
     }
 
     void GIDeviceQueueVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mQueue,
+            mQueueHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_QUEUE_EXT,
-            name);
+            name
+        );
     }
 
     void GIDeviceQueueVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mQueue,
+            mQueueHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_QUEUE_EXT,
-            tag);
+            tag
+        );
     }
 
     GIDeviceQueueVk::operator const VkQueue& () const
     {
-        return mQueue;
+        return mQueueHandle;
     }
 
     void GIDeviceQueueVk::WaitIdle() const
     {
-        vkQueueWaitIdle(mQueue);
+        vkQueueWaitIdle(mQueueHandle);
     }
 
     uint32_t GIDeviceQueueVk::GetFamilyIndex() const
