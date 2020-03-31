@@ -115,13 +115,16 @@
     <ClInclude Include="INC\GIShaderVariableVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIDeviceResourceVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIInstanceVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\GIDescriptorBindingVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIResourceVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIResourceStateVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

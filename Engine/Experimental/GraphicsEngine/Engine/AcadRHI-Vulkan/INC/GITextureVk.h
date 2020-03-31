@@ -1,12 +1,13 @@
 #pragma once
 
-#include "GIDeviceResourceVk.h"
+#include "GIResourceVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
     class GISamplerVk;
+    class GITextureViewVk;
 
-    class GITextureVk : public GIDeviceResourceVk
+    class GITextureVk : public GIResourceVk
     {
         friend class GITextureBuilderVMA;
         friend class GITextureBuilderVk;
@@ -17,22 +18,24 @@ namespace AutoCAD::Graphics::Engine
         virtual void SetDebugName(const char* name) const override;
         virtual void SetDebugTag(const DebugTag& tag) const override;
         virtual EResourceType GetResourceType() const override;
+        virtual GIResourceStateVk& GetResourceState() override final;
 
         operator const VkImage& () const;
         VkDeviceSize GetSizeInBytes() const;
         VkDeviceMemory GetDeviceMemory() const;
+        VkImageUsageFlags GetUsages() const;
 
     protected:
-        //GITextureVk(); /* [1] Create image, create device memory required and bind them together */
-        //GITextureVk(); /* [2] Configure with image and memory objects precreated by VMA */
+        GITextureVk(); /* [1] Create image, create device memory required and bind them together */
+        
+        GITextureVk(); /* [2] Configure with image and memory objects precreated by VMA */
 
     protected:
         VkImage mImageHandle = VK_NULL_HANDLE;
         VkDeviceMemory mMemoryHandle = VK_NULL_HANDLE;
         VkDeviceSize mDeviceMemorySize = 0;
-        SharedPtr<GISamplerVk> mSampler;
-        bool mIsMapped = false;
-
+        VkImageUsageFlags mImageUsages = 0;
+        
         VkImageLayout mImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         VkFormat mFormat = VK_FORMAT_UNDEFINED;
         VkExtent3D mExtent = { 0, 0, 0 };
@@ -41,9 +44,11 @@ namespace AutoCAD::Graphics::Engine
         uint32_t mMipLevels = 0;
         uint32_t mArrayLayers = 0;
 
-    private:
-        std::optional<VkBuffer> mStagingBuffer;
-        std::optional<VkDeviceMemory> mStagingBufferMemory;
+        std::unordered_map<CACHE_INDEX, WeakPtr<GITextureViewVk>> mTextureViews;
+        std::function<void()> mOnDestroyCallback;
+        bool mIsMapped = false;
+        SharedPtr<GISamplerVk> mSampler;
+        GIResourceStateVk mResourceState;
     };
 
     class GITextureBuilderVk

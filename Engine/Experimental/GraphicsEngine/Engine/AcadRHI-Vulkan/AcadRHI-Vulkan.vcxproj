@@ -198,7 +198,8 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIDeviceMemoryPoolVk.h" />
     <ClInclude Include="INC\GIDeviceObjectVk.h" />
     <ClInclude Include="INC\GIDeviceQueueVk.h" />
-    <ClInclude Include="INC\GIDeviceResourceVk.h" />
+    <ClInclude Include="INC\GIResourceStateVk.h" />
+    <ClInclude Include="INC\GIResourceVk.h" />
     <ClInclude Include="INC\GIDeviceVk.h" />
     <ClInclude Include="INC\GIGenericPlatformVk.h" />
     <ClInclude Include="INC\GIIndexBufferVk.h" />

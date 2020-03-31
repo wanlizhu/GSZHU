@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GIDeviceObjectVk.h"
+#include "GIResourceStateVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
@@ -10,13 +11,14 @@ namespace AutoCAD::Graphics::Engine
         Image,
     };
 
-    class GIDeviceResourceVk : public GIDeviceObjectVk
+    class GIResourceVk : public GIDeviceObjectVk
     {
     public:
-        virtual ~GIDeviceResourceVk();
+        virtual ~GIResourceVk();
         virtual EResourceType GetResourceType() const = 0;
+        virtual GIResourceStateVk& GetResourceState() = 0;
 
     protected:
-        GIDeviceResourceVk(SharedPtr<GIDeviceVk> device);
+        GIResourceVk(SharedPtr<GIDeviceVk> device);
     };
 }

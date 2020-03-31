@@ -10,7 +10,8 @@ namespace AutoCAD::Graphics::Engine
         const void* data,
         VkMemoryPropertyFlags properties
     )
-        : GIDeviceResourceVk(device)
+        : GIResourceVk(device)
+        , mBufferUsages(createInfo.usage)
     {
         VK_CHECK(vkCreateBuffer(*mDevice, &createInfo, nullptr, &mBufferHandle));
 
@@ -36,12 +37,14 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIDeviceVk> device,
         VkBuffer buffer,
         VkDeviceMemory memory,
-        VkDeviceSize size
+        VkDeviceSize size,
+        VkBufferUsageFlags usages
     )
-        : GIDeviceResourceVk(device)
+        : GIResourceVk(device)
         , mBufferHandle(buffer)
         , mMemoryHandle(memory)
         , mSizeInBytes(size)
+        , mBufferUsages(usages)
     {}
 
     GIBufferVk::~GIBufferVk()
@@ -89,6 +92,11 @@ namespace AutoCAD::Graphics::Engine
         return EResourceType::Buffer;
     }
 
+    GIResourceStateVk& GIBufferVk::GetResourceState()
+    {
+        return mResourceState;
+    }
+
     GIBufferVk::operator const VkBuffer& () const
     {
         return mBufferHandle;
@@ -102,6 +110,11 @@ namespace AutoCAD::Graphics::Engine
     VkDeviceMemory GIBufferVk::GetDeviceMemory() const
     {
         return mMemoryHandle;
+    }
+
+    VkBufferUsageFlags GIBufferVk::GetUsages() const
+    {
+        return mBufferUsages;
     }
 
     SharedPtr<GIBufferViewVk> GIBufferVk::GetBufferView(size_t offset, size_t size, VkFormat format)

@@ -6,7 +6,7 @@ namespace AutoCAD::Graphics::Engine
 {
     class GIDescriptorSetLayoutVk;
     class GIDescriptorPoolVk;
-    class GIDeviceResourceVk;
+    class GIResourceVk;
     class GICommandBufferVk;
 
     class GIDescriptorSetVk : public GIDeviceObjectVk
@@ -23,8 +23,8 @@ namespace AutoCAD::Graphics::Engine
         bool IsPushDescriptorSet() const;
         SharedPtr<GIDescriptorSetLayoutVk> GetDescriptorSetLayout() const;
         
-        void BindResource(const char* name, WeakPtr<GIDeviceResourceVk> resource, SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
-        void BindResourceArray(const char* name, const std::vector<WeakPtr<GIDeviceResourceVk>>& resourceArray, SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
+        void BindResource(const char* name, WeakPtr<GIResourceVk> resource, SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
+        void BindResourceArray(const char* name, const std::vector<WeakPtr<GIResourceVk>>& resourceArray, SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
         void Update(SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
 
     private:
@@ -40,8 +40,8 @@ namespace AutoCAD::Graphics::Engine
         WeakPtr<GIDescriptorPoolVk> mDescriptorPool;
         std::optional<WeakPtr<GIDescriptorSetVk>> mParent;
         
-        std::unordered_map<std::string, WeakPtr<GIDeviceResourceVk>> mBoundResources;
-        std::unordered_map<std::string, std::vector<WeakPtr<GIDeviceResourceVk>>> mBoundResourceArrays;
+        std::unordered_map<std::string, WeakPtr<GIResourceVk>> mBoundResources;
+        std::unordered_map<std::string, std::vector<WeakPtr<GIResourceVk>>> mBoundResourceArrays;
         std::vector<VkWriteDescriptorSet> mPendingUpdates;
     };
 }

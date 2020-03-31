@@ -76,12 +76,12 @@ namespace AutoCAD::Graphics::Engine
         return mDescriptorSetLayout;
     }
 
-    void GIDescriptorSetVk::BindResource(const char* name, WeakPtr<GIDeviceResourceVk> resource, SharedPtr<GICommandBufferVk> cmdbuf)
+    void GIDescriptorSetVk::BindResource(const char* name, WeakPtr<GIResourceVk> resource, SharedPtr<GICommandBufferVk> cmdbuf)
     {
         // TODO
     }
 
-    void GIDescriptorSetVk::BindResourceArray(const char* name, const std::vector<WeakPtr<GIDeviceResourceVk>>& resourceArray, SharedPtr<GICommandBufferVk> cmdbuf)
+    void GIDescriptorSetVk::BindResourceArray(const char* name, const std::vector<WeakPtr<GIResourceVk>>& resourceArray, SharedPtr<GICommandBufferVk> cmdbuf)
     {
         // TODO
     }

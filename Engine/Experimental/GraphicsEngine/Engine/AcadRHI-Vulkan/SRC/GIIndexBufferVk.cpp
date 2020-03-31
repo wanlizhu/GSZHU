@@ -64,7 +64,7 @@ namespace AutoCAD::Graphics::Engine
     {
         return mBuffer != nullptr && 
             mBuffer->IsValid() && 
-            mIndexType != VK_INDEX_TYPE_MAX_ENUM;
+            mIndexType != UINT_MAX;
     }
 
     void GIIndexBufferVk::SetBuffer(SharedPtr<GIBufferVk> buffer)

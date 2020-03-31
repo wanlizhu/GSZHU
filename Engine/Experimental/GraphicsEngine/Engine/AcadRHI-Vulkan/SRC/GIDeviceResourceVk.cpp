@@ -1,12 +1,12 @@
-#include "GIDeviceResourceVk.h"
+#include "GIResourceVk.h"
 #include "GIDeviceVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
-    GIDeviceResourceVk::~GIDeviceResourceVk()
+    GIResourceVk::~GIResourceVk()
     {}
 
-    GIDeviceResourceVk::GIDeviceResourceVk(SharedPtr<GIDeviceVk> device)
+    GIResourceVk::GIResourceVk(SharedPtr<GIDeviceVk> device)
         : GIDeviceObjectVk(device)
     {}
 }
