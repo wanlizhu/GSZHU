@@ -245,6 +245,8 @@ if not exist "%InstallDir%" (
     <ClCompile Include="SRC\GIShaderVariableVk.cpp" />
     <ClCompile Include="SRC\GISwapchainVk.cpp" />
     <ClCompile Include="SRC\GICommonVk.cpp" />
+    <ClCompile Include="SRC\GITextureViewVk.cpp" />
+    <ClCompile Include="SRC\GITextureVk.cpp" />
     <ClCompile Include="SRC\GIVertexBufferVk.cpp" />
     <ClCompile Include="SRC\GIVertexLayoutVk.cpp" />
     <ClCompile Include="SRC\GIWindowsPlatformVk.cpp" />

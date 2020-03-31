@@ -7,6 +7,13 @@ namespace AutoCAD::Graphics::Engine
     class GIBufferViewVk;
     class GICommandBufferVk;
 
+    struct GIBufferInfoVk 
+    {
+        VkDeviceSize sizeInBytes = 0;
+        VkBufferUsageFlags usages = 0;
+        VkSharingMode sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    };
+
     class GIBufferVk : public GIResourceVk
     {
         friend class GIBufferBuilderVk;
@@ -21,10 +28,9 @@ namespace AutoCAD::Graphics::Engine
         virtual GIResourceStateVk& GetResourceState() override final;
 
         operator const VkBuffer& () const;
-        VkDeviceSize GetSize() const;
-        VkDeviceMemory GetDeviceMemory() const;
-        VkBufferUsageFlags GetUsages() const;
+        GIBufferInfoVk const& GetInfo() const;
         SharedPtr<GIBufferViewVk> GetBufferView(size_t offset, size_t size, VkFormat format);
+        
         void SetOnDestroyCallback(const std::function<void()>& func);
         void* Map(size_t offset = 0, size_t size = VK_WHOLE_SIZE);
         void Unmap();
@@ -40,17 +46,13 @@ namespace AutoCAD::Graphics::Engine
 
         GIBufferVk(
             SharedPtr<GIDeviceVk> device,
-            VkBuffer buffer,
-            VkDeviceMemory memory,
-            VkDeviceSize size,
-            VkBufferUsageFlags usages
+            const GIBufferInfoVk& info
         ); /* [2] Configure with buffer and memory objects precreated by VMA */
 
     private:
         VkBuffer mBufferHandle = VK_NULL_HANDLE;
         VkDeviceMemory mMemoryHandle = VK_NULL_HANDLE; // TODO: replace with device memory pool
-        VkDeviceSize mSizeInBytes = 0;
-        VkBufferUsageFlags mBufferUsages = 0;
+        GIBufferInfoVk mBufferInfo;
         
         std::unordered_map<CACHE_INDEX, WeakPtr<GIBufferViewVk>> mBufferViews;
         std::function<void()> mOnDestroyCallback;

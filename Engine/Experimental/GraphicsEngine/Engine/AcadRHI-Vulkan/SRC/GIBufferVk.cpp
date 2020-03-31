@@ -11,15 +11,17 @@ namespace AutoCAD::Graphics::Engine
         VkMemoryPropertyFlags properties
     )
         : GIResourceVk(device)
-        , mBufferUsages(createInfo.usage)
     {
+        mBufferInfo.usages = createInfo.usage;
+        mBufferInfo.sharingMode = createInfo.sharingMode;
+
         VK_CHECK(vkCreateBuffer(*mDevice, &createInfo, nullptr, &mBufferHandle));
 
         VkMemoryRequirements memoryRequirements = {};
         VkMemoryAllocateInfo allocInfo = {};
 
         vkGetBufferMemoryRequirements(*mDevice, mBufferHandle, &memoryRequirements);
-        mSizeInBytes = memoryRequirements.size;
+        mBufferInfo.sizeInBytes = memoryRequirements.size;
 
         allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
         allocInfo.pNext = nullptr;
@@ -27,7 +29,7 @@ namespace AutoCAD::Graphics::Engine
         allocInfo.memoryTypeIndex = mDevice->GetMemoryTypeIndex(memoryRequirements.memoryTypeBits, properties);
         VK_CHECK(vkAllocateMemory(*mDevice, &allocInfo, nullptr, &mMemoryHandle));
         
-        UpdateData(0, mSizeInBytes, data, nullptr);
+        UpdateData(0, mBufferInfo.sizeInBytes, data, nullptr);
 
         // Attach the memory to the buffer object.
         VK_CHECK(vkBindBufferMemory(*mDevice, mBufferHandle, mMemoryHandle, 0));
@@ -35,16 +37,10 @@ namespace AutoCAD::Graphics::Engine
 
     GIBufferVk::GIBufferVk(
         SharedPtr<GIDeviceVk> device,
-        VkBuffer buffer,
-        VkDeviceMemory memory,
-        VkDeviceSize size,
-        VkBufferUsageFlags usages
+        const GIBufferInfoVk& info
     )
         : GIResourceVk(device)
-        , mBufferHandle(buffer)
-        , mMemoryHandle(memory)
-        , mSizeInBytes(size)
-        , mBufferUsages(usages)
+        , mBufferInfo(info)
     {}
 
     GIBufferVk::~GIBufferVk()
@@ -102,19 +98,9 @@ namespace AutoCAD::Graphics::Engine
         return mBufferHandle;
     }
 
-    VkDeviceSize GIBufferVk::GetSize() const
+    GIBufferInfoVk const& GIBufferVk::GetInfo() const
     {
-        return mSizeInBytes;
-    }
-
-    VkDeviceMemory GIBufferVk::GetDeviceMemory() const
-    {
-        return mMemoryHandle;
-    }
-
-    VkBufferUsageFlags GIBufferVk::GetUsages() const
-    {
-        return mBufferUsages;
+        return mBufferInfo;
     }
 
     SharedPtr<GIBufferViewVk> GIBufferVk::GetBufferView(size_t offset, size_t size, VkFormat format)

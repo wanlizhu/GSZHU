@@ -19,7 +19,9 @@ namespace AutoCAD::Graphics::Engine
         VkFormat format
     )
     {
-        return std::hash<size_t>()(offset) ^ ((std::hash<uint32_t>()(format) ^ (std::hash<size_t>()(size) << 1)) << 1);
+        return std::hash<size_t>()(offset) 
+            ^ std::hash<uint32_t>()(format)
+            ^ std::hash<size_t>()(size);
     }
 
     GIBufferViewVk::GIBufferViewVk(
