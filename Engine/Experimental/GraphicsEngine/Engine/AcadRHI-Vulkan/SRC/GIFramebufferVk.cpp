@@ -21,7 +21,7 @@ namespace AutoCAD::Graphics::Engine
 
     bool GIFramebufferVk::IsValid() const
     {
-        return mFramebuffer != mFramebuffer;
+        return mFramebuffer != VK_NULL_HANDLE;
     }
 
     void GIFramebufferVk::SetDebugName(const char* name) const

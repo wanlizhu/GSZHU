@@ -58,7 +58,12 @@ namespace AutoCAD::Graphics::Engine
         return mPipelineLayout;
     }
 
-    SharedPtr<GIDescriptorSetLayoutVk> GIPipelineLayoutVk::GetDescriptorSetLayout(uint32_t setId) const
+    std::unordered_map<uint32_t, SharedPtr<GIDescriptorSetLayoutVk>> const& GIPipelineLayoutVk::GetDescriptorSetLayouts() const
+    {
+        return mDescriptorSetLayouts;
+    }
+
+    std::optional<SharedPtr<GIDescriptorSetLayoutVk>> GIPipelineLayoutVk::GetDescriptorSetLayout(uint32_t setId) const
     {
         auto it = mDescriptorSetLayouts.find(setId);
         if (it == mDescriptorSetLayouts.end())

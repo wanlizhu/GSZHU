@@ -1,18 +1,22 @@
 #include "GIDescriptorSetLayoutVk.h"
+#include "GIShaderReflectionVk.h"
 #include "GIDeviceVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
     SharedPtr<GIDescriptorSetLayoutVk> GIDescriptorSetLayoutVk::Create(
         SharedPtr<GIDeviceVk> device,
+        SharedPtr<GIShaderReflectionVk> reflection,
         const std::vector<VkDescriptorSetLayoutBinding>& setBindings,
-        bool isPushDescriptorSet)
+        bool isPushDescriptorSet
+    )
     {
-        return SharedPtr<GIDescriptorSetLayoutVk>(new GIDescriptorSetLayoutVk(device, setBindings, isPushDescriptorSet));
+        return SharedPtr<GIDescriptorSetLayoutVk>(new GIDescriptorSetLayoutVk(device, reflection, setBindings, isPushDescriptorSet));
     }
 
     GIDescriptorSetLayoutVk::GIDescriptorSetLayoutVk(
         SharedPtr<GIDeviceVk> device,
+        SharedPtr<GIShaderReflectionVk> reflection,
         const std::vector<VkDescriptorSetLayoutBinding>& setBindings,
         bool isPushDescriptor
     )
@@ -29,8 +33,7 @@ namespace AutoCAD::Graphics::Engine
 
         for (const auto& binding : setBindings)
         {
-            mDescriptorTypes[binding.binding] = binding.descriptorType;
-            mShaderStages[binding.binding] = binding.stageFlags;
+            mBindings[binding.binding] = binding;
         }
     }
 
@@ -74,21 +77,25 @@ namespace AutoCAD::Graphics::Engine
         return mIsPushDescriptorSet;
     }
 
-    std::optional<VkDescriptorType> GIDescriptorSetLayoutVk::GetDescriptorType(uint32_t setId) const
+    std::unordered_map<BINDING_ID, VkDescriptorSetLayoutBinding> const& GIDescriptorSetLayoutVk::GetBindings() const
     {
-        auto it = mDescriptorTypes.find(setId);
-        if (it == mDescriptorTypes.end())
-            return std::nullopt;
-        else
-            return it->second;
+        return mBindings;
     }
 
-    std::optional<VkShaderStageFlags> GIDescriptorSetLayoutVk::GetStageFlags(uint32_t setId) const
+    std::optional<VkDescriptorSetLayoutBinding> GIDescriptorSetLayoutVk::GetBindingByName(const char* name) const
     {
-        auto it = mShaderStages.find(setId);
-        if (it == mShaderStages.end())
-            return std::nullopt;
-        else
-            return it->second;
+        auto var = mShaderReflection->GetVariable(name);
+
+        if (var.has_value() && var.value().GetBinding().has_value())
+        {
+            BINDING_ID bindingId = var.value().GetBinding().value().GetBindingId();
+            auto it = mBindings.find(bindingId);
+            if (it == mBindings.end())
+                return std::nullopt;
+            else
+                return it->second;
+        }
+
+        return std::nullopt;
     }
 }

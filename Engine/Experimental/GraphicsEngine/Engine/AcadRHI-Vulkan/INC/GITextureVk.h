@@ -8,6 +8,7 @@ namespace AutoCAD::Graphics::Engine
 
     class GITextureVk : public GIDeviceResourceVk
     {
+        friend class GITextureBuilderVMA;
         friend class GITextureBuilderVk;
         DECL_DEVICE_OBJECT(GITextureVk)
     public:
@@ -20,16 +21,10 @@ namespace AutoCAD::Graphics::Engine
         operator const VkImage& () const;
         VkDeviceSize GetSizeInBytes() const;
         VkDeviceMemory GetDeviceMemory() const;
-        VkBufferUsageFlags GetUsages() const;
 
     protected:
-        GITextureVk(
-            SharedPtr<GIDeviceVk> device,
-            const VkImageCreateInfo& createInfo,
-            const VkMemoryAllocateInfo& allocInfo,
-            const void* data,
-            bool useStagingBuffer
-        );
+        //GITextureVk(); /* [1] Create image, create device memory required and bind them together */
+        //GITextureVk(); /* [2] Configure with image and memory objects precreated by VMA */
 
     protected:
         VkImage mImage = VK_NULL_HANDLE;
@@ -60,5 +55,11 @@ namespace AutoCAD::Graphics::Engine
     private:
         SharedPtr<GIDeviceVk> mDevice;
         VkImageCreateInfo mCreateInfo = {};
+    };
+
+    class GITextureBuilderVMA
+    {
+    public:
+        // TODO
     };
 }

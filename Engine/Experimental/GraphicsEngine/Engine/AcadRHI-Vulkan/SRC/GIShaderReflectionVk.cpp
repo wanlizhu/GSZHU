@@ -89,9 +89,9 @@ namespace AutoCAD::Graphics::Engine
         return mVertexInputAttributes;
     }
 
-    std::vector<VkDescriptorPoolSize> const& GIShaderReflectionVk::GetDescriptorPoolRequirements() const
+    std::vector<VkDescriptorPoolSize> const& GIShaderReflectionVk::GetDescriptorPoolSizes() const
     {
-        return mDescriptorPoolRequirements;
+        return mDescriptorPoolSizes;
     }
 
     std::vector<VkPushConstantRange> const& GIShaderReflectionVk::GetPushConstantRanges() const
@@ -118,12 +118,7 @@ namespace AutoCAD::Graphics::Engine
         : mShaderReflection(new GIShaderReflectionVk())
     {}
 
-    GIShaderReflectionBuilderVk& GIShaderReflectionBuilderVk::LoadSPIRV(const std::filesystem::path& path)
-    {
-        return *this;
-    }
-
-    GIShaderReflectionBuilderVk& GIShaderReflectionBuilderVk::LoadJSON(const std::filesystem::path& path)
+    GIShaderReflectionBuilderVk& GIShaderReflectionBuilderVk::LoadFromFile(const std::filesystem::path& path)
     {
         return *this;
     }

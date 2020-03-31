@@ -13,6 +13,15 @@ namespace AutoCAD::Graphics::Engine
         return SharedPtr<GIBufferViewVk>(new GIBufferViewVk(buffer, offset, size, format));
     }
 
+    CACHE_INDEX GIBufferViewVk::ComputeCacheIndex(
+        size_t offset,
+        size_t size,
+        VkFormat format
+    )
+    {
+        return std::hash<size_t>()(offset) ^ ((std::hash<uint32_t>()(format) ^ (std::hash<size_t>()(size) << 1)) << 1);
+    }
+
     GIBufferViewVk::GIBufferViewVk(
         SharedPtr<GIBufferVk> buffer,
         size_t offset,
@@ -34,10 +43,6 @@ namespace AutoCAD::Graphics::Engine
         createInfo.offset = mOffset;
         createInfo.range = mSize;
         VK_CHECK(vkCreateBufferView(*mDevice, &createInfo, nullptr, &mBufferView));
-
-        mBufferInfo.buffer = *mBuffer;
-        mBufferInfo.offset = offset;
-        mBufferInfo.range = mSize;
     }
 
     GIBufferViewVk::~GIBufferViewVk()
@@ -68,36 +73,6 @@ namespace AutoCAD::Graphics::Engine
             mBufferView,
             VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_VIEW_EXT,
             tag);
-    }
-
-    size_t GIBufferViewVk::GetResourceSize() const
-    {
-        return mSize;
-    }
-
-    uint32_t GIBufferViewVk::GetUnderlyingCopyCount() const
-    {
-        return 1;
-    }
-
-    VkAccessFlags GIBufferViewVk::GetResourceState() const
-    {
-        return mResourceState;
-    }
-
-    VkWriteDescriptorSet GIBufferViewVk::GetWriteCommand() const
-    {
-        VkWriteDescriptorSet writeCmd = {};
-        writeCmd.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        writeCmd.pNext = nullptr;
-        writeCmd.dstSet = 0; //TODO
-        writeCmd.dstBinding = 0; //TODO
-        writeCmd.dstArrayElement = 0;
-        writeCmd.descriptorCount = 1;
-        writeCmd.descriptorType = VK_DESCRIPTOR_TYPE_MAX_ENUM; //TODO
-        writeCmd.pBufferInfo = &mBufferInfo;
-
-        return writeCmd;
     }
 
     GIBufferViewVk::operator const VkBufferView& () const

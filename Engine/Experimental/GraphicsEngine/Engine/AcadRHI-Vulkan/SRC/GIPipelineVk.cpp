@@ -2,19 +2,19 @@
 #include "GIDeviceVk.h"
 #include "GIPipelineLayoutVk.h"
 #include "GIDescriptorSetLayoutVk.h"
-#include "SPIRVReflection.h"
+#include "GIShaderReflectionVk.h"
 #include "GIVertexLayoutVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
     GIPipelineVk::GIPipelineVk(
         SharedPtr<GIDeviceVk> device,
-        SharedPtr<SPIRVReflection> reflection,
+        SharedPtr<GIShaderReflectionVk> reflection,
         const VkGraphicsPipelineCreateInfo& createInfo,
         VkPipelineCache cache
     )
         : GIDeviceObjectVk(device)
-        , mReflection(reflection)
+        , mShaderReflection(reflection)
     {
         CreatePipelineLayout();
         VK_CHECK(vkCreateGraphicsPipelines(*mDevice, cache, 1, &createInfo, nullptr, &mPipeline));
@@ -32,12 +32,16 @@ namespace AutoCAD::Graphics::Engine
     void GIPipelineVk::CreatePipelineLayout()
     {
         std::vector<SharedPtr<GIDescriptorSetLayoutVk>> setLayouts;
-        std::vector<VkPushConstantRange> pushConstants = mReflection->GetPushConstantRanges();
+        std::vector<VkPushConstantRange> pushConstants = mShaderReflection->GetPushConstantRanges();
 
-        for (const auto& setId : mReflection->GetDescriptorSetIds())
+        for (const auto& [setId, setBindings] : mShaderReflection->GetDescriptorSetLayoutInfos())
         {
-            const auto& setBindings = mReflection->GetDescriptorSetLayoutBindings(setId);
-            auto setLayout = GIDescriptorSetLayoutVk::Create(mDevice, setBindings, mReflection->IsPushDescriptorSet(setId));
+            auto setLayout = GIDescriptorSetLayoutVk::Create(
+                mDevice,
+                mShaderReflection,
+                setBindings,
+                mShaderReflection->IsPushDescriptorSet(setId)
+            );
             setLayouts.push_back(setLayout);
         }
 
@@ -80,9 +84,9 @@ namespace AutoCAD::Graphics::Engine
         return mPipelineName;
     }
 
-    SharedPtr<SPIRVReflection> GIPipelineVk::GetShaderReflection() const
+    SharedPtr<GIShaderReflectionVk> GIPipelineVk::GetShaderReflection() const
     {
-        return mReflection;
+        return mShaderReflection;
     }
 
     SharedPtr<GIPipelineLayoutVk> GIPipelineVk::GetPipelineLayout() const
@@ -186,11 +190,11 @@ namespace AutoCAD::Graphics::Engine
 
     GIPipelineBuilderVk& GIPipelineBuilderVk::AddShaderStage(const std::filesystem::path& path)
     {
-        if (mReflection == nullptr)
+        if (mShaderReflectionBuilder == nullptr)
         {
-            mReflection = SPIRVReflection::Create();
+            mShaderReflectionBuilder = SharedPtr<GIShaderReflectionBuilderVk>(new GIShaderReflectionBuilderVk());
         }
-        mReflection->AddShaderStage(path);
+        mShaderReflectionBuilder->LoadFromFile(path);
 
         std::vector<char> buffer;
         std::ifstream file(path.wstring(), std::ios::binary);
@@ -222,8 +226,8 @@ namespace AutoCAD::Graphics::Engine
         mVertexLayout = vertexLayout;
         mVertexInputState.vertexAttributeDescriptionCount = (uint32_t)mVertexLayout->GetVertexAttributes().size();
         mVertexInputState.pVertexAttributeDescriptions = mVertexLayout->GetVertexAttributes().data();
-        mVertexInputState.vertexBindingDescriptionCount = (uint32_t)mVertexLayout->GetBindingPoints().size();
-        mVertexInputState.pVertexBindingDescriptions = mVertexLayout->GetBindingPoints().data();
+        mVertexInputState.vertexBindingDescriptionCount = (uint32_t)mVertexLayout->GetVertexBindings().size();
+        mVertexInputState.pVertexBindingDescriptions = mVertexLayout->GetVertexBindings().data();
         return *this;
     }
 
@@ -515,7 +519,7 @@ namespace AutoCAD::Graphics::Engine
     {
         auto pipeline = SharedPtr<GIPipelineVk>(new GIPipelineVk(
             mDevice,
-            mReflection,
+            mShaderReflectionBuilder->Build(),
             mCreateInfo,
             mPipelineCache));
         assert(pipeline->IsValid());

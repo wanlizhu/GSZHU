@@ -28,7 +28,7 @@ namespace AutoCAD::Graphics::Engine
         std::optional<std::vector<VkDescriptorSetLayoutBinding>> GetDescriptorSetLayoutInfo(SET_ID setId) const;
         
         std::vector<VkVertexInputAttributeDescription> const& GetVertexInputAttributes() const;
-        std::vector<VkDescriptorPoolSize> const& GetDescriptorPoolRequirements() const;
+        std::vector<VkDescriptorPoolSize> const& GetDescriptorPoolSizes() const;
         std::vector<VkPushConstantRange> const& GetPushConstantRanges() const;
         std::vector<VkSpecializationMapEntry> const& GetSpecializationMapEntries() const;
         std::unordered_map<SET_ID, std::vector<VkDescriptorSetLayoutBinding>> const& GetDescriptorSetLayoutInfos() const;
@@ -53,7 +53,7 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         std::vector<VkVertexInputAttributeDescription> mVertexInputAttributes; // The field 'binding' is left empty for application to assign later
-        std::vector<VkDescriptorPoolSize> mDescriptorPoolRequirements; // Used to expand the size requirements of global descriptor pool
+        std::vector<VkDescriptorPoolSize> mDescriptorPoolSizes; // Used to expand the size requirements of global descriptor pool
         std::vector<VkPushConstantRange> mPushConstantRanges; // Only one push_constant block is allowed per stage.
         std::vector<VkSpecializationMapEntry> mSpecializationMapEntries;
         
@@ -70,8 +70,7 @@ namespace AutoCAD::Graphics::Engine
     {
     public:
         GIShaderReflectionBuilderVk();
-        GIShaderReflectionBuilderVk& LoadSPIRV(const std::filesystem::path& path);
-        GIShaderReflectionBuilderVk& LoadJSON(const std::filesystem::path& path);
+        GIShaderReflectionBuilderVk& LoadFromFile(const std::filesystem::path& path);
         SharedPtr<GIShaderReflectionVk> Build();
 
     protected:

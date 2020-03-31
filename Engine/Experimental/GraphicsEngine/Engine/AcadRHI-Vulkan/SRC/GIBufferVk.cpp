@@ -7,88 +7,69 @@ namespace AutoCAD::Graphics::Engine
     GIBufferVk::GIBufferVk(
         SharedPtr<GIDeviceVk> device,
         const VkBufferCreateInfo& createInfo,
-        const VkMemoryAllocateInfo& allocInfo,
         const void* data,
-        bool useStagingBuffer
+        VkMemoryPropertyFlags properties
     )
         : GIDeviceResourceVk(device)
     {
-        // Erase duplicates from 'queues'
-        std::vector<uint32_t> uniqueQueues = queues;
-        std::sort(uniqueQueues.begin(), uniqueQueues.end());
-        uniqueQueues.erase(std::unique(uniqueQueues.begin(), uniqueQueues.end()), uniqueQueues.end());
-
-        VkBufferCreateInfo createInfo = {};
-        createInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-        createInfo.pNext = nullptr;
-        createInfo.size = size;
-        createInfo.usage = usages;
-        createInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-        if (uniqueQueues.size() > 1)
-        {
-            createInfo.sharingMode = VK_SHARING_MODE_CONCURRENT;
-            createInfo.queueFamilyIndexCount = uniqueQueues.size();
-            createInfo.pQueueFamilyIndices = uniqueQueues.data();
-        }
-        VK_CHECK(vkCreateBuffer(*mDevice, &createInfo, nullptr, &mBuffer));
+        VK_CHECK(vkCreateBuffer(*mDevice, &createInfo, nullptr, &mBufferHandle));
 
         VkMemoryRequirements memoryRequirements = {};
-        vkGetBufferMemoryRequirements(*mDevice, mBuffer, &memoryRequirements);
-
         VkMemoryAllocateInfo allocInfo = {};
+
+        vkGetBufferMemoryRequirements(*mDevice, mBufferHandle, &memoryRequirements);
+        mSizeInBytes = memoryRequirements.size;
+
         allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
         allocInfo.pNext = nullptr;
         allocInfo.allocationSize = memoryRequirements.size;
         allocInfo.memoryTypeIndex = mDevice->GetMemoryTypeIndex(memoryRequirements.memoryTypeBits, properties);
-        VK_CHECK(vkAllocateMemory(*mDevice, &allocInfo, nullptr, &mDeviceMemory));
-
-        // If the initial data has been provided, map the buffer and copy over the data.
-        if (data != nullptr)
-        {
-            void* mappedData = nullptr;
-            VK_CHECK(vkMapMemory(*mDevice, mDeviceMemory, 0, mDeviceMemorySize, 0, &mappedData));
-            std::memcpy(mappedData, data, mDeviceMemorySize);
-
-            // If host coherency hasn't been requested, do a manual flush to make writes visible.
-            if (!(properties & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT))
-            {
-                VkMappedMemoryRange mappedRange = {};
-                mappedRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
-                mappedRange.pNext = nullptr;
-                mappedRange.memory = mDeviceMemory;
-                mappedRange.offset = 0;
-                mappedRange.size = mDeviceMemorySize;
-                VK_CHECK(vkFlushMappedMemoryRanges(*mDevice, 1, &mappedRange));
-            }
-
-            vkUnmapMemory(*mDevice, mDeviceMemory);
-        }
+        VK_CHECK(vkAllocateMemory(*mDevice, &allocInfo, nullptr, &mMemoryHandle));
+        
+        UpdateData(0, mSizeInBytes, data, nullptr);
 
         // Attach the memory to the buffer object.
-        VK_CHECK(vkBindBufferMemory(*mDevice, mBuffer, mDeviceMemory, 0));
+        VK_CHECK(vkBindBufferMemory(*mDevice, mBufferHandle, mMemoryHandle, 0));
     }
+
+    GIBufferVk::GIBufferVk(
+        SharedPtr<GIDeviceVk> device,
+        VkBuffer buffer,
+        VkDeviceMemory memory,
+        VkDeviceSize size
+    )
+        : GIDeviceResourceVk(device)
+        , mBufferHandle(buffer)
+        , mMemoryHandle(memory)
+        , mSizeInBytes(size)
+    {}
 
     GIBufferVk::~GIBufferVk()
     {
+        if (mOnDestroyCallback)
+        {
+            mOnDestroyCallback();
+        }
+
         if (IsValid())
         {
-            vkDestroyBuffer(*mDevice, mBuffer, nullptr);
-            vkFreeMemory(*mDevice, mDeviceMemory, nullptr);
+            vkDestroyBuffer(*mDevice, mBufferHandle, nullptr);
+            vkFreeMemory(*mDevice, mMemoryHandle, nullptr);
 
-            mBuffer = VK_NULL_HANDLE;
-            mDeviceMemory = VK_NULL_HANDLE;
+            mBufferHandle = VK_NULL_HANDLE;
+            mMemoryHandle = VK_NULL_HANDLE;
         }
     }
 
     bool GIBufferVk::IsValid() const
     {
-        return mBuffer != VK_NULL_HANDLE && mDeviceMemory != VK_NULL_HANDLE;
+        return mBufferHandle != VK_NULL_HANDLE && mMemoryHandle != VK_NULL_HANDLE;
     }
 
     void GIBufferVk::SetDebugName(const char* name) const
     {
         SetDebugNameInternal(
-            mBuffer,
+            mBufferHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT,
             name);
     }
@@ -96,19 +77,50 @@ namespace AutoCAD::Graphics::Engine
     void GIBufferVk::SetDebugTag(const DebugTag& tag) const
     {
         SetDebugTagInternal(
-            mBuffer,
+            mBufferHandle,
             VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT,
             tag);
     }
 
-    GIBufferVk::operator const VkBuffer& () const
+    EResourceType GIBufferVk::GetResourceType() const
     {
-        return mBuffer;
+        return EResourceType::Buffer;
     }
 
-    void GIBufferVk::WriteData(size_t offset, size_t size, const void* data)
+    GIBufferVk::operator const VkBuffer& () const
     {
-        // TODO: async update
+        return mBufferHandle;
+    }
+
+    VkDeviceSize GIBufferVk::GetSize() const
+    {
+        return mSizeInBytes;
+    }
+
+    VkDeviceMemory GIBufferVk::GetDeviceMemory() const
+    {
+        return mMemoryHandle;
+    }
+
+    SharedPtr<GIBufferViewVk> GIBufferVk::GetBufferView(size_t offset, size_t size, VkFormat format)
+    {
+        auto key = GIBufferViewVk::ComputeCacheIndex(offset, size, format);
+        auto view = mBufferViews.find(key);
+        if (view == mBufferViews.end())
+        {
+            auto newView = GIBufferViewVk::Create(shared_from_this(), offset, size, format);
+            mBufferViews[key] = newView;
+            return newView;
+        }
+        else
+        {
+            return view->second.lock();
+        }
+    }
+
+    void GIBufferVk::SetOnDestroyCallback(const std::function<void()>& func)
+    {
+        mOnDestroyCallback = func;
     }
 
     void* GIBufferVk::Map(size_t offset, size_t size)
@@ -116,7 +128,7 @@ namespace AutoCAD::Graphics::Engine
         assert(mIsMapped == false);
 
         void* mappedData = nullptr;
-        VK_CHECK(vkMapMemory(*mDevice, mDeviceMemory, offset, size, 0, &mappedData));
+        VK_CHECK(vkMapMemory(*mDevice, mMemoryHandle, offset, size, 0, &mappedData));
         mIsMapped = mappedData != nullptr;
         return mappedData;
     }
@@ -125,29 +137,68 @@ namespace AutoCAD::Graphics::Engine
     {
         if (mIsMapped)
         {
-            vkUnmapMemory(*mDevice, mDeviceMemory);
+            vkUnmapMemory(*mDevice, mMemoryHandle);
             mIsMapped = false;
         }
     }
 
-    VkBufferUsageFlags GIBufferVk::GetUsages() const
+    void GIBufferVk::UpdateData(size_t offset, size_t size, const void* data, SharedPtr<GICommandBufferVk> cmdbuf)
     {
-        return mUsages;
+        // TODO
     }
 
-    SharedPtr<GIBufferViewVk> GIBufferVk::GetBufferView(size_t offset, size_t size, VkFormat format)
+    GIBufferBuilderVk::GIBufferBuilderVk(SharedPtr<GIDeviceVk> device)
+        : mDevice(device)
     {
-        auto key = ViewCacheKey(offset, size, format);
-        auto view = mBufferViews.find(key);
-        if (view == mBufferViews.end())
-        {
-            //auto newView = GIBufferViewVk::Create(shared_from_this(), offset, size, format);
-            //mBufferViews[key] = newView;
-            //return newView;
-        }
-        else
-        {
-            return view->second.lock();
-        }
+        mCreateInfo = {};
+        mCreateInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        mCreateInfo.pNext = nullptr;
+        mCreateInfo.flags = 0;
+        mCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    }
+
+    GIBufferBuilderVk& GIBufferBuilderVk::SetSize(VkDeviceSize size)
+    {
+        mCreateInfo.size = size;
+        return *this;
+    }
+
+    GIBufferBuilderVk& GIBufferBuilderVk::AddBufferUsages(VkBufferUsageFlags usages)
+    {
+        mCreateInfo.usage |= usages;
+        return *this;
+    }
+
+    GIBufferBuilderVk& GIBufferBuilderVk::AddMemoryProperties(VkMemoryPropertyFlags properties)
+    {
+        mProperties |= properties;
+        return *this;
+    }
+
+    GIBufferBuilderVk& GIBufferBuilderVk::AddSharedQueue(uint32_t queue) 
+    {
+        auto it = std::find(mSharedQueues.begin(), mSharedQueues.end(), queue);
+        if (it == mSharedQueues.end())
+            mSharedQueues.push_back(queue);
+
+        return *this;
+    }
+
+    GIBufferBuilderVk& GIBufferBuilderVk::SetInitialData(const void* data)
+    {
+        mInitialData = data;
+        return *this;
+    }
+
+    SharedPtr<GIBufferVk> GIBufferBuilderVk::Build()
+    {
+        auto result = SharedPtr<GIBufferVk>(new GIBufferVk(
+            mDevice,
+            mCreateInfo,
+            mInitialData,
+            mProperties
+            ));
+        assert(result->IsValid());
+        return result;
     }
 }

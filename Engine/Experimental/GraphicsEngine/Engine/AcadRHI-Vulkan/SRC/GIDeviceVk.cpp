@@ -6,7 +6,7 @@
 namespace AutoCAD::Graphics::Engine
 {
     GIDeviceVk::GIDeviceVk(
-        SharedPtr<VKInstance> instance,
+        SharedPtr<GIInstanceVk> instance,
         VkPhysicalDevice physicalDevice,
         VkDeviceCreateInfo& createInfo
     )
@@ -127,7 +127,7 @@ namespace AutoCAD::Graphics::Engine
         mCurrentDC = dc;
     }
 
-    SharedPtr<VKInstance> const& GIDeviceVk::GetInstance() const
+    SharedPtr<GIInstanceVk> const& GIDeviceVk::GetInstance() const
     {
         return mInstance;
     }
@@ -187,7 +187,7 @@ namespace AutoCAD::Graphics::Engine
         vkDeviceWaitIdle(mLogicalDevice);
     }
 
-    GIDeviceBuilderVk::GIDeviceBuilderVk(SharedPtr<VKInstance> instance)
+    GIDeviceBuilderVk::GIDeviceBuilderVk(SharedPtr<GIInstanceVk> instance)
         : mInstance(instance)
     {
         mCreateInfo = {};

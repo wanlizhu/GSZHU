@@ -204,6 +204,9 @@
     <ClCompile Include="SRC\GIDescriptorBindingVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRC\GIDeviceResourceVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="AcadRHI-Vulkan Class Diagram.cd">

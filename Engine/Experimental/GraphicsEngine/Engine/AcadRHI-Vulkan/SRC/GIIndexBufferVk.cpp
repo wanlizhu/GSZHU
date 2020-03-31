@@ -10,68 +10,75 @@ namespace AutoCAD::Graphics::Engine
     SharedPtr<GIIndexBufferVk> GIIndexBufferVk::Create(
         SharedPtr<GIDeviceVk> device,
         VkDeviceSize size,
+        const void* data,
         VkIndexType indexType,
-        bool enableStagingBuffer,
-        const void* data)
+        bool useVMA
+    )
     {
-        return SharedPtr<GIIndexBufferVk>(new GIIndexBufferVk(device, size, indexType, enableStagingBuffer, data));
+        SharedPtr<GIBufferVk> buffer;
+
+        if (useVMA)
+        {
+            buffer = nullptr; // TODO
+        }
+        else
+        {
+            buffer = GIBufferBuilderVk(device)
+                .SetSize(size)
+                .SetInitialData(data)
+                .AddBufferUsages(VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
+                .AddMemoryProperties(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+                .AddSharedQueue(device->GetGraphicsQueue()->GetFamilyIndex())
+                .AddSharedQueue(device->GetTransferQueue()->GetFamilyIndex())
+                .Build();
+        }
+
+        return SharedPtr<GIIndexBufferVk>(new GIIndexBufferVk(buffer, indexType));
     }
 
     GIIndexBufferVk::GIIndexBufferVk(
-        SharedPtr<GIDeviceVk> device,
-        VkDeviceSize size,
-        VkIndexType indexType,
-        bool enableStagingBuffer,
-        const void* data
+        SharedPtr<GIBufferVk> buffer,
+        VkIndexType indexType
     )
-        : GIBufferVk(
-            device,
-            size,
-            VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-            { device->GetGraphicsQueue()->GetFamilyIndex(), device->GetTransferQueue()->GetFamilyIndex() },
-            enableStagingBuffer ? nullptr : data
-        )
+        : mBuffer(buffer)
         , mIndexType(indexType)
-        , mStagingBuffer(std::nullopt)
+    {}
+
+    GIIndexBufferVk::~GIIndexBufferVk()
     {
-        if (enableStagingBuffer)
-        {
-            mStagingBuffer = GIBufferVk::Create(
-                mDevice,
-                mSize,
-                VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                { mDevice->GetGraphicsQueue()->GetFamilyIndex(), mDevice->GetTransferQueue()->GetFamilyIndex() },
-                data);
-
-            //TODO: merge trivial buffer/image updating commands
-            auto cmdbuf = mDevice->GetTransferQueue()->GetCommandPool()->Allocate();
-
-            VkBufferCopy bufferCopy = {};
-            bufferCopy.srcOffset = 0;
-            bufferCopy.dstOffset = 0;
-            bufferCopy.size = mSize;
-            vkCmdCopyBuffer(*cmdbuf, *mStagingBuffer.value(), *this, 1, &bufferCopy);
-            cmdbuf->Submit();
-        }
+        mBuffer = nullptr;
+        mIndexType = VK_INDEX_TYPE_MAX_ENUM;
     }
-
+    
     VkIndexType const& GIIndexBufferVk::GetIndexType() const
     {
         return mIndexType;
     }
 
-    GIIndexBufferVk::~GIIndexBufferVk()
+    GIIndexBufferVk::operator const VkBuffer& () const
     {
-        if (mStagingBuffer.has_value())
-        {
-            assert(mStagingBuffer.value().use_count() == 1);
-        }
+        return (const VkBuffer&)(*mBuffer);
     }
 
     bool GIIndexBufferVk::IsValid() const
     {
-        return GIBufferVk::IsValid() && mIndexType != VK_INDEX_TYPE_MAX_ENUM;
+        return mBuffer != nullptr && 
+            mBuffer->IsValid() && 
+            mIndexType != VK_INDEX_TYPE_MAX_ENUM;
+    }
+
+    void GIIndexBufferVk::SetBuffer(SharedPtr<GIBufferVk> buffer)
+    {
+        mBuffer = buffer;
+    }
+
+    void GIIndexBufferVk::SetIndexType(VkIndexType indexType)
+    {
+        mIndexType = indexType;
+    }
+
+    SharedPtr<GIBufferVk> GIIndexBufferVk::GetBuffer() const
+    {
+        return mBuffer;
     }
 }

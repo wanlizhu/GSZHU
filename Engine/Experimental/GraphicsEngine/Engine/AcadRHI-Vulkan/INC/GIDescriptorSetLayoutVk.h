@@ -24,7 +24,7 @@ namespace AutoCAD::Graphics::Engine
 
         operator const VkDescriptorSetLayout& () const;
         bool IsPushDescriptorSet() const;
-        std::unordered_map<std::string, VkDescriptorSetLayoutBinding> const& GetBindings() const;
+        std::unordered_map<BINDING_ID, VkDescriptorSetLayoutBinding> const& GetBindings() const;
         std::optional<VkDescriptorSetLayoutBinding> GetBindingByName(const char* name) const;
 
     private:
@@ -38,7 +38,7 @@ namespace AutoCAD::Graphics::Engine
     private:
         SharedPtr<GIShaderReflectionVk> mShaderReflection;
         VkDescriptorSetLayout mDescriptorSetLayout = VK_NULL_HANDLE;
-        std::unordered_map<std::string, VkDescriptorSetLayoutBinding> mBindings; // The binding ids might be uncontinuous
+        std::unordered_map<BINDING_ID, VkDescriptorSetLayoutBinding> mBindings; // The binding ids might be uncontinuous
         bool mIsPushDescriptorSet = false;
     };
 }

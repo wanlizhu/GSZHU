@@ -4,29 +4,35 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class GIIndexBufferVk : public GIBufferVk
+    class GIIndexBufferVk : public std::enable_shared_from_this<GIIndexBufferVk>
     {
     public:
         static SharedPtr<GIIndexBufferVk> Create(
             SharedPtr<GIDeviceVk> device,
             VkDeviceSize size,
+            const void* data,
             VkIndexType indexType,
-            const void* data
+            bool useVMA
         );
 
         virtual ~GIIndexBufferVk();
-        virtual bool IsValid() const override final;
+        operator const VkBuffer& () const;
+        bool IsValid() const;
+
+        void SetBuffer(SharedPtr<GIBufferVk> buffer);
+        void SetIndexType(VkIndexType indexType);
+
+        SharedPtr<GIBufferVk> GetBuffer() const;
         VkIndexType const& GetIndexType() const;
 
     protected:
         GIIndexBufferVk(
-            SharedPtr<GIDeviceVk> device,
-            VkDeviceSize size,
-            VkIndexType indexType,
-            const void* data
+            SharedPtr<GIBufferVk> buffer,
+            VkIndexType indexType
         );
 
     private:
+        SharedPtr<GIBufferVk> mBuffer;
         VkIndexType mIndexType = VK_INDEX_TYPE_UINT32;
     };
 }

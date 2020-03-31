@@ -15,7 +15,7 @@ namespace AutoCAD::Graphics::Engine
     {}
 
     GIShaderVariableVk::GIShaderVariableVk(SET_ID set, BINDING_ID binding)
-        : mBinding(set, binding)
+        : mBinding(GIDescriptorBindingVk(set, binding))
     {}
 
     std::optional<uint32_t> GIShaderVariableVk::GetLocation() const

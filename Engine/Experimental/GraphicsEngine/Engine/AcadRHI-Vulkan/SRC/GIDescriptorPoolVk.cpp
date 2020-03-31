@@ -1,18 +1,28 @@
 #include "GIDescriptorPoolVk.h"
 #include "GIDescriptorSetVk.h"
 #include "GIDescriptorSetLayoutVk.h"
-#include "SPIRVReflection.h"
+#include "GIShaderReflectionVk.h"
 #include "GIDeviceVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
     GIDescriptorPoolVk::GIDescriptorPoolVk(
         SharedPtr<GIDeviceVk> device,
-        const VkDescriptorPoolCreateInfo& createInfo
+        SharedPtr<GIShaderReflectionVk> reflection,
+        uint32_t maxSets,
+        const std::vector<VkDescriptorPoolSize>& poolSizes
     )
         : GIDeviceObjectVk(device)
+        , mReflection(reflection)
         , mThreadId(std::this_thread::get_id())
     {
+        VkDescriptorPoolCreateInfo createInfo = {};
+        createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+        createInfo.pNext = nullptr;
+        createInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+        createInfo.maxSets = maxSets;
+        createInfo.poolSizeCount = (uint32_t)poolSizes.size();
+        createInfo.pPoolSizes = poolSizes.data();
         VK_CHECK(vkCreateDescriptorPool(*mDevice, &createInfo, nullptr, &mDescriptorPool));
     }
 
@@ -58,48 +68,9 @@ namespace AutoCAD::Graphics::Engine
 
     SharedPtr<GIDescriptorSetVk> GIDescriptorPoolVk::Allocate(
         SharedPtr<GIDescriptorSetLayoutVk> setLayout,
-        std::optional<WeakPtr<GIDescriptorSetVk>> parent)
+        std::optional<WeakPtr<GIDescriptorSetVk>> parent
+    )
     {
         return SharedPtr<GIDescriptorSetVk>(new GIDescriptorSetVk(weak_from_this(), setLayout, parent));
-    }
-
-    GIDescriptorPoolBuilderVk::GIDescriptorPoolBuilderVk(SharedPtr<GIDeviceVk> device)
-        : mDevice(device)
-    {
-        mCreateInfo = {};
-        mCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-        mCreateInfo.pNext = nullptr;
-        mCreateInfo.flags = 0;
-        mCreateInfo.maxSets = 0;
-    }
-
-    GIDescriptorPoolBuilderVk& GIDescriptorPoolBuilderVk::Expand(SharedPtr<SPIRVReflection> reflection)
-    {
-        for (const auto& poolSize : reflection->GetDescriptorPoolRequirements())
-        {
-            Expand(poolSize);
-        }
-        return *this;
-    }
-
-    GIDescriptorPoolBuilderVk& GIDescriptorPoolBuilderVk::Expand(const VkDescriptorPoolSize& typeAndCount)
-    {
-        mPoolSizes.push_back(typeAndCount);
-        return *this;
-    }
-
-    GIDescriptorPoolBuilderVk& GIDescriptorPoolBuilderVk::SetMaxSetCount(uint32_t maxSets)
-    {
-        mCreateInfo.maxSets = maxSets;
-        return *this;
-    }
-
-    SharedPtr<GIDescriptorPoolVk> GIDescriptorPoolBuilderVk::Build()
-    {
-        assert(mCreateInfo.maxSets > 0);
-        mCreateInfo.poolSizeCount = (uint32_t)mPoolSizes.size();
-        mCreateInfo.pPoolSizes = mPoolSizes.data();
-
-        return SharedPtr<GIDescriptorPoolVk>(new GIDescriptorPoolVk(mDevice, mCreateInfo));
     }
 }

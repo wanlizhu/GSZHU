@@ -85,6 +85,10 @@ namespace AutoCAD::Graphics::Engine
     template<typename T>
     using UniquePtr = std::unique_ptr<T>;
 
+    using SET_ID = uint32_t;
+    using BINDING_ID = uint32_t;
+    using CACHE_INDEX = size_t;
+
     class GINonCopyable
     {
     public:

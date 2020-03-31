@@ -4,9 +4,6 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    using SET_ID = uint32_t;
-    using BINDING_ID = uint32_t;
-
     class GIDescriptorBindingVk
     {
     public:

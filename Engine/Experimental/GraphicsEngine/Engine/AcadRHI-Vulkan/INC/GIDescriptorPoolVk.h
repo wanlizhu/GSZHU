@@ -35,7 +35,8 @@ namespace AutoCAD::Graphics::Engine
         std::thread::id GetThreadId() const;
         SharedPtr<GIDescriptorSetVk> Allocate(
             SharedPtr<GIDescriptorSetLayoutVk> setLayout, 
-            std::optional<WeakPtr<GIDescriptorSetVk>> parent = std::nullopt);
+            std::optional<WeakPtr<GIDescriptorSetVk>> parent = std::nullopt
+        );
         
     protected:
         GIDescriptorPoolVk(

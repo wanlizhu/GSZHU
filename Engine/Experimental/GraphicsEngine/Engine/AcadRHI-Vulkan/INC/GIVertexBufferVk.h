@@ -7,33 +7,39 @@ namespace AutoCAD::Graphics::Engine
     class GIDeviceVk;
     class GIVertexLayoutVk;
 
-    class GIVertexBufferVk : public GIBufferVk
+    class GIVertexBufferVk : public std::enable_shared_from_this<GIVertexBufferVk>
     {
     public:
         static SharedPtr<GIVertexBufferVk> Create(
             SharedPtr<GIDeviceVk> device,
             VkDeviceSize size, 
+            const void* data,
             SharedPtr<GIVertexLayoutVk> vertexLayout,
-            const void* data
+            const VkVertexInputBindingDescription& bindingPoint,
+            bool useVMA
         );
 
         virtual ~GIVertexBufferVk();
-        virtual bool IsValid() const override final;
+        bool IsValid() const;
 
+        void SetBuffer(SharedPtr<GIBufferVk> buffer);
+        void SetVertexLayout(SharedPtr<GIVertexLayoutVk> vertexLayout);
         void SetBindingPoint(const VkVertexInputBindingDescription& binding);
+        
+        SharedPtr<GIBufferVk> GetBuffer() const;
         SharedPtr<GIVertexLayoutVk> GetVertexLayout() const;
         VkVertexInputBindingDescription const& GetBindingPoint() const;
 
     protected:
         GIVertexBufferVk(
-            SharedPtr<GIDeviceVk> device,
-            VkDeviceSize size,
+            SharedPtr<GIBufferVk> buffer,
             SharedPtr<GIVertexLayoutVk> vertexLayout,
-            const void* data
+            const VkVertexInputBindingDescription& bindingPoint
         );
         
     private:
-        VkVertexInputBindingDescription mBindingPoint = {};
+        SharedPtr<GIBufferVk> mBuffer;
         SharedPtr<GIVertexLayoutVk> mVertexLayout;
+        VkVertexInputBindingDescription mBindingPoint = {};
     };
 }

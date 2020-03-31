@@ -4,16 +4,16 @@
 
 namespace AutoCAD::Graphics::Engine
 {
+    enum class EResourceType
+    {
+        Buffer,
+        Image,
+    };
+
     class GIDeviceResourceVk : public GIDeviceObjectVk
     {
     public:
-        enum class EResourceType
-        {
-            Buffer,
-            Image,
-        };
-
-        virtual ~GIDeviceResourceVk() = default;
+        virtual ~GIDeviceResourceVk();
         virtual EResourceType GetResourceType() const = 0;
 
     protected:

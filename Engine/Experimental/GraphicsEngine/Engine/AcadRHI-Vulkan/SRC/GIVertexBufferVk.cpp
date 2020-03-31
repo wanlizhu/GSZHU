@@ -11,69 +11,76 @@ namespace AutoCAD::Graphics::Engine
     SharedPtr<GIVertexBufferVk> GIVertexBufferVk::Create(
         SharedPtr<GIDeviceVk> device,
         VkDeviceSize size,
+        const void* data,
         SharedPtr<GIVertexLayoutVk> vertexLayout,
-        bool enableStagingBuffer,
-        const void* data)
+        const VkVertexInputBindingDescription& bindingPoint,
+        bool useVMA
+    )
     {
-        return SharedPtr<GIVertexBufferVk>(new GIVertexBufferVk(device, size, vertexLayout, enableStagingBuffer, data));
+        SharedPtr<GIBufferVk> buffer;
+
+        if (useVMA)
+        {
+            buffer = nullptr; // TODO
+        }
+        else
+        {
+            buffer = GIBufferBuilderVk(device)
+                .SetSize(size)
+                .SetInitialData(data)
+                .AddBufferUsages(VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
+                .AddMemoryProperties(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+                .AddSharedQueue(device->GetGraphicsQueue()->GetFamilyIndex())
+                .AddSharedQueue(device->GetTransferQueue()->GetFamilyIndex())
+                .Build();
+        }
+
+        return SharedPtr<GIVertexBufferVk>(new GIVertexBufferVk(buffer, vertexLayout, bindingPoint));
     }
 
     GIVertexBufferVk::GIVertexBufferVk(
-        SharedPtr<GIDeviceVk> device,
-        VkDeviceSize size,
+        SharedPtr<GIBufferVk> buffer,
         SharedPtr<GIVertexLayoutVk> vertexLayout,
-        bool enableStagingBuffer,
-        const void* data
+        const VkVertexInputBindingDescription& bindingPoint
     )
-        : GIBufferVk(
-            device,
-            size,
-            VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-            {},
-            enableStagingBuffer ? nullptr : data
-        )
+        : mBuffer(buffer)
         , mVertexLayout(vertexLayout)
-        , mStagingBuffer(std::nullopt)
-    {
-        if (enableStagingBuffer)
-        {
-            mStagingBuffer = GIBufferVk::Create(
-                mDevice,
-                mSize,
-                VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                { mDevice->GetGraphicsQueue()->GetFamilyIndex(), mDevice->GetTransferQueue()->GetFamilyIndex() },
-                data);
-
-            //TODO: merge trivial buffer/image updating commands
-            auto cmdbuf = mDevice->GetTransferQueue()->GetCommandPool()->Allocate();
-
-            VkBufferCopy bufferCopy = {};
-            bufferCopy.srcOffset = 0;
-            bufferCopy.dstOffset = 0;
-            bufferCopy.size = mSize;
-            vkCmdCopyBuffer(*cmdbuf, *mStagingBuffer.value(), *this, 1, &bufferCopy);
-            cmdbuf->Submit();
-        }
-    }
+        , mBindingPoint(bindingPoint)
+    {}
 
     GIVertexBufferVk::~GIVertexBufferVk()
     {
-        if (mStagingBuffer.has_value())
-        {
-            assert(mStagingBuffer.value().use_count() == 1);
-        }
+        mBuffer = nullptr;
+        mVertexLayout = nullptr;
     }
 
     bool GIVertexBufferVk::IsValid() const
     {
-        return GIBufferVk::IsValid() && mVertexLayout->IsValid();
+        return mBuffer != nullptr &&
+            mBuffer->IsValid() &&
+            mVertexLayout != nullptr &&
+            mVertexLayout->IsValid() &&
+            mBindingPoint.binding != UINT_MAX;
+    }
+
+    void GIVertexBufferVk::SetBuffer(SharedPtr<GIBufferVk> buffer) 
+    {
+        mBuffer = buffer;
+    }
+
+    void GIVertexBufferVk::SetVertexLayout(SharedPtr<GIVertexLayoutVk> vertexLayout)
+    {
+        mVertexLayout = vertexLayout;
     }
 
     void GIVertexBufferVk::SetBindingPoint(const VkVertexInputBindingDescription& binding)
     {
         mBindingPoint = binding;
+    }
+
+    SharedPtr<GIBufferVk> GIVertexBufferVk::GetBuffer() const
+    {
+        return mBuffer;
     }
 
     SharedPtr<GIVertexLayoutVk> GIVertexBufferVk::GetVertexLayout() const

@@ -11,6 +11,11 @@ namespace AutoCAD::Graphics::Engine
     GIVertexLayoutVk::GIVertexLayoutVk()
     {}
 
+    bool GIVertexLayoutVk::IsValid() const
+    {
+        return !mVertexAttributes.empty() && !mVertexBindings.empty();
+    }
+
     void GIVertexLayoutVk::AddVertexAttribute(uint32_t location, uint32_t offset, VkFormat format, uint32_t binding)
     {
         VkVertexInputAttributeDescription attrib = {};
@@ -21,38 +26,33 @@ namespace AutoCAD::Graphics::Engine
         mVertexAttributes.push_back(attrib);
     }
 
-    void GIVertexLayoutVk::AddBindingPoint(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate)
+    void GIVertexLayoutVk::AddVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate)
     {
         VkVertexInputBindingDescription inputBinding = {};
         inputBinding.binding = binding;
         inputBinding.stride = stride;
         inputBinding.inputRate = inputRate;
-        mBindingPoints.push_back(inputBinding);
+        mVertexBindings.push_back(inputBinding);
     }
 
-    bool GIVertexLayoutVk::IsValid() const
-    {
-        return !mVertexAttributes.empty() && !mBindingPoints.empty();
-    }
-
-    std::optional<VkVertexInputBindingDescription> GIVertexLayoutVk::GetBindingPoint(uint32_t binding) const
+    std::optional<VkVertexInputBindingDescription> GIVertexLayoutVk::GetVertexBinding(uint32_t binding) const
     {
         auto it = std::find_if(
-            mBindingPoints.begin(),
-            mBindingPoints.end(),
+            mVertexBindings.begin(),
+            mVertexBindings.end(),
             [&](const VkVertexInputBindingDescription& item) {
                 return item.binding == binding;
             });
 
-        if (it == mBindingPoints.end())
+        if (it == mVertexBindings.end())
             return std::nullopt;
         else
             return *it;
     }
 
-    std::vector<VkVertexInputBindingDescription> const& GIVertexLayoutVk::GetBindingPoints() const
+    std::vector<VkVertexInputBindingDescription> const& GIVertexLayoutVk::GetVertexBindings() const
     {
-        return mBindingPoints;
+        return mVertexBindings;
     }
 
     std::vector<VkVertexInputAttributeDescription> const& GIVertexLayoutVk::GetVertexAttributes() const

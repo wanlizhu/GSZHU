@@ -74,24 +74,17 @@ namespace AutoCAD::Graphics::Engine
         return mDescriptorSetLayout;
     }
 
-    void GIDescriptorSetVk::BindResource(uint32_t binding, WeakPtr<GIDescriptorResourceVk> resource)
+    void GIDescriptorSetVk::BindResource(const char* name, WeakPtr<GIDeviceResourceVk> resource, SharedPtr<GICommandBufferVk> cmdbuf)
     {
-        if (!mDescriptorSetLayout->GetDescriptorType(binding).has_value() ||
-            resource.expired())
-        {
-            LOG_WARNING("Failed to bind resource to (%d).\n", binding);
-            return;
-        }
-
-        // TODO    
+        // TODO
     }
 
-    void GIDescriptorSetVk::SetParentDescriptorSet(WeakPtr<GIDescriptorSetVk> set)
+    void GIDescriptorSetVk::BindResourceArray(const char* name, const std::vector<WeakPtr<GIDeviceResourceVk>>& resourceArray, SharedPtr<GICommandBufferVk> cmdbuf)
     {
-        mParent = set;
+        // TODO
     }
 
-    void GIDescriptorSetVk::Update()
+    void GIDescriptorSetVk::Update(SharedPtr<GICommandBufferVk> cmdbuf)
     {
         // TODO
     }

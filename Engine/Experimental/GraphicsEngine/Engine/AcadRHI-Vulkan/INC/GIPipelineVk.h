@@ -4,7 +4,8 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class SPIRVReflection;
+    class GIShaderReflectionVk;
+    class GIShaderReflectionBuilderVk;
     class GIDescriptorSetLayoutVk;
     class GIPipelineLayoutVk;
     class GIVertexLayoutVk;
@@ -22,14 +23,14 @@ namespace AutoCAD::Graphics::Engine
         operator const VkPipeline& () const;
         void SetPipelineName(const std::wstring& name);
         const std::wstring& GetPipelineName() const;
-        SharedPtr<SPIRVReflection> GetShaderReflection() const;
+        SharedPtr<GIShaderReflectionVk> GetShaderReflection() const;
         SharedPtr<GIPipelineLayoutVk> GetPipelineLayout() const;
         VkPipelineBindPoint GetPipelineBindPoint() const;
 
     protected:
         GIPipelineVk(
             SharedPtr<GIDeviceVk> device,
-            SharedPtr<SPIRVReflection> reflection,
+            SharedPtr<GIShaderReflectionVk> reflection,
             const VkGraphicsPipelineCreateInfo& createInfo,
             VkPipelineCache cache
         );
@@ -42,7 +43,7 @@ namespace AutoCAD::Graphics::Engine
         VkPipelineBindPoint mPipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 
         SharedPtr<GIPipelineLayoutVk> mPipelineLayout;
-        SharedPtr<SPIRVReflection> mReflection;
+        SharedPtr<GIShaderReflectionVk> mShaderReflection;
     };
 
     // TODO: move this into GIVertexBufferVk.h
@@ -116,7 +117,7 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         SharedPtr<GIDeviceVk> mDevice;
-        SharedPtr<SPIRVReflection> mReflection;
+        SharedPtr<GIShaderReflectionBuilderVk> mShaderReflectionBuilder;
         std::vector<uint32_t> mPushDescriptorSetIds;
         VkPipelineCache mPipelineCache = VK_NULL_HANDLE;
         VkPipelineBindPoint mBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;

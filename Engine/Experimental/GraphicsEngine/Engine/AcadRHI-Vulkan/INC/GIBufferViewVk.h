@@ -17,6 +17,12 @@ namespace AutoCAD::Graphics::Engine
             VkFormat format
         );
 
+        static CACHE_INDEX ComputeCacheIndex(
+            size_t offset, 
+            size_t size,
+            VkFormat format
+        );
+
         virtual ~GIBufferViewVk();
         virtual bool IsValid() const override;
         virtual void SetDebugName(const char* name) const override;
