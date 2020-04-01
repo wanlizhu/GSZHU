@@ -1,6 +1,6 @@
 #include "GISwapchainVk.h"
 #include "GIDeviceVk.h"
-#include "GIDeviceQueueVk.h"
+#include "GICommandQueueVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {

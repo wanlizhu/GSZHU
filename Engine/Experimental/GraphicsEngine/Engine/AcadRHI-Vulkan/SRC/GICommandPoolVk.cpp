@@ -1,18 +1,18 @@
 #include "GICommandPoolVk.h"
 #include "GICommandBufferVk.h"
-#include "GIDeviceQueueVk.h"
+#include "GICommandQueueVk.h"
 #include "GIDeviceVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
-    SharedPtr<GICommandPoolVk> GICommandPoolVk::Create(SharedPtr<GIDeviceQueueVk> queue)
+    SharedPtr<GICommandPoolVk> GICommandPoolVk::Create(SharedPtr<GICommandQueueVk> queue)
     {
         auto pool = SharedPtr<GICommandPoolVk>(new GICommandPoolVk(queue));
         assert(pool->IsValid());
         return pool;
     }
 
-    GICommandPoolVk::GICommandPoolVk(SharedPtr<GIDeviceQueueVk> queue)
+    GICommandPoolVk::GICommandPoolVk(SharedPtr<GICommandQueueVk> queue)
         : GIDeviceObjectVk(queue->GetDevice().lock())
         , mQueueHandle(*queue)
         , mThreadId(std::this_thread::get_id())

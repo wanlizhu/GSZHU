@@ -6,7 +6,7 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class GIDeviceQueueVk;
+    class GICommandQueueVk;
     class GIDeviceContextVk;
 
     struct OptionalDeviceExtensions
@@ -64,10 +64,10 @@ namespace AutoCAD::Graphics::Engine
 
         VkDevice GetLogicalDevice() const;
         GIDeviceContextVk* GetDC() const;
-        SharedPtr<GIDeviceQueueVk> GetGraphicsQueue() const;
-        SharedPtr<GIDeviceQueueVk> GetComputeQueue() const;
-        SharedPtr<GIDeviceQueueVk> GetTransferQueue() const;
-        SharedPtr<GIDeviceQueueVk> GetPresentQueue() const;
+        SharedPtr<GICommandQueueVk> GetGraphicsQueue() const;
+        SharedPtr<GICommandQueueVk> GetComputeQueue() const;
+        SharedPtr<GICommandQueueVk> GetTransferQueue() const;
+        SharedPtr<GICommandQueueVk> GetPresentQueue() const;
 
         void WaitIdle();
 
@@ -86,10 +86,10 @@ namespace AutoCAD::Graphics::Engine
 
         VkDevice mLogicalDeviceHandle = VK_NULL_HANDLE;
         WeakPtr<GIDeviceContextVk> mCurrentDC;
-        SharedPtr<GIDeviceQueueVk> mGraphicsQueue;
-        SharedPtr<GIDeviceQueueVk> mComputeQueue;
-        SharedPtr<GIDeviceQueueVk> mTransferQueue;
-        SharedPtr<GIDeviceQueueVk> mPresentQueue;
+        SharedPtr<GICommandQueueVk> mGraphicsQueue;
+        SharedPtr<GICommandQueueVk> mComputeQueue;
+        SharedPtr<GICommandQueueVk> mTransferQueue;
+        SharedPtr<GICommandQueueVk> mPresentQueue;
     }; 
 
     class GIDeviceBuilderVk

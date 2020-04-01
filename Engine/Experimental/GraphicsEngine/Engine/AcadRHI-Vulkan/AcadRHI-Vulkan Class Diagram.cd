@@ -42,11 +42,11 @@
       <FileName>GICommandBufferVk.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AutoCAD::Graphics::Engine::GIDeviceQueueVk" Collapsed="true">
+  <Class Name="AutoCAD::Graphics::Engine::GICommandQueueVk" Collapsed="true">
     <Position X="42.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAEAgACBAQgAAgAAAABQAAIAAAAAgAhAABAAAA=</HashCode>
-      <FileName>GIDeviceQueueVk.h</FileName>
+      <FileName>GICommandQueueVk.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AutoCAD::Graphics::Engine::GIComputePipelineVk" Collapsed="true">

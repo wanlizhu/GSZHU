@@ -4,14 +4,14 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class GIDeviceQueueVk;
+    class GICommandQueueVk;
     class GICommandBufferVk;
 
     class GICommandPoolVk : public GIDeviceObjectVk
     {
         DECL_DEVICE_OBJECT(GICommandPoolVk)
     public:
-        static SharedPtr<GICommandPoolVk> Create(SharedPtr<GIDeviceQueueVk> queue);
+        static SharedPtr<GICommandPoolVk> Create(SharedPtr<GICommandQueueVk> queue);
         
         virtual ~GICommandPoolVk();
         virtual bool IsValid() const override final;
@@ -24,7 +24,7 @@ namespace AutoCAD::Graphics::Engine
         VkQueue GetQueue() const;
 
     protected:
-        GICommandPoolVk(SharedPtr<GIDeviceQueueVk> queue);
+        GICommandPoolVk(SharedPtr<GICommandQueueVk> queue);
         
     private:
         VkCommandPool mCommandPoolHandle = VK_NULL_HANDLE;

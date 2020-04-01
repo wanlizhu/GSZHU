@@ -1,5 +1,5 @@
 #include "GIDeviceVk.h"
-#include "GIDeviceQueueVk.h"
+#include "GICommandQueueVk.h"
 #include <assert.h>
 #include <algorithm>
 
@@ -88,7 +88,7 @@ namespace AutoCAD::Graphics::Engine
 
     void GIDeviceVk::SetupPresentQueue(VkSurfaceKHR surface)
     {
-        const auto CheckSupportsPresent = [&](const SharedPtr<GIDeviceQueueVk>& queue) {
+        const auto CheckSupportsPresent = [&](const SharedPtr<GICommandQueueVk>& queue) {
             if (!queue)
                 return false;
             
@@ -162,22 +162,22 @@ namespace AutoCAD::Graphics::Engine
         return mCurrentDC.lock().get();
     }
 
-    SharedPtr<GIDeviceQueueVk> GIDeviceVk::GetGraphicsQueue() const
+    SharedPtr<GICommandQueueVk> GIDeviceVk::GetGraphicsQueue() const
     {
         return mGraphicsQueue;
     }
 
-    SharedPtr<GIDeviceQueueVk> GIDeviceVk::GetPresentQueue() const
+    SharedPtr<GICommandQueueVk> GIDeviceVk::GetPresentQueue() const
     {
         return mPresentQueue;
     }
 
-    SharedPtr<GIDeviceQueueVk> GIDeviceVk::GetComputeQueue() const
+    SharedPtr<GICommandQueueVk> GIDeviceVk::GetComputeQueue() const
     {
         return mComputeQueue;
     }
 
-    SharedPtr<GIDeviceQueueVk> GIDeviceVk::GetTransferQueue() const
+    SharedPtr<GICommandQueueVk> GIDeviceVk::GetTransferQueue() const
     {
         return mTransferQueue;
     }
@@ -380,19 +380,19 @@ namespace AutoCAD::Graphics::Engine
 
             if (VK_QUEUE_GRAPHICS_BIT & queueFamilies[familyIndex].queueFlags)
             {
-                device->mGraphicsQueue.reset(new GIDeviceQueueVk(device, queue, familyIndex));
+                device->mGraphicsQueue.reset(new GICommandQueueVk(device, queue, familyIndex));
                 assert(device->mGraphicsQueue->IsValid());
             }
 
             if (VK_QUEUE_COMPUTE_BIT & queueFamilies[familyIndex].queueFlags)
             {
-                device->mComputeQueue.reset(new GIDeviceQueueVk(device, queue, familyIndex));
+                device->mComputeQueue.reset(new GICommandQueueVk(device, queue, familyIndex));
                 assert(device->mComputeQueue->IsValid());
             }
 
             if (VK_QUEUE_TRANSFER_BIT & queueFamilies[familyIndex].queueFlags)
             {
-                device->mTransferQueue.reset(new GIDeviceQueueVk(device, queue, familyIndex));
+                device->mTransferQueue.reset(new GICommandQueueVk(device, queue, familyIndex));
                 assert(device->mTransferQueue->IsValid());
             }
         }
