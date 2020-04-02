@@ -13,7 +13,7 @@ namespace AutoCAD::Graphics::Engine
         GIDynamicScissorStateVk& operator=(const GIDynamicScissorStateVk& rhs);
         GIDynamicScissorStateVk& operator=(GIDynamicScissorStateVk&& rhs);
 
-        virtual ~GIDynamicScissorStateVk() = default;
+        virtual ~GIDynamicScissorStateVk();
         virtual VkDynamicState GetType() const override final;
         virtual bool IsPendingUpdate() const override final;
 

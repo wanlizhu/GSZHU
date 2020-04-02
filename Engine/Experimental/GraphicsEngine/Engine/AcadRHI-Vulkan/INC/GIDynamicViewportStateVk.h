@@ -13,7 +13,7 @@ namespace AutoCAD::Graphics::Engine
         GIDynamicViewportStateVk& operator=(const GIDynamicViewportStateVk& rhs);
         GIDynamicViewportStateVk& operator=(GIDynamicViewportStateVk&& rhs);
 
-        virtual ~GIDynamicViewportStateVk() = default;
+        virtual ~GIDynamicViewportStateVk();
         virtual VkDynamicState GetType() const override final;
         virtual bool IsPendingUpdate() const override final;
 
@@ -22,6 +22,6 @@ namespace AutoCAD::Graphics::Engine
 
     private:
         VkViewport mViewport;
-        bool mIsPendingUpdate = false;
+        bool mIsPendingUpdate = true;
     };
 }

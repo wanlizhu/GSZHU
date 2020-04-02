@@ -130,11 +130,31 @@
     <ClInclude Include="INC\GIPipelineDynamicStateVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIDynamicViewportStateVk.h" />
     <ClInclude Include="INC\GIDynamicScissorStateVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\GIDynamicLineWidthStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDynamicDepthBiasStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDynamicBlendConstantsStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDynamicDepthBoundsStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDynamicStencilCompareMaskStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDynamicStencilWriteMaskStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDynamicStencilReferenceStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDynamicViewportStateVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -233,6 +253,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GIPipelineDynamicStateVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIDynamicViewportStateVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIDynamicScissorStateVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

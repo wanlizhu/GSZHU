@@ -198,8 +198,14 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIDeviceMemoryPoolVk.h" />
     <ClInclude Include="INC\GIDeviceObjectVk.h" />
     <ClInclude Include="INC\GICommandQueueVk.h" />
+    <ClInclude Include="INC\GIDynamicBlendConstantsStateVk.h" />
+    <ClInclude Include="INC\GIDynamicDepthBiasStateVk.h" />
+    <ClInclude Include="INC\GIDynamicDepthBoundsStateVk.h" />
     <ClInclude Include="INC\GIDynamicLineWidthStateVk.h" />
     <ClInclude Include="INC\GIDynamicScissorStateVk.h" />
+    <ClInclude Include="INC\GIDynamicStencilCompareMaskStateVk.h" />
+    <ClInclude Include="INC\GIDynamicStencilReferenceStateVk.h" />
+    <ClInclude Include="INC\GIDynamicStencilWriteMaskStateVk.h" />
     <ClInclude Include="INC\GIDynamicViewportStateVk.h" />
     <ClInclude Include="INC\GIPipelineDynamicStateVk.h" />
     <ClInclude Include="INC\GIResourceStateVk.h" />
@@ -239,6 +245,8 @@ if not exist "%InstallDir%" (
     <ClCompile Include="SRC\GICommandQueueVk.cpp" />
     <ClCompile Include="SRC\GIDeviceResourceVk.cpp" />
     <ClCompile Include="SRC\GIDeviceVk.cpp" />
+    <ClCompile Include="SRC\GIDynamicScissorStateVk.cpp" />
+    <ClCompile Include="SRC\GIDynamicViewportStateVk.cpp" />
     <ClCompile Include="SRC\GIFramebufferVk.cpp" />
     <ClCompile Include="SRC\GIIndexBufferVk.cpp" />
     <ClCompile Include="SRC\GIPipelineDynamicStateVk.cpp" />

@@ -13,7 +13,7 @@ namespace AutoCAD::Graphics::Engine
         GIDynamicLineWidthStateVk& operator=(const GIDynamicLineWidthStateVk& rhs);
         GIDynamicLineWidthStateVk& operator=(GIDynamicLineWidthStateVk&& rhs);
 
-        virtual ~GIDynamicLineWidthStateVk() = default;
+        virtual ~GIDynamicLineWidthStateVk();
         virtual VkDynamicState GetType() const override final;
         virtual bool IsPendingUpdate() const override final;
 

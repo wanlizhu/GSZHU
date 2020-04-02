@@ -86,6 +86,15 @@ namespace AutoCAD::Graphics::Engine
         return mPipelineName;
     }
 
+    SharedPtr<GIPipelineDynamicStateVk> GIPipelineVk::GetDynamicState(VkDynamicState state) const
+    {
+        auto it = mDynamicStates.find(state);
+        if (it == mDynamicStates.end())
+            return nullptr;
+        else
+            return it->second;
+    }
+
     SharedPtr<GIShaderReflectionVk> GIPipelineVk::GetShaderReflection() const
     {
         return mShaderReflection;

@@ -24,7 +24,7 @@ namespace AutoCAD::Graphics::Engine
         operator const VkPipeline& () const;
         void SetPipelineName(const std::wstring& name);
         const std::wstring& GetPipelineName() const;
-        SharedPtr<GIPipelineDynamicStateVk> GetDynamicState(VkDynamicState) const;
+        SharedPtr<GIPipelineDynamicStateVk> GetDynamicState(VkDynamicState state) const;
         SharedPtr<GIShaderReflectionVk> GetShaderReflection() const;
         SharedPtr<GIPipelineLayoutVk> GetPipelineLayout() const;
         VkPipelineBindPoint GetPipelineBindPoint() const;
