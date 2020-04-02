@@ -468,27 +468,12 @@ namespace AutoCAD::Graphics::Engine
         return *this;
     }
 
-    GIPipelineBuilderVk& GIPipelineBuilderVk::EnableDepthBias(bool value)
+    GIPipelineBuilderVk& GIPipelineBuilderVk::SetDepthBias(bool enable, float constantFactor, float clamp, float slopeFactor)
     {
-        mRasterizationState.depthBiasEnable = value ? VK_TRUE : VK_FALSE;
-        return *this;
-    }
-
-    GIPipelineBuilderVk& GIPipelineBuilderVk::SetDepthBiasConstantFactor(float value)
-    {
-        mRasterizationState.depthBiasConstantFactor = value;
-        return *this;
-    }
-
-    GIPipelineBuilderVk& GIPipelineBuilderVk::SetDepthBiasClamp(float value)
-    {
-        mRasterizationState.depthBiasClamp = value;
-        return *this;
-    }
-
-    GIPipelineBuilderVk& GIPipelineBuilderVk::SetDepthBiasSlopeFactor(float value)
-    {
-        mRasterizationState.depthBiasSlopeFactor = value;
+        mRasterizationState.depthBiasEnable = enable ? VK_TRUE : VK_FALSE;
+        mRasterizationState.depthBiasConstantFactor = constantFactor;
+        mRasterizationState.depthBiasClamp = clamp;
+        mRasterizationState.depthBiasSlopeFactor = slopeFactor;
         return *this;
     }
 

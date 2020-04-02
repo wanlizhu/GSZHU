@@ -198,6 +198,10 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIDeviceMemoryPoolVk.h" />
     <ClInclude Include="INC\GIDeviceObjectVk.h" />
     <ClInclude Include="INC\GICommandQueueVk.h" />
+    <ClInclude Include="INC\GIDynamicLineWidthStateVk.h" />
+    <ClInclude Include="INC\GIDynamicScissorStateVk.h" />
+    <ClInclude Include="INC\GIDynamicViewportStateVk.h" />
+    <ClInclude Include="INC\GIPipelineDynamicStateVk.h" />
     <ClInclude Include="INC\GIResourceStateVk.h" />
     <ClInclude Include="INC\GIResourceVk.h" />
     <ClInclude Include="INC\GIDeviceVk.h" />
@@ -237,6 +241,7 @@ if not exist "%InstallDir%" (
     <ClCompile Include="SRC\GIDeviceVk.cpp" />
     <ClCompile Include="SRC\GIFramebufferVk.cpp" />
     <ClCompile Include="SRC\GIIndexBufferVk.cpp" />
+    <ClCompile Include="SRC\GIPipelineDynamicStateVk.cpp" />
     <ClCompile Include="SRC\GIPipelineLayoutVk.cpp" />
     <ClCompile Include="SRC\GIPipelineVk.cpp" />
     <ClCompile Include="SRC\GIPipelineCacheVk.cpp" />

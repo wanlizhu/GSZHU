@@ -8,6 +8,7 @@ namespace AutoCAD::Graphics::Engine
     class GIShaderReflectionBuilderVk;
     class GIDescriptorSetLayoutVk;
     class GIPipelineLayoutVk;
+    class GIPipelineDynamicStateVk;
     class GIVertexLayoutVk;
 
     class GIPipelineVk : public GIDeviceObjectVk
@@ -23,6 +24,7 @@ namespace AutoCAD::Graphics::Engine
         operator const VkPipeline& () const;
         void SetPipelineName(const std::wstring& name);
         const std::wstring& GetPipelineName() const;
+        SharedPtr<GIPipelineDynamicStateVk> GetDynamicState(VkDynamicState) const;
         SharedPtr<GIShaderReflectionVk> GetShaderReflection() const;
         SharedPtr<GIPipelineLayoutVk> GetPipelineLayout() const;
         VkPipelineBindPoint GetPipelineBindPoint() const;
@@ -44,6 +46,7 @@ namespace AutoCAD::Graphics::Engine
 
         SharedPtr<GIPipelineLayoutVk> mPipelineLayout;
         SharedPtr<GIShaderReflectionVk> mShaderReflection;
+        std::unordered_map<VkDynamicState, SharedPtr<GIPipelineDynamicStateVk>> mDynamicStates;
     };
 
     // TODO: move this into GIVertexBufferVk.h
@@ -106,10 +109,7 @@ namespace AutoCAD::Graphics::Engine
         GIPipelineBuilderVk& SetSampleShading(bool enable, float minSampleShading, const VkSampleMask* sampleMask);
         GIPipelineBuilderVk& EnableAlphaToCoverage(bool value);
         GIPipelineBuilderVk& EnableAlphaToOneEnable(bool value);
-        GIPipelineBuilderVk& EnableDepthBias(bool value);
-        GIPipelineBuilderVk& SetDepthBiasConstantFactor(float value);
-        GIPipelineBuilderVk& SetDepthBiasClamp(float value);
-        GIPipelineBuilderVk& SetDepthBiasSlopeFactor(float value);
+        GIPipelineBuilderVk& SetDepthBias(bool enable, float constantFactor, float clamp, float slopeFactor);
         GIPipelineBuilderVk& SetLineWidth(float value);
         GIPipelineBuilderVk& AddDynamicState(VkDynamicState dynamicState);
 

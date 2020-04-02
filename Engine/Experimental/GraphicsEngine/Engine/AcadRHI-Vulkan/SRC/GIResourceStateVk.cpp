@@ -1,4 +1,7 @@
 ﻿#include "GIResourceStateVk.h"
+#include "GIResourceVk.h"
+#include "GIBufferVk.h"
+#include "GITextureVk.h"
 #include "GICommandQueueVk.h"
 #include "GICommandPoolVk.h"
 #include "GICommandBufferVk.h"
@@ -35,6 +38,11 @@ namespace AutoCAD::Graphics::Engine
         return mAccessFlags;
     }
 
+    VkShaderStageFlagBits GIResourceStateInfoVk::GetShaderStageFlags() const
+    {
+        return mShaderStageFlags;
+    }
+
     std::optional<VkImageLayout> GIResourceStateInfoVk::GetImageLayout() const
     {
         return mImageLayout;
@@ -50,29 +58,22 @@ namespace AutoCAD::Graphics::Engine
         return !(*this == rhs);
     }
 
-    GIResourceStateVk::GIResourceStateVk()
-        : mGlobalStateInfo(GIResourceStateInfoVk(EResourceState::Undefined))
+    GIResourceStateVk::GIResourceStateVk(WeakPtr<GIResourceVk> resource)
+        : mResource(resource)
+        , mGlobalStateInfo(GIResourceStateInfoVk(EResourceState::Undefined))
     {}
 
-    GIResourceStateVk::GIResourceStateVk(const GIResourceStateInfoVk& info)
-        : mGlobalStateInfo(info)
+    GIResourceStateVk::GIResourceStateVk(WeakPtr<GIResourceVk> resource, const GIResourceStateInfoVk& info)
+        : mResource(resource)
+        , mGlobalStateInfo(info)
     {}
 
-    std::optional<GIResourceStateInfoVk> GIResourceStateVk::GetGlobalState() const
+    std::optional<GIResourceStateInfoVk> GIResourceStateVk::GetStateInfo() const
     {
         return mGlobalStateInfo;
     }
 
-    std::optional<GIResourceStateInfoVk> GIResourceStateVk::GetBufferRangeState(size_t offset, size_t size) const
-    {
-        auto it = mBufferRangeStateInfos.find(ComputeCacheIndex(offset, size));
-        if (it == mBufferRangeStateInfos.end())
-            return std::nullopt;
-        else
-            return it->second;
-    }
-
-    std::optional<GIResourceStateInfoVk> GIResourceStateVk::GetSubresourceState(const VkImageSubresourceRange& subresource) const
+    std::optional<GIResourceStateInfoVk> GIResourceStateVk::GetSubresourceStateInfo(const VkImageSubresourceRange& subresource) const
     {
         auto it = mSubresourceStateInfos.find(ComputeCacheIndex(subresource));
         if (it == mSubresourceStateInfos.end())
@@ -81,19 +82,43 @@ namespace AutoCAD::Graphics::Engine
             return it->second;
     }
 
-    void GIResourceStateVk::TransitionGlobalState(const GIResourceStateInfoVk& newState, SharedPtr<GICommandBufferVk> cmdbuf)
-    {}
+    void GIResourceStateVk::TransitionState(const GIResourceStateInfoVk& newStateInfo, SharedPtr<GICommandBufferVk> cmdbuf)
+    {
 
-    void GIResourceStateVk::TransitionBufferRangeState(size_t offset, size_t size, const GIResourceStateInfoVk& newState, SharedPtr<GICommandBufferVk> cmdbuf)
-    {}
+        auto resource = mResource.lock();
+        if (!resource ||
+            !mGlobalStateInfo.has_value() ||
+            mGlobalStateInfo == newStateInfo)
+        {
+            LOG_WARNING("Failed to transition resource state.\n");
+            return;
+        }
+
+        if (resource->GetResourceType() == EResourceType::Buffer)
+        {
+            SharedPtr<GIBufferVk> buffer = std::dynamic_pointer_cast<GIBufferVk>(resource);
+            VkShaderStageFlagBits srcShaderStage = mGlobalStateInfo.value().GetShaderStageFlags();
+            VkShaderStageFlagBits dstShaderStage = newStateInfo.GetShaderStageFlags();
+
+            VkBufferMemoryBarrier barrier = {};
+            barrier.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+            barrier.srcAccessMask = mGlobalStateInfo.value().GetAccessFlags();
+            barrier.dstAccessMask = newStateInfo.GetAccessFlags();
+            barrier.buffer = *buffer;
+            barrier.offset = 0;
+            barrier.size = VK_WHOLE_SIZE;
+
+            vkCmdPipelineBarrier(*cmdbuf, srcShaderStage, dstShaderStage, 0, 0, nullptr, 1, &barrier, 0, nullptr);
+            mGlobalStateInfo = newStateInfo;
+        }
+        else
+        {
+
+        }
+    }
 
     void GIResourceStateVk::TransitionSubresourceState(const VkImageSubresourceRange& subresource, const GIResourceStateInfoVk& newState, SharedPtr<GICommandBufferVk> cmdbuf)
     {}
-
-    CACHE_INDEX GIResourceStateVk::ComputeCacheIndex(size_t offset, size_t size)
-    {
-        return std::hash<size_t>()(offset) ^ std::hash<size_t>()(size);
-    }
 
     CACHE_INDEX GIResourceStateVk::ComputeCacheIndex(const VkImageSubresourceRange& subresource)
     {

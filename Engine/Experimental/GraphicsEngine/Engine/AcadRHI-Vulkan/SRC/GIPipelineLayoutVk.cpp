@@ -65,7 +65,7 @@ namespace AutoCAD::Graphics::Engine
         return mDescriptorSetLayouts;
     }
 
-    std::optional<SharedPtr<GIDescriptorSetLayoutVk>> GIPipelineLayoutVk::GetDescriptorSetLayout(uint32_t setId) const
+    SharedPtr<GIDescriptorSetLayoutVk> GIPipelineLayoutVk::GetDescriptorSetLayout(uint32_t setId) const
     {
         auto it = mDescriptorSetLayouts.find(setId);
         if (it == mDescriptorSetLayouts.end())

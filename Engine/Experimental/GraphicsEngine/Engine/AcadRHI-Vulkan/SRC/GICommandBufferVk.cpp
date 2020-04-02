@@ -10,6 +10,7 @@ namespace AutoCAD::Graphics::Engine
         : GIWeakDeviceObjectVk(pool->GetDevice()->weak_from_this())
         , mCommandPoolHandle(*pool)
         , mQueue(pool->GetQueue())
+        , mPendingCommandCount(0)
     {
         VkCommandBufferAllocateInfo allocInfo = {};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -56,7 +57,7 @@ namespace AutoCAD::Graphics::Engine
         return mCommandBufferHandle;
     }
 
-    GICommandBufferVk::EState GICommandBufferVk::GetState() const
+    ECommandBufferState GICommandBufferVk::GetState() const
     {
         return mState;
     }
@@ -69,6 +70,22 @@ namespace AutoCAD::Graphics::Engine
     VkQueue GICommandBufferVk::GetQueue() const
     {
         return mQueue;
+    }
+
+    void GICommandBufferVk::AddPendingCommandCount()
+    {
+        mPendingCommandCount++;
+
+        if (mPendingCommandCount >= mCommandThreshold)
+        {
+            Submit();
+
+        }
+    }
+
+    void GICommandBufferVk::SetCommandThreshold(uint32_t threshold) 
+    {
+        mCommandThreshold = threshold;
     }
 
     void GICommandBufferVk::AddSemaphoreToWait(VkSemaphore waitSemaphore)

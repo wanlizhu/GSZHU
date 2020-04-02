@@ -127,6 +127,16 @@
     <ClInclude Include="INC\GICommandQueueVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="INC\GIPipelineDynamicStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDynamicViewportStateVk.h" />
+    <ClInclude Include="INC\GIDynamicScissorStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIDynamicLineWidthStateVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\GIAndroidPlatformVk.cpp">
@@ -220,6 +230,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GICommandQueueVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIPipelineDynamicStateVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

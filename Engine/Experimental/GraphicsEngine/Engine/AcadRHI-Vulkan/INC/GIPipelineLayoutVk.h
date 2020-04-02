@@ -23,7 +23,7 @@ namespace AutoCAD::Graphics::Engine
 
         operator const VkPipelineLayout& () const;
         std::unordered_map<uint32_t, SharedPtr<GIDescriptorSetLayoutVk>> const& GetDescriptorSetLayouts() const;
-        std::optional<SharedPtr<GIDescriptorSetLayoutVk>> GetDescriptorSetLayout(uint32_t setId) const;
+        SharedPtr<GIDescriptorSetLayoutVk> GetDescriptorSetLayout(uint32_t setId) const;
         std::optional<VkPushConstantRange> GetPushConstantRange(VkPipelineStageFlags stage) const; // Only one push_constant block is allowed per stage.
         
     private:
