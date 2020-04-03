@@ -1,5 +1,32 @@
 #include "GICommonVk.h"
 
+bool operator==(const VkImageSubresourceRange& lhs, const VkImageSubresourceRange& rhs)
+{
+    return lhs.aspectMask == rhs.aspectMask
+        && lhs.baseArrayLayer == rhs.baseArrayLayer
+        && lhs.baseMipLevel == rhs.baseMipLevel
+        && lhs.layerCount == rhs.layerCount
+        && lhs.levelCount == rhs.levelCount;
+}
+
+bool operator==(const VkRect2D& lhs, const VkRect2D& rhs)
+{
+    return lhs.extent.width == rhs.extent.width &&
+        lhs.extent.height == rhs.extent.height &&
+        lhs.offset.x == rhs.offset.x &&
+        lhs.offset.y == rhs.offset.y;
+}
+
+bool operator==(const VkViewport& lhs, const VkViewport& rhs)
+{
+    return lhs.x == rhs.x &&
+        lhs.y == rhs.y &&
+        lhs.width == rhs.width &&
+        lhs.height == rhs.height &&
+        lhs.minDepth == rhs.minDepth &&
+        lhs.maxDepth == rhs.maxDepth;
+}
+
 namespace AutoCAD::Graphics::Engine
 {
     const char* GIErrorDescVk(VkResult error)

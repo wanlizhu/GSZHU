@@ -17,7 +17,8 @@ namespace AutoCAD::Graphics::Engine
         virtual ~GIResourceVk();
         virtual EResourceType GetResourceType() const = 0;
         virtual GIResourceStateVk& GetResourceState() = 0;
-
+        virtual void TransitionState(const GIResourceStateVk& newState) = 0;
+        
     protected:
         GIResourceVk(SharedPtr<GIDeviceVk> device);
     };

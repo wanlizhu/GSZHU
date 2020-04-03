@@ -26,6 +26,7 @@ namespace AutoCAD::Graphics::Engine
         virtual void SetDebugTag(const DebugTag& tag) const override final;
         virtual EResourceType GetResourceType() const override final;
         virtual GIResourceStateVk& GetResourceState() override final;
+        virtual void TransitionState(const GIResourceStateVk& newState) override final;
 
         operator const VkBuffer& () const;
         GIBufferInfoVk const& GetInfo() const;
@@ -41,12 +42,14 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device,
             const VkBufferCreateInfo& createInfo,
             const void* data,
-            VkMemoryPropertyFlags properties
+            VkMemoryPropertyFlags properties,
+            EResourceState initialState
         ); /* [1] Create buffer, create device memory required and bind them together */
 
         GIBufferVk(
             SharedPtr<GIDeviceVk> device,
-            const GIBufferInfoVk& info
+            const GIBufferInfoVk& info,
+            EResourceState initialState
         ); /* [2] Configure with buffer and memory objects precreated by VMA */
 
     private:
@@ -58,37 +61,5 @@ namespace AutoCAD::Graphics::Engine
         std::function<void()> mOnDestroyCallback;
         GIResourceStateVk mResourceState;
         bool mIsMapped = false;
-    };
-
-    /*
-     * This will invoke the first constructor of GIBufferVk
-    */
-    class GIBufferBuilderVk
-    {
-    public:
-        GIBufferBuilderVk(SharedPtr<GIDeviceVk> device);
-        GIBufferBuilderVk& SetSize(VkDeviceSize size);
-        GIBufferBuilderVk& AddBufferUsages(VkBufferUsageFlags usages);
-        GIBufferBuilderVk& AddMemoryProperties(VkMemoryPropertyFlags properties);
-        GIBufferBuilderVk& AddSharedQueue(uint32_t queue);
-        GIBufferBuilderVk& SetInitialData(const void* data);
-        SharedPtr<GIBufferVk> Build();
-
-    private:
-        SharedPtr<GIDeviceVk> mDevice;
-        VkBufferCreateInfo mCreateInfo = {};
-        VkMemoryPropertyFlags mProperties = 0;
-
-        const void* mInitialData = nullptr;
-        std::vector<uint32_t> mSharedQueues;
-    };
-
-    /*
-     * This will invoke the second constructor of GIBufferVk
-    */
-    class GIBufferBuilderVMA
-    {
-    public:
-        // TODO
     };
 }

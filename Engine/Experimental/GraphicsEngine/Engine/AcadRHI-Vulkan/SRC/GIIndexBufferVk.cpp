@@ -1,5 +1,6 @@
 #include "GIIndexBufferVk.h"
 #include "GIBufferVk.h"
+#include "GIBufferBuilderVk.h"
 #include "GIDeviceVk.h"
 #include "GICommandQueueVk.h"
 #include "GICommandPoolVk.h"

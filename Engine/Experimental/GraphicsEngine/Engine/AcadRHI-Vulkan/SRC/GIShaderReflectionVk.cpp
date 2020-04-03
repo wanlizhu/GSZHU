@@ -1,8 +1,7 @@
 #include "spirv_cross/spirv_glsl.hpp"
 #include "GIShaderReflectionVk.h"
+#include "GIShaderReflectionBuilderVk.h"
 #include "GIDeviceVk.h"
-#include <fstream>
-#include <sstream>
 
 namespace AutoCAD::Graphics::Engine
 {
@@ -112,19 +111,5 @@ namespace AutoCAD::Graphics::Engine
     std::unordered_map<std::string, GIShaderVariableVk> const& GIShaderReflectionVk::GetVariables() const
     {
         return mVariables;
-    }
-
-    GIShaderReflectionBuilderVk::GIShaderReflectionBuilderVk()
-        : mShaderReflection(new GIShaderReflectionVk())
-    {}
-
-    GIShaderReflectionBuilderVk& GIShaderReflectionBuilderVk::LoadFromFile(const std::filesystem::path& path)
-    {
-        return *this;
-    }
-
-    SharedPtr<GIShaderReflectionVk> GIShaderReflectionBuilderVk::Build()
-    {
-        return mShaderReflection;
     }
 }

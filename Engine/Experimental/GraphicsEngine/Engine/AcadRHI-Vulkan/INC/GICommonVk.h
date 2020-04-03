@@ -113,4 +113,21 @@ namespace std
             return std::hash<std::wstring>()(key.wstring());
         }
     };
+
+    template<>
+    struct hash<VkImageSubresourceRange>
+    {
+        size_t operator()(const VkImageSubresourceRange& rhs) const
+        {
+            return std::hash<uint32_t>()(rhs.aspectMask)
+                ^ std::hash<uint32_t>()(rhs.baseArrayLayer)
+                ^ std::hash<uint32_t>()(rhs.baseMipLevel)
+                ^ std::hash<uint32_t>()(rhs.layerCount)
+                ^ std::hash<uint32_t>()(rhs.levelCount);
+        }
+    };
 }
+
+bool operator==(const VkImageSubresourceRange& lhs, const VkImageSubresourceRange& rhs);
+bool operator==(const VkRect2D& lhs, const VkRect2D& rhs);
+bool operator==(const VkViewport& lhs, const VkViewport& rhs);

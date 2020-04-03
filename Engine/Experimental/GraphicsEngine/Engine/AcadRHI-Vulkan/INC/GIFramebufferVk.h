@@ -32,21 +32,4 @@ namespace AutoCAD::Graphics::Engine
         std::vector<VkImageView> mImageViews;
         SharedPtr<GIRenderPassVk> mRenderPass;
     };
-
-    class GIFramebufferBuilderVk
-    {
-    public:
-        GIFramebufferBuilderVk(SharedPtr<GIRenderPassVk> renderPass);
-        
-        GIFramebufferBuilderVk& SetExtent(VkExtent2D extent);
-        GIFramebufferBuilderVk& AddAttachment(VkImageView imageView);
-        
-        SharedPtr<GIFramebufferVk> Build();
-
-    private:
-        SharedPtr<GIRenderPassVk> mRenderPass;
-        VkFramebufferCreateInfo mCreateInfo = {};
-
-        std::vector<VkImageView> mImageViews;
-    };
 }

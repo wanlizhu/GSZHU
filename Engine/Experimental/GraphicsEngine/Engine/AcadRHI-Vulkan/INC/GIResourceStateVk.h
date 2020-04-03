@@ -36,8 +36,7 @@ namespace AutoCAD::Graphics::Engine
     class GIResourceStateInfoVk
     {
     public:
-        GIResourceStateInfoVk();
-        GIResourceStateInfoVk(EResourceState type);
+        GIResourceStateInfoVk(EResourceState type = EResourceState::Undefined);
 
         bool IsValid() const;
         EResourceState GetType() const;
@@ -57,22 +56,20 @@ namespace AutoCAD::Graphics::Engine
 
     class GIResourceStateVk
     {
+        friend class GIBufferVk;
+        friend class GITextureVk;
     public:
-        GIResourceStateVk(WeakPtr<GIResourceVk> resource);
-        GIResourceStateVk(WeakPtr<GIResourceVk> resource, const GIResourceStateInfoVk& info);
+        GIResourceStateVk(const GIResourceStateInfoVk& info);
 
         std::optional<GIResourceStateInfoVk> GetStateInfo() const;
         std::optional<GIResourceStateInfoVk> GetSubresourceStateInfo(const VkImageSubresourceRange& subresource) const;
 
-        void TransitionState(const GIResourceStateInfoVk& newStateInfo, SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
-        void TransitionSubresourceState(const VkImageSubresourceRange& subresource, const GIResourceStateInfoVk& newStateInfo, SharedPtr<GICommandBufferVk> cmdbuf = nullptr);
+    private:
+        void SetState(const GIResourceStateInfoVk& newStateInfo);
+        void SetSubresourceState(const VkImageSubresourceRange& subresource, const GIResourceStateInfoVk& newStateInfo);
 
     private:
-        static CACHE_INDEX ComputeCacheIndex(const VkImageSubresourceRange& subresource);
-
-    private:
-        WeakPtr<GIResourceVk> mResource;
         std::optional<GIResourceStateInfoVk> mGlobalStateInfo;
-        std::unordered_map<CACHE_INDEX, GIResourceStateInfoVk> mSubresourceStateInfos;
+        std::unordered_map<VkImageSubresourceRange, GIResourceStateInfoVk> mSubresourceStateInfos;
     };
 }

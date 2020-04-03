@@ -1,64 +1,59 @@
-#include "GIDynamicScissorStateVk.h"
+#include "GIDynamicScissorVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
-    static bool VkRect2DEqual(const VkRect2D& lhs, const VkRect2D& rhs)
-    {
-        return lhs.extent.width == rhs.extent.width &&
-            lhs.extent.height == rhs.extent.height &&
-            lhs.offset.x == rhs.offset.x &&
-            lhs.offset.y == rhs.offset.y;
-    }
-
-    GIDynamicScissorStateVk::GIDynamicScissorStateVk(const VkRect2D& scissor)
+    GIDynamicScissorVk::GIDynamicScissorVk(const VkRect2D& scissor)
         : mScissor(scissor)
         , mIsPendingUpdate(true)
     {}
 
-    GIDynamicScissorStateVk::GIDynamicScissorStateVk(const GIDynamicScissorStateVk& rhs)
+    GIDynamicScissorVk::GIDynamicScissorVk(const GIDynamicScissorVk& rhs)
         : mScissor(rhs.mScissor)
         , mIsPendingUpdate(rhs.mIsPendingUpdate)
     {}
 
-    GIDynamicScissorStateVk::GIDynamicScissorStateVk(GIDynamicScissorStateVk&& rhs)
+    GIDynamicScissorVk::GIDynamicScissorVk(GIDynamicScissorVk&& rhs)
         : mScissor(std::move(rhs.mScissor))
         , mIsPendingUpdate(std::move(rhs.mIsPendingUpdate))
     {}
 
-    GIDynamicScissorStateVk& GIDynamicScissorStateVk::operator=(const GIDynamicScissorStateVk& rhs)
+    GIDynamicScissorVk& GIDynamicScissorVk::operator=(const GIDynamicScissorVk& rhs)
     {
-        mIsPendingUpdate = !VkRect2DEqual(mScissor, rhs.mScissor);
-        mScissor = rhs.mScissor;
+        SetScissor(rhs.mScissor);
         return *this;
     }
 
-    GIDynamicScissorStateVk& GIDynamicScissorStateVk::operator=(GIDynamicScissorStateVk&& rhs)
+    GIDynamicScissorVk& GIDynamicScissorVk::operator=(GIDynamicScissorVk&& rhs)
     {
-        mIsPendingUpdate = !VkRect2DEqual(mScissor, rhs.mScissor);
-        mScissor = std::move(rhs.mScissor);
+        SetScissor(rhs.mScissor);
         return *this;
     }
 
-    GIDynamicScissorStateVk::~GIDynamicScissorStateVk()
+    GIDynamicScissorVk::~GIDynamicScissorVk()
     {}
 
-    VkDynamicState GIDynamicScissorStateVk::GetType() const
+    VkDynamicState GIDynamicScissorVk::GetType() const
     {
         return VK_DYNAMIC_STATE_SCISSOR;
     }
 
-    bool GIDynamicScissorStateVk::IsPendingUpdate() const
+    bool GIDynamicScissorVk::IsPendingUpdate() const
     {
         return mIsPendingUpdate;
     }
 
-    void GIDynamicScissorStateVk::SetScissor(const VkRect2D& scissor)
+    bool GIDynamicScissorVk::operator==(const GIDynamicScissorVk& rhs) const
     {
-        mIsPendingUpdate = !VkRect2DEqual(mScissor, scissor);
+        return mScissor == rhs.mScissor;
+    }
+
+    void GIDynamicScissorVk::SetScissor(const VkRect2D& scissor)
+    {
+        mIsPendingUpdate = !(mScissor == scissor);
         mScissor = scissor;
     }
 
-    const VkRect2D& GIDynamicScissorStateVk::GetScissor() const
+    const VkRect2D& GIDynamicScissorVk::GetScissor() const
     {
         return mScissor;
     }

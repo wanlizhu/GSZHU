@@ -24,11 +24,10 @@ namespace AutoCAD::Graphics::Engine
 
 namespace std
 {
-    namespace AGE = AutoCAD::Graphics::Engine;
     template<>
-    struct hash<AGE::GIDescriptorBindingVk>
+    struct hash<AutoCAD::Graphics::Engine::GIDescriptorBindingVk>
     {
-        size_t operator()(const AGE::GIDescriptorBindingVk& rhs) const
+        size_t operator()(const AutoCAD::Graphics::Engine::GIDescriptorBindingVk& rhs) const
         {
             return std::hash<uint32_t>()(rhs.GetSetId()) ^ (std::hash<uint32_t>()(rhs.GetBindingId()) << 1);
         }

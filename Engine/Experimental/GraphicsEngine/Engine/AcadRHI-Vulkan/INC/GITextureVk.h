@@ -34,6 +34,8 @@ namespace AutoCAD::Graphics::Engine
         virtual void SetDebugTag(const DebugTag& tag) const override;
         virtual EResourceType GetResourceType() const override;
         virtual GIResourceStateVk& GetResourceState() override final;
+        virtual void TransitionState(const GIResourceStateVk& newState) override final;
+        void TransitionSubresourceState(const VkImageSubresourceRange& subresource, const GIResourceStateVk& newState);
 
         operator const VkImage& () const;
         GITextureInfoVk const& GetInfo() const;
@@ -53,12 +55,14 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device, 
             const VkImageCreateInfo& createInfo,
             const void* data,
-            VkMemoryPropertyFlags properties
+            VkMemoryPropertyFlags properties,
+            EResourceState initialState
         ); /* [1] Create image, create device memory required and bind them together */
         
         GITextureVk(
             SharedPtr<GIDeviceVk> device,
-            const GITextureInfoVk& info
+            const GITextureInfoVk& info,
+            EResourceState initialState
         ); /* [2] Configure with image and memory objects precreated by VMA */
 
     protected:
@@ -71,38 +75,5 @@ namespace AutoCAD::Graphics::Engine
         GIResourceStateVk mResourceState;
         bool mIsMapped = false;
         SharedPtr<GISamplerVk> mSampler;
-    };
-
-    class GITextureBuilderVk
-    {
-    public:
-        GITextureBuilderVk(SharedPtr<GIDeviceVk> device);
-        GITextureBuilderVk& SetImageType(VkImageType type);
-        GITextureBuilderVk& SetFormat(VkFormat format);
-        GITextureBuilderVk& SetExtent(VkExtent3D extent);
-        GITextureBuilderVk& SetMipLevels(uint32_t mipLevels);
-        GITextureBuilderVk& SetArrayLayers(uint32_t arrayLevels);
-        GITextureBuilderVk& SetSamples(VkSampleCountFlagBits samples);
-        GITextureBuilderVk& SetImageTiling(VkImageTiling tiling);
-        GITextureBuilderVk& AddImageUsages(VkImageUsageFlags usages);
-        GITextureBuilderVk& AddMemoryProperties(VkMemoryPropertyFlags properties);
-        GITextureBuilderVk& AddSharedQueue(uint32_t queue);
-        GITextureBuilderVk& SetInitialLayout(VkImageLayout layout);
-        GITextureBuilderVk& SetInitialData(const void* data);
-        SharedPtr<GITextureVk> Build();
-
-    private:
-        SharedPtr<GIDeviceVk> mDevice;
-        VkImageCreateInfo mCreateInfo = {};
-        VkMemoryPropertyFlags mProperties = 0;
-
-        const void* mInitialData = nullptr;
-        std::vector<uint32_t> mSharedQueues;
-    };
-
-    class GITextureBuilderVMA
-    {
-    public:
-        // TODO
     };
 }

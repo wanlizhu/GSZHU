@@ -9,9 +9,11 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIDeviceVk> device,
         const VkImageCreateInfo& createInfo,
         const void* data,
-        VkMemoryPropertyFlags properties
+        VkMemoryPropertyFlags properties,
+        EResourceState initialState
     )
         : GIResourceVk(device)
+        , mResourceState(initialState)
     {
         mTextureInfo.imageType = createInfo.imageType;
         mTextureInfo.format = createInfo.format;
@@ -42,10 +44,12 @@ namespace AutoCAD::Graphics::Engine
 
     GITextureVk::GITextureVk(
         SharedPtr<GIDeviceVk> device,
-        const GITextureInfoVk& info
+        const GITextureInfoVk& info,
+        EResourceState initialState
     )
         : GIResourceVk(device)
         , mTextureInfo(info)
+        , mResourceState(initialState)
     {}
 
     GITextureVk::~GITextureVk()
@@ -98,6 +102,14 @@ namespace AutoCAD::Graphics::Engine
         return mResourceState;
     }
 
+    void GITextureVk::TransitionState(const GIResourceStateVk& newState)
+    {
+        // TODO
+    }
+
+    void GITextureVk::TransitionSubresourceState(const VkImageSubresourceRange& subresource, const GIResourceStateVk& newState)
+    {}
+
     GITextureVk::operator const VkImage& () const
     {
         return mImageHandle;
@@ -145,95 +157,4 @@ namespace AutoCAD::Graphics::Engine
 
     void GITextureVk::CreateMipmaps(uint32_t mipLevels)
     {}
-    
-    GITextureBuilderVk::GITextureBuilderVk(SharedPtr<GIDeviceVk> device)
-        : mDevice(device)
-    {}
-
-    GITextureBuilderVk& GITextureBuilderVk::SetImageType(VkImageType type)
-    {
-        mCreateInfo.imageType = type;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::SetFormat(VkFormat format)
-    {
-        mCreateInfo.format = format;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::SetExtent(VkExtent3D extent)
-    {
-        mCreateInfo.extent = extent;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::SetMipLevels(uint32_t mipLevels)
-    {
-        mCreateInfo.mipLevels = mipLevels;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::SetArrayLayers(uint32_t arrayLevels)
-    {
-        mCreateInfo.arrayLayers = arrayLevels;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::SetSamples(VkSampleCountFlagBits samples)
-    {
-        mCreateInfo.samples = samples;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::SetImageTiling(VkImageTiling tiling)
-    {
-        mCreateInfo.tiling = tiling;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::AddImageUsages(VkImageUsageFlags usages)
-    {
-        mCreateInfo.usage |= usages;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::AddMemoryProperties(VkMemoryPropertyFlags properties)
-    {
-        mProperties |= properties;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::AddSharedQueue(uint32_t queue)
-    {
-        auto it = std::find(mSharedQueues.begin(), mSharedQueues.end(), queue);
-        if (it == mSharedQueues.end())
-            mSharedQueues.push_back(queue);
-
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::SetInitialLayout(VkImageLayout layout)
-    {
-        mCreateInfo.initialLayout = layout;
-        return *this;
-    }
-
-    GITextureBuilderVk& GITextureBuilderVk::SetInitialData(const void* data)
-    {
-        mInitialData = data;
-        return *this;
-    }
-
-    SharedPtr<GITextureVk> GITextureBuilderVk::Build()
-    {
-        auto result = SharedPtr<GITextureVk>(new GITextureVk(
-            mDevice,
-            mCreateInfo,
-            mInitialData,
-            mProperties
-            ));
-        assert(result->IsValid());
-        return result;
-    }
 }
