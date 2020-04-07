@@ -15,8 +15,7 @@ namespace AutoCAD::Graphics::Engine
             VkDeviceSize size, 
             const void* data,
             SharedPtr<GIVertexLayoutVk> vertexLayout,
-            const VkVertexInputBindingDescription& bindingPoint,
-            bool useVMA
+            const VkVertexInputBindingDescription& bindingPoint
         );
 
         virtual ~GIVertexBufferVk();

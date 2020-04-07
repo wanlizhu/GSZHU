@@ -13,27 +13,17 @@ namespace AutoCAD::Graphics::Engine
         VkDeviceSize size,
         const void* data,
         SharedPtr<GIVertexLayoutVk> vertexLayout,
-        const VkVertexInputBindingDescription& bindingPoint,
-        bool useVMA
+        const VkVertexInputBindingDescription& bindingPoint
     )
     {
-        SharedPtr<GIBufferVk> buffer;
-
-        if (useVMA)
-        {
-            buffer = nullptr; // TODO
-        }
-        else
-        {
-            buffer = GIBufferBuilderVk(device)
-                .SetSize(size)
-                .SetInitialData(data)
-                .AddBufferUsages(VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
-                .AddMemoryProperties(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
-                .AddSharedQueue(device->GetGraphicsQueue()->GetFamilyIndex())
-                .AddSharedQueue(device->GetTransferQueue()->GetFamilyIndex())
-                .Build();
-        }
+        SharedPtr<GIBufferVk> buffer = GIBufferBuilderVk(device)
+            .SetSize(size)
+            .SetInitialData(data)
+            .AddBufferUsages(VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT)
+            .AddMemoryProperties(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+            .AddSharedQueue(device->GetGraphicsQueue()->GetFamilyIndex())
+            .AddSharedQueue(device->GetTransferQueue()->GetFamilyIndex())
+            .Build();
 
         return SharedPtr<GIVertexBufferVk>(new GIVertexBufferVk(buffer, vertexLayout, bindingPoint));
     }

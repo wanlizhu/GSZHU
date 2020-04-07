@@ -2,6 +2,7 @@
 #include "GIImageViewVk.h"
 #include "GISamplerVk.h"
 #include "GIDeviceVk.h"
+#include "GIDeviceMemoryAllocatorVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
@@ -41,16 +42,6 @@ namespace AutoCAD::Graphics::Engine
 
         VK_CHECK(vkBindImageMemory(*mDevice, mImageHandle, mMemoryHandle, 0));
     }
-
-    GIImageVk::GIImageVk(
-        SharedPtr<GIDeviceVk> device,
-        const GIImageInfoVk& info,
-        EResourceState initialState
-    )
-        : GIResourceVk(device)
-        , mImageInfo(info)
-        , mResourceState(initialState)
-    {}
 
     GIImageVk::~GIImageVk()
     {
@@ -120,11 +111,6 @@ namespace AutoCAD::Graphics::Engine
         return mImageInfo;
     }
 
-    SharedPtr<GISamplerVk> GIImageVk::GetSampler() const
-    {
-        return mSampler;
-    }
-
     SharedPtr<GIImageViewVk> GIImageVk::GetTextureView(
         VkImageViewType viewType,
         VkFormat format,
@@ -145,11 +131,6 @@ namespace AutoCAD::Graphics::Engine
         }
     }
 
-    void GIImageVk::SetSampler(SharedPtr<GISamplerVk> sampler)
-    {
-        mSampler = sampler;
-    }
-
     void GIImageVk::SetOnDestroyCallback(const std::function<void()>& func)
     {
         mOnDestroyCallback = func;
@@ -161,6 +142,12 @@ namespace AutoCAD::Graphics::Engine
     GIImageBuilderVk::GIImageBuilderVk(SharedPtr<GIDeviceVk> device)
         : mDevice(device)
     {}
+
+    GIImageBuilderVk& GIImageBuilderVk::SetAllocator(SharedPtr<GIDeviceMemoryAllocatorVk> allocator)
+    {
+        mAllocator = allocator;
+        return *this;
+    }
 
     GIImageBuilderVk& GIImageBuilderVk::SetImageType(VkImageType type)
     {

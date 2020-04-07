@@ -7,12 +7,16 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    void* GIWindowsPlatformVk::libvulkan = nullptr;
+    GIWindowsPlatformVk& GIWindowsPlatformVk::Get()
+    {
+        static GIWindowsPlatformVk instance;
+        return instance;
+    }
 
     bool GIWindowsPlatformVk::LoadVulkanLibrary()
     {
-        libvulkan = ::LoadLibrary(TEXT("vulkan-1.dll"));
-        return libvulkan != nullptr;
+        m_libvulkan = ::LoadLibrary(TEXT("vulkan-1.dll"));
+        return m_libvulkan != nullptr;
     }
 
     void GIWindowsPlatformVk::LoadVulkanFunctions()
@@ -20,10 +24,10 @@ namespace AutoCAD::Graphics::Engine
 
     void GIWindowsPlatformVk::FreeVulkanLibrary()
     {
-        if (libvulkan)
+        if (m_libvulkan)
         {
-            ::FreeLibrary((HMODULE)libvulkan);
-            libvulkan = nullptr;
+            ::FreeLibrary((HMODULE)m_libvulkan);
+            m_libvulkan = nullptr;
         }
     }
 

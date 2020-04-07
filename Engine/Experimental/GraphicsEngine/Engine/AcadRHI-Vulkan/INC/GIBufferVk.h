@@ -45,13 +45,7 @@ namespace AutoCAD::Graphics::Engine
             const void* data,
             VkMemoryPropertyFlags properties,
             EResourceState initialState
-        ); /* [1] Create buffer, create device memory required and bind them together */
-
-        GIBufferVk(
-            SharedPtr<GIDeviceVk> device,
-            const GIBufferInfoVk& info,
-            EResourceState initialState
-        ); /* [2] Configure with buffer and memory objects precreated by VMA */
+        );
 
     private:
         VkBuffer mBufferHandle = VK_NULL_HANDLE;
@@ -84,6 +78,7 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIDeviceVk> mDevice;
         VkBufferCreateInfo mCreateInfo = {};
         VkMemoryPropertyFlags mProperties = 0;
+        SharedPtr<GIDeviceMemoryAllocatorVk> mAllocator;
 
         const void* mInitialData = nullptr;
         EResourceState mInitialState = EResourceState::Undefined;

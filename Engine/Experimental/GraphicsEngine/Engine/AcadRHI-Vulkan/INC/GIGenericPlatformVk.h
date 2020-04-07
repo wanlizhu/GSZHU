@@ -22,16 +22,16 @@ namespace AutoCAD::Graphics::Engine
     class GIGenericPlatformVk
     {
     public:
-        static bool LoadVulkanLibrary() { return true; }
-        static void LoadVulkanFunctions() {}
-        static void FreeVulkanLibrary() {}
+        bool LoadVulkanLibrary() { return true; }
+        void LoadVulkanFunctions() {}
+        void FreeVulkanLibrary() {}
 
-        static std::vector<const char*> RequiredInstanceLayers() { return {}; }
-        static std::vector<const char*> RequiredInstanceExtensions() { return {}; }
-        static std::vector<const char*> RequiredDeviceExtensions(EGPUVendorID vendorId) { return {}; }
-        static VkPhysicalDeviceFeatures RequiredDeviceFeatures() { return {}; }
+        std::vector<const char*> RequiredInstanceLayers() { return {}; }
+        std::vector<const char*> RequiredInstanceExtensions() { return {}; }
+        std::vector<const char*> RequiredDeviceExtensions(EGPUVendorID vendorId) { return {}; }
+        VkPhysicalDeviceFeatures RequiredDeviceFeatures() { return {}; }
         
-        static void CreateSurface(VkInstance instance, void* window, VkSurfaceKHR* surface) {}
-        static void PrePresent(VkQueue queue, VkPresentInfoKHR& presentInfo) {}
+        void CreateSurface(VkInstance instance, void* window, VkSurfaceKHR* surface) {}
+        void PrePresent(VkQueue queue, VkPresentInfoKHR& presentInfo) {}
     };
 }

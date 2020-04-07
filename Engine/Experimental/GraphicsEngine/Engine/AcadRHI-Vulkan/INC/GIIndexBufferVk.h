@@ -11,8 +11,7 @@ namespace AutoCAD::Graphics::Engine
             SharedPtr<GIDeviceVk> device,
             VkDeviceSize size,
             const void* data,
-            VkIndexType indexType,
-            bool useVMA
+            VkIndexType indexType
         );
 
         virtual ~GIIndexBufferVk();

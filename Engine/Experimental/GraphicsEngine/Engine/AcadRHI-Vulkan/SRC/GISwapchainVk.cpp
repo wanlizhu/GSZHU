@@ -314,7 +314,7 @@ namespace AutoCAD::Graphics::Engine
     {
         assert(window != nullptr);
 
-        GIPlatformVk::CreateSurface(*mDevice->GetInstance(), window, &mCreateInfo.surface);
+        GIPlatformVk::Get().CreateSurface(*mDevice->GetInstance(), window, &mCreateInfo.surface);
         mDevice->SetupPresentQueue(mCreateInfo.surface);
 
         // If the graphics and present queues are from different queue families,

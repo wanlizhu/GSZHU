@@ -1,6 +1,7 @@
 #include "GIBufferVk.h"
 #include "GIBufferViewVk.h"
 #include "GIDeviceVk.h"
+#include "GIDeviceMemoryAllocatorVk.h"
 
 namespace AutoCAD::Graphics::Engine
 {
@@ -36,16 +37,6 @@ namespace AutoCAD::Graphics::Engine
         // Attach the memory to the buffer object.
         VK_CHECK(vkBindBufferMemory(*mDevice, mBufferHandle, mMemoryHandle, 0));
     }
-
-    GIBufferVk::GIBufferVk(
-        SharedPtr<GIDeviceVk> device,
-        const GIBufferInfoVk& info,
-        EResourceState initialState
-    )
-        : GIResourceVk(device)
-        , mBufferInfo(info)
-        , mResourceState(initialState)
-    {}
 
     GIBufferVk::~GIBufferVk()
     {
@@ -169,7 +160,8 @@ namespace AutoCAD::Graphics::Engine
 
     GIBufferBuilderVk& GIBufferBuilderVk::SetAllocator(SharedPtr<GIDeviceMemoryAllocatorVk> allocator)
     {
-        return *this; // TODO
+        mAllocator = allocator;
+        return *this;
     }
 
     GIBufferBuilderVk& GIBufferBuilderVk::SetSize(VkDeviceSize size)

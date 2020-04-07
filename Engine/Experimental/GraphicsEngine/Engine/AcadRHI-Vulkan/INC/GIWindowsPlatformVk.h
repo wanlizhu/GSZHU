@@ -20,20 +20,22 @@ namespace AutoCAD::Graphics::Engine
     class GIWindowsPlatformVk : public GIGenericPlatformVk
     {
     public:
-        static bool LoadVulkanLibrary();
-        static void LoadVulkanFunctions();
-        static void FreeVulkanLibrary();
+        static GIWindowsPlatformVk& Get();
 
-        static std::vector<const char*> RequiredInstanceLayers();
-        static std::vector<const char*> RequiredInstanceExtensions();
-        static std::vector<const char*> RequiredDeviceExtensions(EGPUVendorID vendorId);
-        static VkPhysicalDeviceFeatures RequiredDeviceFeatures();
+        bool LoadVulkanLibrary();
+        void LoadVulkanFunctions();
+        void FreeVulkanLibrary();
 
-        static void CreateSurface(VkInstance instance, void* window, VkSurfaceKHR* surface);
-        static void PrePresent(VkQueue queue, VkPresentInfoKHR& presentInfo) {}
+        std::vector<const char*> RequiredInstanceLayers();
+        std::vector<const char*> RequiredInstanceExtensions();
+        std::vector<const char*> RequiredDeviceExtensions(EGPUVendorID vendorId);
+        VkPhysicalDeviceFeatures RequiredDeviceFeatures();
+
+        void CreateSurface(VkInstance instance, void* window, VkSurfaceKHR* surface);
+        void PrePresent(VkQueue queue, VkPresentInfoKHR& presentInfo) {}
 
     private:
-        static void* libvulkan;
+        void* m_libvulkan;
     };
 
     using GIPlatformVk = GIWindowsPlatformVk;

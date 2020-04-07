@@ -6,6 +6,7 @@ namespace AutoCAD::Graphics::Engine
 {
     class GISamplerVk;
     class GIImageViewVk;
+    class GIDeviceMemoryAllocatorVk;
 
     struct GIImageInfoVk
     {
@@ -39,14 +40,12 @@ namespace AutoCAD::Graphics::Engine
 
         operator const VkImage& () const;
         GIImageInfoVk const& GetInfo() const;
-        SharedPtr<GISamplerVk> GetSampler() const;
         SharedPtr<GIImageViewVk> GetTextureView(
             VkImageViewType viewType,
             VkFormat format,
             const VkImageSubresourceRange& subresource = {}
         );
 
-        void SetSampler(SharedPtr<GISamplerVk> sampler);
         void SetOnDestroyCallback(const std::function<void()> &func);
         void CreateMipmaps(uint32_t mipLevels);
 
@@ -59,12 +58,6 @@ namespace AutoCAD::Graphics::Engine
             EResourceState initialState
         ); /* [1] Create image, create device memory required and bind them together */
         
-        GIImageVk(
-            SharedPtr<GIDeviceVk> device,
-            const GIImageInfoVk& info,
-            EResourceState initialState
-        ); /* [2] Configure with image and memory objects precreated by VMA */
-
     protected:
         VkImage mImageHandle = VK_NULL_HANDLE;
         VkDeviceMemory mMemoryHandle = VK_NULL_HANDLE;
@@ -74,13 +67,13 @@ namespace AutoCAD::Graphics::Engine
         std::function<void()> mOnDestroyCallback;
         GIResourceStateVk mResourceState;
         bool mIsMapped = false;
-        SharedPtr<GISamplerVk> mSampler;
     };
 
     class GIImageBuilderVk
     {
     public:
         GIImageBuilderVk(SharedPtr<GIDeviceVk> device);
+        GIImageBuilderVk& SetAllocator(SharedPtr<GIDeviceMemoryAllocatorVk> allocator);
         GIImageBuilderVk& SetImageType(VkImageType type);
         GIImageBuilderVk& SetFormat(VkFormat format);
         GIImageBuilderVk& SetExtent(VkExtent3D extent);
@@ -100,6 +93,7 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIDeviceVk> mDevice;
         VkImageCreateInfo mCreateInfo = {};
         VkMemoryPropertyFlags mProperties = 0;
+        SharedPtr<GIDeviceMemoryAllocatorVk> mAllocator;
 
         const void* mInitialData = nullptr;
         EResourceState mInitialState = EResourceState::Undefined;
