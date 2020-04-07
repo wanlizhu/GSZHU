@@ -9,7 +9,7 @@ namespace AutoCAD::Graphics::Engine
     class GIPipelineVk;
     class GIRenderPassVk;
     class GIFramebufferVk;
-    class GITextureVk;
+    class GIImageVk;
 
     class GIDeviceContextVk 
         : public GINonCopyable
@@ -25,7 +25,7 @@ namespace AutoCAD::Graphics::Engine
         void SetFramebuffer(SharedPtr<GIFramebufferVk> framebuffer);
         void SetRenderPass(SharedPtr<GIRenderPassVk> renderPass);
         void SetPipeline(SharedPtr<GIPipelineVk> pipeline);
-        void SetDepthStencilImage(SharedPtr<GITextureVk> depthStencil);
+        void SetDepthStencilImage(SharedPtr<GIImageVk> depthStencil);
 
         SharedPtr<GICommandBufferVk> GetCommandBuffer() const;
 
@@ -39,6 +39,6 @@ namespace AutoCAD::Graphics::Engine
         SharedPtr<GIFramebufferVk> mFramebuffer;
         SharedPtr<GIRenderPassVk> mRenderPass;
         SharedPtr<GIPipelineVk> mPipeline;
-        SharedPtr<GITextureVk> mDepthStencilImage;
+        SharedPtr<GIImageVk> mDepthStencilImage;
     };
 }

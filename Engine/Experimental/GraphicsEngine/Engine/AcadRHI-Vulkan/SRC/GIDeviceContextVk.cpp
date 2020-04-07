@@ -1,6 +1,6 @@
 #include "GIDeviceContextVk.h"
 #include "GIDeviceVk.h"
-#include "GITextureVk.h"
+#include "GIImageVk.h"
 #include "GIFramebufferVk.h"
 #include "GIRenderPassVk.h"
 #include "GIPipelineVk.h"
@@ -61,7 +61,7 @@ namespace AutoCAD::Graphics::Engine
         mPipeline = pipeline;
     }
 
-    void GIDeviceContextVk::SetDepthStencilImage(SharedPtr<GITextureVk> depthStencil)
+    void GIDeviceContextVk::SetDepthStencilImage(SharedPtr<GIImageVk> depthStencil)
     {
         mDepthStencilImage = depthStencil;
     }

@@ -6,6 +6,7 @@ namespace AutoCAD::Graphics::Engine
 {
     class GIBufferViewVk;
     class GICommandBufferVk;
+    class GIDeviceMemoryAllocatorVk;
 
     struct GIBufferInfoVk 
     {
@@ -61,5 +62,31 @@ namespace AutoCAD::Graphics::Engine
         std::function<void()> mOnDestroyCallback;
         GIResourceStateVk mResourceState;
         bool mIsMapped = false;
+    };
+
+    /*
+     * This will invoke the first constructor of GIBufferVk
+    */
+    class GIBufferBuilderVk
+    {
+    public:
+        GIBufferBuilderVk(SharedPtr<GIDeviceVk> device);
+        GIBufferBuilderVk& SetAllocator(SharedPtr<GIDeviceMemoryAllocatorVk> allocator);
+        GIBufferBuilderVk& SetSize(VkDeviceSize size);
+        GIBufferBuilderVk& AddBufferUsages(VkBufferUsageFlags usages);
+        GIBufferBuilderVk& AddMemoryProperties(VkMemoryPropertyFlags properties);
+        GIBufferBuilderVk& AddSharedQueue(uint32_t queue);
+        GIBufferBuilderVk& SetInitialData(const void* data);
+        GIBufferBuilderVk& SetInitialState(EResourceState state);
+        SharedPtr<GIBufferVk> Build();
+
+    private:
+        SharedPtr<GIDeviceVk> mDevice;
+        VkBufferCreateInfo mCreateInfo = {};
+        VkMemoryPropertyFlags mProperties = 0;
+
+        const void* mInitialData = nullptr;
+        EResourceState mInitialState = EResourceState::Undefined;
+        std::vector<uint32_t> mSharedQueues;
     };
 }

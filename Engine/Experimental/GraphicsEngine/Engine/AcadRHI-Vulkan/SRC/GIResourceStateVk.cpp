@@ -1,7 +1,7 @@
 ﻿#include "GIResourceStateVk.h"
 #include "GIResourceVk.h"
 #include "GIBufferVk.h"
-#include "GITextureVk.h"
+#include "GIImageVk.h"
 #include "GICommandQueueVk.h"
 #include "GICommandPoolVk.h"
 #include "GICommandBufferVk.h"

@@ -88,19 +88,10 @@
     <ClInclude Include="INC\GIIndexBufferVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIDeviceMemoryPoolVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIVertexLayoutVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\GIBufferViewVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GITextureVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GITextureViewVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\GISamplerVk.h">
@@ -127,64 +118,16 @@
     <ClInclude Include="INC\GICommandQueueVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIPipelineDynamicStateVk.h">
+    <ClInclude Include="INC\GIImageViewVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIBufferBuilderVk.h">
+    <ClInclude Include="INC\GIImageVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIDeviceBuilderVk.h">
+    <ClInclude Include="INC\GIDeviceMemoryAllocatorVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIFramebufferBuilderVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIInstanceBuilderVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIPipelineBuilderVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIRenderPassBuilderVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GISamplerBuilderVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIShaderReflectionBuilderVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GISwapchainBuilderVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GITextureBuilderVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDynamicBlendConstantsVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDynamicDepthBiasVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDynamicDepthBoundsVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDynamicLineWidthVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDynamicScissorVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDynamicStencilCompareMaskVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDynamicStencilReferenceVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDynamicStencilWriteMaskVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\GIDynamicViewportVk.h">
+    <ClInclude Include="INC\GIPipelineDynamicStatesVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -270,64 +213,22 @@
     <ClCompile Include="SRC\GISamplerVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\GITextureVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GITextureViewVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SRC\GIResourceStateVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GICommandQueueVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\GIDynamicViewportStateVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIDynamicScissorStateVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIBufferBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GITextureBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIDeviceBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIFramebufferBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIInstanceBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIPipelineBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIRenderPassBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GISamplerBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GISwapchainBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\GIShaderReflectionBuilderVk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SRC\GIDeviceContextVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\GIDynamicLineWidthStateVk.cpp">
+    <ClCompile Include="SRC\GIImageViewVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\GIDynamicBlendConstantsVk.cpp">
+    <ClCompile Include="SRC\GIImageVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SRC\GIDynamicDepthBiasVk.cpp">
+    <ClCompile Include="SRC\GIPipelineDynamicStatesVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

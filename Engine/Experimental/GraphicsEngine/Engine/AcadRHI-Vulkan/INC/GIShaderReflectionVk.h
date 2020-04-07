@@ -20,6 +20,7 @@ namespace AutoCAD::Graphics::Engine
     {
         friend class GIShaderReflectionBuilderVk;
     public:
+        GIShaderReflectionVk() = default;
         virtual ~GIShaderReflectionVk();
         bool IsPushDescriptorSet(SET_ID setId) const;
         bool IsDynamicDescriptor(SET_ID setId, BINDING_ID bindingId) const;
@@ -46,10 +47,12 @@ namespace AutoCAD::Graphics::Engine
          * Argument 'setId' cannot be marked as 'push descriptor set'.
         */
         void MarkDynamicDescriptor(SET_ID setId, BINDING_ID bindingId);
-        
-    protected:
-        GIShaderReflectionVk() = default;
 
+        /*
+         * Load reflection data from json created while pre-compilation 
+        */
+        void LoadFromJSON(const std::filesystem::path& path);
+        
     private:
         std::vector<VkVertexInputAttributeDescription> mVertexInputAttributes; // The field 'binding' is left empty for application to assign later
         std::vector<VkDescriptorPoolSize> mDescriptorPoolSizes; // Used to expand the size requirements of global descriptor pool

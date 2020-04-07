@@ -57,7 +57,7 @@ namespace AutoCAD::Graphics::Engine
     class GIResourceStateVk
     {
         friend class GIBufferVk;
-        friend class GITextureVk;
+        friend class GIImageVk;
     public:
         GIResourceStateVk(const GIResourceStateInfoVk& info);
 

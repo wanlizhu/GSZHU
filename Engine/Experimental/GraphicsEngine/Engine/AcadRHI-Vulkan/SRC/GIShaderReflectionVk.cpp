@@ -1,6 +1,5 @@
 #include "spirv_cross/spirv_glsl.hpp"
 #include "GIShaderReflectionVk.h"
-#include "GIShaderReflectionBuilderVk.h"
 #include "GIDeviceVk.h"
 
 namespace AutoCAD::Graphics::Engine
@@ -46,6 +45,9 @@ namespace AutoCAD::Graphics::Engine
     {
         mIsDynamicDescriptors[{ setId, binding}] = true;
     }
+
+    void GIShaderReflectionVk::LoadFromJSON(const std::filesystem::path& path)
+    {}
 
     bool GIShaderReflectionVk::IsPushDescriptorSet(SET_ID setId) const
     {

@@ -231,18 +231,18 @@
       <FileName>GISamplerVk.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AutoCAD::Graphics::Engine::GITextureVk" Collapsed="true">
+  <Class Name="AutoCAD::Graphics::Engine::GIImageVk" Collapsed="true">
     <Position X="18.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>GITextureVk.h</FileName>
+      <FileName>GIImageVk.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AutoCAD::Graphics::Engine::GITextureViewVk" Collapsed="true">
+  <Class Name="AutoCAD::Graphics::Engine::GIImageViewVk" Collapsed="true">
     <Position X="11.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>GITextureViewVk.h</FileName>
+      <FileName>GIImageViewVk.h</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="AutoCAD::Graphics::Engine::OptionalDeviceExtensions" Collapsed="true">
