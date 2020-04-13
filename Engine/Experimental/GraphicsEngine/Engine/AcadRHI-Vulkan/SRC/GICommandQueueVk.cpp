@@ -7,26 +7,20 @@
 namespace AutoCAD::Graphics::Engine
 {
     SharedPtr<GICommandQueueVk> GICommandQueueVk::Create(
-        WeakPtr<GIDeviceVk> device,
-        VkQueue queue,
-        uint32_t familyIndex)
-    {
-        auto deviceQueue = SharedPtr<GICommandQueueVk>(new GICommandQueueVk(
-            device,
-            queue,
-            familyIndex));
-        assert(deviceQueue->IsValid());
-        return deviceQueue;
-    }
-
-    GICommandQueueVk::GICommandQueueVk(
-        WeakPtr<GIDeviceVk> device, 
+        SharedPtr<GIDeviceVk> device,
         VkQueue queue,
         uint32_t familyIndex
     )
+    {
+        SharedPtr<GICommandQueueVk> result(new GICommandQueueVk(device));
+        result->mFamilyIndex = familyIndex;
+        result->mQueueHandle = queue;
+
+        return result;
+    }
+
+    GICommandQueueVk::GICommandQueueVk(SharedPtr<GIDeviceVk> device)
         : GIWeakDeviceObjectVk(device)
-        , mQueueHandle(queue)
-        , mFamilyIndex(familyIndex)
     {}
 
     GICommandQueueVk::~GICommandQueueVk()

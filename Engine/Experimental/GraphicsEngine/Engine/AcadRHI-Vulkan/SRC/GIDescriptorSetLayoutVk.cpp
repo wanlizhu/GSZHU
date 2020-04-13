@@ -11,31 +11,34 @@ namespace AutoCAD::Graphics::Engine
         bool isPushDescriptorSet
     )
     {
-        return SharedPtr<GIDescriptorSetLayoutVk>(new GIDescriptorSetLayoutVk(device, reflection, setBindings, isPushDescriptorSet));
-    }
+        VkDescriptorSetLayout setLayout = VK_NULL_HANDLE;
+        std::unordered_map<BINDING_ID, VkDescriptorSetLayoutBinding> bindings;
 
-    GIDescriptorSetLayoutVk::GIDescriptorSetLayoutVk(
-        SharedPtr<GIDeviceVk> device,
-        SharedPtr<GIShaderReflectionVk> reflection,
-        const std::vector<VkDescriptorSetLayoutBinding>& setBindings,
-        bool isPushDescriptor
-    )
-        : GIDeviceObjectVk(device)
-        , mIsPushDescriptorSet(isPushDescriptor)
-    {
         VkDescriptorSetLayoutCreateInfo createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
         createInfo.pNext = nullptr;
-        createInfo.flags = isPushDescriptor ? VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR : 0;
+        createInfo.flags = isPushDescriptorSet ? VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR : 0;
         createInfo.bindingCount = (uint32_t)setBindings.size();
         createInfo.pBindings = setBindings.data();
-        VK_CHECK(vkCreateDescriptorSetLayout(*device, &createInfo, nullptr, &mDescriptorSetLayoutHandle));
+        VK_CHECK(vkCreateDescriptorSetLayout(*device, &createInfo, nullptr, &setLayout));
 
         for (const auto& binding : setBindings)
         {
-            mBindings[binding.binding] = binding;
+            bindings[binding.binding] = binding;
         }
+
+        SharedPtr<GIDescriptorSetLayoutVk> result(new GIDescriptorSetLayoutVk(device));
+        result->mDescriptorSetLayoutHandle = setLayout;
+        result->mShaderReflection = reflection;
+        result->mIsPushDescriptorSet = isPushDescriptorSet;
+        result->mBindings = bindings;
+
+        return result;
     }
+
+    GIDescriptorSetLayoutVk::GIDescriptorSetLayoutVk(SharedPtr<GIDeviceVk> device)
+        : GIDeviceObjectVk(device)
+    {}
 
     GIDescriptorSetLayoutVk::~GIDescriptorSetLayoutVk()
     {

@@ -43,6 +43,7 @@ namespace AutoCAD::Graphics::Engine
         );
 
     private:
+        CACHE_INDEX mCacheIndex = 0;
         VkBufferView mBufferViewHandle = VK_NULL_HANDLE;
         SharedPtr<GIBufferVk> mBuffer;
         size_t mOffset = 0;

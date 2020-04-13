@@ -11,6 +11,17 @@ namespace AutoCAD::Graphics::Engine
         friend class GISwapchainBuilderVk;
         DECL_DEVICE_OBJECT(GISwapchainVk)
     public:
+        static SharedPtr<GISwapchainVk> Create(
+            SharedPtr<GIDeviceVk> device,
+            void* window,
+            VkExtent2D extent, /* Set { 0, 0 } to use the size of 'window' */
+            uint32_t backbufferCount,
+            VkFormat desiredFormat,
+            VkComponentMapping componentMapping,
+            VkSurfaceTransformFlagBitsKHR preTransform,
+            VkSwapchainKHR oldSwapchain
+        );
+
         virtual ~GISwapchainVk();
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
@@ -28,13 +39,7 @@ namespace AutoCAD::Graphics::Engine
         const std::vector<VkImageView>& GetImageViews() const;
 
     protected:
-        GISwapchainVk(
-            SharedPtr<GIDeviceVk> device,
-            bool acquireNextImageAsync,
-            VkComponentMapping componentMapping,
-            const VkSwapchainCreateInfoKHR& createInfo
-        );
-
+        GISwapchainVk(SharedPtr<GIDeviceVk> device);
         bool RecreateSwapchain();
         void WaitImageAcquiredFence();
         void Destroy();
@@ -51,29 +56,5 @@ namespace AutoCAD::Graphics::Engine
         uint32_t mCurrentImageIndex = 0; // Set by vkAcquireNextImage()
         std::vector<VkImageView> mImagesViews; // The target images are created by the driver when creating VkSwapchainKHR
         VkFence mImageAcquiredFence = VK_NULL_HANDLE; // In safe-mode, we can wait this fence before returning from AcquireNextImage(...)
-    };
-
-    class GISwapchainBuilderVk
-    {
-    public:
-        GISwapchainBuilderVk(SharedPtr<GIDeviceVk> device);
-
-        GISwapchainBuilderVk& SetWindow(void* window);
-        GISwapchainBuilderVk& SetExtent(VkExtent2D extent, bool compulsory = false);
-        GISwapchainBuilderVk& AcquireNextImageAsync(bool value);
-        GISwapchainBuilderVk& EnableVsync(bool value);
-        GISwapchainBuilderVk& SetBackbufferCount(uint32_t count);
-        GISwapchainBuilderVk& SetColorFormat(VkFormat format, bool compulsory = false);
-        GISwapchainBuilderVk& SetPreTransform(VkSurfaceTransformFlagBitsKHR preTransform);
-        GISwapchainBuilderVk& SetComponentMapping(VkComponentMapping componentMapping);
-        GISwapchainBuilderVk& SetOldSwapchain(VkSwapchainKHR oldSwapchain);
-
-        SharedPtr<GISwapchainVk> Build();
-
-    private:
-        SharedPtr<GIDeviceVk> mDevice;
-        bool mAcquireNextImageAsync = true;
-        VkComponentMapping mComponentMapping;
-        VkSwapchainCreateInfoKHR mCreateInfo;
     };
 }

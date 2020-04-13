@@ -67,9 +67,6 @@
     <ClInclude Include="INC\GIDescriptorSetVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIDeviceContextVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GIPipelineVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -112,9 +109,6 @@
     <ClInclude Include="INC\GIResourceVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INC\GIResourceStateVk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="INC\GICommandQueueVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -131,6 +125,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\GISampledImageVk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\GIRenderTargetVk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -235,6 +232,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\GISampledImageVk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\GIRenderTargetVk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

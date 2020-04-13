@@ -19,6 +19,13 @@ namespace AutoCAD::Graphics::Engine
         friend class GIRenderPassBuilderVk;
         DECL_DEVICE_OBJECT(GIRenderPassVk)
     public:
+        static SharedPtr<GIRenderPassVk> Create(
+            SharedPtr<GIDeviceVk> device,
+            const std::vector<VkAttachmentDescription>& attachments,
+            const std::vector<VkSubpassDescription>& subpasses,
+            const std::vector<VkSubpassDependency>& dependencies
+        );
+
         virtual ~GIRenderPassVk();
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
@@ -31,42 +38,12 @@ namespace AutoCAD::Graphics::Engine
         VkFormat GetDepthStencilFormat() const;
 
     protected:
-        GIRenderPassVk(
-            SharedPtr<GIDeviceVk> device,
-            const VkRenderPassCreateInfo& createInfo
-        );
+        GIRenderPassVk(SharedPtr<GIDeviceVk> device);
         
     private:
         VkRenderPass mRenderPassHandle = VK_NULL_HANDLE;
         VkSampleCountFlagBits mSampleCount = VK_SAMPLE_COUNT_1_BIT;
         VkFormat mDepthStencilFormat = VK_FORMAT_UNDEFINED;
         std::vector<VkFormat> mRenderTargetFormats;
-    };
-
-    class GIRenderPassBuilderVk
-    {
-    public:
-        GIRenderPassBuilderVk(SharedPtr<GIDeviceVk> device);
-
-        GIRenderPassBuilderVk& AddAttachment(const VkAttachmentDescription& attachment);
-        GIRenderPassBuilderVk& AddAttachment(const char* name, const VkAttachmentDescription& attachment);
-        GIRenderPassBuilderVk& AddAttachment(const char* name, VkFormat format, uint32_t sampleCount);
-
-        GIRenderPassBuilderVk& AddSubpass(const VkSubpassDescription& subpass);
-        GIRenderPassBuilderVk& AddSubpass(const std::vector<const char*>& colorNames, const char* depthStencilName = nullptr);
-
-        GIRenderPassBuilderVk& AddSubpassDependency(const VkSubpassDependency& dependency);
-        SharedPtr<GIRenderPassVk> Build();
-
-    private:
-        SharedPtr<GIDeviceVk> mDevice;
-        VkRenderPassCreateInfo mCreateInfo;
-
-        std::vector<VkAttachmentDescription> mAttachments;
-        std::vector<VkSubpassDescription> mSubpasses;
-        std::vector<VkSubpassDependency> mDependencies;
-
-        std::unordered_map<std::string, VkAttachmentReference> mNamedAttachmentReferences;
-        std::unordered_map<uint32_t, std::vector<VkAttachmentReference>> mSubpassAttachmentReferences;
     };
 }

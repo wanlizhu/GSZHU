@@ -5,38 +5,68 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    GIBufferVk::GIBufferVk(
+    SharedPtr<GIBufferVk> GIBufferVk::Create(
         SharedPtr<GIDeviceVk> device,
-        const VkBufferCreateInfo& createInfo,
-        const void* data,
+        VkDeviceSize size,
+        VkBufferUsageFlagBits usage,
+        std::vector<uint32_t> sharingQueues,
         VkMemoryPropertyFlags properties,
+        const void* initialData,
         EResourceState initialState
     )
-        : GIResourceVk(device)
-        , mResourceState(initialState)
     {
-        mBufferInfo.usages = createInfo.usage;
-        mBufferInfo.sharingMode = createInfo.sharingMode;
+        VkBufferCreateInfo createInfo = {};
+        createInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        createInfo.pNext = nullptr;
+        createInfo.flags = 0;
+        createInfo.size = size;
+        createInfo.usage = usage;
+        createInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        createInfo.queueFamilyIndexCount = 0;
+        createInfo.pQueueFamilyIndices = nullptr;
 
-        VK_CHECK(vkCreateBuffer(*mDevice, &createInfo, nullptr, &mBufferHandle));
+        if (!sharingQueues.empty())
+        {
+            createInfo.sharingMode = VK_SHARING_MODE_CONCURRENT;
+            createInfo.queueFamilyIndexCount = (uint32_t)sharingQueues.size();
+            createInfo.pQueueFamilyIndices = sharingQueues.data();
+        }
 
-        VkMemoryRequirements memoryRequirements = {};
+        VkBuffer buffer = VK_NULL_HANDLE;
+        VkDeviceMemory memory = VK_NULL_HANDLE;
+
+        VK_CHECK(vkCreateBuffer(*device, &createInfo, nullptr, &buffer));
+
+        VkMemoryRequirements requirements = {};
         VkMemoryAllocateInfo allocInfo = {};
 
-        vkGetBufferMemoryRequirements(*mDevice, mBufferHandle, &memoryRequirements);
-        mBufferInfo.sizeInBytes = memoryRequirements.size;
-
+        vkGetBufferMemoryRequirements(*device, buffer, &requirements);
         allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
         allocInfo.pNext = nullptr;
-        allocInfo.allocationSize = memoryRequirements.size;
-        allocInfo.memoryTypeIndex = mDevice->GetMemoryTypeIndex(memoryRequirements.memoryTypeBits, properties);
-        VK_CHECK(vkAllocateMemory(*mDevice, &allocInfo, nullptr, &mMemoryHandle));
-        
-        UpdateData(0, mBufferInfo.sizeInBytes, data, nullptr);
+        allocInfo.allocationSize = requirements.size;
+        allocInfo.memoryTypeIndex = device->GetMemoryTypeIndex(requirements.memoryTypeBits, properties);
+        VK_CHECK(vkAllocateMemory(*device, &allocInfo, nullptr, &memory));
+        VK_CHECK(vkBindBufferMemory(*device, buffer, memory, 0));
 
-        // Attach the memory to the buffer object.
-        VK_CHECK(vkBindBufferMemory(*mDevice, mBufferHandle, mMemoryHandle, 0));
+        SharedPtr<GIBufferVk> result(new GIBufferVk(device));
+        result->mBufferHandle = buffer;
+        result->mMemoryHandle = memory;
+        result->mMemoryProperties = properties;
+        result->mSizeInBytes = requirements.size;
+        result->mUsage = usage;
+        result->mResourceState = initialState;
+
+        if (initialData != nullptr)
+        {
+            result->UpdateData(0, requirements.size, initialData, nullptr);
+        }
+
+        return result;
     }
+
+    GIBufferVk::GIBufferVk(SharedPtr<GIDeviceVk> device)
+        : GIResourceVk(device)
+    {}
 
     GIBufferVk::~GIBufferVk()
     {
@@ -83,12 +113,12 @@ namespace AutoCAD::Graphics::Engine
         return EResourceType::Buffer;
     }
 
-    GIResourceStateVk& GIBufferVk::GetResourceState()
+    EResourceState GIBufferVk::GetResourceState() const
     {
         return mResourceState;
     }
 
-    void GIBufferVk::TransitionState(const GIResourceStateVk& newState)
+    void GIBufferVk::TransitionState(const EResourceState& newState)
     {
         //TODO
     }
@@ -98,9 +128,24 @@ namespace AutoCAD::Graphics::Engine
         return mBufferHandle;
     }
 
-    GIBufferInfoVk const& GIBufferVk::GetInfo() const
+    VkDeviceMemory GIBufferVk::GetMemory() const
     {
-        return mBufferInfo;
+        return mMemoryHandle;
+    }
+
+    VkMemoryPropertyFlags GIBufferVk::GetMemoryProperties() const
+    {
+        return mMemoryProperties;
+    }
+
+    VkDeviceSize GIBufferVk::GetSizeInBytes() const
+    {
+        return mSizeInBytes;
+    }
+
+    VkBufferUsageFlags GIBufferVk::GetUsage() const
+    {
+        return mUsage;
     }
 
     SharedPtr<GIBufferViewVk> GIBufferVk::GetBufferView(size_t offset, size_t size, VkFormat format)
@@ -143,76 +188,13 @@ namespace AutoCAD::Graphics::Engine
         }
     }
 
-    void GIBufferVk::UpdateData(size_t offset, size_t size, const void* data, SharedPtr<GICommandBufferVk> cmdbuf)
+    void GIBufferVk::UpdateData(
+        size_t offset, 
+        size_t size,
+        const void* data,
+        SharedPtr<GICommandBufferVk> cmdbuf
+    )
     {
         // TODO
-    }
-
-    GIBufferBuilderVk::GIBufferBuilderVk(SharedPtr<GIDeviceVk> device)
-        : mDevice(device)
-    {
-        mCreateInfo = {};
-        mCreateInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-        mCreateInfo.pNext = nullptr;
-        mCreateInfo.flags = 0;
-        mCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    }
-
-    GIBufferBuilderVk& GIBufferBuilderVk::SetAllocator(SharedPtr<GIDeviceMemoryAllocatorVk> allocator)
-    {
-        mAllocator = allocator;
-        return *this;
-    }
-
-    GIBufferBuilderVk& GIBufferBuilderVk::SetSize(VkDeviceSize size)
-    {
-        mCreateInfo.size = size;
-        return *this;
-    }
-
-    GIBufferBuilderVk& GIBufferBuilderVk::AddBufferUsages(VkBufferUsageFlags usages)
-    {
-        mCreateInfo.usage |= usages;
-        return *this;
-    }
-
-    GIBufferBuilderVk& GIBufferBuilderVk::AddMemoryProperties(VkMemoryPropertyFlags properties)
-    {
-        mProperties |= properties;
-        return *this;
-    }
-
-    GIBufferBuilderVk& GIBufferBuilderVk::AddSharedQueue(uint32_t queue)
-    {
-        auto it = std::find(mSharedQueues.begin(), mSharedQueues.end(), queue);
-        if (it == mSharedQueues.end())
-            mSharedQueues.push_back(queue);
-
-        return *this;
-    }
-
-    GIBufferBuilderVk& GIBufferBuilderVk::SetInitialData(const void* data)
-    {
-        mInitialData = data;
-        return *this;
-    }
-
-    GIBufferBuilderVk& GIBufferBuilderVk::SetInitialState(EResourceState state)
-    {
-        mInitialState = state;
-        return *this;
-    }
-
-    SharedPtr<GIBufferVk> GIBufferBuilderVk::Build()
-    {
-        auto result = SharedPtr<GIBufferVk>(new GIBufferVk(
-            mDevice,
-            mCreateInfo,
-            mInitialData,
-            mProperties,
-            mInitialState
-            ));
-        assert(result->IsValid());
-        return result;
     }
 }

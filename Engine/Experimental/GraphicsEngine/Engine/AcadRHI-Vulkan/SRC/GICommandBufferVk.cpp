@@ -6,21 +6,37 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    GICommandBufferVk::GICommandBufferVk(SharedPtr<GICommandPoolVk> pool, bool secondary)
-        : GIWeakDeviceObjectVk(pool->GetDevice()->weak_from_this())
-        , mCommandPoolHandle(*pool)
-        , mQueue(pool->GetQueue())
-        , mPendingCommandCount(0)
+    SharedPtr<GICommandBufferVk> GICommandBufferVk::Create(
+        SharedPtr<GICommandPoolVk> pool,
+        bool secondary,
+        uint32_t threshold
+    )
     {
+        auto device = pool->GetDevice();
+        VkCommandBuffer cmdbuf = VK_NULL_HANDLE;
+
         VkCommandBufferAllocateInfo allocInfo = {};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
         allocInfo.pNext = nullptr;
         allocInfo.commandPool = *pool;
         allocInfo.level = secondary ? VK_COMMAND_BUFFER_LEVEL_SECONDARY : VK_COMMAND_BUFFER_LEVEL_PRIMARY;
         allocInfo.commandBufferCount = 1;
-        VK_CHECK(vkAllocateCommandBuffers(*pool->GetDevice(), &allocInfo, &mCommandBufferHandle));
-        assert(mCommandBufferHandle != VK_NULL_HANDLE);
+        VK_CHECK(vkAllocateCommandBuffers(*device, &allocInfo, &cmdbuf));
+        assert(cmdbuf != VK_NULL_HANDLE);
+
+        SharedPtr<GICommandBufferVk> result(new GICommandBufferVk(device));
+        result->mCommandBufferHandle = cmdbuf;
+        result->mCommandPoolHandle = *pool;
+        result->mQueue = pool->GetQueue();
+        result->mCommandThreshold = threshold;
+        result->mState = ECommandBufferState::ReadyToBegin;
+
+        return result;
     }
+
+    GICommandBufferVk::GICommandBufferVk(SharedPtr<GIDeviceVk> device)
+        : GIWeakDeviceObjectVk(device)
+    {}
 
     GICommandBufferVk::~GICommandBufferVk()
     {

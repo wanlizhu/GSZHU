@@ -194,12 +194,11 @@ if not exist "%InstallDir%" (
     <ClInclude Include="INC\GIDescriptorPoolVk.h" />
     <ClInclude Include="INC\GIDescriptorSetLayoutVk.h" />
     <ClInclude Include="INC\GIDescriptorSetVk.h" />
-    <ClInclude Include="INC\GIDeviceContextVk.h" />
     <ClInclude Include="INC\GIDeviceMemoryAllocatorVk.h" />
     <ClInclude Include="INC\GIDeviceObjectVk.h" />
     <ClInclude Include="INC\GICommandQueueVk.h" />
     <ClInclude Include="INC\GIPipelineDynamicStatesVk.h" />
-    <ClInclude Include="INC\GIResourceStateVk.h" />
+    <ClInclude Include="INC\GIRenderTargetVk.h" />
     <ClInclude Include="INC\GIResourceVk.h" />
     <ClInclude Include="INC\GIDeviceVk.h" />
     <ClInclude Include="INC\GIGenericPlatformVk.h" />
@@ -245,6 +244,7 @@ if not exist "%InstallDir%" (
     <ClCompile Include="SRC\GIPipelineVk.cpp" />
     <ClCompile Include="SRC\GIPipelineCacheVk.cpp" />
     <ClCompile Include="SRC\GIRenderPassVk.cpp" />
+    <ClCompile Include="SRC\GIRenderTargetVk.cpp" />
     <ClCompile Include="SRC\GIResourceStateVk.cpp" />
     <ClCompile Include="SRC\GISampledImageVk.cpp" />
     <ClCompile Include="SRC\GISamplerVk.cpp" />

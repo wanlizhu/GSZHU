@@ -27,11 +27,7 @@ namespace AutoCAD::Graphics::Engine
         std::optional<VkPushConstantRange> GetPushConstantRange(VkPipelineStageFlags stage) const; // Only one push_constant block is allowed per stage.
         
     private:
-        GIPipelineLayoutVk(
-            SharedPtr<GIDeviceVk> device,
-            const std::vector<SharedPtr<GIDescriptorSetLayoutVk>>& setLayouts,
-            const std::vector<VkPushConstantRange>& pushConstantRanges
-        );
+        GIPipelineLayoutVk(SharedPtr<GIDeviceVk> device);
 
     private:
         VkPipelineLayout mPipelineLayoutHandle = VK_NULL_HANDLE;

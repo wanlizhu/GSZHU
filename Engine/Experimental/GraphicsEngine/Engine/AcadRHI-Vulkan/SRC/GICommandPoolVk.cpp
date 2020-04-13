@@ -7,23 +7,27 @@ namespace AutoCAD::Graphics::Engine
 {
     SharedPtr<GICommandPoolVk> GICommandPoolVk::Create(SharedPtr<GICommandQueueVk> queue)
     {
-        auto pool = SharedPtr<GICommandPoolVk>(new GICommandPoolVk(queue));
-        assert(pool->IsValid());
-        return pool;
-    }
+        auto device = queue->GetDevice().lock();
+        VkCommandPool pool = VK_NULL_HANDLE;
 
-    GICommandPoolVk::GICommandPoolVk(SharedPtr<GICommandQueueVk> queue)
-        : GIDeviceObjectVk(queue->GetDevice().lock())
-        , mQueueHandle(*queue)
-        , mThreadId(std::this_thread::get_id())
-    {
         VkCommandPoolCreateInfo createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
         createInfo.pNext = nullptr;
         createInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
         createInfo.queueFamilyIndex = queue->GetFamilyIndex();
-        VK_CHECK(vkCreateCommandPool(*mDevice, &createInfo, nullptr, &mCommandPoolHandle));
+        VK_CHECK(vkCreateCommandPool(*device, &createInfo, nullptr, &pool));
+
+        SharedPtr<GICommandPoolVk> result(new GICommandPoolVk(device));
+        result->mCommandPoolHandle = pool;
+        result->mQueueHandle = *queue;
+        result->mThreadId = std::this_thread::get_id();
+
+        return result;
     }
+
+    GICommandPoolVk::GICommandPoolVk(SharedPtr<GIDeviceVk> device)
+        : GIDeviceObjectVk(device)
+    {}
 
     GICommandPoolVk::~GICommandPoolVk()
     {
@@ -59,9 +63,9 @@ namespace AutoCAD::Graphics::Engine
         return mCommandPoolHandle;
     }
 
-    SharedPtr<GICommandBufferVk> GICommandPoolVk::Allocate(bool secondary)
+    SharedPtr<GICommandBufferVk> GICommandPoolVk::Allocate(bool secondary, uint32_t threshold)
     {
-        return SharedPtr<GICommandBufferVk>(new GICommandBufferVk(shared_from_this(), secondary));
+        return GICommandBufferVk::Create(shared_from_this(), secondary, threshold);
     }
 
     std::thread::id GICommandPoolVk::GetThreadId() const

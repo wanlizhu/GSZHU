@@ -18,10 +18,7 @@ namespace AutoCAD::Graphics::Engine
         VkSamplerCreateInfo const& GetSamplerInfo() const;
 
     private:
-        GISamplerVk(
-            SharedPtr<GIDeviceVk> device,
-            const VkSamplerCreateInfo& createInfo
-        );
+        GISamplerVk(SharedPtr<GIDeviceVk> device);
 
     private:
         VkSampler mSamplerHandle = VK_NULL_HANDLE;

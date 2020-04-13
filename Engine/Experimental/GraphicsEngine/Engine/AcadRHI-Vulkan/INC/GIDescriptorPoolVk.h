@@ -16,7 +16,6 @@ namespace AutoCAD::Graphics::Engine
     */
     class GIDescriptorPoolVk : public GIDeviceObjectVk
     {
-        friend class GIDescriptorPoolBuilderVk;
         DECL_DEVICE_OBJECT(GIDescriptorPoolVk)
     public:
         static SharedPtr<GIDescriptorPoolVk> Create(
@@ -35,20 +34,15 @@ namespace AutoCAD::Graphics::Engine
         std::thread::id GetThreadId() const;
         SharedPtr<GIDescriptorSetVk> Allocate(
             SharedPtr<GIDescriptorSetLayoutVk> setLayout, 
-            std::optional<WeakPtr<GIDescriptorSetVk>> parent = std::nullopt
+            SharedPtr<GIDescriptorSetVk> parent
         );
         
     protected:
-        GIDescriptorPoolVk(
-            SharedPtr<GIDeviceVk> device,
-            SharedPtr<GIShaderReflectionVk> reflection,
-            uint32_t maxSets,
-            const std::vector<VkDescriptorPoolSize>& poolSizes
-        );
+        GIDescriptorPoolVk(SharedPtr<GIDeviceVk> device);
 
     private:
-        SharedPtr<GIShaderReflectionVk> mReflection;
         VkDescriptorPool mDescriptorPoolHandle = VK_NULL_HANDLE;
+        SharedPtr<GIShaderReflectionVk> mReflection;
         std::thread::id mThreadId;
     };
 }

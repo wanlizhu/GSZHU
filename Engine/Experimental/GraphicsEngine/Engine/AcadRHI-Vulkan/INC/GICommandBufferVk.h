@@ -19,9 +19,14 @@ namespace AutoCAD::Graphics::Engine
 
     class GICommandBufferVk : public GIWeakDeviceObjectVk
     {
-        friend class GICommandPoolVk;
         DECL_WEAK_DEVICE_OBJECT(GICommandBufferVk)
     public:
+        static SharedPtr<GICommandBufferVk> Create(
+            SharedPtr<GICommandPoolVk> pool,
+            bool secondary,
+            uint32_t threshold
+        );
+
         virtual ~GICommandBufferVk();
         virtual bool IsValid() const override final;
         virtual void SetDebugName(const char* name) const override final;
@@ -48,7 +53,7 @@ namespace AutoCAD::Graphics::Engine
         void SubmitIdle();
 
     protected:
-        GICommandBufferVk(SharedPtr<GICommandPoolVk> pool, bool secondary);
+        GICommandBufferVk(SharedPtr<GIDeviceVk> device);
         
     private:
         VkCommandBuffer mCommandBufferHandle = VK_NULL_HANDLE;

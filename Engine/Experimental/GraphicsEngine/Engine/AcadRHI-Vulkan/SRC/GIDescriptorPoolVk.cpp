@@ -6,16 +6,15 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    GIDescriptorPoolVk::GIDescriptorPoolVk(
+    SharedPtr<GIDescriptorPoolVk> GIDescriptorPoolVk::Create(
         SharedPtr<GIDeviceVk> device,
         SharedPtr<GIShaderReflectionVk> reflection,
         uint32_t maxSets,
         const std::vector<VkDescriptorPoolSize>& poolSizes
     )
-        : GIDeviceObjectVk(device)
-        , mReflection(reflection)
-        , mThreadId(std::this_thread::get_id())
     {
+        VkDescriptorPool pool = VK_NULL_HANDLE;
+
         VkDescriptorPoolCreateInfo createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
         createInfo.pNext = nullptr;
@@ -23,8 +22,19 @@ namespace AutoCAD::Graphics::Engine
         createInfo.maxSets = maxSets;
         createInfo.poolSizeCount = (uint32_t)poolSizes.size();
         createInfo.pPoolSizes = poolSizes.data();
-        VK_CHECK(vkCreateDescriptorPool(*mDevice, &createInfo, nullptr, &mDescriptorPoolHandle));
+        VK_CHECK(vkCreateDescriptorPool(*device, &createInfo, nullptr, &pool));
+
+        SharedPtr<GIDescriptorPoolVk> result(new GIDescriptorPoolVk(device));
+        result->mDescriptorPoolHandle = pool;
+        result->mReflection = reflection;
+        result->mThreadId = std::this_thread::get_id();
+
+        return result;
     }
+
+    GIDescriptorPoolVk::GIDescriptorPoolVk(SharedPtr<GIDeviceVk> device)
+        : GIDeviceObjectVk(device)
+    {}
 
     GIDescriptorPoolVk::~GIDescriptorPoolVk()
     {
@@ -70,9 +80,9 @@ namespace AutoCAD::Graphics::Engine
 
     SharedPtr<GIDescriptorSetVk> GIDescriptorPoolVk::Allocate(
         SharedPtr<GIDescriptorSetLayoutVk> setLayout,
-        std::optional<WeakPtr<GIDescriptorSetVk>> parent
+        SharedPtr<GIDescriptorSetVk> parent
     )
     {
-        return SharedPtr<GIDescriptorSetVk>(new GIDescriptorSetVk(weak_from_this(), setLayout, parent));
+        return GIDescriptorSetVk::Create(shared_from_this(), setLayout, parent);
     }
 }

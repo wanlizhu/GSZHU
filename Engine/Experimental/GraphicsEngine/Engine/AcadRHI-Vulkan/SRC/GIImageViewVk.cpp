@@ -5,18 +5,38 @@
 namespace AutoCAD::Graphics::Engine
 {
     SharedPtr<GIImageViewVk> GIImageViewVk::Create(
-        SharedPtr<GIImageVk> texture,
+        SharedPtr<GIImageVk> image,
         VkImageViewType type,
         VkFormat format,
         const VkImageSubresourceRange& subresource
     )
     {
-        return SharedPtr<GIImageViewVk>(new GIImageViewVk(
-            texture,
-            type,
-            format,
-            subresource
-        ));
+        auto device = image->GetDevice();
+
+        VkImageViewCreateInfo createInfo = {};
+        VkImageView imageView = VK_NULL_HANDLE;
+        createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        createInfo.pNext = nullptr;
+        createInfo.flags = 0;
+        createInfo.image = *image;
+        createInfo.viewType = type;
+        createInfo.format = format;
+        createInfo.subresourceRange = subresource;
+        createInfo.components.r = VK_COMPONENT_SWIZZLE_R;
+        createInfo.components.g = VK_COMPONENT_SWIZZLE_G;
+        createInfo.components.b = VK_COMPONENT_SWIZZLE_B;
+        createInfo.components.a = VK_COMPONENT_SWIZZLE_A;
+        VK_CHECK(vkCreateImageView(*device, &createInfo, nullptr, &imageView));
+
+        SharedPtr<GIImageViewVk> result(new GIImageViewVk(device));
+        result->mCacheIndex = ComputeCacheIndex(type, format, subresource);
+        result->mImage = image;
+        result->mImageViewHandle = imageView;
+        result->mImageViewType = type;
+        result->mFormat = format;
+        result->mSubresourceRange = subresource;
+
+        return result;
     }
 
     CACHE_INDEX GIImageViewVk::ComputeCacheIndex(
@@ -34,32 +54,9 @@ namespace AutoCAD::Graphics::Engine
             ^ std::hash<uint32_t>()(subresource.levelCount);
     }
 
-    GIImageViewVk::GIImageViewVk(
-        SharedPtr<GIImageVk> texture,
-        VkImageViewType type,
-        VkFormat format,
-        const VkImageSubresourceRange& subresource
-    )
-        : GIDeviceObjectVk(texture->GetDevice())
-        , mTexture(texture)
-        , mImageViewType(type)
-        , mFormat(format)
-        , mSubresourceRange(subresource)
-    {
-        VkImageViewCreateInfo createInfo = {};
-        createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-        createInfo.pNext = nullptr;
-        createInfo.flags = 0;
-        createInfo.image = *mTexture;
-        createInfo.viewType = mImageViewType;
-        createInfo.format = mFormat;
-        createInfo.subresourceRange = mSubresourceRange;
-        createInfo.components.r = VK_COMPONENT_SWIZZLE_R;
-        createInfo.components.g = VK_COMPONENT_SWIZZLE_G;
-        createInfo.components.b = VK_COMPONENT_SWIZZLE_B;
-        createInfo.components.a = VK_COMPONENT_SWIZZLE_A;
-        VK_CHECK(vkCreateImageView(*mDevice, &createInfo, nullptr, &mImageViewHandle));
-    }
+    GIImageViewVk::GIImageViewVk(SharedPtr<GIDeviceVk> device)
+        : GIDeviceObjectVk(device)
+    {}
 
     GIImageViewVk::~GIImageViewVk()
     {
@@ -98,9 +95,9 @@ namespace AutoCAD::Graphics::Engine
         return mImageViewHandle;
     }
 
-    SharedPtr<GIImageVk> GIImageViewVk::GetTexture() const
+    SharedPtr<GIImageVk> GIImageViewVk::GetImage() const
     {
-        return mTexture;
+        return mImage;
     }
 
     VkImageViewType GIImageViewVk::GetImageViewType() const

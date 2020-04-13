@@ -3,12 +3,40 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    GIFramebufferVk::GIFramebufferVk(SharedPtr<GIRenderPassVk> renderPass, const VkFramebufferCreateInfo& createInfo)
-        : GIDeviceObjectVk(renderPass->GetDevice())
-        , mRenderPass(renderPass)
+    SharedPtr<GIFramebufferVk> GIFramebufferVk::Create(
+        VkExtent2D extent,
+        SharedPtr<GIRenderPassVk> renderPass,
+        std::vector<VkImageView> attachments
+    )
     {
-    
+        auto device = renderPass->GetDevice();
+        VkFramebuffer framebuffer = VK_NULL_HANDLE;
+
+        VkFramebufferCreateInfo createInfo = {};
+        createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+        createInfo.pNext = nullptr;
+        createInfo.flags = 0;
+        createInfo.renderPass = *renderPass;
+        createInfo.attachmentCount = (uint32_t)attachments.size();
+        createInfo.pAttachments = attachments.data();
+        createInfo.width = extent.width;
+        createInfo.height = extent.height;
+        createInfo.layers = 1;
+
+        VK_CHECK(vkCreateFramebuffer(*device, &createInfo, nullptr, &framebuffer));
+
+        SharedPtr<GIFramebufferVk> result(new GIFramebufferVk(device));
+        result->mFramebufferHandle = framebuffer;
+        result->mExtent = extent;
+        result->mRenderPass = renderPass;
+        result->mAttachments = attachments;
+
+        return result;
     }
+
+    GIFramebufferVk::GIFramebufferVk(SharedPtr<GIDeviceVk> device)
+        : GIDeviceObjectVk(device)
+    {}
 
     GIFramebufferVk::~GIFramebufferVk()
     {
@@ -52,57 +80,18 @@ namespace AutoCAD::Graphics::Engine
         return mExtent;
     }
 
-    uint32_t GIFramebufferVk::GetImageViewCount() const
+    uint32_t GIFramebufferVk::GetAttachmentCount() const
     {
-        return (uint32_t)mImageViews.size();
+        return (uint32_t)mAttachments.size();
     }
 
-    std::vector<VkImageView>& GIFramebufferVk::GetImageViews()
+    std::vector<VkImageView>& GIFramebufferVk::GetAttachments()
     {
-        return mImageViews;
+        return mAttachments;
     }
 
     SharedPtr<GIRenderPassVk> GIFramebufferVk::GetRenderPass() const
     {
         return mRenderPass;
-    }
-
-    GIFramebufferBuilderVk::GIFramebufferBuilderVk(SharedPtr<GIRenderPassVk> renderPass)
-    {
-        mRenderPass = renderPass;
-
-        mCreateInfo = {};
-        mCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-        mCreateInfo.pNext = nullptr;
-        mCreateInfo.flags = 0;
-        mCreateInfo.renderPass = *mRenderPass;
-    }
-
-    GIFramebufferBuilderVk& GIFramebufferBuilderVk::SetExtent(VkExtent2D extent)
-    {
-        mCreateInfo.width = extent.width;
-        mCreateInfo.height = extent.height;
-        mCreateInfo.layers = 1;
-
-        return *this;
-    }
-
-    GIFramebufferBuilderVk& GIFramebufferBuilderVk::AddAttachment(VkImageView imageView)
-    {
-        mImageViews.push_back(imageView);
-        return *this;
-    }
-
-    SharedPtr<GIFramebufferVk> GIFramebufferBuilderVk::Build()
-    {
-        mCreateInfo.attachmentCount = (uint32_t)mImageViews.size();
-        mCreateInfo.pAttachments = mImageViews.data();
-
-        auto framebuffer = SharedPtr<GIFramebufferVk>(new GIFramebufferVk(
-            mRenderPass,
-            mCreateInfo));
-        assert(framebuffer->IsValid());
-
-        return framebuffer;
     }
 }

@@ -28,12 +28,7 @@ namespace AutoCAD::Graphics::Engine
         std::optional<VkDescriptorSetLayoutBinding> GetBindingByName(const char* name) const;
 
     private:
-        GIDescriptorSetLayoutVk(
-            SharedPtr<GIDeviceVk> device,
-            SharedPtr<GIShaderReflectionVk> reflection,
-            const std::vector<VkDescriptorSetLayoutBinding>& setBindings,
-            bool isPushDescriptor
-        );
+        GIDescriptorSetLayoutVk(SharedPtr<GIDeviceVk> device);
 
     private:
         SharedPtr<GIShaderReflectionVk> mShaderReflection;

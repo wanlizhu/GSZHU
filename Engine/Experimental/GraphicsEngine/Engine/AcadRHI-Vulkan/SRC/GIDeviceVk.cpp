@@ -5,33 +5,80 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    GIDeviceVk::GIDeviceVk(
+    SharedPtr<GIDeviceVk> GIDeviceVk::Create(
         SharedPtr<GIInstanceVk> instance,
-        VkPhysicalDevice physicalDevice,
-        VkDeviceCreateInfo& createInfo
+        VkPhysicalDevice physicalDevice
     )
-        : mInstance(instance)
-        , mPhysicalDeviceHandle(physicalDevice)
     {
         assert(instance->IsValid());
         assert(physicalDevice != VK_NULL_HANDLE);
 
-        vkGetPhysicalDeviceProperties(mPhysicalDeviceHandle, &mPhysicalDeviceInfo.properties);
-        vkGetPhysicalDeviceFeatures(mPhysicalDeviceHandle, &mPhysicalDeviceInfo.features);
-        vkGetPhysicalDeviceMemoryProperties(mPhysicalDeviceHandle, &mPhysicalDeviceInfo.memoryProperties);
+        VkDevice logicalDevice = VK_NULL_HANDLE;
+        VkPhysicalDeviceProperties properties = {};
+        VkPhysicalDeviceFeatures features = {};
+        VkPhysicalDeviceMemoryProperties memoryProps = {};
+        uint32_t graphicsQueueFamily = 0;
+        uint32_t computeQueueFamily = 0;
+        uint32_t transferQueueFamily = 0;
+        std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
+        std::vector<VkExtensionProperties> supportedExtensions;
+        std::vector<VkQueueFamilyProperties> supportedQueueFamilies;
+        std::vector<const char*> supportedExtensionNames;
+
+        SetupDeviceQueues(
+            physicalDevice,
+            queueCreateInfos,
+            &graphicsQueueFamily,
+            &computeQueueFamily,
+            &transferQueueFamily
+        );
+
+        vkGetPhysicalDeviceProperties(physicalDevice, &properties);
+        vkGetPhysicalDeviceFeatures(physicalDevice, &features);
+        vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memoryProps);
 
         uint32_t extensionCount = 0;
-        vkEnumerateDeviceExtensionProperties(mPhysicalDeviceHandle, nullptr, &extensionCount, nullptr);
-        mPhysicalDeviceInfo.supportedExtensions.resize(extensionCount);
-        vkEnumerateDeviceExtensionProperties(mPhysicalDeviceHandle, nullptr, &extensionCount, mPhysicalDeviceInfo.supportedExtensions.data());
-        mOptionalExtensions.Initialize(mPhysicalDeviceInfo.supportedExtensions);
+        vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionCount, nullptr);
+        supportedExtensions.resize(extensionCount);
+        vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionCount, supportedExtensions.data());
+        std::for_each(supportedExtensions.begin(), 
+                      supportedExtensions.end(), 
+                      [&](const VkExtensionProperties& prop) {
+                          supportedExtensionNames.push_back(prop.extensionName);
+                      });
 
-        uint32_t familyCount = 0;
-        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDeviceHandle, &familyCount, nullptr);
-        mPhysicalDeviceInfo.supportedQueueFamilies.resize(familyCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDeviceHandle, &familyCount, mPhysicalDeviceInfo.supportedQueueFamilies.data());
+        VkDeviceCreateInfo createInfo = {};
+        createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        createInfo.pNext = nullptr;
+        createInfo.flags = 0;
+        createInfo.queueCreateInfoCount = (uint32_t)queueCreateInfos.size();
+        createInfo.pQueueCreateInfos = queueCreateInfos.data();
+        createInfo.enabledLayerCount = (uint32_t)instance->GetEnabledLayers().size();
+        createInfo.ppEnabledLayerNames = instance->GetEnabledLayers().data();
+        createInfo.enabledExtensionCount = (uint32_t)supportedExtensionNames.size();
+        createInfo.ppEnabledExtensionNames = supportedExtensionNames.data();
+        createInfo.pEnabledFeatures = &features;
+        VK_CHECK(vkCreateDevice(physicalDevice, &createInfo, nullptr, &logicalDevice));
 
-        VK_CHECK(vkCreateDevice(mPhysicalDeviceHandle, &createInfo, nullptr, &mLogicalDeviceHandle));
+        SharedPtr<GIDeviceVk> result(new GIDeviceVk());
+        result->mInstance = instance;
+        result->mPhysicalDeviceHandle = physicalDevice;
+        result->mLogicalDeviceHandle = logicalDevice;
+        result->mEnabledExtensionNames = supportedExtensionNames;
+
+        VkQueue graphicsQueueHandle = VK_NULL_HANDLE;
+        vkGetDeviceQueue(logicalDevice, graphicsQueueFamily, 0, &graphicsQueueHandle);
+        result->mGraphicsQueue = GICommandQueueVk::Create(result, graphicsQueueHandle, graphicsQueueFamily);
+
+        VkQueue computeQueueHandle = VK_NULL_HANDLE;
+        vkGetDeviceQueue(logicalDevice, computeQueueFamily, 0, &computeQueueHandle);
+        result->mGraphicsQueue = GICommandQueueVk::Create(result, computeQueueHandle, computeQueueFamily);
+
+        VkQueue transferQueueHandle = VK_NULL_HANDLE;
+        vkGetDeviceQueue(logicalDevice, transferQueueFamily, 0, &transferQueueHandle);
+        result->mGraphicsQueue = GICommandQueueVk::Create(result, transferQueueHandle, transferQueueFamily);
+
+        return result;
     }
 
     GIDeviceVk::~GIDeviceVk()
@@ -44,38 +91,6 @@ namespace AutoCAD::Graphics::Engine
         }
     }
 
-    OptionalDeviceExtensions::OptionalDeviceExtensions()
-        : packed(0)
-    {
-        static_assert(sizeof(packed) == sizeof(OptionalDeviceExtensions));
-    }
-
-    void OptionalDeviceExtensions::Initialize(const std::vector<VkExtensionProperties> extensions)
-    {
-        auto HasExtension = [&](const char* name) {
-            return std::find_if(
-                extensions.begin(),
-                extensions.end(),
-                [&](const VkExtensionProperties& prop) {
-                    return strcmp(name, prop.extensionName) == 0;
-                }) != extensions.end();
-        };
-
-        KHRMaintenance1 = HasExtension(VK_KHR_MAINTENANCE1_EXTENSION_NAME);
-        KHRMaintenance2 = HasExtension(VK_KHR_MAINTENANCE2_EXTENSION_NAME);
-        KHRDedicatedAllocation = HasExtension(VK_KHR_GET_MEMORY_REQUIREMENTS_2_EXTENSION_NAME);
-        EXTValidationCache = HasExtension(VK_EXT_VALIDATION_CACHE_EXTENSION_NAME);
-        AMDBufferMarker = HasExtension(VK_AMD_BUFFER_MARKER_EXTENSION_NAME);
-        NVDiagnosticCheckpoints = HasExtension(VK_NV_DEVICE_DIAGNOSTIC_CHECKPOINTS_EXTENSION_NAME);
-        GoogleDisplayTiming = HasExtension(VK_GOOGLE_DISPLAY_TIMING_EXTENSION_NAME);
-        YcbcrSampler = HasExtension(VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME) &&
-            HasExtension(VK_KHR_BIND_MEMORY_2_EXTENSION_NAME) &&
-            HasExtension(VK_KHR_GET_MEMORY_REQUIREMENTS_2_EXTENSION_NAME);
-        MemoryPriority = HasExtension(VK_EXT_MEMORY_PRIORITY_EXTENSION_NAME);
-        DriverProperties = HasExtension(VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME);
-        EXTFragmentDensityMap = HasExtension(VK_EXT_FRAGMENT_DENSITY_MAP_EXTENSION_NAME);
-    }
-
     GIDeviceVk::operator const VkDevice& () const
     {
         return mLogicalDeviceHandle;
@@ -84,6 +99,16 @@ namespace AutoCAD::Graphics::Engine
     bool GIDeviceVk::IsValid() const
     {
         return mLogicalDeviceHandle != VK_NULL_HANDLE;
+    }
+
+    bool GIDeviceVk::IsExtensionEnabled(const char* name) const
+    {
+        return std::find_if(
+            mEnabledExtensionNames.begin(),
+            mEnabledExtensionNames.end(),
+            [&](const char* extension) {
+                return std::strcmp(extension, name) == 0;
+            }) != mEnabledExtensionNames.end();
     }
 
     void GIDeviceVk::SetupPresentQueue(VkSurfaceKHR surface)
@@ -122,11 +147,6 @@ namespace AutoCAD::Graphics::Engine
         LOG_ERROR("No device queue supports present to surface!\n");
     }
 
-    void GIDeviceVk::SetCurrentDC(WeakPtr<GIDeviceContextVk> dc)
-    {
-        mCurrentDC = dc;
-    }
-
     SharedPtr<GIInstanceVk> const& GIDeviceVk::GetInstance() const
     {
         return mInstance;
@@ -142,24 +162,10 @@ namespace AutoCAD::Graphics::Engine
         return mPhysicalDeviceHandle;
     }
 
-    const GIDeviceVk::PhysicalDeviceInfo& GIDeviceVk::GetPhysicalDeviceInfo() const
-    {
-        return mPhysicalDeviceInfo;
-    }
-
-    OptionalDeviceExtensions const& GIDeviceVk::GetOptionalExtensions() const
-    {
-        return mOptionalExtensions;
-    }
 
     VkDevice GIDeviceVk::GetLogicalDevice() const
     {
         return mLogicalDeviceHandle;
-    }
-
-    GIDeviceContextVk* GIDeviceVk::GetDC() const
-    {
-        return mCurrentDC.lock().get();
     }
 
     SharedPtr<GICommandQueueVk> GIDeviceVk::GetGraphicsQueue() const
@@ -187,216 +193,93 @@ namespace AutoCAD::Graphics::Engine
         vkDeviceWaitIdle(mLogicalDeviceHandle);
     }
 
-    GIDeviceBuilderVk::GIDeviceBuilderVk(SharedPtr<GIInstanceVk> instance)
-        : mInstance(instance)
+    void GIDeviceVk::SetupDeviceQueues(
+        VkPhysicalDevice physicalDevice,
+        std::vector<VkDeviceQueueCreateInfo> queueCreateInfos,
+        uint32_t* graphicsQueueFamily,
+        uint32_t* computeQueueFamily,
+        uint32_t* transferQueueFamily
+    )
     {
-        mCreateInfo = {};
-        mCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-        mCreateInfo.pNext = nullptr;
-        mCreateInfo.flags = 0;
-    }
+        uint32_t dummy[3];
+        if (graphicsQueueFamily == nullptr)
+            graphicsQueueFamily = &dummy[0];
+        if (computeQueueFamily == nullptr)
+            computeQueueFamily = &dummy[1];
+        if (transferQueueFamily == nullptr)
+            transferQueueFamily = &dummy[2];
 
-    GIDeviceBuilderVk& GIDeviceBuilderVk::SetPhysicalDevice(VkPhysicalDevice physicalDevice)
-    {
-        mPhysicalDeviceHandle = physicalDevice;
-        assert(mPhysicalDeviceHandle != VK_NULL_HANDLE);
-        vkGetPhysicalDeviceFeatures(mPhysicalDeviceHandle, &mSupportedFeatures);
-
-        uint32_t extensionCount = 0;
-        VK_CHECK(vkEnumerateDeviceExtensionProperties(mPhysicalDeviceHandle, nullptr, &extensionCount, nullptr));
-        mSupportedExtensions.resize(extensionCount);
-        VK_CHECK(vkEnumerateDeviceExtensionProperties(mPhysicalDeviceHandle, nullptr, &extensionCount, mSupportedExtensions.data()));
+        *graphicsQueueFamily = UINT_MAX;
+        *computeQueueFamily = UINT_MAX;
+        *transferQueueFamily = UINT_MAX;
 
         uint32_t familyCount = 0;
-        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDeviceHandle, &familyCount, nullptr);
-        mSupportedQueueFamilies.resize(familyCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(mPhysicalDeviceHandle, &familyCount, mSupportedQueueFamilies.data());
-
-        return *this;
-    }
-
-    GIDeviceBuilderVk& GIDeviceBuilderVk::EnableExtension(const char* name, bool compulsory)
-    {
-        if (std::find_if(
-            mSupportedExtensions.begin(),
-            mSupportedExtensions.end(),
-            [&](const VkExtensionProperties& item) {
-                return strcmp(item.extensionName, name) == 0;
-            }) == mSupportedExtensions.end())
-        {
-            if (compulsory)
-            {
-                LOG_ERROR("Compulsory extension '%s' is not supported.\n", name);
-            }
-            else
-            {
-                LOG_WARNING("Optional extension '%s' is not supported.\n", name);
-            }
-        }
-        else
-        {
-            mEnabledExtensions.push_back(name);
-        }
-
-        return *this;
-    }
-
-    GIDeviceBuilderVk& GIDeviceBuilderVk::EnableExtensions(const std::vector<const char*>& names)
-    {
-        for (const auto& name : names)
-        {
-            EnableExtension(name, true);
-        }
-        return *this;
-    }
-
-    GIDeviceBuilderVk& GIDeviceBuilderVk::EnableFeatures(const VkPhysicalDeviceFeatures& features)
-    {
-        size_t count = sizeof(VkPhysicalDeviceFeatures) / sizeof(VkBool32);
-        VkBool32* src = (VkBool32*)&mSupportedFeatures;
-        VkBool32* dst = (VkBool32*)&features;
-
-        for (size_t i = 0; i < count; i++)
-        {
-            if (*(dst + i) == VK_TRUE && *(src + i) == VK_FALSE)
-            {
-                return *this;
-            }
-        }
-
-        mEnabledFeatures = features;
-        mCreateInfo.pEnabledFeatures = &mEnabledFeatures;
-
-        return *this;
-    }
-
-    GIDeviceBuilderVk& GIDeviceBuilderVk::CreateGraphicsQueue()
-    {
-        assert(mSupportedQueueFamilies.size() > 0);
+        std::vector<VkQueueFamilyProperties> queueFamilyProps;
         static float queuePriorities[1] = { 0.f };
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &familyCount, nullptr);
+        queueFamilyProps.resize(familyCount);
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &familyCount, queueFamilyProps.data());
 
-        for (uint32_t i = 0; i < mSupportedQueueFamilies.size(); i++)
+        for (uint32_t i = 0; i < queueFamilyProps.size(); i++)
         {
-            if ((mSupportedQueueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT))
+            if (*graphicsQueueFamily != UINT_MAX &&
+                *computeQueueFamily != UINT_MAX &&
+                *transferQueueFamily != UINT_MAX)
             {
-                if (!FindFromQueueCreateInfos(i))
-                {
-                    VkDeviceQueueCreateInfo queueCreateInfo = {};
-                    queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-                    queueCreateInfo.queueFamilyIndex = i;
-                    queueCreateInfo.queueCount = 1;
-                    queueCreateInfo.pQueuePriorities = queuePriorities;
-                    mQueueCreateInfos.emplace_back(queueCreateInfo);
-                }
+                break;
+            }
+
+            if (*graphicsQueueFamily == UINT_MAX 
+                && (queueFamilyProps[i].queueFlags & VK_QUEUE_GRAPHICS_BIT))
+            {
+                VkDeviceQueueCreateInfo queueCreateInfo = {};
+                queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+                queueCreateInfo.queueFamilyIndex = i;
+                queueCreateInfo.queueCount = 1;
+                queueCreateInfo.pQueuePriorities = queuePriorities;
+                queueCreateInfos.emplace_back(queueCreateInfo);
+                *graphicsQueueFamily = i;
+            }
+
+            if (*computeQueueFamily == UINT_MAX
+                && (queueFamilyProps[i].queueFlags & VK_QUEUE_COMPUTE_BIT))
+            {
+                VkDeviceQueueCreateInfo queueCreateInfo = {};
+                queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+                queueCreateInfo.queueFamilyIndex = i;
+                queueCreateInfo.queueCount = 1;
+                queueCreateInfo.pQueuePriorities = queuePriorities;
+                queueCreateInfos.emplace_back(queueCreateInfo);
+                *computeQueueFamily = i;
+            }
+
+            if (*transferQueueFamily == UINT_MAX
+                && (queueFamilyProps[i].queueFlags & VK_QUEUE_COMPUTE_BIT))
+            {
+                VkDeviceQueueCreateInfo queueCreateInfo = {};
+                queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+                queueCreateInfo.queueFamilyIndex = i;
+                queueCreateInfo.queueCount = 1;
+                queueCreateInfo.pQueuePriorities = queuePriorities;
+                queueCreateInfos.emplace_back(queueCreateInfo);
+                *transferQueueFamily = i;
             }
         }
 
-        return *this;
-    }
-
-    GIDeviceBuilderVk& GIDeviceBuilderVk::CreateComputeQueue()
-    {
-        assert(mSupportedQueueFamilies.size() > 0);
-        static float queuePriorities[1] = { 0.f };
-
-        for (uint32_t i = 0; i < mSupportedQueueFamilies.size(); i++)
+        std::sort(
+            queueCreateInfos.begin(),
+            queueCreateInfos.end(), 
+            [](const VkDeviceQueueCreateInfo& info1, const VkDeviceQueueCreateInfo& info2) {
+                return info1.queueFamilyIndex < info2.queueFamilyIndex;
+            });
+        auto uniqueEnd = std::unique(queueCreateInfos.begin(),
+                                     queueCreateInfos.end(),
+                                     [](const VkDeviceQueueCreateInfo& info1, const VkDeviceQueueCreateInfo& info2) {
+                                         return info1.queueFamilyIndex == info2.queueFamilyIndex;
+                                     });
+        if (uniqueEnd != queueCreateInfos.end())
         {
-            if ((mSupportedQueueFamilies[i].queueFlags & VK_QUEUE_COMPUTE_BIT))
-            {
-                if (!FindFromQueueCreateInfos(i))
-                {
-                    VkDeviceQueueCreateInfo queueCreateInfo = {};
-                    queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-                    queueCreateInfo.queueFamilyIndex = i;
-                    queueCreateInfo.queueCount = 1;
-                    queueCreateInfo.pQueuePriorities = queuePriorities;
-                    mQueueCreateInfos.emplace_back(queueCreateInfo);
-                }
-            }
+            queueCreateInfos.erase(uniqueEnd);
         }
-
-        return *this;
-    }
-
-    GIDeviceBuilderVk& GIDeviceBuilderVk::CreateTransferQueue()
-    {
-        assert(mSupportedQueueFamilies.size() > 0);
-        static float queuePriorities[1] = { 0.f };
-
-        for (uint32_t i = 0; i < mSupportedQueueFamilies.size(); i++)
-        {
-            if ((mSupportedQueueFamilies[i].queueFlags & VK_QUEUE_TRANSFER_BIT))
-            {
-                if (!FindFromQueueCreateInfos(i))
-                {
-                    VkDeviceQueueCreateInfo queueCreateInfo = {};
-                    queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-                    queueCreateInfo.queueFamilyIndex = i;
-                    queueCreateInfo.queueCount = 1;
-                    queueCreateInfo.pQueuePriorities = queuePriorities;
-                    mQueueCreateInfos.emplace_back(queueCreateInfo);
-                }
-            }
-        }
-
-        return *this;
-    }
-
-    bool GIDeviceBuilderVk::FindFromQueueCreateInfos(uint32_t familyIndex)
-    {
-        return std::find_if(
-            mQueueCreateInfos.begin(),
-            mQueueCreateInfos.end(),
-            [&](const VkDeviceQueueCreateInfo& info) {
-                return info.queueFamilyIndex == familyIndex;
-            }) != mQueueCreateInfos.end();
-    }
-
-    SharedPtr<GIDeviceVk> GIDeviceBuilderVk::Build()
-    {
-        mCreateInfo.pEnabledFeatures = &mEnabledFeatures;
-        mCreateInfo.enabledExtensionCount = (uint32_t)mEnabledExtensions.size();
-        mCreateInfo.ppEnabledExtensionNames = mEnabledExtensions.data();
-        if (mInstance->IsValidationLayerEnabled())
-        {
-            mCreateInfo.enabledLayerCount = (uint32_t)mInstance->mEnabledLayers.size();
-            mCreateInfo.ppEnabledLayerNames = mInstance->mEnabledLayers.data();
-        }
-        mCreateInfo.queueCreateInfoCount = (uint32_t)mQueueCreateInfos.size();
-        mCreateInfo.pQueueCreateInfos = mQueueCreateInfos.data();
-
-        auto device = SharedPtr<GIDeviceVk>(new GIDeviceVk(
-            mInstance,
-            mPhysicalDeviceHandle,
-            mCreateInfo));
-        assert(device->IsValid());
-
-        for (uint32_t i = 0; i < mCreateInfo.queueCreateInfoCount; i++)
-        {
-            const auto& queueFamilies = device->mPhysicalDeviceInfo.supportedQueueFamilies;
-            uint32_t familyIndex = mCreateInfo.pQueueCreateInfos[i].queueFamilyIndex;
-            VkQueue queue = VK_NULL_HANDLE;
-            vkGetDeviceQueue(device->mLogicalDeviceHandle, familyIndex, 0, &queue);
-
-            if (VK_QUEUE_GRAPHICS_BIT & queueFamilies[familyIndex].queueFlags)
-            {
-                device->mGraphicsQueue.reset(new GICommandQueueVk(device, queue, familyIndex));
-                assert(device->mGraphicsQueue->IsValid());
-            }
-
-            if (VK_QUEUE_COMPUTE_BIT & queueFamilies[familyIndex].queueFlags)
-            {
-                device->mComputeQueue.reset(new GICommandQueueVk(device, queue, familyIndex));
-                assert(device->mComputeQueue->IsValid());
-            }
-
-            if (VK_QUEUE_TRANSFER_BIT & queueFamilies[familyIndex].queueFlags)
-            {
-                device->mTransferQueue.reset(new GICommandQueueVk(device, queue, familyIndex));
-                assert(device->mTransferQueue->IsValid());
-            }
-        }
-
-        return device;
     }
 }

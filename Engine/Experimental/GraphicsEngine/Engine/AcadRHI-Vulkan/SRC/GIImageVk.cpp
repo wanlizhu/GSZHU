@@ -6,42 +6,77 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    GIImageVk::GIImageVk(
+    SharedPtr<GIImageVk> GIImageVk::Create(
         SharedPtr<GIDeviceVk> device,
-        const VkImageCreateInfo& createInfo,
-        const void* data,
+        VkImageType imageType,
+        VkFormat format,
+        VkExtent3D extent,
+        VkImageLayout imageLayout,
+        VkSampleCountFlagBits samples,
+        VkImageUsageFlagBits usage,
+        std::vector<uint32_t> sharingQueues,
         VkMemoryPropertyFlags properties,
+        const void* initialData,
         EResourceState initialState
     )
-        : GIResourceVk(device)
-        , mResourceState(initialState)
     {
-        mImageInfo.imageType = createInfo.imageType;
-        mImageInfo.format = createInfo.format;
-        mImageInfo.extent = createInfo.extent;
-        mImageInfo.mipLevels = createInfo.mipLevels;
-        mImageInfo.arrayLayers = createInfo.arrayLayers;
-        mImageInfo.samples = createInfo.samples;
-        mImageInfo.tiling = createInfo.tiling;
-        mImageInfo.usage = createInfo.usage;
-        mImageInfo.sharingMode = createInfo.sharingMode;
-        mImageInfo.imageLayout = createInfo.initialLayout;
+        VkImage image = VK_NULL_HANDLE;
+        VkDeviceMemory memory = VK_NULL_HANDLE;
+        VkImageCreateInfo createInfo = {};
+        createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+        createInfo.pNext = nullptr;
+        createInfo.flags = 0;
+        createInfo.imageType = imageType;
+        createInfo.format = format;
+        createInfo.extent = extent;
+        createInfo.mipLevels = 1;
+        createInfo.arrayLayers = 1;
+        createInfo.samples = samples;
+        createInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+        createInfo.usage = usage;
+        createInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        createInfo.queueFamilyIndexCount = 0;
+        createInfo.pQueueFamilyIndices = nullptr;
+        createInfo.initialLayout = imageLayout;
 
-        VK_CHECK(vkCreateImage(*mDevice, &createInfo, nullptr, &mImageHandle));
+        VK_CHECK(vkCreateImage(*device, &createInfo, nullptr, &image));
 
-        VkMemoryRequirements memoryRequirements = {};
+        VkMemoryRequirements requirements = {};
         VkMemoryAllocateInfo allocInfo = {};
 
-        vkGetImageMemoryRequirements(*mDevice, mImageHandle, &memoryRequirements);
-        mImageInfo.sizeInBytes = memoryRequirements.size;
-
+        vkGetImageMemoryRequirements(*device, image, &requirements);
         allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-        allocInfo.allocationSize = memoryRequirements.size;
-        allocInfo.memoryTypeIndex = mDevice->GetMemoryTypeIndex(memoryRequirements.memoryTypeBits, properties);
-        VK_CHECK(vkAllocateMemory(*mDevice, &allocInfo, nullptr, &mMemoryHandle));
+        allocInfo.pNext = nullptr;
+        allocInfo.allocationSize = requirements.size;
+        allocInfo.memoryTypeIndex = device->GetMemoryTypeIndex(requirements.memoryTypeBits, properties);
+        VK_CHECK(vkAllocateMemory(*device, &allocInfo, nullptr, &memory));
+        VK_CHECK(vkBindImageMemory(*device, image, memory, 0));
 
-        VK_CHECK(vkBindImageMemory(*mDevice, mImageHandle, mMemoryHandle, 0));
+        SharedPtr<GIImageVk> result(new GIImageVk(device));
+        result->mImageHandle = image;
+        result->mMemoryHandle = memory;
+        result->mMemoryProperties = properties;
+        result->mImageType = imageType;
+        result->mFormat = format;
+        result->mExtent = extent;
+        result->mSizeInBytes = requirements.size;
+        result->mMipLevels = 1;
+        result->mArrayLayers = 1;
+        result->mSampleCount = samples;
+        result->mUsage = usage;
+        result->mGlobalResourceState = initialState;
+
+        if (initialData != nullptr)
+        {
+            result->UpdateData(0, requirements.size, initialData, nullptr);
+        }
+
+        return result;
     }
+
+    GIImageVk::GIImageVk(SharedPtr<GIDeviceVk> device)
+        : GIResourceVk(device)
+    {}
 
     GIImageVk::~GIImageVk()
     {
@@ -88,17 +123,17 @@ namespace AutoCAD::Graphics::Engine
         return EResourceType::Image;
     }
 
-    GIResourceStateVk& GIImageVk::GetResourceState()
+    EResourceState GIImageVk::GetResourceState() const
     {
-        return mResourceState;
+        return mGlobalResourceState;
     }
 
-    void GIImageVk::TransitionState(const GIResourceStateVk& newState)
+    void GIImageVk::TransitionState(const EResourceState& newState)
     {
-        // TODO
+        //TODO
     }
 
-    void GIImageVk::TransitionSubresourceState(const VkImageSubresourceRange& subresource, const GIResourceStateVk& newState)
+    void GIImageVk::TransitionSubresourceState(const VkImageSubresourceRange& subresource, const EResourceState& newState)
     {}
 
     GIImageVk::operator const VkImage& () const
@@ -106,10 +141,42 @@ namespace AutoCAD::Graphics::Engine
         return mImageHandle;
     }
 
-    GIImageInfoVk const& GIImageVk::GetInfo() const
+    VkDeviceMemory GIImageVk::GetMemory() const
     {
-        return mImageInfo;
+        return mMemoryHandle;
     }
+
+    VkMemoryPropertyFlags GIImageVk::GetMemoryProperties() const
+    {
+        return mMemoryProperties;
+    }
+
+    VkDeviceSize GIImageVk::GetSizeInBytes() const
+    {
+        return mSizeInBytes;
+    }
+
+    VkImageUsageFlags GIImageVk::GetUsage() const
+    {
+        return mUsage;
+    }
+
+    VkImageType GIImageVk::GetImageType() const
+    {
+        return mImageType;
+    }
+
+    VkFormat GIImageVk::GetFormat() const
+    {
+        return mFormat;
+    }
+
+    VkExtent3D GIImageVk::GetExtent() const;
+    uint32_t GIImageVk::GetMipLevels() const;
+    uint32_t GIImageVk::GetArrayLayers() const;
+    VkSampleCountFlagBits GIImageVk::GetSampleCount() const;
+    bool GIImageVk::HasGlobalState() const;
+    EResourceState GIImageVk::GetSubresourceState(const VkImageSubresourceRange& subresource) const;
 
     SharedPtr<GIImageViewVk> GIImageVk::GetTextureView(
         VkImageViewType viewType,
@@ -138,108 +205,4 @@ namespace AutoCAD::Graphics::Engine
 
     void GIImageVk::CreateMipmaps(uint32_t mipLevels)
     {}
-
-    GIImageBuilderVk::GIImageBuilderVk(SharedPtr<GIDeviceVk> device)
-        : mDevice(device)
-    {}
-
-    GIImageBuilderVk& GIImageBuilderVk::SetAllocator(SharedPtr<GIDeviceMemoryAllocatorVk> allocator)
-    {
-        mAllocator = allocator;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetImageType(VkImageType type)
-    {
-        mCreateInfo.imageType = type;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetFormat(VkFormat format)
-    {
-        mCreateInfo.format = format;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetExtent(VkExtent3D extent)
-    {
-        mCreateInfo.extent = extent;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetMipLevels(uint32_t mipLevels)
-    {
-        mCreateInfo.mipLevels = mipLevels;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetArrayLayers(uint32_t arrayLevels)
-    {
-        mCreateInfo.arrayLayers = arrayLevels;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetSamples(VkSampleCountFlagBits samples)
-    {
-        mCreateInfo.samples = samples;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetImageTiling(VkImageTiling tiling)
-    {
-        mCreateInfo.tiling = tiling;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::AddImageUsages(VkImageUsageFlags usages)
-    {
-        mCreateInfo.usage |= usages;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::AddMemoryProperties(VkMemoryPropertyFlags properties)
-    {
-        mProperties |= properties;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::AddSharedQueue(uint32_t queue)
-    {
-        auto it = std::find(mSharedQueues.begin(), mSharedQueues.end(), queue);
-        if (it == mSharedQueues.end())
-            mSharedQueues.push_back(queue);
-
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetInitialLayout(VkImageLayout layout)
-    {
-        mCreateInfo.initialLayout = layout;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetInitialData(const void* data)
-    {
-        mInitialData = data;
-        return *this;
-    }
-
-    GIImageBuilderVk& GIImageBuilderVk::SetInitialState(EResourceState state)
-    {
-        mInitialState = state;
-        return *this;
-    }
-
-    SharedPtr<GIImageVk> GIImageBuilderVk::Build()
-    {
-        auto result = SharedPtr<GIImageVk>(new GIImageVk(
-            mDevice,
-            mCreateInfo,
-            mInitialData,
-            mProperties,
-            mInitialState
-            ));
-        assert(result->IsValid());
-        return result;
-    }
 }

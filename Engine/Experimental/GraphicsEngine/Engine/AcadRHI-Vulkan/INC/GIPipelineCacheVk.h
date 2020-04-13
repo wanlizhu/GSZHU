@@ -29,10 +29,7 @@ namespace AutoCAD::Graphics::Engine
         void Flush() const;
 
     private:
-        GIPipelineCacheVk(
-            SharedPtr<GIDeviceVk> device,
-            const std::wstring& path
-        );
+        GIPipelineCacheVk(SharedPtr<GIDeviceVk> device);
 
     private:
         VkPipelineCache mPipelineCacheHandle = VK_NULL_HANDLE;

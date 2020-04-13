@@ -19,12 +19,12 @@ namespace AutoCAD::Graphics::Engine
         virtual void SetDebugTag(const DebugTag& tag) const override final;
 
         operator const VkCommandPool& () const;
-        SharedPtr<GICommandBufferVk> Allocate(bool secondary = false);
+        SharedPtr<GICommandBufferVk> Allocate(bool secondary, uint32_t threshold);
         std::thread::id GetThreadId() const;
         VkQueue GetQueue() const;
 
     protected:
-        GICommandPoolVk(SharedPtr<GICommandQueueVk> queue);
+        GICommandPoolVk(SharedPtr<GIDeviceVk> device);
         
     private:
         VkCommandPool mCommandPoolHandle = VK_NULL_HANDLE;

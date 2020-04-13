@@ -5,29 +5,34 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    class GISampledImageVk : public std::enable_shared_from_this<GISampledImageVk>
+    class GISampledImageVk : public GIImageVk
     {
     public:
-        static SharedPtr<GISampledImageVk> Create(SharedPtr<GIImageVk> image, SharedPtr<GISamplerVk> sampler);
-
-        virtual ~GISampledImageVk();
-        operator const VkImage& () const;
-        bool IsValid() const;
-
-        void SetImage(SharedPtr<GIImageVk> image);
-        void SetSampler(SharedPtr<GISamplerVk> sampler);
-
-        SharedPtr<GIImageVk> GetImage() const;
-        SharedPtr<GISamplerVk> GetSampler() const;
-
-    protected:
-        GISampledImageVk(
-            SharedPtr<GIImageVk> image,
+        static SharedPtr<GISampledImageVk> Create(
+            SharedPtr<GIDeviceVk> device,
+            VkImageType imageType,
+            VkFormat format,
+            VkExtent2D extent,
+            VkImageLayout imageLayout,
+            VkSampleCountFlagBits samples,
+            VkImageUsageFlagBits usage,
+            std::vector<uint32_t> sharingQueues,
+            VkMemoryPropertyFlags properties,
+            const void* initialData,
+            EResourceState initialState,
             SharedPtr<GISamplerVk> sampler
         );
 
+        virtual ~GISampledImageVk();
+        bool IsValid() const;
+
+        void SetSampler(SharedPtr<GISamplerVk> sampler);
+        SharedPtr<GISamplerVk> GetSampler() const;
+
+    protected:
+        GISampledImageVk(SharedPtr<GIImageVk> device);
+
     private:
-        SharedPtr<GIImageVk> mImage;
         SharedPtr<GISamplerVk> mSampler;
     };
 }

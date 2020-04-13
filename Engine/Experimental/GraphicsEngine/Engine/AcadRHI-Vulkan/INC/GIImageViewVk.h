@@ -11,16 +11,16 @@ namespace AutoCAD::Graphics::Engine
         DECL_DEVICE_OBJECT(GIImageViewVk)
     public:
         static SharedPtr<GIImageViewVk> Create(
-            SharedPtr<GIImageVk> texture,
+            SharedPtr<GIImageVk> image,
             VkImageViewType type,
             VkFormat format,
-            const VkImageSubresourceRange& subresource = {}
+            const VkImageSubresourceRange& subresource
         );
 
         static CACHE_INDEX ComputeCacheIndex(
             VkImageViewType type,
             VkFormat format,
-            const VkImageSubresourceRange& subresource = {}
+            const VkImageSubresourceRange& subresource
         );
 
         virtual ~GIImageViewVk();
@@ -29,22 +29,18 @@ namespace AutoCAD::Graphics::Engine
         virtual void SetDebugTag(const DebugTag& tag) const override;
 
         operator const VkImageView& () const;
-        SharedPtr<GIImageVk> GetTexture() const;
+        SharedPtr<GIImageVk> GetImage() const;
         VkImageViewType GetImageViewType() const;
         VkFormat GetFormat() const;
         VkImageSubresourceRange const& GetSubresourceRange() const;
 
     protected:
-        GIImageViewVk(
-            SharedPtr<GIImageVk> texture,
-            VkImageViewType type,
-            VkFormat format,
-            const VkImageSubresourceRange& subresource = {}
-        );
+        GIImageViewVk(SharedPtr<GIDeviceVk> device);
 
     private:
+        CACHE_INDEX mCacheIndex = 0;
         VkImageView mImageViewHandle = VK_NULL_HANDLE;
-        SharedPtr<GIImageVk> mTexture;
+        SharedPtr<GIImageVk> mImage;
         VkImageViewType mImageViewType;
         VkFormat mFormat;
         VkImageSubresourceRange mSubresourceRange;

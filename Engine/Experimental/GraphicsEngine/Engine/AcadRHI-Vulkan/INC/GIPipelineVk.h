@@ -5,7 +5,6 @@
 namespace AutoCAD::Graphics::Engine
 {
     class GIShaderReflectionVk;
-    class GIShaderReflectionBuilderVk;
     class GIDescriptorSetLayoutVk;
     class GIPipelineLayoutVk;
     class GIPipelineDynamicStateVk;
@@ -30,13 +29,7 @@ namespace AutoCAD::Graphics::Engine
         VkPipelineBindPoint GetPipelineBindPoint() const;
 
     protected:
-        GIPipelineVk(
-            SharedPtr<GIDeviceVk> device,
-            SharedPtr<GIShaderReflectionVk> reflection,
-            const VkGraphicsPipelineCreateInfo& createInfo,
-            VkPipelineCache cache
-        );
-
+        GIPipelineVk(SharedPtr<GIDeviceVk> device);
         void CreatePipelineLayout();
 
     private:

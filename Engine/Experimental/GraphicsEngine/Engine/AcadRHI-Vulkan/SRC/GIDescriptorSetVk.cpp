@@ -5,35 +5,43 @@
 
 namespace AutoCAD::Graphics::Engine
 {
-    GIDescriptorSetVk::GIDescriptorSetVk(
-        WeakPtr<GIDescriptorPoolVk> pool,
+    SharedPtr<GIDescriptorSetVk> GIDescriptorSetVk::Create(
+        SharedPtr<GIDescriptorPoolVk> pool,
         SharedPtr<GIDescriptorSetLayoutVk> setLayout,
-        std::optional<WeakPtr<GIDescriptorSetVk>> parent
+        SharedPtr<GIDescriptorSetVk> parent
     )
-        : GIDeviceObjectVk(pool.lock()->GetDevice())
-        , mDescriptorSetLayout(setLayout)
-        , mDescriptorPool(pool)
-        , mParent(parent)
     {
         std::vector<VkDescriptorSetLayout> setLayouts;
         setLayouts.push_back(*setLayout);
 
+        auto device = pool->GetDevice();
+        VkDescriptorSet descriptorSet = VK_NULL_HANDLE;
+
         VkDescriptorSetAllocateInfo allocInfo = {};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         allocInfo.pNext = nullptr;
-        allocInfo.descriptorPool = *mDescriptorPool.lock();
+        allocInfo.descriptorPool = *pool;
         allocInfo.descriptorSetCount = 1;
         allocInfo.pSetLayouts = setLayouts.data();
+        VK_CHECK(vkAllocateDescriptorSets(*device, &allocInfo, &descriptorSet));
 
-        VK_CHECK(vkAllocateDescriptorSets(*mDevice, &allocInfo, &mDescriptorSetHandle));
+        SharedPtr<GIDescriptorSetVk> result(new GIDescriptorSetVk(device));
+        result->mDescriptorSetHandle = descriptorSet;
+        result->mDescriptorSetLayout = setLayout;
+
+        return result;
     }
+
+    GIDescriptorSetVk::GIDescriptorSetVk(SharedPtr<GIDeviceVk> device)
+        : GIDeviceObjectVk(device)
+    {}
 
     GIDescriptorSetVk::~GIDescriptorSetVk()
     {
-        auto pool = mDescriptorPool.lock();
-        if (IsValid() && pool)
+        auto descriptorSet = mDescriptorPool.lock();
+        if (IsValid() && descriptorSet)
         {
-            vkFreeDescriptorSets(*mDevice, *pool, 1, &mDescriptorSetHandle);
+            vkFreeDescriptorSets(*mDevice, *descriptorSet, 1, &mDescriptorSetHandle);
             mDescriptorSetHandle = VK_NULL_HANDLE;
         }
     }
