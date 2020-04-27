@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 ##################################################
 # Git ignore policy
 # 1. We should keep this file as short as possible
 # 2. We should avoid add any *.filetype directly.
 # 3. TODOs mean they are current status before git migration, we should not add any todo after git migration
-=======
-# Binary directories.
-[Bb]uild*/
-BIN/
-.INT/
-x64/
->>>>>>> 0fe37cdff3e814736d705b19e9a0edb07abdd537
 
 ##################################################
 
