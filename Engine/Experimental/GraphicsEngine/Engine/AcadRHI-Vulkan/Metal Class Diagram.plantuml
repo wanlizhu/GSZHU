@@ -1,0 +1,24 @@
+@startuml
+
+class VertexBufferLayout
+{
+    + stride
+    + inputRate
+}
+
+class VertexAttribute
+{
+    + format
+    + offset
+    + bufferIndex
+}
+
+class VertexDescriptor
+{
+    + attributes: list
+    + layouts: list
+}
+VertexBufferLayout *-- VertexDescriptor
+VertexAttribute *-- VertexDescriptor
+
+@enduml

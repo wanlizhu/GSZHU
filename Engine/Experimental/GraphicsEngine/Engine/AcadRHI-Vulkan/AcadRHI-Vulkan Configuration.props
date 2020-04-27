@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <ACADRHI_VULKAN_INC>$(SolutionDir)Engine\AcadRHI-Vulkan\INC</ACADRHI_VULKAN_INC>
+    <ACADRHI_VULKAN_LIB>$(SolutionDir)Engine\AcadRHI-Vulkan\BIN\AcadRHI-Vulkan-$(Platform)-$(Configuration)\AcadRHI-Vulkan.lib</ACADRHI_VULKAN_LIB>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>AcadRHI-Vulkan Configuration</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;$(ACADRHI_VULKAN_INC);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(ACADRHI_VULKAN_LIB);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent />
+    <Lib>
+      <AdditionalDependencies>$(ACADRHI_VULKAN_LIB);%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="ACADRHI_VULKAN_INC">
+      <Value>$(ACADRHI_VULKAN_INC)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="ACADRHI_VULKAN_LIB">
+      <Value>$(ACADRHI_VULKAN_LIB)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
