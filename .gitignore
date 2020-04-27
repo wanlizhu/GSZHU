@@ -1,14 +1,11 @@
-# Binary directories.
-[Bb]uild*/
-BIN/
-.INT/
+##################################################
+# Git ignore policy
+# 1. We should keep this file as short as possible
+# 2. We should avoid add any *.filetype directly.
+# 3. TODOs mean they are current status before git migration, we should not add any todo after git migration
 
-# Temporary directories.
-.vs/
-.gradle/
-.idea/
-__pycache__/
-__cache__/
+##################################################
 
-# Temporary files
-editor/Android/local.properties
+/build/*
+/bin/*
+/.vscode/ipch/*

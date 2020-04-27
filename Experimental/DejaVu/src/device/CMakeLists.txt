@@ -1,0 +1,39 @@
+cmake_minimum_required(VERSION 3.15.0)
+project(dejavu-device)
+include(GNUInstallDirs)
+include(CheckCXXCompilerFlag)
+include(CheckCXXSourceRuns)
+include(CMakeParseArguments)
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_library(dejavu-device SHARED "dllmain.cpp")
+
+find_package(Vulkan  REQUIRED)
+find_package(jsoncpp CONFIG REQUIRED)
+
+target_include_directories(dejavu-device PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_compile_definitions(dejavu-device PRIVATE "UNICODE")
+target_link_libraries(dejavu-device PRIVATE dejavu-core)
+target_link_libraries(dejavu-device PRIVATE Vulkan::Vulkan)
+target_link_libraries(dejavu-device PRIVATE jsoncpp_lib)
+
+target_sources(dejavu-device PRIVATE "render_device.h")
+target_sources(dejavu-device PRIVATE "render_device_imp_vk.h")
+target_sources(dejavu-device PRIVATE "vulkan/vulkan_handle.h")
+target_sources(dejavu-device PRIVATE "vulkan/vulkan_common.h")
+target_sources(dejavu-device PRIVATE "vulkan/vulkan_swapchain.h")
+target_sources(dejavu-device PRIVATE "vulkan/vulkan_image.h")
+
+target_sources(dejavu-device PRIVATE "render_device_imp_vk.cpp")
+target_sources(dejavu-device PRIVATE "vulkan/vulkan_common.cpp")
+target_sources(dejavu-device PRIVATE "vulkan/vulkan_swapchain.cpp")
+target_sources(dejavu-device PRIVATE "vulkan/vulkan_image.cpp")
+
+if (COMMAND djv_source_group)
+    djv_source_group(TARGET dejavu-device ROOTS "${CMAKE_CURRENT_SOURCE_DIR}") 
+endif()
