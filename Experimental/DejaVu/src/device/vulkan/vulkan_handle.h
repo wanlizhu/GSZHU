@@ -2,38 +2,40 @@
 
 #include <memory>
 #include <functional>
+#include <type_traits>
 #include <vulkan/vulkan.h>
 
 namespace djv
 {
+    void delete_vulkan_handle(
+        VkDevice device, 
+        void* handle, 
+        const VkAllocationCallbacks* allocator, 
+        const std::type_info& type
+    );
+
     template<typename T>
     class VulkanHandle
     {
     public:
-        using Handle = T;
-        using Deleter = std::function<void()>;
-        struct Hash 
-        {
-            size_t operator()(const VulkanHandle<T>& handle) const
-            {
-                return std::hash<void*>()(handle.handle());
-            }
-        };
-
         VulkanHandle() = default;
         VulkanHandle(nullptr_t) {}
-        VulkanHandle(Handle handle_, const Deleter& deleter)
+        VulkanHandle(T handle_, const std::function<void()>& deleter)
             : mHandle(handle_)
-            , mWatcher(std::shared_ptr<VulkanHandle<T>>(
-                this, 
-                [=] (VulkanHandle<T>* self) {
-                    deleter();
-                    self->mHandle = VK_NULL_HANDLE;
-                })
-            )
+            , mWatcher(this, [=] (VulkanHandle<T>* self) { if (self) deleter(); })
         {}
-
+        VulkanHandle(T handle_, VkDevice device)
+            : mHandle(handle_)
+            , mWatcher(this, [=] (VulkanHandle<T>* self) {
+                if (self && device) {
+                    delete_vulkan_handle(device, self->mHandle, nullptr, typeid(T));
+                    self->mHandle = nullptr;
+                }
+            })
+        {}
+        
         inline operator T() const { return mHandle; }
+        inline T operator*() const { return mHandle; }
         inline VulkanHandle& operator=(nullptr_t) { reset(); return *this; }
         inline bool operator==(const VulkanHandle& rhs) const { return handle() == rhs.handle(); }
         inline bool operator!=(const VulkanHandle& rhs) const { return handle() != rhs.handle();}
@@ -41,10 +43,12 @@ namespace djv
 
         inline T handle() const { return mHandle; }
         inline bool isValid() const { return mHandle != VK_NULL_HANDLE; }
-        inline void reset() { mWatcher.reset(); }
+        inline void reset() { mWatcher.reset(); mHandle = VK_NULL_HANDLE; }
+        inline int  useCount() const { mWatcher.use_count(); }
+        inline void swap(VulkanHandle<T>& other) { std::wap(mHandle, other.mHandle); std::swap(mWatcher, other.mWatcher); }
 
     private:
-        Handle mHandle = VK_NULL_HANDLE;
+        T mHandle = VK_NULL_HANDLE;
         std::shared_ptr<VulkanHandle<T>> mWatcher;
     };
 }

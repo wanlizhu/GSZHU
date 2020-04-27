@@ -7,14 +7,6 @@
 
 namespace djv
 {
-    enum class QueueFamily
-    {
-        Graphics,
-        Transfer,
-        Compute,
-        Present,
-    };
-
     class RenderDevice_Vulkan : public IRenderDevice
     {
     public:
@@ -24,23 +16,29 @@ namespace djv
             const std::vector<const char>& deviceExtensions
         );
         RenderDevice_Vulkan(const RenderDevice_Vulkan&) = delete;
-        RenderDevice_Vulkan(RenderDevice_Vulkan&& rhs);
+        RenderDevice_Vulkan(RenderDevice_Vulkan&& rhs) = delete;
         virtual ~RenderDevice_Vulkan();
 
         RenderDevice_Vulkan& operator=(const RenderDevice_Vulkan&) = delete;
-        RenderDevice_Vulkan& operator=(RenderDevice_Vulkan&& rhs);
+        RenderDevice_Vulkan& operator=(RenderDevice_Vulkan&& rhs) = delete;
         
         VkPhysicalDevice getPhysicalDevice() const;
         VkDevice getLogicalDevice() const;
-        VkQueue  getQueue(uint32_t family) const;
-        uint32_t getQueueFamilyIndex(QueueFamily family) const;
-        uint32_t getMemoryTypeIndex(VkMemoryPropertyFlagBits props) const;
+        VkQueue  getQueue(uint32_t familyIndex) const;
+        uint32_t getQueueFamilyIndex(VkQueueFlagBits queueFlags) const;
+        uint32_t getMemoryTypeIndex(uint32_t typeBits, VkMemoryPropertyFlagBits props) const;
         bool isValid() const;
 
         virtual void waitIdle() const override;
-        virtual bool setupSwapchain(void* window, int imageCount) override;
 
     protected:
+        bool setupLogicalDevice(
+            VkPhysicalDevice physicalDevice, 
+            const VkPhysicalDeviceFeatures& enabledFeatures, 
+            const std::vector<const char*>& enabledExtensions, 
+            VkQueueFlags requestedQueueTypes,
+            bool useSwapchain
+        );
         bool setupPresentQueue(VkSurfaceKHR surface);
         
     private:
@@ -50,11 +48,7 @@ namespace djv
         VulkanHandle<VkPhysicalDevice> mPhysicalDevice;
         VulkanHandle<VkDevice> mLogicalDevice;
 
-        std::optional<QueueIndex> mGraphicsQueueFamily;
-        std::optional<QueueIndex> mTransferQueueFamily;
-        std::optional<QueueIndex> mComputeQueueFamily;
-        std::optional<QueueIndex> mPresentQueueFamily;
-
+        std::unordered_map<QueueIndex, VkQueueFlagBits> mQueueFlagMap;
         std::unordered_map<QueueIndex, VulkanHandle<VkQueue>> mQueueHandleMap;
         std::unordered_map<QueueIndex, VulkanHandle<VkCommandPool>> mCommandPoolMap;
 

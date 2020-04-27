@@ -30,6 +30,7 @@ target_sources(dejavu-device PRIVATE "vulkan/vulkan_swapchain.h")
 target_sources(dejavu-device PRIVATE "vulkan/vulkan_image.h")
 
 target_sources(dejavu-device PRIVATE "render_device_imp_vk.cpp")
+target_sources(dejavu-device PRIVATE "vulkan/vulkan_handle.cpp")
 target_sources(dejavu-device PRIVATE "vulkan/vulkan_common.cpp")
 target_sources(dejavu-device PRIVATE "vulkan/vulkan_swapchain.cpp")
 target_sources(dejavu-device PRIVATE "vulkan/vulkan_image.cpp")

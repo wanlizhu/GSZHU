@@ -22,7 +22,7 @@ set(DJV_USE_EIGEN ON CACHE BOOL "Use Eigen library as the linear algebra backend
 add_library(dejavu-core SHARED "dllmain.cpp")
 
 find_package(Eigen3 CONFIG REQUIRED)
-find_package(assimp CONFIG REQUIRED)
+#find_package(assimp CONFIG REQUIRED)
 find_package(Stb REQUIRED)
 
 target_include_directories(dejavu-core PUBLIC  "${DJV_CORE_INCLUDE_DIR}")
@@ -30,7 +30,7 @@ target_include_directories(dejavu-core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(dejavu-core PRIVATE "${Stb_INCLUDE_DIR}")
 target_compile_definitions(dejavu-core PRIVATE "UNICODE")
 target_link_libraries(dejavu-core PUBLIC  Eigen3::Eigen)
-target_link_libraries(dejavu-core PRIVATE assimp::assimp)
+#target_link_libraries(dejavu-core PRIVATE assimp::assimp)
 
 configure_file("${DJV_CORE_INCLUDE_DIR}/dejavu/core/config_core.h.in" "${DJV_CORE_INCLUDE_DIR}/dejavu/core/config_core.h")
 
