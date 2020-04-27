@@ -9,3 +9,6 @@
 /build/*
 /bin/*
 /.vscode/ipch/*
+/Experimental/DejaVu/build/*
+/Experimental/DejaVu/.vscode/*
+/Experimental/DejaVu/.vs/*
