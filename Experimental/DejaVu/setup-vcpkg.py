@@ -7,11 +7,8 @@ PACKAGE_DIR = os.path.expanduser('~/vcpkg').replace('\\', '/')
 PACKAGE_EXE = '{}/{}'.format(PACKAGE_DIR, 'vcpkg.exe' if platform.system() == 'Windows' else 'vcpkg')
 PACKAGE_CONFIG = ':x64-windows' if platform.system() == 'Windows' else ':x64-osx'
 PACKAGE_LIST = [
-    #'opengl',
-    #'glew',
-    'glfw3',
+    #'glfw3',
     #'glslang',
-    #'spirv-cross',
     #'imgui',
     'stb',
     'eigen3',
