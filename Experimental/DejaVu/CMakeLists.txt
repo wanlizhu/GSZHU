@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15.0)
 
 execute_process(
-    COMMAND python setup-vcpkg.py 
+    COMMAND python3 setup-vcpkg.py 
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
