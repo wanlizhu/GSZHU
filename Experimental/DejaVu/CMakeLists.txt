@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.15.0)
 
+include(tools/PrecompiledHeader.cmake)
+
 execute_process(
-    COMMAND python3 setup-vcpkg.py 
+    COMMAND python setup-vcpkg.py 
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
@@ -37,6 +39,7 @@ project(DejaVu)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 set(DJV_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(DJV_BUILD_SAMPLES ON CACHE BOOL "")
 set(DJV_BUILD_TESTS ON CACHE BOOL "")
 
 function(djv_source_group)
@@ -78,10 +81,14 @@ function(djv_source_group)
     endforeach()
 endfunction()
 
-add_subdirectory(src/core)
-add_subdirectory(src/device)
-add_subdirectory(src/gui)
-add_subdirectory(src/render)
+add_subdirectory(source/externals)
+add_subdirectory(source/dejavu)
+add_subdirectory(source/plugins)
+
+if (DJV_BUILD_SAMPLES)
+    add_subdirectory(source/samples)
+endif()
+
 if (DJV_BUILD_TESTS)
     add_subdirectory(tests/unit-test)
 endif()

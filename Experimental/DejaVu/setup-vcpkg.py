@@ -7,7 +7,7 @@ PACKAGE_DIR = os.path.expanduser('~/vcpkg').replace('\\', '/')
 PACKAGE_EXE = '{}/{}'.format(PACKAGE_DIR, 'vcpkg.exe' if platform.system() == 'Windows' else 'vcpkg')
 PACKAGE_CONFIG = ':x64-windows' if platform.system() == 'Windows' else ':x64-osx'
 PACKAGE_LIST = [
-    #'glfw3',
+    'glfw3',
     #'glslang',
     #'imgui',
     'stb',
@@ -30,9 +30,7 @@ def run(cmd, return_output = False):
         err = os.system(cmd)
         
     if err != 0:
-        print('  errorlevel: ', errorlevel)
         print('  subprocess exit code: ', err)
-        os.system('pause')
     
     return output
     

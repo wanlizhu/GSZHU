@@ -1,0 +1,4 @@
+#pragma once
+
+#cmakedefine DJV_USE_EIGEN
+#cmakedefine DJV_BUILD_SHARED_LIBS
