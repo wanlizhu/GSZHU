@@ -1,6 +1,4 @@
-cmake_minimum_required(VERSION 3.15.0)
-
-include(tools/PrecompiledHeader.cmake)
+cmake_minimum_required(VERSION 3.17.1)
 
 execute_process(
     COMMAND python setup-vcpkg.py 

@@ -1,30 +1,24 @@
-cmake_minimum_required(VERSION 3.15.0)
+cmake_minimum_required(VERSION 3.17.1)
+
 project(dejavu-unittest)
 include(GNUInstallDirs)
 include(CheckCXXCompilerFlag)
 include(CheckCXXSourceRuns)
 include(CMakeParseArguments)
 
-if (DJV_ROOT_DIR)
-    set(DJV_UNITTEST_INCLUDE_DIR "${DJV_ROOT_DIR}/include")
-else()
-    set(DJV_UNITTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-endif()
-
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(DJV_USE_EIGEN ON CACHE BOOL "Use Eigen library as the linear algebra backend")
-
 add_executable(dejavu-unittest "dummy.cpp")
 
-find_package(GTest CONFIG REQUIRED)
+set_target_properties(dejavu-unittest PROPERTIES CXX_STANDARD           17)
+set_target_properties(dejavu-unittest PROPERTIES CXX_STANDARD_REQUIRED  ON)
+set_target_properties(dejavu-unittest PROPERTIES CXX_EXTENSIONS         ON)
+set_target_properties(dejavu-unittest PROPERTIES UNITY_BUILD            ON)
+set_target_properties(dejavu-unittest PROPERTIES UNITY_BUILD ON)
 
-target_include_directories(dejavu-unittest PRIVATE "${DJV_UNITTEST_INCLUDE_DIR}")
 target_include_directories(dejavu-unittest PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_compile_definitions(dejavu-unittest PRIVATE "UNICODE")
+
+find_package(GTest REQUIRED)
+
 target_link_libraries(dejavu-unittest PRIVATE GTest::gtest)
 target_link_libraries(dejavu-unittest PRIVATE GTest::gtest_main)
 target_link_libraries(dejavu-unittest PRIVATE dejavu-core)
@@ -33,5 +27,5 @@ target_sources(dejavu-unittest PRIVATE "core-bitmap-test.cpp")
 target_sources(dejavu-unittest PRIVATE "core-string-test.cpp")
 
 if (COMMAND djv_source_group)
-    djv_source_group(TARGET dejavu-unittest ROOTS "${CMAKE_CURRENT_SOURCE_DIR}" "${DJV_UNITTEST_INCLUDE_DIR}")    
+    djv_source_group(TARGET dejavu-unittest ROOTS "${CMAKE_CURRENT_SOURCE_DIR}")    
 endif()

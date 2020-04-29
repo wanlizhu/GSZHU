@@ -8,11 +8,11 @@ PACKAGE_EXE = '{}/{}'.format(PACKAGE_DIR, 'vcpkg.exe' if platform.system() == 'W
 PACKAGE_CONFIG = ':x64-windows' if platform.system() == 'Windows' else ':x64-osx'
 PACKAGE_LIST = [
     'glfw3',
-    #'glslang',
-    #'imgui',
+    'glslang',
+    'imgui',
     'stb',
     'eigen3',
-    #'assimp',
+    'assimp',
     'gtest',
     'jsoncpp',
 ]
