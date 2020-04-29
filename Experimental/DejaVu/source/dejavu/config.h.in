@@ -2,3 +2,6 @@
 
 #cmakedefine DJV_USE_EIGEN
 #cmakedefine DJV_BUILD_SHARED_LIBS
+#cmakedefine DJV_ENABLE_VULKAN
+#cmakedefine DJV_ENABLE_D3D12
+#cmakedefine DJV_ENABLE_METAL

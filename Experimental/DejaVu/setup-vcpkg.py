@@ -15,6 +15,7 @@ PACKAGE_LIST = [
     'assimp',
     'gtest',
     'jsoncpp',
+    'glog',
 ]
 
 errorlevel = 0
