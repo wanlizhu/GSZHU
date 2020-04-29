@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <functional>
-#include "dejavu/core/exceptions.h"
+#include "utils/exceptions.h"
 
 namespace djv
 {

@@ -3,8 +3,8 @@
 #include <string>
 #include <memory>
 #include <optional>
-#include "dejavu/core/preprocess.h"
-#include "dejavu/core/filesystem.h"
+#include "utils/preprocess.h"
+#include "utils/filesystem.h"
 
 namespace djv
 {

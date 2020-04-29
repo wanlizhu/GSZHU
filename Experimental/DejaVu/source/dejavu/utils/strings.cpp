@@ -1,4 +1,4 @@
-#include "dejavu/core/strings.h"
+#include "utils/strings.h"
 #if defined(_WIN32)
 #include <Windows.h>
 #else

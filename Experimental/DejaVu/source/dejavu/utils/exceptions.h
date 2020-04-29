@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <type_traits>
-#include "dejavu/core/preprocess.h"
+#include "utils/preprocess.h"
 
 namespace djv
 {

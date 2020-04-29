@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.17.1)
 
 project(dejavu-unittest)
+
 include(GNUInstallDirs)
 include(CheckCXXCompilerFlag)
 include(CheckCXXSourceRuns)
 include(CMakeParseArguments)
+
+find_package(GTest REQUIRED)
 
 add_executable(dejavu-unittest "dummy.cpp")
 
@@ -16,8 +19,6 @@ set_target_properties(dejavu-unittest PROPERTIES UNITY_BUILD ON)
 
 target_include_directories(dejavu-unittest PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_compile_definitions(dejavu-unittest PRIVATE "UNICODE")
-
-find_package(GTest REQUIRED)
 
 target_link_libraries(dejavu-unittest PRIVATE GTest::gtest)
 target_link_libraries(dejavu-unittest PRIVATE GTest::gtest_main)

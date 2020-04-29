@@ -22,6 +22,4 @@ namespace djv
 
     template<typename T>
     using AngleAxis = Eigen::AngleAxis<T>;
-
-
 }

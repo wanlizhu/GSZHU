@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17.1)
 
 execute_process(
-    COMMAND python setup-vcpkg.py 
+    COMMAND python3 setup-vcpkg.py 
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
@@ -22,8 +22,14 @@ endif()
 
 if (NOT DEFINED VCPKG_TARGET_TRIPLET)
     set(VCPKG_APPLOCAL_DEPS ON CACHE BOOL "")
-    set(VCPKG_TARGET_TRIPLET "x64-${CMAKE_HOST_SYSTEM_NAME}" CACHE STRING "")
-    string(TOLOWER "${VCPKG_TARGET_TRIPLET}" VCPKG_TARGET_TRIPLET)
+
+    if (WIN32)
+        set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "")
+    elseif (APPLE)
+        set(VCPKG_TARGET_TRIPLET "x64-osx" CACHE STRING "")
+    else (UNIX)
+        set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "")
+    endif()
 endif()
 
 if (EXISTS "${CMAKE_TOOLCHAIN_FILE}")
@@ -35,10 +41,13 @@ endif()
 project(DejaVu)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
-set(DJV_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(DJV_BUILD_SAMPLES ON CACHE BOOL "")
-set(DJV_BUILD_TESTS ON CACHE BOOL "")
+
+set(CMAKE_MODULE_PATH            ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+set(CMAKE_CXX_STANDARD           17)
+set(CMAKE_CXX_STANDARD_REQUIRED  ON)
+set(DJV_ROOT_DIR                 "${CMAKE_CURRENT_SOURCE_DIR}")
+set(DJV_BUILD_SAMPLES            ON CACHE BOOL "")
+set(DJV_BUILD_TESTS              ON CACHE BOOL "")
 
 function(djv_source_group)
     set(Options "")

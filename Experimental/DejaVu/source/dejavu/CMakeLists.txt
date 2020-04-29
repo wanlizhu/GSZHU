@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.17.1)
 
 project(dejavu-core)
+
 include(GNUInstallDirs)
 include(CheckCXXCompilerFlag)
 include(CheckCXXSourceRuns)
@@ -10,6 +11,15 @@ include(CMakeParseArguments)
 set(DJV_BUILD_SHARED_LIBS ON)
 set(DJV_USE_EIGEN         ON CACHE BOOL "Use Eigen library as the linear algebra backend")
 
+find_package(Threads)
+find_package(Vulkan  REQUIRED)
+find_package(glslang REQUIRED)
+find_package(Eigen3  REQUIRED)
+find_package(Stb     REQUIRED)
+find_package(glfw3   REQUIRED)
+find_package(imgui   REQUIRED)
+find_package(assimp  REQUIRED)
+
 add_library(dejavu-core SHARED "dllmain.cpp")
 
 set_target_properties(dejavu-core PROPERTIES CXX_STANDARD           17)
@@ -18,17 +28,10 @@ set_target_properties(dejavu-core PROPERTIES CXX_EXTENSIONS         ON)
 set_target_properties(dejavu-core PROPERTIES UNITY_BUILD            ON)
 
 target_include_directories(dejavu-core PUBLIC  "${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(dejavu-core PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_include_directories(dejavu-core PRIVATE "${Stb_INCLUDE_DIR}")
 target_compile_definitions(dejavu-core PRIVATE "UNICODE")
 target_precompile_headers(dejavu-core  PRIVATE "dejavu_pch.h")
-
-find_package(Vulkan  REQUIRED)
-find_package(glslang REQUIRED)
-find_package(Eigen3  REQUIRED)
-find_package(Stb     REQUIRED)
-find_package(glfw3   REQUIRED)
-find_package(imgui   REQUIRED)
-find_package(assimp  REQUIRED)
 
 target_link_libraries(dejavu-core PUBLIC  Eigen3::Eigen)
 target_link_libraries(dejavu-core PRIVATE Vulkan::Vulkan)
@@ -40,7 +43,7 @@ target_link_libraries(dejavu-core PRIVATE glfw)
 target_link_libraries(dejavu-core PRIVATE imgui::imgui)
 target_link_libraries(dejavu-core PRIVATE assimp::assimp)
 
-configure_file("config.h.in" "config.h")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/config.h")
 
 target_sources(dejavu-core PRIVATE "config.h")
 target_sources(dejavu-core PRIVATE "utils/filesystem.h")
@@ -57,7 +60,7 @@ target_sources(dejavu-core PRIVATE "device/device_interface.h")
 target_sources(dejavu-core PRIVATE "renderer/renderer_interface.h")
 target_sources(dejavu-core PRIVATE "scene/scene_interface.h")
 
-target_sources(dejavu-core PRIVATE "utils/filesystem_$<IF:$<STREQUAL:${CMAKE_SYSTEM_NAME},Windows>,windows,unix>.cpp")
+target_sources(dejavu-core PRIVATE "utils/filesystem.cpp")
 target_sources(dejavu-core PRIVATE "utils/logger.cpp")
 target_sources(dejavu-core PRIVATE "utils/strings.cpp")
 target_sources(dejavu-core PRIVATE "utils/bitmap.cpp")
@@ -69,5 +72,5 @@ target_sources(dejavu-core PRIVATE "renderer/renderer_impl.cpp")
 target_sources(dejavu-core PRIVATE "scene/scene_impl.cpp")
 
 if (COMMAND djv_source_group)
-    djv_source_group(dejavu-core ROOTS "${CMAKE_CURRENT_SOURCE_DIR}")    
+    djv_source_group(TARGET dejavu-core ROOTS "${CMAKE_CURRENT_SOURCE_DIR}")    
 endif()

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dejavu/core/config_core.h"
+#include "config.h"
 
 #if defined(_MSC_VER)
 #    define DJV_EXPORT   __declspec(dllexport)

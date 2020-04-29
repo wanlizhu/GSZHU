@@ -1,6 +1,6 @@
-#include "dejavu/core/bitmap.h"
-#include "dejavu/core/strings.h"
-#include <assert.h>
+#include "utils/bitmap.h"
+#include "utils/strings.h"
+#include <cassert>
 #include <stb_image.h>
 #include <stb_image_write.h>
 #include <stb_image_resize.h>

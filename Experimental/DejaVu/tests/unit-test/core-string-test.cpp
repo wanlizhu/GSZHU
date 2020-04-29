@@ -1,5 +1,5 @@
 #include<gtest/gtest.h>
-#include "dejavu/core/strings.h"
+#include "utils/strings.h"
 
 TEST(core_string, ichar_traits_test)
 {
