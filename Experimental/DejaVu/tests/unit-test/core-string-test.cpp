@@ -1,4 +1,4 @@
-#include<gtest/gtest.h>
+#include <gtest/gtest.h>
 #include "utils/strings.h"
 
 TEST(core_string, ichar_traits_test)

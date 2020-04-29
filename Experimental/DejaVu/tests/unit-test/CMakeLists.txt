@@ -14,8 +14,6 @@ add_executable(dejavu-unittest "dummy.cpp")
 set_target_properties(dejavu-unittest PROPERTIES CXX_STANDARD           17)
 set_target_properties(dejavu-unittest PROPERTIES CXX_STANDARD_REQUIRED  ON)
 set_target_properties(dejavu-unittest PROPERTIES CXX_EXTENSIONS         ON)
-set_target_properties(dejavu-unittest PROPERTIES UNITY_BUILD            ON)
-set_target_properties(dejavu-unittest PROPERTIES UNITY_BUILD ON)
 
 target_include_directories(dejavu-unittest PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_compile_definitions(dejavu-unittest PRIVATE "UNICODE")

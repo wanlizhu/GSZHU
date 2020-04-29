@@ -45,6 +45,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_MODULE_PATH            ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 set(CMAKE_CXX_STANDARD           17)
 set(CMAKE_CXX_STANDARD_REQUIRED  ON)
+set(CMAKE_UNITY_BUILD            OFF CACHE BOOL "")  # Accelerate building process
 set(DJV_ROOT_DIR                 "${CMAKE_CURRENT_SOURCE_DIR}")
 set(DJV_BUILD_SAMPLES            ON CACHE BOOL "")
 set(DJV_BUILD_TESTS              ON CACHE BOOL "")
