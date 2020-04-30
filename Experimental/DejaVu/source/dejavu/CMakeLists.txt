@@ -22,6 +22,7 @@ find_package(Stb     REQUIRED)
 find_package(glfw3   REQUIRED)
 find_package(imgui   REQUIRED)
 find_package(assimp  REQUIRED)
+find_package(glog    REQUIRED)
 
 add_library(dejavu-core SHARED "dllmain.cpp")
 
@@ -45,6 +46,7 @@ target_link_libraries(dejavu-core PRIVATE glslang::OGLCompiler)
 target_link_libraries(dejavu-core PRIVATE glfw)
 target_link_libraries(dejavu-core PRIVATE imgui::imgui)
 target_link_libraries(dejavu-core PRIVATE assimp::assimp)
+target_link_libraries(dejavu-core PRIVATE glog::glog)
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/config.h")
 
