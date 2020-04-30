@@ -30,6 +30,7 @@ namespace djv
         Fullscreen = 1 << 2,
         Floating = 1 << 3,
     };
+    ENUM_CLASS_OP(WindowFlag)
 
     class WindowCallbacks 
     {
@@ -64,7 +65,7 @@ namespace djv
         const wchar_t* getWindowTitle() const;
         WindowHandle getWindowHandle() const;
         std::array<int, 2> getClientAreaSize() const;
-        WindowCallbacks* getWindowCallbacks() const;
+        WindowCallbacks* getCallbacks() const;
         
     private:
         std::wstring mWindowTitle;

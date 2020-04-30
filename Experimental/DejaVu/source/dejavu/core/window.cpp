@@ -1,5 +1,6 @@
-#include "Window.h"
-#include <glog/logging.h>
+#include "window.h"
+#include "inputs.h"
+#include "utils/logger.h"
 #include "utils/strings.h"
 
 #if defined(_WIN32)
@@ -21,7 +22,8 @@ namespace djv
         Window* window = (Window*)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
         if (window)
         {
-            if (msg == WM_PAINT && (auto callbacks = window->getWindowCallbacks()))
+            auto callbacks = window->getCallbacks();
+            if (msg == WM_PAINT && callbacks)
             {
                 callbacks->windowRedraw();                
             }
@@ -35,7 +37,7 @@ namespace djv
         int width, 
         int height, 
         std::weak_ptr<WindowCallbacks> callbacks, 
-        WindowFlag flags = WindowFlag::None
+        WindowFlag flags
     )
     {
         glfwSetErrorCallback([](int code,const char* msg){
@@ -58,58 +60,154 @@ namespace djv
         glfwWindowHint(GLFW_STEREO, GLFW_FALSE);
 
         if (width <= 0 || height <= 0) {
-            auto videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-            width  = (int)(videoMode.width / 1.414);
-            height = (int)(videoMode.height / 1.414);
+            const GLFWvidmode* videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            width  = (int)(videoMode->width / 1.414);
+            height = (int)(videoMode->height / 1.414);
         }
 
         std::string cstrTitle = to_string(title);
-        auto window = glfwCreateWindow(width, height, cstrTitle.c_str(), nullptr, nullptr);
-        mGLFWWindow = std::shared_ptr<GLFWwindow>(new GLFWwindow(window), [=](GLFWwindow* pointer) { 
-            if (*pointer) {
-                glfwDestroyWindow(*pointer);
+        GLFWwindow* window = glfwCreateWindow(width, height, cstrTitle.c_str(), nullptr, nullptr);
+        mGLFWWindow = std::shared_ptr<GLFWwindow>(window, [=](GLFWwindow* handle) { 
+            if (handle) {
+                glfwDestroyWindow(handle);
                 glfwTerminate();
             }
-            delete pointer;
         });
 
-        if (*mGLFWWindow == nullptr) {
+        if (mGLFWWindow == nullptr) {
             glfwTerminate();
             throw std::runtime_error("Failed to create GLFW window");
         }
 
-        HWND hwnd = glfwGetWin32Window(*mGLFWWindow);
+        HWND hwnd = glfwGetWin32Window(mGLFWWindow.get());
         glfwMessageProc = (WNDPROC)GetWindowLongPtrW(hwnd, GWLP_WNDPROC);
-        SetWindowLongPtrW(hwnd, GWLP_USERDATA, this);
+        SetWindowLongPtrW(hwnd, GWLP_USERDATA, (LONG_PTR)this);
         SetWindowLongPtrW(hwnd, GWLP_WNDPROC, (LONG_PTR)WindowMessageProc);
 
-        glfwSetWindowAttrib(*mGLFWWindow, GLFW_DECORATED, !(flags & WindowFlag::Borderless);
-        glfwSetWindowAttrib(*mGLFWWindow, GLFW_RESIZABLE, flags & WindowFlag::Resizable);
-        glfwSetWindowAttrib(*mGLFWWindow, GLFW_FLOATING, flags & WindowFlag::Floating);
+        glfwSetWindowAttrib(mGLFWWindow.get(), GLFW_DECORATED, !is_set(flags, WindowFlag::Borderless));
+        glfwSetWindowAttrib(mGLFWWindow.get(), GLFW_RESIZABLE, is_set(flags, WindowFlag::Resizable));
+        glfwSetWindowAttrib(mGLFWWindow.get(), GLFW_FLOATING, is_set(flags, WindowFlag::Floating));
     
-        int x = (videoMode.width - width) / 2;
-        int y = (videoMode.height - height) / 2;
-        glfwSetWindowPos(*mGLFWWindow, x, y);
+        const GLFWvidmode* videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        int x = (videoMode->width - width) / 2;
+        int y = (videoMode->height - height) / 2;
+        glfwSetWindowPos(mGLFWWindow.get(), x, y);
 
-        if (flags & WindowFlag::Fullscreen) {
+        if (is_set(flags, WindowFlag::Fullscreen)) {
             setFullscreen(true);
         }
 
-        glfwSetFramebufferSizeCallback(*mGLFWWindow, [](GLFWwindow* handle, int width,int height) {
+        glfwSetFramebufferSizeCallback(mGLFWWindow.get(), 
+        [](GLFWwindow* handle, int width,int height) {
             Window* window = (Window*)glfwGetWindowUserPointer(handle);
-            if (window && (auto callbacks = window->getCallbacks())) {
+            auto callbacks = window->getCallbacks();
+            if (callbacks) {
                 callbacks->windowSizeChanged(width, height);
             }
         });
 
-        glfwSetWindowCloseCallback(*mGLFWWindow, [](GLFWwindow* handle) {
+        glfwSetWindowCloseCallback(mGLFWWindow.get(), 
+        [](GLFWwindow* handle) {
             Window* window = (Window*)glfwGetWindowUserPointer(handle);
-            if (window && (auto callbacks = window->getCallbacks())) {
+            auto callbacks = window->getCallbacks();
+            if (callbacks) {
                 callbacks->windowClose();
             }
         });
 
+        glfwSetKeyCallback(mGLFWWindow.get(), 
+        [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
+            Window* window = (Window*)glfwGetWindowUserPointer(handle);
+            auto callbacks = window->getCallbacks();
+            if (callbacks) {
+                KeyboardEvent event(key, scancode, action, mods);
+                callbacks->keyboardEvent(event);
+            }
+        });
 
+        glfwSetMouseButtonCallback(mGLFWWindow.get(),
+        [](GLFWwindow* handle, int button, int action, int mods) {
+            Window* window = (Window*)glfwGetWindowUserPointer(handle);
+            auto callbacks = window->getCallbacks();
+            if (callbacks) {
+                MouseEvent event(button, action, mods);
+                callbacks->mouseEvent(event);
+            }
+        });
+
+        glfwSetCursorPosCallback(mGLFWWindow.get(),
+        [](GLFWwindow* handle, double x, double y) {
+            Window* window = (Window*)glfwGetWindowUserPointer(handle);
+            auto callbacks = window->getCallbacks();
+            if (callbacks) {
+                MouseEvent event(x, y, MOUSE_MOVE_TAG());
+                callbacks->mouseEvent(event);
+            }
+        });
+
+        glfwSetScrollCallback(mGLFWWindow.get(),
+        [](GLFWwindow* handle, double x, double y) {
+            Window* window = (Window*)glfwGetWindowUserPointer(handle);
+            auto callbacks = window->getCallbacks();
+            if (callbacks) {
+                MouseEvent event(x, y, MOUSE_SCROLL_TAG());
+                callbacks->mouseEvent(event);
+            }
+        });
+
+        glfwSetDropCallback(mGLFWWindow.get(), 
+        [](GLFWwindow* handle, int count,const char* paths[]){
+            Window* window = (Window*)glfwGetWindowUserPointer(handle);
+            auto callbacks = window->getCallbacks();
+            if (callbacks) {
+                MouseEvent event(count, paths);
+                callbacks->mouseEvent(event);
+            }
+        });
+    }
+
+    void Window::messageLoop()
+    {}
+
+    void Window::close()
+    {}
+    
+    void Window::resize(int width, int height)
+    {}
+
+    void Window::pollEvents()
+    {}
+
+    void Window::setFullscreen(bool enable)
+    {}
+
+    void Window::setWindowPos(int x, int y)
+    {}
+
+    void Window::setWindowTitle(const wchar_t* title)
+    {}
+
+    void Window::setCallbacks(std::weak_ptr<WindowCallbacks> callbacks)
+    {}
+
+    const wchar_t* Window::getWindowTitle() const
+    {
+        return mWindowTitle.c_str();
+    }
+
+    WindowHandle Window::getWindowHandle() const
+    {
+        return 0;
+    }
+
+    std::array<int, 2> Window::getClientAreaSize() const
+    {
+        return { 0, 0 };
+    }
+
+    WindowCallbacks* Window::getCallbacks() const
+    {
+        return nullptr;
     }
 }
 

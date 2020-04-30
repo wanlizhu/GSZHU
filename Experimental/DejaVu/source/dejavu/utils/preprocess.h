@@ -58,3 +58,13 @@
 #if defined(_MSC_VER) // warning C4127: conditional expression is constant
 #    pragma warning (disable: 4127)
 #endif
+
+#define ULT(eci) static_cast<std::underlying_type_t<decltype(eci)>>(eci)
+
+#define ENUM_CLASS_OP(EC) \
+    inline EC  operator& (EC  a, EC b) { return static_cast<EC>(ULT(a) & ULT(b)); } \
+    inline EC  operator| (EC  a, EC b) { return static_cast<EC>(ULT(a) | ULT(b)); } \
+    inline EC& operator&=(EC& a, EC b) { a = a & b; return a; } \
+    inline EC& operator|=(EC& a, EC b) { a = a | b; return a; } \
+    inline EC  operator~ (EC  a)       { return static_cast<EC>(~ULT(a)); } \
+    inline bool is_set(EC flags, EC flag) { return (flags & flag) != static_cast<EC>(0); }

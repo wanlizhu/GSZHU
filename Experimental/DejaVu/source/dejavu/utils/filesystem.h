@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 #include <functional>
-#include "utils/exceptions.h"
 
 namespace djv
 {
