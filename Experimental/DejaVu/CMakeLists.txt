@@ -47,7 +47,7 @@ set(CMAKE_CXX_STANDARD           17)
 set(CMAKE_CXX_STANDARD_REQUIRED  ON)
 set(CMAKE_UNITY_BUILD            OFF CACHE BOOL "")  # Accelerate building process
 set(DJV_ROOT_DIR                 "${CMAKE_CURRENT_SOURCE_DIR}")
-set(DJV_BUILD_SAMPLES            ON CACHE BOOL "")
+set(DJV_BUILD_SAMPLE             ON CACHE BOOL "")
 set(DJV_BUILD_TESTS              ON CACHE BOOL "")
 
 function(djv_source_group)
@@ -93,8 +93,8 @@ add_subdirectory(source/externals)
 add_subdirectory(source/dejavu)
 add_subdirectory(source/plugins)
 
-if (DJV_BUILD_SAMPLES)
-    add_subdirectory(source/samples)
+if (DJV_BUILD_SAMPLE)
+    add_subdirectory(source/sample)
 endif()
 
 if (DJV_BUILD_TESTS)

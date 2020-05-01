@@ -22,7 +22,7 @@ namespace djv
             while (is_running()) {
                 std::this_thread::sleep_for(mInterval);
                 if (is_running() && mCallback) {
-                    std::async(std::launch::async, mCallback);
+                    auto future = std::async(std::launch::async, mCallback);
                 }
                 if (!mRepeat) {
                     break;

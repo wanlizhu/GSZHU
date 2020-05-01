@@ -245,7 +245,7 @@ namespace djv
         int width = 0;
         int height = 0;
         glfwGetFramebufferSize(mGLFWWindow.get(), &width, &height);
-        return std::array<int, 2>(width, height);
+        return std::array<int, 2>{ width, height };
     }
 
     WindowCallbacks* Window::getCallbacks() const

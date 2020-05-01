@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "utils/preprocess.h"
 
 namespace djv
 {

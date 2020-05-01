@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include "utils/preprocess.h"
 
 namespace djv
 {
