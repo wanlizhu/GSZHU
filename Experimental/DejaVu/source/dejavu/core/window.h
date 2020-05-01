@@ -4,7 +4,10 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <chrono>
+#include <thread>
 #include "utils/preprocess.h"
+#include "utils/timer.h"
 #include "device/device_config.h"
 #ifdef _WIN32
 #define NOMINMAX
@@ -27,8 +30,7 @@ namespace djv
         None = 0,
         Resizable = 1,
         Borderless = 1 << 1,
-        Fullscreen = 1 << 2,
-        Floating = 1 << 3,
+        Floating = 1 << 2,
     };
     ENUM_CLASS_OP(WindowFlag)
 
@@ -57,10 +59,10 @@ namespace djv
         void close(); /* This will cause the messageLoop() to stop its execution */
         void resize(int width, int height); /* There is not guarantee that the call will succeed. */
         void pollEvents(); /* Force event polling. Useful if your rendering loop is slow and you would like to get a recent keyboard/mouse status. */
-        void setFullscreen(bool enable);
         void setWindowPos(int x, int y);
         void setWindowTitle(const wchar_t* title);
         void setCallbacks(std::weak_ptr<WindowCallbacks> callbacks);
+        void setTickTimer(std::chrono::milliseconds ms);
 
         const wchar_t* getWindowTitle() const;
         WindowHandle getWindowHandle() const;
@@ -72,5 +74,6 @@ namespace djv
         std::shared_ptr<GLFWwindow> mGLFWWindow;
         std::array<float, 2> mMouseScale;
         std::weak_ptr<WindowCallbacks> mCallbacks;
+        Timer mTickTimer;
     };
 }

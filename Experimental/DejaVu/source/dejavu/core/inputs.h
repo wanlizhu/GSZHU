@@ -6,7 +6,7 @@
 
 namespace djv
 {
-    struct KeyboardEvent
+    struct DJV_API KeyboardEvent
     {
         int key = 0;
         int scancode = 0;
@@ -17,7 +17,7 @@ namespace djv
         KeyboardEvent(int key, int scancode, int action, int mods);
     };
 
-    struct MouseButtonAction
+    struct DJV_API MouseButtonAction
     {
         int button = 0;
         int action = 0;
@@ -26,7 +26,7 @@ namespace djv
 
     struct MOUSE_MOVE_TAG {};
 
-    struct MouseMoveAction
+    struct DJV_API MouseMoveAction
     {
         double x = 0.0;
         double y = 0.0;
@@ -34,19 +34,19 @@ namespace djv
 
     struct MOUSE_SCROLL_TAG {};
 
-    struct MouseScrollAction
+    struct DJV_API MouseScrollAction
     {
         double x = 0.0;
         double y = 0.0;
     };
 
-    struct MouseDropAction
+    struct DJV_API MouseDropAction
     {
         int count = 0;
         const char** paths = nullptr;
     };
 
-    struct MouseEvent
+    struct DJV_API MouseEvent
     {
         std::optional<MouseButtonAction> buttonAction;
         std::optional<MouseMoveAction>   moveAction;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include "utils/preprocess.h"
 
 namespace djv
 {
@@ -11,7 +12,7 @@ namespace djv
      * because we have 2 copies of the WeakPtr inside shared_ptr
     */
     template<typename Base, typename Derived>
-    class inherit_shared_from_this
+    class DJV_API inherit_shared_from_this
     {
     public:
         typename std::shared_ptr<Derived> shared_from_this()

@@ -1,8 +1,10 @@
 #pragma once
 
+#include "utils/preprocess.h"
+
 namespace djv
 {
-    class Formatter
+    class DJV_API Formatter
     {
     public:
 
