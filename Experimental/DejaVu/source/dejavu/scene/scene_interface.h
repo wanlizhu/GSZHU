@@ -1,6 +1,9 @@
 #pragma once
 
+#include <filesystem>
 #include "utils/preprocess.h"
+#include "scene/component.h"
+#include "scene/entity.h"
 
 namespace djv
 {
@@ -9,4 +12,6 @@ namespace djv
     public:
         
     };
+
+    std::shared_ptr<SceneInterface> DJV_API createScene(const std::filesystem::path& path);
 }

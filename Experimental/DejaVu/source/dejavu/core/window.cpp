@@ -69,6 +69,7 @@ namespace djv
         GLFWwindow* window = glfwCreateWindow(width, height, cstrTitle.c_str(), nullptr, nullptr);
         mGLFWWindow = std::shared_ptr<GLFWwindow>(window, [=](GLFWwindow* handle) { 
             if (handle) {
+                this->close();
                 glfwDestroyWindow(handle);
                 glfwTerminate();
             }
@@ -175,6 +176,7 @@ namespace djv
 
     void Window::close()
     {
+        mTickTimer.stop();
         glfwSetWindowShouldClose(mGLFWWindow.get(), GLFW_TRUE);
     }
     
