@@ -10,6 +10,7 @@
 
 namespace djv
 {
+    std::weak_ptr<Window> gpWindow;
     static WNDPROC glfwMessageProc = nullptr;
 
     LRESULT CALLBACK WindowMessageProc(
@@ -67,7 +68,7 @@ namespace djv
 
         std::string cstrTitle = to_string(title);
         GLFWwindow* window = glfwCreateWindow(width, height, cstrTitle.c_str(), nullptr, nullptr);
-        mGLFWWindow = std::shared_ptr<GLFWwindow>(window, [=](GLFWwindow* handle) { 
+        mpGLFWWindow = std::shared_ptr<GLFWwindow>(window, [=](GLFWwindow* handle) { 
             if (handle) {
                 this->close();
                 glfwDestroyWindow(handle);
@@ -75,26 +76,26 @@ namespace djv
             }
         });
 
-        if (mGLFWWindow == nullptr) {
+        if (mpGLFWWindow == nullptr) {
             glfwTerminate();
             throw std::runtime_error("Failed to create GLFW window");
         }
 
-        HWND hwnd = glfwGetWin32Window(mGLFWWindow.get());
+        HWND hwnd = glfwGetWin32Window(mpGLFWWindow.get());
         glfwMessageProc = (WNDPROC)GetWindowLongPtrW(hwnd, GWLP_WNDPROC);
         SetWindowLongPtrW(hwnd, GWLP_USERDATA, (LONG_PTR)this);
         SetWindowLongPtrW(hwnd, GWLP_WNDPROC, (LONG_PTR)WindowMessageProc);
 
-        glfwSetWindowAttrib(mGLFWWindow.get(), GLFW_DECORATED, !is_set(flags, WindowFlag::Borderless));
-        glfwSetWindowAttrib(mGLFWWindow.get(), GLFW_RESIZABLE, is_set(flags, WindowFlag::Resizable));
-        glfwSetWindowAttrib(mGLFWWindow.get(), GLFW_FLOATING, is_set(flags, WindowFlag::Floating));
+        glfwSetWindowAttrib(mpGLFWWindow.get(), GLFW_DECORATED, !is_set(flags, WindowFlag::Borderless));
+        glfwSetWindowAttrib(mpGLFWWindow.get(), GLFW_RESIZABLE, is_set(flags, WindowFlag::Resizable));
+        glfwSetWindowAttrib(mpGLFWWindow.get(), GLFW_FLOATING, is_set(flags, WindowFlag::Floating));
     
         const GLFWvidmode* videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         int x = (videoMode->width - width) / 2;
         int y = (videoMode->height - height) / 2;
-        glfwSetWindowPos(mGLFWWindow.get(), x, y);
+        glfwSetWindowPos(mpGLFWWindow.get(), x, y);
 
-        glfwSetFramebufferSizeCallback(mGLFWWindow.get(), 
+        glfwSetFramebufferSizeCallback(mpGLFWWindow.get(), 
         [](GLFWwindow* handle, int width,int height) {
             Window* window = (Window*)glfwGetWindowUserPointer(handle);
             auto callbacks = window->getCallbacks();
@@ -103,7 +104,7 @@ namespace djv
             }
         });
 
-        glfwSetWindowCloseCallback(mGLFWWindow.get(), 
+        glfwSetWindowCloseCallback(mpGLFWWindow.get(), 
         [](GLFWwindow* handle) {
             Window* window = (Window*)glfwGetWindowUserPointer(handle);
             auto callbacks = window->getCallbacks();
@@ -112,7 +113,7 @@ namespace djv
             }
         });
 
-        glfwSetKeyCallback(mGLFWWindow.get(), 
+        glfwSetKeyCallback(mpGLFWWindow.get(), 
         [](GLFWwindow* handle, int key, int scancode, int action, int mods) {
             Window* window = (Window*)glfwGetWindowUserPointer(handle);
             auto callbacks = window->getCallbacks();
@@ -122,7 +123,7 @@ namespace djv
             }
         });
 
-        glfwSetMouseButtonCallback(mGLFWWindow.get(),
+        glfwSetMouseButtonCallback(mpGLFWWindow.get(),
         [](GLFWwindow* handle, int button, int action, int mods) {
             Window* window = (Window*)glfwGetWindowUserPointer(handle);
             auto callbacks = window->getCallbacks();
@@ -132,7 +133,7 @@ namespace djv
             }
         });
 
-        glfwSetCursorPosCallback(mGLFWWindow.get(),
+        glfwSetCursorPosCallback(mpGLFWWindow.get(),
         [](GLFWwindow* handle, double x, double y) {
             Window* window = (Window*)glfwGetWindowUserPointer(handle);
             auto callbacks = window->getCallbacks();
@@ -142,7 +143,7 @@ namespace djv
             }
         });
 
-        glfwSetScrollCallback(mGLFWWindow.get(),
+        glfwSetScrollCallback(mpGLFWWindow.get(),
         [](GLFWwindow* handle, double x, double y) {
             Window* window = (Window*)glfwGetWindowUserPointer(handle);
             auto callbacks = window->getCallbacks();
@@ -152,7 +153,7 @@ namespace djv
             }
         });
 
-        glfwSetDropCallback(mGLFWWindow.get(), 
+        glfwSetDropCallback(mpGLFWWindow.get(), 
         [](GLFWwindow* handle, int count,const char* paths[]){
             Window* window = (Window*)glfwGetWindowUserPointer(handle);
             auto callbacks = window->getCallbacks();
@@ -161,14 +162,16 @@ namespace djv
                 callbacks->mouseEvent(event);
             }
         });
+
+        gpWindow = shared_from_this();
     }
 
     void Window::messageLoop()
     {
-        glfwShowWindow(mGLFWWindow.get());
-        glfwFocusWindow(mGLFWWindow.get());
+        glfwShowWindow(mpGLFWWindow.get());
+        glfwFocusWindow(mpGLFWWindow.get());
 
-        while (!glfwWindowShouldClose(mGLFWWindow.get()))
+        while (!glfwWindowShouldClose(mpGLFWWindow.get()))
         {
             glfwWaitEvents();
         }
@@ -177,20 +180,20 @@ namespace djv
     void Window::close()
     {
         mTickTimer.stop();
-        glfwSetWindowShouldClose(mGLFWWindow.get(), GLFW_TRUE);
+        glfwSetWindowShouldClose(mpGLFWWindow.get(), GLFW_TRUE);
     }
     
     void Window::resize(int width, int height)
     {
         assert(width > 0 && height > 0);
-        glfwSetWindowSize(mGLFWWindow.get(), width, height);
+        glfwSetWindowSize(mpGLFWWindow.get(), width, height);
 
         // In minimized mode GLFW reports incorrect window size
         if (IsIconic(getWindowHandle())) {
             mMouseScale[0] = 1.0f / (float)width;
             mMouseScale[1] = 1.0f / (float)height;
         } else {
-            glfwGetWindowSize(mGLFWWindow.get(), &width, &height);
+            glfwGetWindowSize(mpGLFWWindow.get(), &width, &height);
             mMouseScale[0] = 1.0f / (float)width;
             mMouseScale[1] = 1.0f / (float)height;
         }
@@ -203,18 +206,18 @@ namespace djv
 
     void Window::setWindowPos(int x, int y)
     {
-        glfwSetWindowPos(mGLFWWindow.get(), x, y);
+        glfwSetWindowPos(mpGLFWWindow.get(), x, y);
     }
 
     void Window::setWindowTitle(const wchar_t* title)
     {
         std::string cstrTitle = to_string(title);
-        glfwSetWindowTitle(mGLFWWindow.get(), cstrTitle.c_str());
+        glfwSetWindowTitle(mpGLFWWindow.get(), cstrTitle.c_str());
     }
 
     void Window::setCallbacks(std::weak_ptr<WindowCallbacks> callbacks)
     {
-        mCallbacks = callbacks;
+        mpCallbacks = callbacks;
     }
 
     void Window::setTickTimer(std::chrono::milliseconds ms)
@@ -239,20 +242,20 @@ namespace djv
 
     WindowHandle Window::getWindowHandle() const
     {
-        return glfwGetWin32Window(mGLFWWindow.get());
+        return glfwGetWin32Window(mpGLFWWindow.get());
     }
 
     std::array<int, 2> Window::getClientAreaSize() const
     {
         int width = 0;
         int height = 0;
-        glfwGetFramebufferSize(mGLFWWindow.get(), &width, &height);
+        glfwGetFramebufferSize(mpGLFWWindow.get(), &width, &height);
         return std::array<int, 2>{ width, height };
     }
 
     WindowCallbacks* Window::getCallbacks() const
     {
-        return mCallbacks.lock().get();
+        return mpCallbacks.lock().get();
     }
 }
 

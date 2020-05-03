@@ -2,6 +2,8 @@
 
 #include "core/window.h"
 #include "scene/scene_interface.h"
+#include "device/device_interface.h"
+#include "renderer/renderer_interface.h"
 #include "utils/preprocess.h"
 #include "utils/clock.h"
 #include "utils/framerate.h"
@@ -29,14 +31,15 @@ namespace djv
         char** argv = nullptr;
         bool enableAlertDialog = true;
         bool enableUI = true;
+
+        std::filesystem::path scenePath;
     };
 
-    class DJV_API ApplicationInterface
+    class DJV_API ApplicationInterface : public std::enable_shared_from_this<ApplicationInterface>
     {
     public:
         virtual const ArgList& getArgList() const = 0;
         virtual Window* getWindow() const = 0;
-        virtual SceneInterface* getScene() const = 0;
         virtual const Framerate& getFramerate() const = 0; 
         
         virtual void run() = 0;
@@ -46,5 +49,8 @@ namespace djv
         virtual bool isKeyPressed(int key) const = 0;
         virtual void captureScreen(const std::wstring& path) = 0;
         virtual void setScene(std::shared_ptr<SceneInterface> scene) = 0;
+        virtual void setRenderer(std::shared_ptr<RendererInterface> renderer) = 0;
     };
+
+    DJV_API extern std::weak_ptr<ApplicationInterface> gpApp;
 }

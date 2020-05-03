@@ -44,7 +44,7 @@ namespace djv
         virtual void mouseEvent(const MouseEvent& mouseEvent) = 0;
     };
 
-    class DJV_API Window
+    class DJV_API Window : public std::enable_shared_from_this<Window>
     {
     public:
         Window(
@@ -71,9 +71,11 @@ namespace djv
         
     private:
         std::wstring mWindowTitle;
-        std::shared_ptr<GLFWwindow> mGLFWWindow;
+        std::shared_ptr<GLFWwindow> mpGLFWWindow;
         std::array<float, 2> mMouseScale;
-        std::weak_ptr<WindowCallbacks> mCallbacks;
+        std::weak_ptr<WindowCallbacks> mpCallbacks;
         Timer mTickTimer;
     };
+
+    DJV_API extern std::weak_ptr<Window> gpWindow;
 }

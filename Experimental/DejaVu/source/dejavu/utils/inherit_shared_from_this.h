@@ -17,14 +17,14 @@ namespace djv
     public:
         typename std::shared_ptr<Derived> shared_from_this()
         {
-            Base* base = static_cast<Base*>(this);
+            Base* base = static_cast<Derived*>(this);
             std::shared_ptr<Base> pbase = base->shared_from_this();
             return std::static_pointer_cast<Derived>(pbase);
         }
 
         typename std::shared_ptr<const Derived> shared_from_this() const
         {
-            const Base* base = static_cast<const Base*>(this);
+            const Base* base = static_cast<const Derived*>(this);
             std::shared_ptr<const Base> pbase = base->shared_from_this();
             return std::static_pointer_cast<const Derived>(pbase);
         }

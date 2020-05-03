@@ -24,8 +24,8 @@ target_compile_definitions(dejavu-sample PRIVATE $<$<PLATFORM_ID:Windows>:"_CRT_
 target_link_libraries(dejavu-sample PRIVATE dejavu-core)
 target_link_libraries(dejavu-sample PRIVATE glog::glog)
 
-target_sources(dejavu-sample PRIVATE "sample_application.h")
-target_sources(dejavu-sample PRIVATE "sample_application.cpp")
+#target_sources(dejavu-sample PRIVATE "sample_renderer.h")
+#target_sources(dejavu-sample PRIVATE "sample_renderer.cpp")
 
 if (COMMAND djv_source_group)
     djv_source_group(TARGET dejavu-sample ROOTS "${CMAKE_CURRENT_SOURCE_DIR}")    
