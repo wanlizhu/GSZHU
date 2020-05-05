@@ -2,8 +2,7 @@
 
 #include <filesystem>
 #include "utils/preprocess.h"
-#include "scene/component.h"
-#include "scene/entity.h"
+#include "scene/camera/camera_controller.h"
 
 namespace djv
 {

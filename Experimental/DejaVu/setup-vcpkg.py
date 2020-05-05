@@ -11,7 +11,7 @@ PACKAGE_LIST = [
     'glslang',
     'imgui',
     'stb',
-    'eigen3',
+    'glm',
     'assimp',
     'gtest',
     'jsoncpp',
