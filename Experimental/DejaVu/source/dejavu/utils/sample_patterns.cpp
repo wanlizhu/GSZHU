@@ -3,40 +3,17 @@
 
 namespace djv
 {
-    int DXSamplePattern::kSampleCount = 8;
-    float2 DXSamplePattern::kPattern[DXSamplePattern::kSampleCount] = {
-        {  1.0f / 16.0f, -3.0f / 16.0f },
-        { -1.0f / 16.0f,  3.0f / 16.0f },
-        {  5.0f / 16.0f,  1.0f / 16.0f },
-        { -3.0f / 16.0f, -5.0f / 16.0f },
-        { -5.0f / 16.0f,  5.0f / 16.0f },
-        { -7.0f / 16.0f, -1.0f / 16.0f },
-        {  3.0f / 16.0f,  7.0f / 16.0f },
-        {  7.0f / 16.0f, -7.0f / 16.0f }
-    };
-
-    float2 HaltonSamplePattern::kPattern[8] = {
-        { 1.0f / 2.0f - 0.5f, 1.0f / 3.0f - 0.5f },
-        { 1.0f / 4.0f - 0.5f, 2.0f / 3.0f - 0.5f },
-        { 3.0f / 4.0f - 0.5f, 1.0f / 9.0f - 0.5f },
-        { 1.0f / 8.0f - 0.5f, 4.0f / 9.0f - 0.5f },
-        { 5.0f / 8.0f - 0.5f, 7.0f / 9.0f - 0.5f },
-        { 3.0f / 8.0f - 0.5f, 2.0f / 9.0f - 0.5f },
-        { 7.0f / 8.0f - 0.5f, 5.0f / 9.0f - 0.5f },
-        { 0.5f / 8.0f - 0.5f, 8.0f / 9.0f - 0.5f }
-    };
-
-    int DXSamplePattern::sampleCount() const
+    uint32_t DXSamplePattern::sampleCount() const
     {
         return kSampleCount;
     }
 
-    void DXSamplePattern::reset(int start)
+    void DXSamplePattern::reset(uint32_t start)
     {
         mCurrentSample = start;
     }
 
-    float2 DXSamplePattern::next()
+    glm::vec2 DXSamplePattern::next()
     {
         return kPattern[(mCurrentSample++) % kSampleCount];
     }
@@ -44,7 +21,7 @@ namespace djv
     HaltonSamplePattern::HaltonSamplePattern(uint32_t sampleCount)
     {
         LOG_IF(WARNING, sampleCount > 8) << "HaltonSamplePattern() requires sampleCount in the range [1, 8]. Clamping to that range.";
-        mSampleCount = std::max(1, std::min(8, sampleCount));
+        mSampleCount = std::max(1u, std::min(8u, sampleCount));
     }
 
     uint32_t HaltonSamplePattern::sampleCount() const
@@ -57,9 +34,9 @@ namespace djv
         mCurrentSample = start;
     }
 
-    float2 HaltonSamplePattern::next()
+    glm::vec2 HaltonSamplePattern::next()
     {
-        return return kPattern[(mCurrentSample++) % mSampleCount];;
+        return kPattern[(mCurrentSample++) % mSampleCount];
     }
 
     StratifiedSamplePattern::StratifiedSamplePattern(uint32_t sampleCount)
@@ -68,7 +45,7 @@ namespace djv
         LOG_IF(WARNING, sampleCount > 1024) << "StratifiedSamplePattern() requires sampleCount <= 1024. Using 1024 samples.";
         
         // Clamp sampleCount to a reasonable number so the permutation table doesn't get too big.
-        sampleCount = std::clamp(sampleCount, 1, 1024);
+        sampleCount = std::clamp(sampleCount, 1u, 1024u);
 
         // Factorize sampleCount into an M x N grid, where M and N are as close as possible.
         // In the worst case sampleCount is prime and we'll end up with a sampleCount x 1 grid.
@@ -100,7 +77,7 @@ namespace djv
         mRandomGenerator = std::mt19937();
     }
 
-    float2 StratifiedSamplePattern::next()
+    glm::vec2 StratifiedSamplePattern::next()
     {
         auto dist = std::uniform_real_distribution<float>();
         auto u = [&]() { return dist(mRandomGenerator); };
@@ -119,6 +96,6 @@ namespace djv
         assert(i < mBinsX && j < mBinsY);
         float x = ((float)i + u()) / mBinsX;
         float y = ((float)j + u()) / mBinsY;
-        return float2(x, y) - 0.5f;
+        return glm::vec2(x, y) - 0.5f;
     }
 }

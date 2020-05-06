@@ -4,18 +4,18 @@
 #include <string>
 #include <random>
 #include "utils/preprocess.h"
-#include "utils/algebra.h"
+#include "utils/math3d.h"
 #include "utils/inherit_shared_from_this.h"
 
 namespace djv
 {
-    class DJV_API SamplePatternInterface : public std::enable_shared_from_this<SamplePattern>
+    class DJV_API SamplePatternInterface : public std::enable_shared_from_this<SamplePatternInterface>
     {
     public:
         virtual ~SamplePatternInterface() = default;
-        virtual uint32_t sampleCount() const = 0;
-        virtual void     reset(int start = 0) = 0;
-        virtual float2   next() = 0;
+        virtual uint32_t  sampleCount() const = 0;
+        virtual void      reset(uint32_t start = 0) = 0;
+        virtual glm::vec2 next() = 0;
     };
 
     class DJV_API DXSamplePattern 
@@ -24,15 +24,24 @@ namespace djv
     {
     public:
         using inherit_shared_from_this<SamplePatternInterface, DXSamplePattern>::shared_from_this;
-        static constexpr uint32_t kSampleCount = 8;
-        static constexpr float2 kPattern[kSampleCount];
+        static constexpr uint32_t  kSampleCount = 8;
+        static constexpr glm::vec2 kPattern[kSampleCount] = {
+            {  1.0f / 16.0f, -3.0f / 16.0f },
+            { -1.0f / 16.0f,  3.0f / 16.0f },
+            {  5.0f / 16.0f,  1.0f / 16.0f },
+            { -3.0f / 16.0f, -5.0f / 16.0f },
+            { -5.0f / 16.0f,  5.0f / 16.0f },
+            { -7.0f / 16.0f, -1.0f / 16.0f },
+            {  3.0f / 16.0f,  7.0f / 16.0f },
+            {  7.0f / 16.0f, -7.0f / 16.0f }
+        };
         
         DXSamplePattern() = default;
 
         virtual ~DXSamplePattern() = default;
-        virtual uint32_t sampleCount() const override;
-        virtual void     reset(uint32_t start = 0) override;
-        virtual float2   next() override;
+        virtual uint32_t  sampleCount() const override;
+        virtual void      reset(uint32_t start = 0) override;
+        virtual glm::vec2 next() override;
 
     protected:
         uint32_t mCurrentSample = 0;
@@ -44,14 +53,23 @@ namespace djv
     {
     public:
         using inherit_shared_from_this<SamplePatternInterface, HaltonSamplePattern>::shared_from_this;
-        static constexpr float2 kPattern[8];
+        static constexpr glm::vec2 kPattern[8] = {
+            { 1.0f / 2.0f - 0.5f, 1.0f / 3.0f - 0.5f },
+            { 1.0f / 4.0f - 0.5f, 2.0f / 3.0f - 0.5f },
+            { 3.0f / 4.0f - 0.5f, 1.0f / 9.0f - 0.5f },
+            { 1.0f / 8.0f - 0.5f, 4.0f / 9.0f - 0.5f },
+            { 5.0f / 8.0f - 0.5f, 7.0f / 9.0f - 0.5f },
+            { 3.0f / 8.0f - 0.5f, 2.0f / 9.0f - 0.5f },
+            { 7.0f / 8.0f - 0.5f, 5.0f / 9.0f - 0.5f },
+            { 0.5f / 8.0f - 0.5f, 8.0f / 9.0f - 0.5f }
+        };
         
         HaltonSamplePattern(uint32_t sampleCount);
 
         virtual ~HaltonSamplePattern() = default;
-        virtual uint32_t sampleCount() const override;
-        virtual void     reset(uint32_t start = 0) override;
-        virtual float2   next() override;
+        virtual uint32_t  sampleCount() const override;
+        virtual void      reset(uint32_t start = 0) override;
+        virtual glm::vec2 next() override;
 
     protected:
         uint32_t mCurrentSample = 0;
@@ -67,10 +85,10 @@ namespace djv
 
         StratifiedSamplePattern(uint32_t sampleCount = 1);
 
-        virtual ~HaltonSamplePattern() = default;
-        virtual uint32_t sampleCount() const override;
-        virtual void     reset(uint32_t start = 0) override;
-        virtual float2   next() override;
+        virtual ~StratifiedSamplePattern() = default;
+        virtual uint32_t  sampleCount() const override;
+        virtual void      reset(uint32_t start = 0) override;
+        virtual glm::vec2 next() override;
 
     protected:
         uint32_t mCurrentSample = 0;

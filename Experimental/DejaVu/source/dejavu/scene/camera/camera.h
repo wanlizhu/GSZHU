@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/glm.hpp>
 #include "utils/preprocess.h"
 #include "utils/sample_patterns.h"
 
@@ -10,27 +11,15 @@ namespace glm
 
 namespace djv
 {
-    enum class CameraProperty
-    {
-        None = 0,
-        Movement = 1,
-        Exposure = 1 << 1,
-        FocalDistance = 1 << 2,
-        Jitter = 1 << 3,
-        Frustum = 1 << 4,
-        Aperture = 1 << 5,
-    };
-    ENUM_CLASS_OP(CameraProperty)
-
     struct BoundingBox;
 
     class DJV_API Camera
     {
     public:
+        /* Default dimensions of full frame cameras and 35mm film */
         static constexpr float kDefaultFrameHeight = 24.0f;
 
         void beginFrame();
-        void endFrame();
         bool isCulled(const BoundingBox& box) const;
         void togglePersistentProjMatrix(bool enable);
         void togglePersistentViewMatrix(bool enable);
@@ -52,7 +41,7 @@ namespace djv
         void setJitter(float jitterX, float jitterY);
         void setViewMatrix(const glm::mat4& viewMat);
         void setProjMatrix(const glm::mat4& projMat);
-        void setSamplePattern(std::shared_ptr<SamplePatternInterface> pattern);
+        void setSamplePattern(std::shared_ptr<SamplePatternInterface> pattern, glm::vec2 scale = { 1.0f, 1.0f });
 
         const std::string& getName() const;
         float getAspectRatio() const;
@@ -76,13 +65,19 @@ namespace djv
         std::shared_ptr<SamplePatternInterface> getSamplePattern() const;
 
     private:
-        std::string mName;
-        CameraProperty mChangedProperties = CameraProperty::None;
+        void calculateCameraParameters() const;
+        void setJitterInternal(float jitterX, float jitterY);
 
+    private:
+        std::string mName;
+        mutable bool mDirty = true;
+
+        bool mPersistentProjMatEnabled = false;
+        bool mPersistentViewMatEnabled = false;
         std::optional<glm::mat4> mPersistentProjMat;
         std::optional<glm::mat4> mPersistentViewMat;
         
-        glm::CameraData mCameraData;
+        mutable glm::CameraData mCameraData;
         glm::CameraData mCameraDataPrev;
 
         struct {
@@ -91,9 +86,9 @@ namespace djv
         } mJitterPattern;
 
         struct {
-            glm::vec3 pos;
+            glm::vec3 xyz;
             float     negW;
             glm::vec3 sign;
-        } mFrustumPlanes[6];
+        } mutable mFrustumPlanes[6];
     };
 }
